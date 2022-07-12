@@ -1,10 +1,13 @@
 import { createContext, useContext, Context } from 'react'
 import useFirebaseAuth from './useFirebaseAuth'
-
+import {onAuthStateChanged, signOut} from 'firebase/auth'
+import { auth } from 'service/main';
 const authUserContext = createContext({
   authUser: null,
   loading: true
 });
+
+
 
 export function AuthUserProvider({ children }) {
   const auth = useFirebaseAuth();

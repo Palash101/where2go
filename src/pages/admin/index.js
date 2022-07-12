@@ -1,6 +1,8 @@
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
-
+import { useEffect,useContext } from 'react'
+import { authUserContext } from '../../../firebase/newUserContext'
+import {useRouter} from 'next/router'
 // ** Icons Imports
 import Poll from 'mdi-material-ui/Poll'
 import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
@@ -22,7 +24,18 @@ import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
 import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
 import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 
+
+
 const Dashboard = () => {
+  const router = useRouter()
+  const authContext =  useContext(authUserContext)
+
+  useEffect(()=>{
+    console.log( authContext.isUserAuthenticated())
+    authContext.isUserAuthenticated()?router.push('/admin'):router.push('/admin/login')
+
+  },[])
+
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>

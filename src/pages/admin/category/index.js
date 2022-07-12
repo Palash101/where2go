@@ -15,7 +15,7 @@ import TablePagination from '@mui/material/TablePagination'
 import Chip from '@mui/material/Chip'
 
 
-import {getAllCategory} from '../../../service/admin/category'
+import {getAllCategory} from '../../../../service/admin/category'
 
 function CategoryList() {
     const[allCategory ,setAllCategory] =  useState([])

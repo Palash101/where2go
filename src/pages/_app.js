@@ -26,7 +26,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 
 // ** Global css styles
 import '../../styles/globals.css'
-import { AuthUserProvider } from '../../firebase/userContext';
+import { AuthUserProvider } from '../../firebase/newUserContext';
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -51,6 +51,7 @@ const App = props => {
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
 
   return (
+    <AuthUserProvider>
     <CacheProvider value={emotionCache}>
       <Head>
         <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
@@ -70,6 +71,7 @@ const App = props => {
         </SettingsConsumer>
       </SettingsProvider>
     </CacheProvider>
+    </AuthUserProvider>
   )
 }
 

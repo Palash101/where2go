@@ -15,22 +15,22 @@ const navigation = () => {
     {
       title: 'Dashboard',
       icon: HomeOutline,
-      path: '/'
+      path: '/admin'
     },
     {
       title: 'Users',
       icon: HomeOutline,
-      path: '/users'
+      path: '/admin/users'
     },
     {
       title: 'Category',
       icon: HomeOutline,
-      path: '/category'
+      path: '/admin/category'
     },
     {
       title: 'Events',
       icon: HomeOutline,
-      path: '/events'
+      path: '/admin/events'
     },
     {
       title: 'Account Settings',

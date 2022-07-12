@@ -10,20 +10,61 @@ import {
     getAuth,
   } from "firebase/auth";
 
-import {auth} from './main'
+  import {
+    addDoc,
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    limit,
+    query,
+    setDoc,
+    where,
+  } from "firebase/firestore";
 
-  export  const emailPasswordSigin = (email,password)=>{
-    console.log(email,'service')
-      signInWithEmailAndPassword(auth,email,password)
-            .then((userCredentails)=>{
-                console.log(userCredentails,'Service User Credentials')
-                userId = userCredential.user.uid;
-                userEmail = userCredential.user.email;
+import {auth,db} from './main'
 
-                return userCredential.user.getIdToken();
+export  const emailPasswordSigin = (email,password)=>{
+  const userId = '';
+  const userEmail = '';
+  console.log(email,'service')
+    return signInWithEmailAndPassword(auth,email,password)
+      .then((userCredentails)=>{
+          console.log(userCredentails,'Service User Credentials')
+          userId = userCredentails.user.uid;
+          userEmail = userCredentails.user.email;
+          return userCredentails.user.getIdToken();
 
-            })
-            .catch((err)=>console.log(err))
+      })
+      .then((idtoken)=>{
+        console.log('idtoken',idtoken)
+        return getUsersByEmail(userEmail);
 
+      })
+      .catch(err=> {console.log(err)})
 
+}
+
+const getUsersByEmail = async (email) => {
+  console.log('calling get user by email')
+  let profile = "";
+  let docsF = await getDocs(
+    query(
+      collection(db, 'users'),
+      where("email", "==", email),
+      limit(1)
+    )
+  );
+  if (docsF.docs.size !== 0) {
+    docsF.docs.forEach((doc) => {
+      console.log(doc,'Users Doc')
+      profile = { ...doc.data(), id: doc.id };
+    });
   }
+
+  return profile;
+};
+
+export const userLogout = ()=>{
+  signOut(auth);
+}

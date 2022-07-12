@@ -18,7 +18,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import CardContent from '@mui/material/CardContent'
 
-import {addCategory} from '../../../service/admin/category'
+import {addCategory} from '../../../../service/admin/category'
 import { useState } from 'react'
 
 
