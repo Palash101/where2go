@@ -30,9 +30,10 @@ import { async } from "@firebase/util";
 
 }
 
-export const addCategory = async (name)=>{
+export const addCategory = async (name,status)=>{
     return await addDoc(collection(db,'category'),{
-        name:name
+        name:name,
+        status:status
     })
     .then((data)=>{
         return {sucess:'success'}

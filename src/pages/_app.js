@@ -26,6 +26,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 
 // ** Global css styles
 import '../../styles/globals.css'
+import { AuthUserProvider } from '../../firebase/userContext';
 
 const clientSideEmotionCache = createEmotionCache()
 

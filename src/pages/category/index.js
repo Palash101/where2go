@@ -12,102 +12,76 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
+import Chip from '@mui/material/Chip'
+
 
 import {getAllCategory} from '../../../service/admin/category'
 
-const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-    {
-      id: 'population',
-      label: 'Population',
-      minWidth: 170,
-      align: 'right',
-      format: value => value.toLocaleString('en-US')
-    },
-    {
-      id: 'size',
-      label: 'Size\u00a0(km\u00b2)',
-      minWidth: 170,
-      align: 'right',
-      format: value => value.toLocaleString('en-US')
-    },
-    {
-      id: 'density',
-      label: 'Density',
-      minWidth: 170,
-      align: 'right',
-      format: value => value.toFixed(2)
-    }
-  ]
-
 function CategoryList() {
     const[allCategory ,setAllCategory] =  useState([])
-    const [page, setPage] = useState(0)
-    const [rowsPerPage, setRowsPerPage] = useState(10)
-  
-    const handleChangePage = (event, newPage) => {
-      setPage(newPage)
-    }
-  
-    const handleChangeRowsPerPage = event => {
-      setRowsPerPage(+event.target.value)
-      setPage(0)
-    }
-    
+
     useEffect(async ()=>{
-       const allCat =  await getAllCategory()
-       allCat.docs.forEach(item=>{
-        console.log(item)
-        setAllCategory([...allCategory,item.data()])
+       const catData =  await getAllCategory()
+       const catArray =[];
+       catData.docs.forEach(item=>{
+        catArray.push(item.data())
        })
-       console.log(allCategory)
+       console.log(catArray,'Category Array')
+       setAllCategory(catArray)
 
     },[])
+
+    const renderStatusChip = (status,color) =>{
+      return(
+        <div>
+          <span 
+          style={{
+            padding: "4px 10px",
+            borderRadius:"12px",
+            backgroundColor:color,
+        }}>{status}</span>
+        </div>
+      )
+    }
+
+
     return ( 
         <Grid item xs={12}>
-        <Card>
-          <CardHeader title='Sticky Header' titleTypographyProps={{ variant: 'h6' }} />
-            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: 440 }}>
-                <Table stickyHeader aria-label='sticky table'>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>
-                        Category Name
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {allCategory.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
-                    return (
-                        <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
-                        {columns.map(column => {
-                            const value = row[column.id]
+              <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+        <TableHead>
+          <TableRow>
+            <TableCell>Category Name</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell align='right'>Action</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {allCategory.map(row => (
+            <TableRow
+              key={row.name}
+              sx={{
+                '&:last-of-type td, &:last-of-type th': {
+                  border: 0
+                }
+              }}
+            >
+              <TableCell component='th' scope='row'>
+                {row.name}
+              </TableCell>
+              <TableCell component='th' scope='row'>
+                {row.status == 1 ? renderStatusChip('Active','green'):renderStatusChip('Block','red')}
+              </TableCell>
+             
+              <TableCell align='right'>Edit</TableCell>
+            </TableRow>
 
-                            return (
-                            <TableCell key={column.id} align={column.align}>
-                                {column.format && typeof value === 'number' ? column.format(value) : value}
-                            </TableCell>
-                            )
-                        })}
-                        </TableRow>
-                    )
-                    })}
-                </TableBody>
-                </Table>
-            </TableContainer>
-            <TablePagination
-            rowsPerPageOptions={[10, 25, 100]}
-            component='div'
-            count={allCategory.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-        </Paper>
-        </Card>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+          
+       
       </Grid>
      );
 }

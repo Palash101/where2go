@@ -39,13 +39,18 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 
+// Service Import
+
+import {emailPasswordSigin} from '../../../../service/auth'
+
+
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
 }))
 
 const LinkStyled = styled('a')(({ theme }) => ({
-  fontSize: '0.875rem',
+  fontize: '0.875rem',
   textDecoration: 'none',
   color: theme.palette.primary.main
 }))
@@ -78,6 +83,14 @@ const LoginPage = () => {
 
   const handleMouseDownPassword = event => {
     event.preventDefault()
+  }
+
+  const adminLogin = ()=>{
+    
+    const email = 'admin@where2go.qa';
+    const password = '12345678';
+    emailPasswordSigin(email,password)
+
   }
 
   return (
@@ -141,7 +154,7 @@ const LoginPage = () => {
               size='large'
               variant='contained'
               sx={{ marginBottom: 7 }}
-              onClick={() => router.push('/')}
+              onClick={() => adminLogin()}
             >
               Login
             </Button>
