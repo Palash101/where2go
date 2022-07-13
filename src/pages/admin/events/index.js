@@ -1,20 +1,18 @@
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
-import Link from '@mui/material/Link'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import CardHeader from '@mui/material/CardHeader'
 import InputLabel from '@mui/material/InputLabel'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import InputAdornment from '@mui/material/InputAdornment'
-import FormHelperText from '@mui/material/FormHelperText'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
+import FormHelperText from '@mui/material/FormHelperText';
+import CircularProgress from '@mui/material/CircularProgress';
+
+import {addEevent} from '../../../../service/admin/events'
 
 
 import { useState } from 'react'
@@ -24,11 +22,37 @@ import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 
 function EventList() {
+    const [eventName,seteventName] = useState('')
+    const [country,setCountry] = useState('')
+    const [currency,setCurrency] = useState('')
+    const [eventType,seteventType] = useState('')
+    const [loading,setLoading] = useState(false)
 
     
-      const handleChange = prop => event => {
-        setValues({ ...values, [prop]: event.target.value })
-      }
+    const handleChange = prop => event => {
+    setValues({ ...values, [prop]: event.target.value })
+    }
+    
+    const handleEventSubmit = ()=>{
+        setLoading(true)
+        console.log('gllo')
+
+        addEevent(eventName,country,currency,eventType)
+        .then((data)=>{
+        console.log(data,'Returned Data')
+        })
+        setLoading(false)
+    }
+
+    const handLoadingState = () =>{
+        if(loading){
+            return(
+            <Box sx={{ display: 'flex' }}>
+                <CircularProgress />
+              </Box>
+            )
+        }
+    }
     
  
     return ( 
@@ -39,7 +63,13 @@ function EventList() {
             <form onSubmit={e => e.preventDefault()}>
             <Grid container spacing={5}>
                 <Grid item xs={12}>
-                <TextField fullWidth label='Event Name' placeholder='enter event name' />
+                <TextField 
+                fullWidth 
+                label='Event Name' placeholder='enter event name' 
+                onChange={(e)=>seteventName(e.target.value)}
+                />
+                {eventName == ''?<FormHelperText>Please enter    event name</FormHelperText>:null}
+                
                 </Grid>
                 <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
@@ -49,6 +79,7 @@ function EventList() {
                     defaultValue=''
                     id='form-layouts-separator-select'
                     labelId='form-layouts-separator-select-label'
+                    onChange={(e)=>setCountry(e.target.value)}
                     >
                     <MenuItem value='UK'>UK</MenuItem>
                     <MenuItem value='USA'>USA</MenuItem>
@@ -65,6 +96,7 @@ function EventList() {
                     defaultValue=''
                     id='form-layouts-separator-select'
                     labelId='form-layouts-separator-select-label'
+                    onChange={(e)=>setCurrency(e.target.value)}
                     >
                     <MenuItem value='UK'>QAR</MenuItem>
                     </Select>
@@ -75,12 +107,13 @@ function EventList() {
                     <InputLabel id='form-layouts-separator-select-label'>Event Type</InputLabel>
                     <Select
                     label='Event Type'
-                    defaultValue=''
+                    defaultValue='Classes'
                     id='form-layouts-separator-select'
                     labelId='form-layouts-separator-select-label'
+                    onChange={(e)=>seteventType(e.target.value)}
                     >
-                    <MenuItem value='UK'>Classes</MenuItem>
-                    <MenuItem value='UK'>Show</MenuItem>
+                    <MenuItem value='Classes'>Classes</MenuItem>
+                    <MenuItem value='Show'>Show</MenuItem>
                     </Select>
                 </FormControl>
                 </Grid>
@@ -94,7 +127,7 @@ function EventList() {
                     justifyContent: 'space-between'
                     }}
                 >
-                    <Button type='submit' variant='contained' size='large'>
+                    <Button onClick={handleEventSubmit} type='button' variant='contained' size='large'>
                     Create Event
                     </Button>
                 </Box>

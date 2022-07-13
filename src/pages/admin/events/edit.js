@@ -1,41 +1,104 @@
+// ** React Imports
+import { useState } from 'react'
+
+// ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
-import Grid from '@mui/material/Grid'
+import TabList from '@mui/lab/TabList'
+import TabPanel from '@mui/lab/TabPanel'
+import TabContext from '@mui/lab/TabContext'
+import { styled } from '@mui/material/styles'
+import MuiTab from '@mui/material/Tab'
 
-import CardHeader from '@mui/material/CardHeader'
-import InputLabel from '@mui/material/InputLabel'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
-import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
+// ** Icons Imports
+import AccountOutline from 'mdi-material-ui/AccountOutline'
+import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
+import InformationOutline from 'mdi-material-ui/InformationOutline'
 
+// ** Demo Tabs Imports
+import EventDetails from 'src/views/events/EventDetails'
+import TabAccount from 'src/views/account-settings/TabAccount'
+import EventTime from 'src/views/events/EventTime'
 
-function EventEdit() {
-    return(
-        <>
-         <Grid container spacing={6}>
-            <Grid item xs={12}>
-                <Card>
-                    <CardHeader title='Create Event' titleTypographyProps={{ variant: 'h6' }} />
-                    <CardContent>
-                        <Typography>subtitle1</Typography>
-                        <Typography variant='subtitle1' sx={{ marginBottom: 2 }}>
-                        Cupcake ipsum dolor sit amet chocolate bar pastry sesame snaps.
-                        </Typography>
-                    </CardContent>
-                </Card>
-            </Grid>
-            <Grid item xs={12}>
-                <Card>
-                    <CardContent>
-                    </CardContent>
-                </Card>
+// ** Third Party Styles Imports
+import 'react-datepicker/dist/react-datepicker.css'
 
-            </Grid>
-            </Grid>
-        </>
+const Tab = styled(MuiTab)(({ theme }) => ({
+  [theme.breakpoints.down('md')]: {
+    minWidth: 100
+  },
+  [theme.breakpoints.down('sm')]: {
+    minWidth: 67
+  }
+}))
 
+const TabName = styled('span')(({ theme }) => ({
+  lineHeight: 1.71,
+  fontSize: '0.875rem',
+  marginLeft: theme.spacing(2.4),
+  [theme.breakpoints.down('md')]: {
+    display: 'none'
+  }
+}))
 
-    )
+const AccountSettings = () => {
+  // ** State
+  const [value, setValue] = useState('account')
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
+  }
+
+  return (
+    <Card>
+      <TabContext value={value}>
+        <TabList
+          onChange={handleChange}
+          aria-label='account-settings tabs'
+          sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
+        >
+          <Tab
+            value='account'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <AccountOutline />
+                <TabName>Event Details</TabName>
+              </Box>
+            }
+          />
+          <Tab
+            value='security'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <LockOpenOutline />
+                <TabName>Security</TabName>
+              </Box>
+            }
+          />
+          <Tab
+            value='info'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <InformationOutline />
+                <TabName>Info</TabName>
+              </Box>
+            }
+          />
+        </TabList>
+
+        <TabPanel sx={{ p: 0 }} value='account'>
+        <EventDetails />
+
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value='security'>
+          <EventTime />
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value='info'>
+          <EventDetails />
+        </TabPanel>
+      </TabContext>
+    </Card>
+  )
 }
-export default EventEdit
+
+export default AccountSettings
