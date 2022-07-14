@@ -26,9 +26,12 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { Typography } from '@mui/material';
 import { useState, Fragment } from 'react'
+import InputAdornment from '@mui/material/InputAdornment';
+
 
 
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -41,9 +44,18 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
 
 function ContactComponent(){
     const [anchorEl, setAnchorEl] = useState(null)
+    const [inputElArray,setInputElArray] = useState([])
+    const [open, setOpen] = useState(false);
 
-    // ** Hooks
     const router = useRouter()
+
+
+    const handleClickOpen = () => {
+        setOpen(true)
+    }
+    const handleClose = () => {
+        setOpen(false)
+    }
   
     const handleDropdownOpen = event => {
       setAnchorEl(event.currentTarget)
@@ -55,11 +67,47 @@ function ContactComponent(){
       }
       setAnchorEl(null)
     }
-    const handleLogout = ()=>{
-      console.log('logging out user')
-      userLogout()
-      router.push('/admin/login')
-  
+
+    const getIconType =(type)=>{
+      if(type == 'email')return (<EmailOutline sx={{ marginRight: 2 }} />)
+      if(type == 'whatsapp')return (<WhatsAppIcon sx={{ marginRight: 2 }} />)
+      if(type == 'phone')return (<PhoneIcon sx={{ marginRight: 2 }} />)
+      if(type == 'instagram')return (<InstagramIcon sx={{ marginRight: 2 }} />)
+
+    }
+    const getInputElType = (icon,type)=>{
+      const fieldType = type
+      const fieldIcon = getIconType(icon)
+        return(
+          <Box>
+          <TextField
+          required
+          id="outlined-required"
+          type={fieldType}
+          label="Required"
+          defaultValue="user@example.com"
+          InputProps={{
+            startAdornment: <InputAdornment position="start">
+            {fieldIcon}
+            </InputAdornment>,
+          }}
+        />
+        <DeleteIcon 
+        onClick={removeElFromArray}
+
+        />
+        </Box>
+
+          )
+
+    }
+
+    const addInputElToArray = (icon,type)=>{
+      setInputElArray([...inputElArray,getInputElType(icon,type)])
+    }
+
+    const removeElFromArray = ()=>{
+
     }
   
     const styles = {
@@ -77,14 +125,7 @@ function ContactComponent(){
     }
     
     
-    const [open, setOpen] = useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true)
-    }
-    const handleClose = () => {
-        setOpen(false)
-    }
 
     const renderContactDialog =()=>{
         return(
@@ -100,26 +141,26 @@ function ContactComponent(){
               anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
-              <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+              <MenuItem sx={{ p: 0 }} onClick={() => addInputElToArray('email','email')}>
                 <Box sx={styles}>
                   <EmailOutline sx={{ marginRight: 2 }} />
                   Email
                 </Box>
               </MenuItem>
-              <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+              <MenuItem sx={{ p: 0 }} onClick={() => addInputElToArray('phone','number')}>
                 <Box sx={styles}>
                   <PhoneIcon sx={{ marginRight: 2 }} />
                   Phone
                 </Box>
               </MenuItem>
               <Divider />
-              <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+              <MenuItem sx={{ p: 0 }} onClick={() => addInputElToArray('whatsapp','number')}>
                 <Box sx={styles}>
                   <WhatsAppIcon sx={{ marginRight: 2 }} />
                   Whatsapp
                 </Box>
               </MenuItem>
-              <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+              <MenuItem sx={{ p: 0 }} onClick={() => addInputElToArray('instagram','text')}>
                 <Box sx={styles}>
                   <InstagramIcon sx={{ marginRight: 2 }} />
                   Instagram
@@ -138,6 +179,10 @@ function ContactComponent(){
             <DialogTitle sx={{backgroundColor:'#373c44',color:'white',fontSize:'1rem'}}>Event Contacts</DialogTitle>
             <Typography padding='10px' component='p'>Add contact details for the visitors to your event page and your event attendees.</Typography>
             <DialogContent>
+              <Box>
+                {inputElArray.map((el,key)=>el
+                )}
+              </Box>
                 <Divider sx={{ margin: 0 }} />
                 {renderContactDialog()}
             </DialogContent>

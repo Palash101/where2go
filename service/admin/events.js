@@ -42,3 +42,8 @@ export const addEevent = async (
     })
 
 }
+
+
+export const getAllEvents = async()=>{
+    return getDocs(collection(db, 'events'));
+}
