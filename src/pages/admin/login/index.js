@@ -42,6 +42,7 @@ import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import {emailPasswordSigin} from '../../../../service/auth'
 
 import { useAuth } from '../../../../firebase/userContext'
+import { ConsoleLine } from 'mdi-material-ui'
 
 
 // ** Styled Components
@@ -68,6 +69,7 @@ const LoginPage = () => {
     password: '',
     showPassword: false
   })
+  const[email,setEmail] = useState('')
   const [loading, setLoading] = useState(false);
 
   // ** Hook
@@ -82,6 +84,8 @@ const LoginPage = () => {
   },[])
 
   const handleChange = prop => event => {
+    console.log(prop)
+    console.log(event)
     setValues({ ...values, [prop]: event.target.value })
   }
 
@@ -94,21 +98,26 @@ const LoginPage = () => {
   }
 
   const handleLogin = ()=>{
-    
-    const email = 'admin@where2go.qa';
-    const password = '12345678';
-    emailPasswordSigin(email,password)
-    .then((data)=>{
-      console.log(data)
-      if(data.role === 3){
-        authContext.setUserAuthState({
-          isAuthenticated:true,
-          isAdmin:true,
-          accesstoken:JSON.stringify(data.id || null),
-      })
-      router.push('/admin')
+    if(values.password == ''|| email == ''){
+      alert('Please enter vaild email and password')
     }
-    })
+    else{
+      emailPasswordSigin(email,values.password)
+      .then((data)=>{
+        console.log(data)
+        if(data.role === 3){
+          authContext.setUserAuthState({
+            isAuthenticated:true,
+            isAdmin:true,
+            accesstoken:JSON.stringify(data.id || null),
+        })
+        router.push('/admin')
+      }
+      })
+      .catch((err)=>alert(err))
+
+    }
+
 
   }
 
@@ -137,14 +146,14 @@ const LoginPage = () => {
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+            <TextField onChange={(e)=>setEmail(e.target.value)} autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
                 label='Password'
                 value={values.password}
                 id='auth-login-password'
-                onChange={handleChange('password')}
+                onChange={handleChange("password")}
                 type={values.showPassword ? 'text' : 'password'}
                 endAdornment={
                   <InputAdornment position='end'>

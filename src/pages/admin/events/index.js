@@ -35,8 +35,6 @@ function EventList() {
     
     const handleEventSubmit = ()=>{
         setLoading(true)
-        console.log('gllo')
-
         addEevent(eventName,country,currency,eventType)
         .then((data)=>{
         console.log(data,'Returned Data')

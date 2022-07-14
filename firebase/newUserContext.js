@@ -23,14 +23,17 @@ import { useState } from 'react';
       };
 
     const isUserAuthenticated = () => {
-    console.log(authState)
-    if (!authState.accesstoken) {
-        return false;
-    }
-    else{
+     const token = localStorage.getItem('accesstoken')
+    if (token) {
         return true;
     }
+    else{
+        return false;
+    }
     };
+    const logoutUser = () =>{
+
+    }
     return <authUserContext.Provider 
     value={{
         authState,

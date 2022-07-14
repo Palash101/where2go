@@ -4,27 +4,20 @@ import { useState } from 'react'
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import InputAdornment from '@mui/material/InputAdornment'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+
 
 import DateTimeComponent from './components/DateTimeComponent'
 import LocationComponent from './components/LocationComponent'
+import ContactComponent from './components/ContactComponent'
 
 
 // ** Icons Imports
@@ -140,6 +133,10 @@ const EventStep2 = () => {
           </Grid>
         </Grid>
       </CardContent>
+
+      <Divider sx={{ margin: 0 }} />
+      <ContactComponent />
+      
 
       <Divider sx={{ margin: 0 }} />
     </form>

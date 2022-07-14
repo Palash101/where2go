@@ -141,7 +141,7 @@ function DateTimeComponent(props){
                 </LocalizationProvider>
                 </DialogContent>
               <DialogActions>
-              <Button onClick={()=>console.log(dateTimeArray)}>Add</Button>
+              <Button onClick={()=>addDateTimeArray()}>Add</Button>
               <Button onClick={handleClose}>Cancel</Button>
               </DialogActions>
             </Dialog>
