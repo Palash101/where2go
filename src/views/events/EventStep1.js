@@ -45,7 +45,7 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
   }
 }))
 
-const EventDetails = () => {
+const EventStep1 = () => {
   // ** State
   const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
@@ -134,4 +134,4 @@ const EventDetails = () => {
   )
 }
 
-export default EventDetails
+export default EventStep1

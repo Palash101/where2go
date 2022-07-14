@@ -6,15 +6,6 @@
     "name": "where2go",
     "url": "https://where2go.qa/"
   },
-  "bugs": {
-    "url": "https://github.com/themeselection/materio-mui-react-nextjs-admin-template-free/issues"
-  },
-  "private": false,
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/themeselection/materio-mui-react-nextjs-admin-template-free.git"
-  },
-  "homepage": "https://themeselection.com/products/materio-free-mui-react-nextjs-admin-template/",
   "keywords": [
     "react",
     "javascript",
@@ -47,6 +38,7 @@
     "@emotion/react": "^11.7.0",
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.6.0",
+    "@mui/icons-material": "^5.8.4",
     "@mui/lab": "^5.0.0-alpha.70",
     "@mui/material": "^5.4.3",
     "@mui/x-date-pickers": "^5.0.0-beta.0",
