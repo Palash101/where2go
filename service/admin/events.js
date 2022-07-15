@@ -20,17 +20,18 @@ import { async } from "@firebase/util";
 
 
 
+
 export const addEevent = async (
     name,
     country,
     currency,
-    eventType,
+    event_type,
     )=>{
     return await addDoc(collection(db,'events'),{
         event_name:name,
         country:country,
         currency:currency,
-        eventType:eventType
+        event_type:event_type
     })
     .then((data)=>{
         //console.log(data.id,'docid  ')
@@ -46,4 +47,24 @@ export const addEevent = async (
 
 export const getAllEvents = async()=>{
     return getDocs(collection(db, 'events'));
+}
+
+
+export const getEventById = async(eventId)=>{
+    console.log(eventId)
+    const docRef = doc(db, "events", eventId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        return docSnap.data()
+      } else {
+        return{err:'error',message:'Document not found'}
+      }
+}
+
+export const updateEventById = async(eventId,data)=>{
+    console.log(eventId)
+    const docRef = doc(db, "events", eventId);
+    return await updateDoc(docRef, {
+        description: data
+      })
 }

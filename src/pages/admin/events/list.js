@@ -1,20 +1,10 @@
 
 import Grid from '@mui/material/Grid'
-import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
-import TableStickyHeader from 'src/views/tables/TableStickyHeader'
 import { useEffect, useState } from 'react'
-import Paper from '@mui/material/Paper'
-import Table from '@mui/material/Table'
-import TableRow from '@mui/material/TableRow'
-import TableHead from '@mui/material/TableHead'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TablePagination from '@mui/material/TablePagination'
 import Chip from '@mui/material/Chip'
 import MUIDataTable from "mui-datatables";
-import Button from '@mui/material/Button'
+import EditIcon from '@mui/icons-material/Edit';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 
 
@@ -31,7 +21,7 @@ function EventList() {
   }
  },
  {
-  name: "eventType",
+  name: "event_type",
   label: "Event Type",
   options: {
    filter: true,
@@ -42,11 +32,18 @@ function EventList() {
   name: "Action",
   label: "Action",
   options: {
-  	customBodyRender:()=>{
+  	customBodyRender:(value, tableMeta, updateValue)=>{
   		return(
-  			<Button onClick={handleClickRowEdit} variant="outlined" color="secondary">
-                Edit
-              </Button>
+        <>
+        <EditIcon
+        onClick={()=>handleClickRowEdit(value, tableMeta)}
+        sx={{color:'#9155fb',cursor:'pointer', marginRight:'10px'}}
+        ></EditIcon>
+        <RemoveRedEyeIcon 
+        onClick={handleClickRowEdit}
+        sx={{color:'#3100f5',cursor:'pointer',}}
+        />
+        </>
   			)
   	}
    
@@ -58,8 +55,8 @@ function EventList() {
   filterType: 'checkbox',
 };
 
-const handleClickRowEdit=()=>{
-	console.log('Row Clicked')
+const handleClickRowEdit=(value, tableMeta)=>{
+	console.log({value, tableMeta})
 }
 
     useEffect(async ()=>{
@@ -70,6 +67,7 @@ const handleClickRowEdit=()=>{
        })
        setAllEventData(eventArray)
        console.log(allEvents,'eventData Array')
+
 
 
     },[])
@@ -92,16 +90,12 @@ const handleClickRowEdit=()=>{
 
     return ( 
         <Grid item xs={12}>
-          <Card>
-            <CardHeader title='Event Categories' titleTypographyProps={{ variant: 'h6' }} />
-            <MUIDataTable
-			  title={"Employee List"}
+          <MUIDataTable
+			  title={"Event List"}
 			  data={allEvents}
 			  columns={columns}
 			  options={options}
 			/>
-            
-          </Card>
       </Grid>
      );
 }

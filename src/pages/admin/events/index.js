@@ -11,15 +11,11 @@ import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import FormHelperText from '@mui/material/FormHelperText';
 import CircularProgress from '@mui/material/CircularProgress';
-
+import { useRouter } from 'next/router'
 import {addEevent} from '../../../../service/admin/events'
-
 
 import { useState } from 'react'
 
-// ** Icons Imports
-import EyeOutline from 'mdi-material-ui/EyeOutline'
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 
 function EventList() {
     const [eventName,seteventName] = useState('')
@@ -27,38 +23,36 @@ function EventList() {
     const [currency,setCurrency] = useState('')
     const [eventType,seteventType] = useState('')
     const [loading,setLoading] = useState(false)
+    const router = useRouter()
+
 
     
     const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
     }
     
-    const handleEventSubmit = ()=>{
+    const handleEventSubmit = async (event)=>{
+        event.preventDefault();
         setLoading(true)
-        addEevent(eventName,country,currency,eventType)
+        console.log(loading)
+         await addEevent(eventName,country,currency,eventType)
         .then((data)=>{
+
         console.log(data,'Returned Data')
+        router.push('events/'+data.docId)
         })
         setLoading(false)
     }
 
-    const handLoadingState = () =>{
-        if(loading){
-            return(
-            <Box sx={{ display: 'flex' }}>
-                <CircularProgress />
-              </Box>
-            )
-        }
-    }
     
- 
+    if(loading == false){
     return ( 
+        
         <>
         <Card>
         <CardHeader title='Create Event' titleTypographyProps={{ variant: 'h6' }} />
         <CardContent>
-            <form onSubmit={e => e.preventDefault()}>
+            <form onSubmit={handleEventSubmit}>
             <Grid container spacing={5}>
                 <Grid item xs={12}>
                 <TextField 
@@ -125,7 +119,7 @@ function EventList() {
                     justifyContent: 'space-between'
                     }}
                 >
-                    <Button onClick={handleEventSubmit} type='button' variant='contained' size='large'>
+                    <Button  type='submit' variant='contained' size='large'>
                     Create Event
                     </Button>
                 </Box>
@@ -136,6 +130,17 @@ function EventList() {
         </Card>
         </>
      );
+    }
+    else{
+        return(
+
+            <Box sx={{ display: 'flex',justifyContent:'center',alignItems:'center' }}>
+            <CircularProgress />
+        </Box>
+        )
+        
+
+    }
 }
 
 export default EventList;

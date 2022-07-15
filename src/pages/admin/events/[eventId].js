@@ -1,5 +1,8 @@
 // ** React Imports
 import { useState } from 'react'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
+
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -9,6 +12,8 @@ import TabPanel from '@mui/lab/TabPanel'
 import TabContext from '@mui/lab/TabContext'
 import { styled } from '@mui/material/styles'
 import MuiTab from '@mui/material/Tab'
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 // ** Icons Imports
 import AccountOutline from 'mdi-material-ui/AccountOutline'
@@ -17,8 +22,10 @@ import InformationOutline from 'mdi-material-ui/InformationOutline'
 
 // ** Demo Tabs Imports
 import EventStep1 from 'src/views/events/EventStep1'
-import TabAccount from 'src/views/account-settings/TabAccount'
 import EventStep2 from 'src/views/events/EventStep2'
+import EventStep3 from 'src/views/events/EventStep2'
+
+import { getEventById } from 'service/admin/events'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
@@ -43,11 +50,42 @@ const TabName = styled('span')(({ theme }) => ({
 
 const AccountSettings = () => {
   // ** State
+  const router = useRouter();
   const [value, setValue] = useState('account')
+  const [eventData, setEventData] = useState({});
+  const [error, setError] = useState(true);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [routerParams, setRouterParams] = useState('');
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+
+  useEffect(()=>{
+    if(router.isReady){
+      setLoading(true)
+      setRouterParams(router.query.eventId)
+      getEventById(router.query.eventId)
+        .then(data=>{
+          if(!data.err){
+            console.log('Seeting upd data state')
+            setEventData(data)
+            setLoading(false)
+          }
+          else{
+            setError(true)
+            setErrorMsg(data.err)
+            setLoading(false)
+          }
+        console.log('data in event Page',data)
+      })
+
+    }
+  },[router.isReady])
+
+  if(!loading){
 
   return (
     <Card>
@@ -87,18 +125,35 @@ const AccountSettings = () => {
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='account'>
-        <EventStep1 />
+        <EventStep1 
+        data={eventData}
+        eventId = {routerParams}
+        />
 
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='security'>
-          <EventStep2 />
+          <EventStep2  
+          data={eventData}
+          eventId = {routerParams}
+          />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='info'>
-          <EventStep2 />
+          <EventStep3 />
+          data={eventData} 
+          eventId = {routerParams} 
         </TabPanel>
       </TabContext>
     </Card>
   )
+}
+else{
+  return(
+
+    <Box sx={{ display: 'flex',justifyContent:'center',alignItems:'center' }}>
+    <CircularProgress />
+</Box>
+)
+}
 }
 
 export default AccountSettings
