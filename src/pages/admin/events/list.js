@@ -1,6 +1,7 @@
 
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
+import Box from '@mui/material/Box'
 import CardHeader from '@mui/material/CardHeader'
 import TableStickyHeader from 'src/views/tables/TableStickyHeader'
 import { useEffect, useState } from 'react'
@@ -15,7 +16,8 @@ import TablePagination from '@mui/material/TablePagination'
 import Chip from '@mui/material/Chip'
 import MUIDataTable from "mui-datatables";
 import Button from '@mui/material/Button'
-
+import Link from '@mui/material/Link';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 
 import {getAllEvents} from '../../../../service/admin/events'
@@ -66,10 +68,14 @@ const handleClickRowEdit=()=>{
        const eventData =  await getAllEvents()
        const eventArray =[];
        eventData.docs.forEach(item=>{
-        eventArray.push(item.data())
+       	const docId = {docId:item.id}
+       	const data = Object.assign(docId,item.data());
+        eventArray.push(data)
        })
        setAllEventData(eventArray)
        console.log(allEvents,'eventData Array')
+
+
 
 
     },[])
@@ -91,18 +97,25 @@ const handleClickRowEdit=()=>{
 
 
     return ( 
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader title='Event Categories' titleTypographyProps={{ variant: 'h6' }} />
-            <MUIDataTable
-			  title={"Employee List"}
-			  data={allEvents}
-			  columns={columns}
-			  options={options}
-			/>
-            
-          </Card>
-      </Grid>
+        <Grid>
+        	<Grid item xs={12}>
+        		<Box>
+        		<Link textAlign='center' href="/admin/events" underline="none">
+        			<AddBoxIcon />
+        			Add Event
+        
+      			</Link>
+        		</Box>
+        	</Grid>
+        	<Grid item xs={12}>
+	          <MUIDataTable
+				  title={"Employee List"}
+				  data={allEvents}
+				  columns={columns}
+				  options={options}
+				/>
+			</Grid>
+      	</Grid>
      );
 }
 
