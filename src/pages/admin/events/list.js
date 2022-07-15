@@ -1,67 +1,75 @@
 
 import Grid from '@mui/material/Grid'
-import Card from '@mui/material/Card'
-import Box from '@mui/material/Box'
-import CardHeader from '@mui/material/CardHeader'
-import TableStickyHeader from 'src/views/tables/TableStickyHeader'
+
 import { useEffect, useState } from 'react'
-import Paper from '@mui/material/Paper'
-import Table from '@mui/material/Table'
-import TableRow from '@mui/material/TableRow'
-import TableHead from '@mui/material/TableHead'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TablePagination from '@mui/material/TablePagination'
 import Chip from '@mui/material/Chip'
 import MUIDataTable from "mui-datatables";
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import EditIcon from '@mui/icons-material/Edit';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import { useRouter } from 'next/router'
 
 
 import {getAllEvents} from '../../../../service/admin/events'
 
 function EventList() {
-	const columns = [
- {
-  name: "event_name",
-  label: "Event Name",
-  options: {
-   filter: true,
-   sort: true,
-  }
- },
- {
-  name: "eventType",
-  label: "Event Type",
-  options: {
-   filter: true,
-   sort: true,
-  }
- },
-  {
-  name: "Action",
-  label: "Action",
-  options: {
-  	customBodyRender:()=>{
-  		return(
-  			<Button onClick={handleClickRowEdit} variant="outlined" color="secondary">
-                Edit
-              </Button>
-  			)
-  	}
-   
-  }
- },
-];
-    const[allEvents,setAllEventData] =  useState([])
+	const router = useRouter()
+	const[allEvents,setAllEventData] =  useState([])
     const options = {
-  filterType: 'checkbox',
-};
+	  filterType: 'checkbox',
+	};
 
-const handleClickRowEdit=()=>{
-	console.log('Row Clicked')
+	const columns = [
+	 {
+	  name: "event_name",
+	  label: "Event Name",
+	  options: {
+	   filter: false,
+	   sort: true,
+	  }
+	 },
+	 {
+	  name: "event_type",
+	  label: "Event Type",
+	  options: {
+	   filter: true,
+	   sort: true,
+	  }
+	 },
+	  {
+	  name: "docId",
+	  label: "Action",
+
+	  options: {
+	  	filter:false,
+	  	sort: false,
+	  	customBodyRender:(value, tableMeta, updateValue)=>{
+	  		return(
+	        <>
+	        <EditIcon
+	        onClick={()=>handleEditEvent(value)}
+	        sx={{color:'#9155fb',cursor:'pointer', marginRight:'10px'}}
+	        ></EditIcon>
+	        <RemoveRedEyeIcon 
+	        onClick={handleClickRowEdit}
+	        sx={{color:'#3100f5',cursor:'pointer',}}
+	        />
+	        </>
+	  			)
+	  	}
+	   
+	  }
+	 },
+	];
+	    
+
+const handleClickRowEdit=(value, tableMeta)=>{
+	console.log({value, tableMeta})
+}
+const handleEditEvent=(value)=>{
+	router.push('/admin/events/'+value)
 }
 
     useEffect(async ()=>{
@@ -74,9 +82,6 @@ const handleClickRowEdit=()=>{
        })
        setAllEventData(eventArray)
        console.log(allEvents,'eventData Array')
-
-
-
 
     },[])
 
@@ -97,25 +102,15 @@ const handleClickRowEdit=()=>{
 
 
     return ( 
-        <Grid>
-        	<Grid item xs={12}>
-        		<Box>
-        		<Link textAlign='center' href="/admin/events" underline="none">
-        			<AddBoxIcon />
-        			Add Event
-        
-      			</Link>
-        		</Box>
-        	</Grid>
-        	<Grid item xs={12}>
-	          <MUIDataTable
-				  title={"Employee List"}
-				  data={allEvents}
-				  columns={columns}
-				  options={options}
-				/>
-			</Grid>
-      	</Grid>
+
+        <Grid item xs={12}>
+          <MUIDataTable
+			  title={"Event List"}
+			  data={allEvents}
+			  columns={columns}
+			  options={options}
+			/>
+      </Grid>
      );
 }
 

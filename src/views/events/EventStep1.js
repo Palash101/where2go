@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -45,7 +45,7 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
   }
 }))
 
-const EventStep1 = () => {
+const EventStep1 = ({data}) => {
   // ** State
   const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
@@ -58,6 +58,11 @@ const EventStep1 = () => {
       reader.readAsDataURL(files[0])
     }
   }
+
+  useEffect(()=>{
+    console.log('data in event step 1',data)
+
+  },[])
 
   return (
     <CardContent>
@@ -88,12 +93,13 @@ const EventStep1 = () => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Event Name' placeholder='Enter event name' />
+            <TextField fullWidth label='Event Name' placeholder='Enter event name'  />
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel>Event Type</InputLabel>
-              <Select label='Event Type' defaultValue='show'>
+              <Select label='Event Type' >
+
                 <MenuItem value='show'>Show</MenuItem>
                 <MenuItem value='class'>Class</MenuItem>
                 <MenuItem value='music'>Music</MenuItem>
@@ -103,7 +109,7 @@ const EventStep1 = () => {
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel>Country</InputLabel>
-              <Select label='Country' defaultValue='qar'>
+              <Select label='Country' >
                 <MenuItem value='qar'>Qatar</MenuItem>
                 <MenuItem value='Dubai'>Dubai</MenuItem>
               </Select>
@@ -112,7 +118,7 @@ const EventStep1 = () => {
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel>Currency</InputLabel>
-              <Select label='Currency' defaultValue='USD'>
+              <Select label='Currency' >
                 <MenuItem value='QAR'>QAR</MenuItem>
                 <MenuItem value='INR'>INR</MenuItem>
                 <MenuItem value='USD'>USD</MenuItem>

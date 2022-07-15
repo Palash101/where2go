@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -13,24 +13,24 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
+import CircularProgress from '@mui/material/CircularProgress'
 
 
 import DateTimeComponent from './components/DateTimeComponent'
 import LocationComponent from './components/LocationComponent'
 import ContactComponent from './components/ContactComponent'
 
+import { updateEventById } from 'service/admin/events'
 
-// ** Icons Imports
-import EyeOutline from 'mdi-material-ui/EyeOutline'
-import KeyOutline from 'mdi-material-ui/KeyOutline'
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
-import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 
-const EventStep2 = () => {
+
+const EventStep2 = ({data,eventId}) => {
 
   const [openLocation, setopenLocation] = useState(false);
   const [openDescription, setopenDescription] = useState(false);
   const [openDate, setopenDate] = useState(false);
+  const [description,setDescription]=useState('')
+  const [loading,setLoading]=useState(false)
 
 
   const handleClickOpen = (type) => {
@@ -63,6 +63,16 @@ const EventStep2 = () => {
   const handleDateTimeModal = () =>{
     console.log('hello')
   }
+  
+  const updateDesceiption = async()=>{
+    setLoading(true)
+     await updateEventById(eventId,description)
+          .then((data)=>console.log(data))
+    setLoading(false)
+    handleClose('description')
+  }
+  useEffect(()=>{
+  },[])
 
 
 
@@ -114,6 +124,7 @@ const EventStep2 = () => {
                 <DialogTitle>Enter Event Description</DialogTitle>
                 <DialogContent>
                 <TextField
+                  onChange={(e)=>setDescription(e.target.value)}
                     autoFocus
                     id="name"
                     label="Description"
@@ -122,11 +133,12 @@ const EventStep2 = () => {
                     variant="standard"
                     multiline
                     rows={5}
+                    value={data.descrption}
                 />
                 </DialogContent>
                     
                 <DialogActions>
-                    <Button onClick={handleDateTimeModal }>Add</Button>
+                    <Button onClick={updateDesceiption }>Save</Button>
                     <Button onClick={()=>handleClose('description')}>Cancel</Button>
                 </DialogActions>
             </Dialog>
@@ -139,6 +151,16 @@ const EventStep2 = () => {
       
 
       <Divider sx={{ margin: 0 }} />
+      {loading === true && (
+
+      
+      <Box sx={{ display: 'flex',justifyContent:'center',alignItems:'center',backgroundColor: 'rgb(0 0 0 / 39%)',zIndex: 99999999,position: 'fixed',left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0, }}>
+            <CircularProgress />
+        </Box>
+        )}
     </form>
   )
 }
