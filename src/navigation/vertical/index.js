@@ -30,7 +30,7 @@ const navigation = () => {
     {
       title: 'Events',
       icon: HomeOutline,
-      path: '/admin/events'
+      path: '/admin/events/list'
     },
     {
       title: 'Account Settings',

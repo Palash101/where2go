@@ -112,3 +112,11 @@ const Dashboard = () => {
 }
 
 export default Dashboard
+
+export async function getServerSideProps(context) {
+  console.log(context,'Server conext')
+
+  return {
+    props: {}, 
+  }
+}
