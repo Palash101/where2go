@@ -35,7 +35,7 @@ export  const emailPasswordSigin = (email,password)=>{
           const expiresIn = 5 * 60 * 1000;
           userId = userCredentails.user.uid;
           userEmail = userCredentails.user.email;
-          idToken = userCredentails.user.getIdToken();
+          idToken = await userCredentails.user.getIdToken();
 
           //Firebase Admin session
           await postUserToken(idToken)
@@ -76,8 +76,9 @@ export const userLogout = ()=>{
 
 export const  postUserToken = async (token) =>{
   var path = "/api/auth";
-  var url = 'http://localhost:3002' + path;
+  var url = 'http://localhost:3000' + path;
   var data = { token: token }
+  console.log(data,'api call')
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST',

@@ -1,10 +1,13 @@
 import { serialize } from 'cookie'
-import {firebaseAdmin,authAdmin} from '../../../service/fireAdmin';  
+// import firebaseAdmin from '../../../service/fireAdmin';  
+
+import getFirebaseAdmin from './config'
 
 
 export default async function auth(req, res) {
   // console.log('apl call',req)
-  console.log(firebaseAdmin.getApps(idToken),'firrrrrrrrrrrrrrr')
+  const firebaseAdmin = getFirebaseAdmin()
+    // console.log(firebaseAdmin.getApps(idToken),'firrrrrrrrrrrrrrr')
   try{
   // const admin = await firebaseAdmin();
   // console.log(admin,'node APi call')
@@ -12,8 +15,9 @@ export default async function auth(req, res) {
     const expiresIn = 5 * 60 * 1000;
     if (req.method === 'POST') {
       var idToken = req.body.token;
+      console.log(idToken,'idToken')
 
-      const cookie = await firebaseAdmin.verifyIdToken(idToken)
+      const cookie = firebaseAdmin.auth().verifyIdToken(idToken)
       .then((decodedIdToken) => {
       	console.log(decodedIdToken,'decodedIdToken')
           // Only process if the user just signed in in the last 5 minutes.
@@ -27,6 +31,7 @@ export default async function auth(req, res) {
       });
 
     if(cookie) {
+      console.log('auth cookie',cookie)
       // console.log("secure:" + process.env.NEXT_PUBLIC_SECURE_COOKIE);
         const options = {maxAge: expiresIn, httpOnly: true, secure: "true", path: '/'};
         res.setHeader('Set-Cookie', serialize('user', cookie, options));
