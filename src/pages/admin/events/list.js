@@ -63,10 +63,11 @@ const handleClickRowEdit=(value, tableMeta)=>{
        const eventData =  await getAllEvents()
        const eventArray =[];
        eventData.docs.forEach(item=>{
-        eventArray.push(item.data())
+        eventArray.push(item.doc.id)
        })
        setAllEventData(eventArray)
        console.log(allEvents,'eventData Array')
+
 
 
 
