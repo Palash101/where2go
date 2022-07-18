@@ -23,23 +23,28 @@ import {
   } from "firebase/firestore";
 
 import {auth,db} from './main'
+import {firebaseAdmin} from './fireAdmin';  
 
 export  const emailPasswordSigin = (email,password)=>{
   const userId = '';
   const userEmail = '';
+  const idToken=';'
   console.log(email,'service')
     return signInWithEmailAndPassword(auth,email,password)
-      .then((userCredentails)=>{
-          console.log(userCredentails,'Service User Credentials')
+      .then( async(userCredentails)=>{
+          const expiresIn = 5 * 60 * 1000;
           userId = userCredentails.user.uid;
           userEmail = userCredentails.user.email;
-          return userCredentails.user.getIdToken();
+          idToken = await userCredentails.user.getIdToken();
+
+          //Firebase Admin session
+          await postUserToken(idToken)
+          console.log('created Seesion')
+          return idToken
 
       })
       .then((idtoken)=>{
-        console.log('idtoken',idtoken)
         return getUsersByEmail(userEmail);
-
       })
       .catch(err=> {console.log(err)})
 
@@ -67,4 +72,20 @@ const getUsersByEmail = async (email) => {
 
 export const userLogout = ()=>{
   signOut(auth);
+}
+
+export const  postUserToken = async (token) =>{
+  var path = "/api/auth";
+  var url = 'http://localhost:3000' + path;
+  var data = { token: token }
+  console.log(data,'api call')
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
 }
