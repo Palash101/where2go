@@ -62,7 +62,8 @@
     "react-dom": "17.0.2",
     "react-material-ui-carousel": "^3.4.2",
     "react-perfect-scrollbar": "^1.5.8",
-    "react-popper": "^2.2.5"
+    "react-popper": "^2.2.5",
+    "swiper": "^8.3.1"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
