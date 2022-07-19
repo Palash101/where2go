@@ -17,6 +17,15 @@ import IconButton from '@mui/material/IconButton'
 import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
+import storage from '../../../service/main'
+
+import {
+  deleteObject,
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
@@ -45,18 +54,45 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
   }
 }))
 
+// const imageUpload = ()=>{
+//   const userRef = ref(storage, `/users/`);
+// }
+
 const EventStep1 = ({data}) => {
   // ** State
   const [openAlert, setOpenAlert] = useState(true)
-  const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
+  const [imgSrc, setImgSrc] = useState('')
 
-  const onChange = file => {
-    const reader = new FileReader()
-    const { files } = file.target
-    if (files && files.length !== 0) {
-      reader.onload = () => setImgSrc(reader.result)
-      reader.readAsDataURL(files[0])
-    }
+  const onChange = event => {
+    const file = event.target.files[0]
+    // const storage = getStorage();
+
+    const storageRef = ref(storage, `/files/${file.name}`)
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    // console.log(file)
+
+
+    // const reader = new FileReader()
+    // const { files } = file.target
+    // console.log(files);
+    // if (files && files.length !== 0) {
+    //   reader.onload = () => setImgSrc(reader.result)
+    //   reader.readAsDataURL(files[0])
+    //   const storage = getStorage();
+    //   const userRef = ref(
+    //   storage,
+    //   `/images/avatars/1.png`
+    // );
+    //   // uploadBytes(userRef, file).then((snapshot) => {
+    //   //   console.log('Uploaded a blob or file!');
+    //   // });
+
+    //   const uploadTask = uploadBytesResumable(userRef, imgSrc);
+    //   console.log('completed')
+
+
+    
   }
 
   useEffect(()=>{

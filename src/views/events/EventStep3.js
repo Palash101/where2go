@@ -15,6 +15,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress'
 
+import { styled } from '@mui/material/styles'
 
 import DateTimeComponent from './components/DateTimeComponent'
 import LocationComponent from './components/LocationComponent'
@@ -22,18 +23,51 @@ import ContactComponent from './components/ContactComponent'
 
 import { updateEventById } from 'service/admin/events'
 
+import {
+  deleteObject,
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+
+
+const ImgStyled = styled('img')(({ theme }) => ({
+  width: 120,
+  height: 120,
+  marginRight: theme.spacing(6.25),
+  borderRadius: theme.shape.borderRadius
+}))
+const ButtonStyled = styled(Button)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    textAlign: 'center'
+  }
+}))
+const ResetButtonStyled = styled(Button)(({ theme }) => ({
+  marginLeft: theme.spacing(4.5),
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    marginLeft: 0,
+    textAlign: 'center',
+    marginTop: theme.spacing(4)
+  }
+}))
 
 
 const EventStep3 = () => {
-    const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
-    const onChange = file => {
-        const reader = new FileReader()
-        const { files } = file.target
-        if (files && files.length !== 0) {
-        reader.onload = () => setImgSrc(reader.result)
-        reader.readAsDataURL(files[0])
-        }
+    const [openAlert, setOpenAlert] = useState(true)
+  const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
+
+  const onChange = file => {
+    const reader = new FileReader()
+    const { files } = file.target
+    if (files && files.length !== 0) {
+      console.log(files)
+      reader.onload = () => setImgSrc(reader.result)
+      reader.readAsDataURL(files[0])
     }
+  }
 
     return(
         <form>
@@ -66,3 +100,5 @@ const EventStep3 = () => {
 
     )
 }
+
+export default EventStep3;

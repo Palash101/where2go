@@ -78,8 +78,6 @@ const LoginPage = () => {
   const authContext =  useContext(authUserContext)
 
   useEffect(()=>{
-    console.log(authContext.isUserAuthenticated())
-    authContext.isUserAuthenticated()?router.push('/admin'):router.push('/admin/login')
 
   },[])
 

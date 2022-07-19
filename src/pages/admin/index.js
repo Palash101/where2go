@@ -25,19 +25,18 @@ import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
 import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 
 import { parseCookies } from 'nookies'
-import verifyCookie from '../../../service/verifyCookie'
+// import verifyCookie from '../../../service/verifyCookie'
 
 
 
 
-const Dashboard = ({props}) => {
+const Dashboard = ({user}) => {
+  console.log(user,'admin index props')
   const router = useRouter()
   const authContext =  useContext(authUserContext)
   
 
   useEffect(()=>{
-    console.log( authContext.isUserAuthenticated())
-    props?.isUserAuthenticated()?router.push('/admin'):router.push('/admin/login')
 
   },[])
 
@@ -120,29 +119,32 @@ export default Dashboard
 
 export async function getServerSideProps(context) {
   try{
-  const cookies = parseCookies(context)
-  if(cookies.user){
-    const authentication = await verifyCookie(cookies.user);
-    console.log(authentication,'00000000000000000');
-    // propsObject.authenticated = authentication ? authentication.authenticated : false;
-    // propsObject.usermail = authentication ? authentication.usermail : "";
-  } 
 
-  return {
-    props: {}, 
+    const user = 'abhi';
+    if(!user){
+      return{
+        redirect:{
+          permanent:false,
+          destination:'/admin/login',
+        },
+        props:{}
+      }
+
+    }
+    return{
+      props:{user:user}
+    }
+
   }
-}
-catch(err){
-  return {
-    redirect: {
-      permanent: false,
-      destination: "/login",
-    },
-    // `as never` is required for correct type inference
-    // by InferGetServerSidePropsType below
-    props: {} 
-  };
-  
+  catch(err){
+    return{
+      redirect:{
+          permanent:false,
+          destination:'/admin/login'
+        },
+      props:{}
+    }
+  }
 
-}
+
 }

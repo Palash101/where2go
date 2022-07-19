@@ -20,14 +20,17 @@ import {getAllCategory} from '../../../../service/admin/category'
 function CategoryList() {
     const[allCategory ,setAllCategory] =  useState([])
 
-    useEffect(async ()=>{
-       const catData =  await getAllCategory()
-       const catArray =[];
-       catData.docs.forEach(item=>{
+    useEffect(()=>{
+      const getData =  async()=>{
+        const catData =  await getAllCategory()
+        const catArray =[];
+        catData.docs.forEach(item=>{
         catArray.push(item.data())
        })
-       console.log(catArray,'Category Array')
-       setAllCategory(catArray)
+        setAllCategory(catArray)
+      }
+      getData()
+      
 
     },[])
 
