@@ -1,25 +1,18 @@
 
 import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
-import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import InputAdornment from '@mui/material/InputAdornment'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-
+import moment from "moment";
 import { useState } from 'react'
 
 
@@ -43,11 +36,15 @@ function DateTimeComponent(props){
 	setopen(false)
  
 };
+const dateSplit = () =>{
+}
 
   const addDateTimeArray = ()=>{
+    console.log({dateValue})
+
     setDateTimeArray([...dateTimeArray,{date:dateValue,from:fromTimeValue,to:toTimeValue}])
     handleClose('dateTime')
-      console.log(dateTimeArray,'clicked')
+    console.log(dateTimeArray,'clicked')
 
 
   }
@@ -109,6 +106,10 @@ function DateTimeComponent(props){
                   <DatePicker
                     label="Date"
                     value={dateValue}
+                    format="DD-MM-YYYY"
+                    inputFormat="MM/dd/yyyy"
+                    closeOnSelect={true}
+                    views={["year", "month", "day"]}
                     onChange={(newValue) => {
                       setDateValue(newValue);
                     }}

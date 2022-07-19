@@ -57,10 +57,20 @@ const AccountSettings = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const [routerParams, setRouterParams] = useState('');
+  const [reloadPage, setReloadPage] = useState(false)
 
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
+  }
+
+  const refreshData = ()=>{
+    if(reloadPage === true){
+      setReloadPage(false)
+    }
+    if(reloadPage === false){
+      setReloadPage(true)
+    }
   }
 
   useEffect(()=>{
@@ -83,7 +93,7 @@ const AccountSettings = () => {
       })
 
     }
-  },[router.isReady])
+  },[router.isReady,reloadPage])
 
   if(!loading){
 
@@ -128,6 +138,7 @@ const AccountSettings = () => {
         <EventStep1 
         data={eventData}
         eventId = {routerParams}
+        refreshData = {refreshData}
         />
 
         </TabPanel>
@@ -135,12 +146,14 @@ const AccountSettings = () => {
           <EventStep2  
           data={eventData}
           eventId = {routerParams}
+          refreshData = {refreshData}
           />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='info'>
           <EventStep3 
           data={eventData} 
           eventId = {routerParams} 
+          refreshData = {refreshData}
           />
           
         </TabPanel>

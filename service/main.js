@@ -1,6 +1,7 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp,getApp,getApps } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
 
 const firebaseConfig = {
@@ -13,9 +14,20 @@ const firebaseConfig = {
     measurementId: "G-QW6RSHDEMM"
   };
 
-  const firebase  = initializeApp(firebaseConfig);
-  export const db = getFirestore();
-  export const auth =  getAuth();
+  const firebase = getApps.length > 0 ? getApp() : initializeApp(firebaseConfig);
+  export const db = getFirestore(firebase);
+  export const auth =  getAuth(firebase);
+  export const strorage  = getStorage(firebase);
 
 
   export default firebase;
+
+
+//   const firebase = getApps.length > 0 ? getApp() : initializeApp(firebaseConfig);
+
+//   const db = getFirestore(firebase);
+//   const auth =  getAuth(firebase);
+//   const storage =  getStorage(firebase);
+
+
+//  export default {firebase,db,storage,auth};

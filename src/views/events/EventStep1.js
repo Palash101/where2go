@@ -4,31 +4,24 @@ import { useEffect, useState } from 'react'
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import Link from '@mui/material/Link'
-import Alert from '@mui/material/Alert'
 import Select from '@mui/material/Select'
 import { styled } from '@mui/material/styles'
 import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import InputLabel from '@mui/material/InputLabel'
-import AlertTitle from '@mui/material/AlertTitle'
-import IconButton from '@mui/material/IconButton'
 import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
-import storage from '../../../service/main'
-
 import {
   deleteObject,
   getDownloadURL,
+  uploadBytes,
   getStorage,
-  ref,
+  listAll,
+  ref ,
   uploadBytesResumable,
 } from "firebase/storage";
-
-// ** Icons Imports
-import Close from 'mdi-material-ui/Close'
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -54,49 +47,20 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
   }
 }))
 
-// const imageUpload = ()=>{
-//   const userRef = ref(storage, `/users/`);
-// }
-
-const EventStep1 = ({data}) => {
-  // ** State
+const EventStep1 = ({data,eventId}) => {
   const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('')
-
-  const onChange = event => {
-    const file = event.target.files[0]
-    // const storage = getStorage();
-
-    const storageRef = ref(storage, `/files/${file.name}`)
-    const uploadTask = uploadBytesResumable(storageRef, file);
-
-    // console.log(file)
+  const [eventAllImages,setEventAllImage]=useState([''])
+  const storage = getStorage();
+  const allImagesRef = ref(storage,'events/'+eventId)
+  const imagePath ='events/'+eventId
 
 
-    // const reader = new FileReader()
-    // const { files } = file.target
-    // console.log(files);
-    // if (files && files.length !== 0) {
-    //   reader.onload = () => setImgSrc(reader.result)
-    //   reader.readAsDataURL(files[0])
-    //   const storage = getStorage();
-    //   const userRef = ref(
-    //   storage,
-    //   `/images/avatars/1.png`
-    // );
-    //   // uploadBytes(userRef, file).then((snapshot) => {
-    //   //   console.log('Uploaded a blob or file!');
-    //   // });
-
-    //   const uploadTask = uploadBytesResumable(userRef, imgSrc);
-    //   console.log('completed')
 
 
-    
-  }
 
   useEffect(()=>{
-    console.log('data in event step 1',data)
+
 
   },[])
 
@@ -104,29 +68,6 @@ const EventStep1 = ({data}) => {
     <CardContent>
       <form>
         <Grid container spacing={7}>
-          <Grid item xs={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <ImgStyled src={imgSrc} alt='Profile Pic' />
-              <Box>
-                <ButtonStyled component='label' variant='contained' htmlFor='account-settings-upload-image'>
-                  Upload New Photo
-                  <input
-                    hidden
-                    type='file'
-                    onChange={onChange}
-                    accept='image/png, image/jpeg'
-                    id='account-settings-upload-image'
-                  />
-                </ButtonStyled>
-                <ResetButtonStyled color='error' variant='outlined' onClick={() => setImgSrc('/images/avatars/1.png')}>
-                  Reset
-                </ResetButtonStyled>
-                <Typography variant='body2' sx={{ marginTop: 5 }}>
-                  Allowed PNG or JPEG. Max size of 800K.
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
 
           <Grid item xs={12} sm={6}>
             <TextField fullWidth label='Event Name' placeholder='Enter event name'  />
@@ -135,7 +76,6 @@ const EventStep1 = ({data}) => {
             <FormControl fullWidth>
               <InputLabel>Event Type</InputLabel>
               <Select label='Event Type' >
-
                 <MenuItem value='show'>Show</MenuItem>
                 <MenuItem value='class'>Class</MenuItem>
                 <MenuItem value='music'>Music</MenuItem>
