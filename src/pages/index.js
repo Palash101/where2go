@@ -26,22 +26,22 @@ return (
     )
 }
 
-function SlideIthem(props){
-    console.log(props)
-    return(
-        <div className='slideItem'>
-            <div className='slideItemImage'>
-            <Image
-            src={props.item.href}
-            alt="Picture of the author"
-            width={253}
-            height={253}
-            />
-            </div>
-            <p>{props.item.name}</p>
-        </div>
-    )
-}
+// function SlideIthem(props){
+//     console.log(props)
+//     return(
+//         <div className='slideItem'>
+//             <div className='slideItemImage'>
+//             <Image
+//             src={props.item.href}
+//             alt="Picture of the author"
+//             width={253}
+//             height={253}
+//             />
+//             </div>
+//             <p>{props.item.name}</p>
+//         </div>
+//     )
+// }
 function SlideItem1(props){
     console.log(props)
     return(
