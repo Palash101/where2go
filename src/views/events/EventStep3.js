@@ -163,12 +163,12 @@ const EventStep3 = ({data,eventId,refreshData}) => {
           </Grid>
           </Grid>
           <Grid container spacing={7}>
-          <Grid item xs={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
-                    {!loadding && data.images.map((item) => (
-                      <ImageListItem key={item}>
+          <Grid item xs={12} sm={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
+          <Box  sx={{ display: 'flex', alignItems: 'center',width:'100%' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center',width:'100%' }}>
+                <ImageList sx={{ width: '100%', height: 450 }} cols={2} rowHeight={164}>
+                    {!loadding && data.images.map((item,key) => (
+                      <ImageListItem key={key}>
                       <img
                         src={`${item}?w=164&h=164&fit=crop&auto=format`}
                         srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}

@@ -30,7 +30,20 @@ const navigation = () => {
       path: '/admin/users'
     },
     {
-      sectionTitle: 'Category/Location'
+      sectionTitle: 'Location'
+    },
+    {
+      title: 'Location',
+      icon: CategoryIcon  ,
+      path: '/admin/location'
+    },
+    {
+      title: 'Add Location',
+      icon: AddIcon  ,
+      path: '/admin/location/add'
+    },
+    {
+      sectionTitle: 'Category'
     },
 
     {
@@ -38,6 +51,7 @@ const navigation = () => {
       icon: CategoryIcon  ,
       path: '/admin/category'
     },
+   
     {
       title: 'Add New Category',
       icon: AddIcon,

@@ -17,7 +17,7 @@ import { useState } from 'react'
 
 
 
-function DateTimeComponent(props){
+function DateTimeComponent({handleDateTimeModal}){
   const [open, setopen] = useState(false);
   const [dateValue, setDateValue] = useState(null);
   const [fromTimeValue, setFromTimeValue] = useState(null);
@@ -41,11 +41,9 @@ const dateSplit = () =>{
 
   const addDateTimeArray = ()=>{
     console.log({dateValue})
-
     setDateTimeArray([...dateTimeArray,{date:dateValue,from:fromTimeValue,to:toTimeValue}])
-    handleClose('dateTime')
-    console.log(dateTimeArray,'clicked')
-
+    handleDateTimeModal([...dateTimeArray,{date:dateValue,from:fromTimeValue,to:toTimeValue}])
+    handleClose()
 
   }
 

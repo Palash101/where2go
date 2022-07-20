@@ -75,3 +75,11 @@ export const uploadEventImage = async(eventId,image)=>{
       })
 }
 
+export const updateEventDate = async (eventId,data)=>{
+    console.log(eventId)
+    const docRef = doc(db, "events", eventId);
+    return await updateDoc(docRef, {
+        event_date:arrayUnion(...data)
+      })
+}
+

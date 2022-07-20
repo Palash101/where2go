@@ -179,8 +179,8 @@ function ContactComponent(){
             <DialogTitle sx={{backgroundColor:'#373c44',color:'white',fontSize:'1rem'}}>Event Contacts</DialogTitle>
             <Typography padding='10px' component='p'>Add contact details for the visitors to your event page and your event attendees.</Typography>
             <DialogContent>
-              <Box>
-                {inputElArray.map((el,key)=>el
+              <Box sx={{width:'100%'}}>
+                {inputElArray.map((el,key)=>(el)
                 )}
               </Box>
                 <Divider sx={{ margin: 0 }} />

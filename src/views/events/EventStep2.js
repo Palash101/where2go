@@ -14,13 +14,16 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress'
-
+import Chip from '@mui/material/Chip';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 
 import DateTimeComponent from './components/DateTimeComponent'
 import LocationComponent from './components/LocationComponent'
 import ContactComponent from './components/ContactComponent'
 
-import { updateEventById } from 'service/admin/events'
+import { updateEventById ,updateEventDate } from 'service/admin/events'
 
 
 
@@ -31,6 +34,7 @@ const EventStep2 = ({data,eventId}) => {
   const [openDate, setopenDate] = useState(false);
   const [description,setDescription]=useState('')
   const [loading,setLoading]=useState(false)
+  const [dateTimeArray,setDateTimeArray] =useState([])
 
 
   const handleClickOpen = (type) => {
@@ -60,11 +64,26 @@ const EventStep2 = ({data,eventId}) => {
 };
 
 
-  const handleDateTimeModal = () =>{
-    console.log('hello')
+  const handleDateTimeModal = (dateTime) =>{
+    setDateTimeArray(dateTime)
   }
-  
+  const updateDateTime = ()=>{
+    updateEventDate(eventId,dateTimeArray).then((res)=>console.log(res))
+  }
+  const handleChipDelete = ()=>{
+    
+    console.log(data.event_date,'delete Chip')
+
+  }
+  const handleChipClick = ()=>{
+
+  }
+
   const updateDesceiption = async()=>{
+    if(description == ''){
+      alert('Description Can not be empty')
+      return
+    }
     setLoading(true)
      await updateEventById(eventId,description)
           .then((data)=>console.log(data))
@@ -80,15 +99,29 @@ const EventStep2 = ({data,eventId}) => {
     <form>
       <CardContent sx={{ paddingBottom: 0 }}>
         <Grid container spacing={5}>
-          <Grid item sx={{paddingBottom:'1.25rem'}} xs={12} sm={6}>
+          <Grid item sx={{paddingBottom:'1.25rem',display:'flex',justifyContent:'center',flexDirection:'column'}} xs={12} sm={12}>
+            <Box sx={{marginBottom:'10px'}}>
+              {Array.isArray(data.event_date) && data.event_date.map((item,key)=>(
+                <Chip
+                key={key}
+                onClick={handleChipClick}
+                onDelete={handleChipDelete}
+                label={item.to.seconds}
+                deleteIcon={<DeleteIcon />}
+                variant="outlined"
+              />
+
+              ))}
+            
+            </Box>
           <Button onClick={()=>handleClickOpen('date') } variant="contained">Date & Time</Button>
           <Dialog open={openDate} onClose={ ()=>handleClose('date')} maxWidth="md" fullWidth>
             <DialogTitle>Add Event Date Time</DialogTitle>
             <DialogContent >
-              <DateTimeComponent />
+              <DateTimeComponent handleDateTimeModal={handleDateTimeModal} />
             </DialogContent>
             <DialogActions>
-            <Button onClick={handleDateTimeModal}>Add</Button>
+            <Button onClick={()=>updateDateTime()}>Add</Button>
             <Button onClick={()=>handleClose('date')}>Cancel</Button>
             </DialogActions>
         </Dialog>
@@ -100,6 +133,14 @@ const EventStep2 = ({data,eventId}) => {
       <CardContent sx={{ paddingBottom: 0 }}>
         <Grid container spacing={5}>
           <Grid item sx={{paddingBottom:'1.25rem'}} xs={12} sm={6}>
+          <Box sx={{marginBottom:'10px'}}>
+              {data.location == undefined ?
+              <Typography>Location Not Defined</Typography>:data.location == '' ? 
+              <Typography>No Location Added. Please Add</Typography>
+              :<Typography>{data.location}</Typography>
+              }
+              
+            </Box>
           <Button variant="contained" onClick={()=>handleClickOpen('location')}>Address/Map co-ordinates</Button>
           <Dialog open={openLocation} onClose={ ()=>handleClose('location')}>
             <DialogTitle>Enter Event Location</DialogTitle>
@@ -118,14 +159,26 @@ const EventStep2 = ({data,eventId}) => {
       <Divider sx={{ margin: 0 }} />
       <CardContent sx={{ paddingBottom: 0 }}>
         <Grid container spacing={5}>
-          <Grid item sx={{paddingBottom:'1.25rem'}} xs={12} sm={6}>
-          <Button variant="contained" onClick={()=>handleClickOpen('description')}>Event Descrption</Button>
+          <Grid item sx={{paddingBottom:'1.25rem', display:'flex',justifyContent:'center',flexDirection:'column'}} xs={12} sm={12}>
+            <Box sx={{marginBottom:'10px'}}>
+            {data.description == undefined ?
+              <Typography>Description Not Defined</Typography>:data.description == '' ? 
+              <Typography>No Description Added. Please Add</Typography>
+              :<Typography>{data.description}</Typography>
+              }
+              
+            </Box>
+          <Button 
+          endIcon={data.description != ''?<EditIcon/>:<AddIcon />}
+          variant="contained" 
+          onClick={()=>handleClickOpen('description')}>Event Descrption</Button>
           <Dialog fullWidth open={openDescription} onClose={ ()=>handleClose('description')}>
                 <DialogTitle>Enter Event Description</DialogTitle>
                 <DialogContent>
                 <TextField
                   onChange={(e)=>setDescription(e.target.value)}
                     autoFocus
+                    required
                     id="name"
                     label="Description"
                     type="text"
@@ -138,7 +191,8 @@ const EventStep2 = ({data,eventId}) => {
                 </DialogContent>
                     
                 <DialogActions>
-                    <Button onClick={updateDesceiption }>Save</Button>
+                    <Button 
+                    onClick={updateDesceiption }>Save</Button>
                     <Button onClick={()=>handleClose('description')}>Cancel</Button>
                 </DialogActions>
             </Dialog>
