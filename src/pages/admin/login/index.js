@@ -43,6 +43,7 @@ import {emailPasswordSigin} from '../../../../service/auth'
 
 import { useAuth } from '../../../../firebase/userContext'
 import { ConsoleLine } from 'mdi-material-ui'
+import { getProviders, signIn } from "next-auth/react";
 
 
 // ** Styled Components
@@ -63,7 +64,9 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
   }
 }))
 
-const LoginPage = () => {
+const LoginPage = ({ providers }) => {
+
+  console.log(providers,'Next Auth providers')
   // ** State
   const [values, setValues] = useState({
     password: '',
@@ -191,6 +194,12 @@ const LoginPage = () => {
     </Box>
   )
 }
+
+
+export async function getServerSideProps(context) {
+  return { props: { providers: await getProviders() } };
+}
+
 LoginPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
 
 export default LoginPage

@@ -28,6 +28,9 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 import '../../styles/globals.css'
 import { AuthUserProvider } from '../../firebase/newUserContext';
 
+import { SessionProvider } from "next-auth/react"
+
+
 const clientSideEmotionCache = createEmotionCache()
 
 // ** Pace Loader
@@ -54,7 +57,7 @@ const App = props => {
 
 
   return (
-    <AuthUserProvider>
+    <SessionProvider>
     <CacheProvider value={emotionCache}>
       <Head>
         <title>{`${themeConfig.templateName} `}</title>
@@ -74,7 +77,7 @@ const App = props => {
         </SettingsConsumer>
       </SettingsProvider>
     </CacheProvider>
-    </AuthUserProvider>
+    </SessionProvider>
   )
 }
 
