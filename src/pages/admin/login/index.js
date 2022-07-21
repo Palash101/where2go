@@ -1,10 +1,11 @@
 // ** React Imports
 import { useContext, useEffect, useState } from 'react'
+import { parseCookies } from 'nookies'
 
 // ** Next Imports
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { authUserContext } from '../../../../firebase/newUserContext'
+import { authUserContext } from '../../../../context/userContext'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -39,11 +40,9 @@ import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 
 // Service Import
 
-import {emailPasswordSigin} from '../../../../service/auth'
+import {emailPasswordSigin,verifyToken} from '../../../../service/auth'
 
-import { useAuth } from '../../../../firebase/userContext'
-import { ConsoleLine } from 'mdi-material-ui'
-import { getProviders, signIn } from "next-auth/react";
+import { userAuth } from '../../../../context/userContext'
 
 
 // ** Styled Components
@@ -64,9 +63,8 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
   }
 }))
 
-const LoginPage = ({ providers }) => {
+const LoginPage = () => {
 
-  console.log(providers,'Next Auth providers')
   // ** State
   const [values, setValues] = useState({
     password: '',
@@ -78,9 +76,14 @@ const LoginPage = ({ providers }) => {
   // ** Hook
   const theme = useTheme()
   const router = useRouter()
-  const authContext =  useContext(authUserContext)
+  const userContext = userAuth()
+
+
+  console.log(userContext)
 
   useEffect(()=>{
+    
+
 
   },[])
 
@@ -195,10 +198,6 @@ const LoginPage = ({ providers }) => {
   )
 }
 
-
-export async function getServerSideProps(context) {
-  return { props: { providers: await getProviders() } };
-}
 
 LoginPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
 

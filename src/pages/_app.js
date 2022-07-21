@@ -26,7 +26,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 
 // ** Global css styles
 import '../../styles/globals.css'
-import { AuthUserProvider } from '../../firebase/newUserContext';
+import { AuthUserProvider } from '../../context/userContext';
 
 import { SessionProvider } from "next-auth/react"
 
@@ -57,7 +57,7 @@ const App = props => {
 
 
   return (
-    <SessionProvider>
+    <AuthUserProvider>
     <CacheProvider value={emotionCache}>
       <Head>
         <title>{`${themeConfig.templateName} `}</title>
@@ -77,7 +77,7 @@ const App = props => {
         </SettingsConsumer>
       </SettingsProvider>
     </CacheProvider>
-    </SessionProvider>
+    </AuthUserProvider>
   )
 }
 

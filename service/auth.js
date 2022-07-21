@@ -25,7 +25,7 @@ import {
 import {auth,db} from './main'
 import {firebaseAdmin} from './fireAdmin';  
 
-export  const emailPasswordSigin = (email,password)=>{
+export  const emailPasswordSigin = async (email,password)=>{
   const userId = '';
   const userEmail = '';
   const idToken=';'
@@ -38,8 +38,9 @@ export  const emailPasswordSigin = (email,password)=>{
           idToken = await userCredentails.user.getIdToken();
 
           //Firebase Admin session
-          await postUserToken(idToken)
-          console.log('created Seesion')
+          // await postUserToken(idToken)
+          // console.log('created Seesion')
+          
           return idToken
 
       })
@@ -82,6 +83,22 @@ export const  postUserToken = async (token) =>{
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+
+
+export const  verifyToken = async (cookie) =>{
+  var path = "/api/verifyCookie";
+  var url = 'http://localhost:3000' + path;
+  var data = { cookie: cookie }
+  console.log(cookie,'api call')
+  const response = await fetch(url, {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     },

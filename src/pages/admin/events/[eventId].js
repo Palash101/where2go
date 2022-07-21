@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 
+
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -13,12 +14,14 @@ import TabContext from '@mui/lab/TabContext'
 import { styled } from '@mui/material/styles'
 import MuiTab from '@mui/material/Tab'
 import CircularProgress from '@mui/material/CircularProgress';
+import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 
 
 // ** Icons Imports
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 import InformationOutline from 'mdi-material-ui/InformationOutline'
+import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 
 // ** Demo Tabs Imports
 import EventStep1 from 'src/views/events/EventStep1'
@@ -127,8 +130,17 @@ const AccountSettings = () => {
             value='info'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <InformationOutline />
+                <ImageSearchIcon />
                 <TabName>Images</TabName>
+              </Box>
+            }
+          />
+          <Tab
+            value='ticket'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <LocalActivityIcon />
+                <TabName>Tickets</TabName>
               </Box>
             }
           />
@@ -150,6 +162,14 @@ const AccountSettings = () => {
           />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='info'>
+          <EventStep3 
+          data={eventData} 
+          eventId = {routerParams} 
+          refreshData = {refreshData}
+          />
+          
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value='ticket'>
           <EventStep3 
           data={eventData} 
           eventId = {routerParams} 

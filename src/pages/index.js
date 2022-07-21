@@ -128,8 +128,7 @@ return(
                 items.map( (item, i) => <Item key={i} item={item} /> )
             }
             </Carousel>
-            {/* <Typography>Where2go.qa Comming Soon</Typography> */}
-            <h5 className='font-weight-bolder h5 text-gray-500 mb-2'>Entertainment</h5>
+            <Typography sx={{fontSize:'20px !important',fontWeight:'bold',color:'#4b535f'}} variant='h5'>Entertainment</Typography>
             <Swiper
                 slidesPerView={4}
                 spaceBetween={30}
@@ -158,9 +157,7 @@ return(
                 }
                
             </Swiper>
-
-
-            <h5 className='font-weight-bolder h5 text-gray-500 mb-2'>Music</h5>
+            <Typography sx={{fontSize:'20px !important',fontWeight:'bold',color:'#4b535f'}} variant='h5'>Music</Typography>
             <Swiper
                 slidesPerView={4}
                 spaceBetween={30}

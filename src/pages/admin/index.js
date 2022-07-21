@@ -1,7 +1,7 @@
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 import { useEffect,useContext } from 'react'
-import { authUserContext } from '../../../firebase/newUserContext'
+import { userAuth } from '../../../context/userContext'
 import {useRouter} from 'next/router'
 // ** Icons Imports
 import Poll from 'mdi-material-ui/Poll'
@@ -24,17 +24,12 @@ import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
 import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
 import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 
-import { parseCookies } from 'nookies'
-// import verifyCookie from '../../../service/verifyCookie'
-
-
-
 
 const Dashboard = ({user}) => {
   console.log(user,'admin index props')
   const router = useRouter()
-  const authContext =  useContext(authUserContext)
-  
+  const userContext =  userAuth()
+  console.log(userContext)
 
   useEffect(()=>{
 

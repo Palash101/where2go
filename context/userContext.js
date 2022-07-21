@@ -49,6 +49,6 @@ import { useState } from 'react';
 
 
   export {authUserContext,AuthUserProvider};
-    export const useAuth= () => {
+  export const userAuth= () => {
  return useContext(authUserContext);
 };
