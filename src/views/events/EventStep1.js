@@ -13,51 +13,29 @@ import InputLabel from '@mui/material/InputLabel'
 import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
-import {
-  deleteObject,
-  getDownloadURL,
-  uploadBytes,
-  getStorage,
-  listAll,
-  ref ,
-  uploadBytesResumable,
-} from "firebase/storage";
+import CircularProgress from '@mui/material/CircularProgress'
+import {updateEventData} from '../../../service/admin/events'
 
-const ImgStyled = styled('img')(({ theme }) => ({
-  width: 120,
-  height: 120,
-  marginRight: theme.spacing(6.25),
-  borderRadius: theme.shape.borderRadius
-}))
-
-const ButtonStyled = styled(Button)(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
-    width: '100%',
-    textAlign: 'center'
-  }
-}))
-
-const ResetButtonStyled = styled(Button)(({ theme }) => ({
-  marginLeft: theme.spacing(4.5),
-  [theme.breakpoints.down('sm')]: {
-    width: '100%',
-    marginLeft: 0,
-    textAlign: 'center',
-    marginTop: theme.spacing(4)
-  }
-}))
 
 const EventStep1 = ({data,eventId}) => {
-  const [openAlert, setOpenAlert] = useState(true)
-  const [imgSrc, setImgSrc] = useState('')
-  const [eventAllImages,setEventAllImage]=useState([''])
-  const storage = getStorage();
-  const allImagesRef = ref(storage,'events/'+eventId)
-  const imagePath ='events/'+eventId
+  const [name,setName] = useState(data.event_name)
+  const [type,setType] = useState(data.event_type)
+  const [country,setCountry] = useState(data.country)
+  const [currency,setCurrency] = useState(data.currency)
+  const [loading,setLoading] = useState(false)
 
+  const updateData = () =>{
+    setLoading(true)
+    const eventData = {
+      name:name,
+      type:type,
+      country:country,
+      currency:currency
+    }
+    updateEventData(eventId,eventData).then((res)=>console.log(res))
+    setLoading(false)
 
-
-
+  }
 
   useEffect(()=>{
 
@@ -70,48 +48,61 @@ const EventStep1 = ({data,eventId}) => {
         <Grid container spacing={7}>
 
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Event Name' placeholder='Enter event name'  />
+            <TextField 
+            onChange={(e)=>setName(e.target.value)}
+            fullWidth label='Event Name' 
+            defaultValue={name} 
+            placeholder='Enter event name'  />
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel>Event Type</InputLabel>
-              <Select label='Event Type' >
-                <MenuItem value='show'>Show</MenuItem>
-                <MenuItem value='class'>Class</MenuItem>
-                <MenuItem value='music'>Music</MenuItem>
+              <Select  onChange={(e)=>setType(e.target.value)} label='Event Type' defaultValue={type} >
+                <MenuItem value='Show'>Show</MenuItem>
+                <MenuItem value='Music'>Music</MenuItem>
+                <MenuItem value='Game'>Game</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel>Country</InputLabel>
-              <Select label='Country' >
-                <MenuItem value='qar'>Qatar</MenuItem>
+              <Select  onChange={(e)=>setCountry(e.target.value)} label='Country' defaultValue={country} >
+                <MenuItem value='Qatar'>Qatar</MenuItem>
                 <MenuItem value='Dubai'>Dubai</MenuItem>
+                <MenuItem value='Jordan'>Jordan</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel>Currency</InputLabel>
-              <Select label='Currency' >
+              <Select  onChange={(e)=>setCurrency(e.target.value)} label='Currency' defaultValue={currency} >
                 <MenuItem value='QAR'>QAR</MenuItem>
                 <MenuItem value='INR'>INR</MenuItem>
                 <MenuItem value='USD'>USD</MenuItem>
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={12}>
+          {/* <Grid item xs={12} sm={12}>
             <TextField fullWidth label='Description' placeholder='Event Description' defaultValue='Event Description' multiline rows={4}/>
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12}>
-            <Button variant='contained' sx={{ marginRight: 3.5 }}>
-              Save Changes
+            <Button onClick={updateData} variant='contained' sx={{ marginRight: 3.5 }}>
+              Update
             </Button>
           </Grid>
         </Grid>
       </form>
+      {loading === true && ( 
+        <Box sx={{ display: 'flex',justifyContent:'center',alignItems:'center',backgroundColor: 'rgb(0 0 0 / 39%)',zIndex: 99999999,position: 'fixed',left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0, }}>
+              <CircularProgress />
+          </Box>
+       )}
     </CardContent>
   )
 }
