@@ -27,6 +27,7 @@ import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import EventStep1 from 'src/views/events/EventStep1'
 import EventStep2 from 'src/views/events/EventStep2'
 import EventStep3 from 'src/views/events/EventStep3'
+import EventStep4 from 'src/views/events/EventStep4'
 
 import { getEventById } from 'service/admin/events'
 
@@ -170,7 +171,7 @@ const AccountSettings = () => {
           
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='ticket'>
-          <EventStep3 
+          <EventStep4 
           data={eventData} 
           eventId = {routerParams} 
           refreshData = {refreshData}

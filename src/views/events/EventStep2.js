@@ -23,7 +23,7 @@ import DateTimeComponent from './components/DateTimeComponent'
 import LocationComponent from './components/LocationComponent'
 import ContactComponent from './components/ContactComponent'
 
-import { updateEventById ,updateEventDate } from 'service/admin/events'
+import { updateEventDetails ,updateEventDate } from 'service/admin/events'
 
 
 
@@ -32,7 +32,11 @@ const EventStep2 = ({data,eventId}) => {
   const [openLocation, setopenLocation] = useState(false);
   const [openDescription, setopenDescription] = useState(false);
   const [openDate, setopenDate] = useState(false);
+
   const [description,setDescription]=useState('')
+  const [location ,setLocation] = useState('')
+
+
   const [loading,setLoading]=useState(false)
   const [dateTimeArray,setDateTimeArray] =useState([])
 
@@ -85,10 +89,22 @@ const EventStep2 = ({data,eventId}) => {
       return
     }
     setLoading(true)
-     await updateEventById(eventId,description)
+     await updateEventDetails(eventId,description,'description')
           .then((data)=>console.log(data))
     setLoading(false)
     handleClose('description')
+  }
+
+  const updateLocation = async()=>{
+    if(location == ''){
+      alert('Please enter location')
+      return
+    }
+    setLoading(true)
+    await updateEventDetails(eventId,location,'event_location')
+          .then((data)=>console.log(data))
+    setLoading(false)
+    handleClose('location')
   }
   useEffect(()=>{
   },[])
@@ -134,10 +150,10 @@ const EventStep2 = ({data,eventId}) => {
         <Grid container spacing={5}>
           <Grid item sx={{paddingBottom:'1.25rem'}} xs={12} sm={6}>
           <Box sx={{marginBottom:'10px'}}>
-              {data.location == undefined ?
-              <Typography>Location Not Defined</Typography>:data.location == '' ? 
+              {data.event_location == undefined ?
+              <Typography>Location Not Defined</Typography>:data.event_location == '' ? 
               <Typography>No Location Added. Please Add</Typography>
-              :<Typography>{data.location}</Typography>
+              :<Typography>{data.event_location}</Typography>
               }
               
             </Box>
@@ -145,10 +161,23 @@ const EventStep2 = ({data,eventId}) => {
           <Dialog open={openLocation} onClose={ ()=>handleClose('location')}>
             <DialogTitle>Enter Event Location</DialogTitle>
             <DialogContent>
-            <LocationComponent />
+              <Box>
+                <TextField
+                      autoFocus
+                      id="name"
+                      label="Location"
+                      type="text"
+                      fullWidth
+                      variant="standard"
+                      sx={{marginBottom:'5px'}}
+                      onChange={(e)=>{setLocation(e.target.value)}}
+                      placeholder="ex: Near football stadium Queens mall Banglore"
+                    />
+                  <Button variant="outlined">Use Map</Button>
+              </Box>
             </DialogContent>
             <DialogActions>
-            <Button onClick={()=>handleClose('location')}>Add</Button>
+            <Button onClick={updateLocation}>Add</Button>
             <Button onClick={()=>handleClose('location')}>Cancel</Button>
             </DialogActions>
         </Dialog>
