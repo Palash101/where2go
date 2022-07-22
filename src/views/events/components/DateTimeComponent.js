@@ -99,45 +99,53 @@ const dateSplit = () =>{
             <Dialog open={open} onClose={handleClose}>
               <DialogTitle>Select Date</DialogTitle>
                 <DialogContent>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <Box sx={{display:'flex',justifyContent:'center',alignItems:'center', flexDirection:'column'}}>
-                  <DatePicker
-                    label="Date"
-                    value={dateValue}
-                    format="DD-MM-YYYY"
-                    inputFormat="MM/dd/yyyy"
-                    closeOnSelect={true}
-                    views={["year", "month", "day"]}
-                    onChange={(newValue) => {
-                      setDateValue(newValue);
-                    }}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
+                  <TextField
+                      onChange={(e) => setDateValue(e.target.value)}
+                      id="date"
+                      label="Event DateTimeComponent"
+                      type="date"
+                      defaultValue="2022-05-24"
+                      sx={{ width: 220 }}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
                   <Box sx={{display:'flex',flexDirection:'column'}}>
                     <Typography sx={{marginBottom:'5px'}} variant="subtitle1">From</Typography>
-                    <TimePicker
-                        label="Time"
-                        value={fromTimeValue}
-                        onChange={(newValue) => {
-                          setFromTimeValue(newValue);
+                      <TextField
+                        onChange={(e) => setFromTimeValue(e.target.value)}
+                        id="time"
+                        label="From Time"
+                        type="time"
+                        defaultValue="07:30"
+                        InputLabelProps={{
+                          shrink: true,
                         }}
-                        renderInput={(params) => <TextField {...params} />}
+                        inputProps={{
+                          step: 300, // 5 min
+                        }}
+                        sx={{ width: 150 }}
                       />
-                    <Typography sx={{marginBottom:'5px'}} variant="subtitle1">To</Typography>
 
-                     <TimePicker
-                        label="Time"
-                        value={toTimeValue}
-                        onChange={(newValue) => {
-                          setToTimeValue(newValue);
+                      <TextField
+                        onChange={(e) => setToTimeValue(e.target.value)}
+                        id="time"
+                        label="From Time"
+                        type="time"
+                        defaultValue="07:30"
+                        InputLabelProps={{
+                          shrink: true,
                         }}
-                        renderInput={(params) => <TextField {...params} />}
+                        inputProps={{
+                          step: 300, // 5 min
+                        }}
+                        sx={{ width: 150 }}
                       />
 
                   </Box>
                   </Box>
                   
-                </LocalizationProvider>
                 </DialogContent>
               <DialogActions>
               <Button onClick={()=>addDateTimeArray()}>Add</Button>
