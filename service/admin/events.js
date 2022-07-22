@@ -68,10 +68,10 @@ export const updateEventDetails = async(eventId,data,objKey)=>{
       })
 }
 
-export const uploadEventImage = async(eventId,image)=>{
+export const uploadEventImage = async(eventId,image,type)=>{
     const docRef = doc(db, "events", eventId);
     return await updateDoc(docRef, {
-        images:arrayUnion(image)
+        [`images.${type}`]:image
       })
 }
 
@@ -80,6 +80,34 @@ export const updateEventDate = async (eventId,data)=>{
     return await updateDoc(docRef, {
         event_date:arrayUnion(...data)
       })
+}
+
+export const updateEventTicket = async (eventId,data)=>{
+    console.log(data)
+    const docRef = doc(db, "events", eventId);
+    return await updateDoc(docRef, {
+        tickets:arrayUnion(data)
+      })
+
+}
+
+export const updateEventData = async (eventId,data)=>{
+    try{
+        const docRef = doc(db, "events", eventId);
+        return await updateDoc(docRef, {
+            event_name:data.name,
+            country:data.country,
+            currency:data.currency,
+            event_type:data.type
+            
+          }).then((res)=>console.log(res))
+
+    }
+    catch(error){
+        return{error:'error',message:'Something went wrong',devmsg:error}
+    }
+    
+
 }
 
 

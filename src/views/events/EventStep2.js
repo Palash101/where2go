@@ -122,7 +122,7 @@ const EventStep2 = ({data,eventId}) => {
                 key={key}
                 onClick={handleChipClick}
                 onDelete={handleChipDelete}
-                label={item.to.seconds}
+                label={Date(item.date.seconds)}
                 deleteIcon={<DeleteIcon />}
                 variant="outlined"
               />
