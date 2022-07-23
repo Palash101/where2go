@@ -15,6 +15,8 @@ import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
 import CircularProgress from '@mui/material/CircularProgress'
 import {updateEventData} from '../../../service/admin/events'
+import {getAllLocations} from '../../../service/admin/location'
+import {getAllCategory} from '../../../service/admin/category'
 
 
 const EventStep1 = ({data,eventId}) => {
@@ -23,6 +25,10 @@ const EventStep1 = ({data,eventId}) => {
   const [country,setCountry] = useState(data.country)
   const [currency,setCurrency] = useState(data.currency)
   const [loading,setLoading] = useState(false)
+
+  const [allCategory,setAllCategory] = useState([])
+  const [allLocation,setAllLocations] = useState([])
+
 
   const updateData = () =>{
     setLoading(true)
@@ -38,6 +44,25 @@ const EventStep1 = ({data,eventId}) => {
   }
 
   useEffect(()=>{
+    const getCat =  async()=>{
+        const catData =  await getAllCategory()
+        const catArray =[];
+        catData.docs.forEach(item=>{
+        catArray.push(item.data())
+       })
+        setAllCategory(catArray)
+      }
+         getCat()
+
+        const getLocation =  async()=>{
+        const locationData =  await getAllLocations()
+        const locationArray =[];
+        locationData.docs.forEach(item=>{
+        locationArray.push(item.data())
+           })
+            setAllLocations(locationArray)
+          }
+            getLocation()
 
 
   },[])
@@ -68,9 +93,12 @@ const EventStep1 = ({data,eventId}) => {
             <FormControl fullWidth>
               <InputLabel>Country</InputLabel>
               <Select  onChange={(e)=>setCountry(e.target.value)} label='Country' defaultValue={country} >
-                <MenuItem value='Qatar'>Qatar</MenuItem>
-                <MenuItem value='Dubai'>Dubai</MenuItem>
-                <MenuItem value='Jordan'>Jordan</MenuItem>
+              {
+                allLocation.map((item)=>(
+                      <MenuItem value={item.name}>{item.name}</MenuItem>
+                ))
+
+              }
               </Select>
             </FormControl>
           </Grid>

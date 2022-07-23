@@ -12,6 +12,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import AddIcon from '@mui/icons-material/Add';
 import moment from "moment";
 import { useState } from 'react'
 
@@ -40,7 +41,11 @@ const dateSplit = () =>{
 }
 
   const addDateTimeArray = ()=>{
-    console.log({dateValue})
+    const dd = new Date(dateValue).toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ")
+    const fromtimeH = new Date(toTimeValue).getDate()
+    const fromtimeM = new Date(toTimeValue).getMinutes()
+    console.log({fromtimeH,fromtimeM})
+    console.log(dd)
     setDateTimeArray([...dateTimeArray,{date:dateValue,from:fromTimeValue,to:toTimeValue}])
     handleDateTimeModal([...dateTimeArray,{date:dateValue,from:fromTimeValue,to:toTimeValue}])
     handleClose()
@@ -54,7 +59,7 @@ const dateSplit = () =>{
               You can add more than 1 date time slots
             </Typography>
             <Box sx={{display:'flex', alignItems:'center',justifyContent:'flex-start'}}>
-              <Box onClick={()=>handleClickOpen('dateTime')} width='90px'height='150px' bgcolor='white' alignItems='center' 
+              <Box onClick={()=>handleClickOpen('dateTime')} width='90px'height='150px' bgcolor='yellow' alignItems='center' 
               sx={{
                 display:'flex',
                 padding:'9px',
@@ -62,15 +67,15 @@ const dateSplit = () =>{
                 border:'1px solid #383838',
                 borderRadius:'2px',
                 fontSize:'12px',
-                cursor:'pointer'
+                cursor:'pointer',
+                borderRadius:'10px',
               }}
               >
-                +
-                Add Day
+              <Typography sx={{fontSize:'16px',fontWeight:'bold'}} color="#050721">Add Day</Typography>
               </Box>
-              {dateTimeArray.map((data)=>{
-                return(
-                  <Box sx={{
+              {dateTimeArray.map((data,key)=>
+                (
+                 <Box key={key} sx={{
                     display:'flex',
                     alignItems:'center',
                     border:'2px solid black',
@@ -82,69 +87,61 @@ const dateSplit = () =>{
                     marginLeft:'10px'
 
                   }}>
-                <Typography>Jul</Typography>
-                <Typography>15</Typography>
-                <Typography>2022</Typography>
+                <Typography>15 jun</Typography>
                 <Divider />
-                <Typography>6:00pm</Typography>
-                <Typography>8:00pm</Typography>
+
+                <Typography>2022</Typography>
+                <Typography>awad</Typography>
 
 
 
               </Box>
+                 
                   )
-              })}
+              )}
             </Box>
             
             <Dialog open={open} onClose={handleClose}>
               <DialogTitle>Select Date</DialogTitle>
                 <DialogContent>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <Box sx={{display:'flex',justifyContent:'center',alignItems:'center', flexDirection:'column'}}>
-                  <TextField
-                      onChange={(e) => setDateValue(e.target.value)}
-                      id="date"
-                      label="Event DateTimeComponent"
-                      type="date"
-                      defaultValue="2022-05-24"
-                      sx={{ width: 220 }}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
+                  <DatePicker
+                    label="Date"
+                    value={dateValue}
+                    inputFormat="MM/dd/yyyy"
+                    closeOnSelect={true}
+                    views={["year", "month", "day"]}
+                    onChange={(newValue) => {
+                      setDateValue(newValue);
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
                   <Box sx={{display:'flex',flexDirection:'column'}}>
                     <Typography sx={{marginBottom:'5px'}} variant="subtitle1">From</Typography>
-                      <TextField
-                        onChange={(e) => setFromTimeValue(e.target.value)}
-                        id="time"
-                        label="From Time"
-                        type="time"
-                        defaultValue="07:30"
-                        InputLabelProps={{
-                          shrink: true,
+                    <TimePicker
+                        label="Time"
+                        value={fromTimeValue}
+                        onChange={(newValue) => {
+                          setFromTimeValue(newValue);
                         }}
-                        inputProps={{
-                          step: 300, // 5 min
-                        }}
-                        sx={{ width: 150 }}
+                        renderInput={(params) => <TextField {...params} />}
                       />
+                    <Typography sx={{marginBottom:'5px'}} variant="subtitle1">To</Typography>
 
-                      <TextField
-                        onChange={(e) => setToTimeValue(e.target.value)}
-                        id="time"
-                        label="From Time"
-                        type="time"
-                        defaultValue="07:30"
-                        InputLabelProps={{
-                          shrink: true,
+                     <TimePicker
+                        label="Time"
+                        value={toTimeValue}
+                        onChange={(newValue) => {
+                          setToTimeValue(newValue);
                         }}
-                        inputProps={{
-                          step: 300, // 5 min
-                        }}
-                        sx={{ width: 150 }}
+                        renderInput={(params) => <TextField {...params} />}
                       />
 
                   </Box>
                   </Box>
+                  
+                  </LocalizationProvider>
                   
                 </DialogContent>
               <DialogActions>

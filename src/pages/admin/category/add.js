@@ -15,6 +15,7 @@ import CardContent from '@mui/material/CardContent'
 import Snackbar from '@mui/material/Snackbar';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box'
+import { useRouter } from 'next/router'
 
 
 import {addCategory} from '../../../../service/admin/category'
@@ -22,6 +23,9 @@ import { useState } from 'react'
 
 
 function CategoryAdd() {
+    const router  = useRouter()
+
+
     const [categoryName,setCategoryName] = useState('')
     const [status,setStatus] = useState(1)
     const [loading,setLoading] = useState(false)
@@ -51,6 +55,7 @@ function CategoryAdd() {
           console.log(res,'ress')
           handleMessage()
           setLoading(false)
+          router.push('/admin/category')
         })
         
 
@@ -69,7 +74,7 @@ function CategoryAdd() {
            
                 <CardHeader title='Add Category' titleTypographyProps={{ variant: 'h6' }} />
                     <CardContent>
-                        <form onSubmit={storeCategory}>
+                        <form >
                             <Grid container spacing={5}>
                                 <Grid item xs={12}>
                                 <TextField required onChange={(e)=>setCategoryName(e.target.value)} fullWidth label='Category Name' placeholder='Ex: Drama, Game, Movie' />
@@ -90,7 +95,7 @@ function CategoryAdd() {
                                 <Grid item xs={12}>
                                 <Button 
                                 disabled={loading}
-                                  type='submit' variant='contained' size='large'>
+                                  type='button' onClick={storeCategory} variant='contained' size='large'>
                                     Submit
                                 </Button>
                                 </Grid>

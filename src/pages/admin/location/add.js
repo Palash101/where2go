@@ -15,6 +15,8 @@ import CardContent from '@mui/material/CardContent'
 import Snackbar from '@mui/material/Snackbar';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box'
+import { useRouter } from 'next/router'
+
 
 
 import {addLocation} from '../../../../service/admin/location'
@@ -22,6 +24,7 @@ import { useState } from 'react'
 
 
 function LocationAdd() {
+    const router = useRouter()
     const [locationName,setlocationName] = useState('')
     const [status,setStatus] = useState(1)
     const [loading,setLoading] = useState(false)
@@ -51,6 +54,7 @@ function LocationAdd() {
           console.log(res,'ress')
           handleMessage()
           setLoading(false)
+          router.push('/admin/location')
         })
         
 
