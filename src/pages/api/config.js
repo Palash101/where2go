@@ -10,5 +10,4 @@ if(!admin.apps.length){
 }
 return admin;
 }
-
 export default getFirebaseAdmin;

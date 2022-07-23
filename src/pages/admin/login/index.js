@@ -5,7 +5,6 @@ import { parseCookies } from 'nookies'
 // ** Next Imports
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { authUserContext } from '../../../../context/userContext'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -28,6 +27,9 @@ import MuiFormControlLabel from '@mui/material/FormControlLabel'
 
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
+
+//Loader
+import CircularProgress from '@mui/material/CircularProgress';
 
 // ** Configs
 import themeConfig from 'src/configs/themeConfig'
@@ -68,9 +70,9 @@ const LoginPage = () => {
   // ** State
   const [values, setValues] = useState({
     password: '',
-    showPassword: false
+    showPassword: false,
+    email:'',
   })
-  const[email,setEmail] = useState('')
   const [loading, setLoading] = useState(false);
 
   // ** Hook
@@ -79,8 +81,6 @@ const LoginPage = () => {
   const userContext = userAuth()
 
 
-  console.log(userContext)
-
   useEffect(()=>{
     
 
@@ -88,8 +88,6 @@ const LoginPage = () => {
   },[])
 
   const handleChange = prop => event => {
-    console.log(prop)
-    console.log(event)
     setValues({ ...values, [prop]: event.target.value })
   }
 
@@ -102,23 +100,31 @@ const LoginPage = () => {
   }
 
   const handleLogin = ()=>{
-    if(values.password == ''|| email == ''){
+    if(values.password == ''|| values.email == ''){
       alert('Please enter vaild email and password')
     }
     else{
-      emailPasswordSigin(email,values.password)
+      setLoading(true)
+      emailPasswordSigin(values.email,values.password)
       .then((data)=>{
-        console.log(data)
         if(data.role === 3){
-          authContext.setUserAuthState({
+          userContext.setUserAuthState({
             isAuthenticated:true,
             isAdmin:true,
             accesstoken:JSON.stringify(data.id || null),
         })
+        setLoading(false)
         router.push('/admin')
       }
+      else{
+        alert('not allowed to access')
+      }
       })
-      .catch((err)=>alert(err))
+      .catch((err)=>{
+        alert(err)
+        setLoading(false)
+
+      })
 
     }
 
@@ -150,7 +156,7 @@ const LoginPage = () => {
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField onChange={(e)=>setEmail(e.target.value)} autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+            <TextField onChange={handleChange('email')} autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
@@ -191,6 +197,12 @@ const LoginPage = () => {
               Login
             </Button>
           </form>
+          {
+            loading && (
+               <Box sx={{ display: 'flex',justifyContent:'center',alignItems:'center' }}>
+                  <CircularProgress />
+              </Box>)
+          }
         </CardContent>
       </Card>
       <FooterIllustrationsV1 />

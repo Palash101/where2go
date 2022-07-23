@@ -1,4 +1,6 @@
 // ** MUI Imports
+import nookies from "nookies";
+
 import Grid from '@mui/material/Grid'
 import { useEffect,useContext } from 'react'
 import { userAuth } from '../../../context/userContext'
@@ -24,12 +26,15 @@ import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
 import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
 import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 
+import {emailPasswordSigin,verifyToken} from '../../../service/auth'
+
+
+
 
 const Dashboard = ({user}) => {
   console.log(user,'admin index props')
   const router = useRouter()
   const userContext =  userAuth()
-  console.log(userContext)
 
   useEffect(()=>{
 
@@ -114,9 +119,8 @@ export default Dashboard
 
 export async function getServerSideProps(context) {
   try{
-
-    const user = 'abhi';
-    if(!user){
+    const cookies = nookies.get(context);
+    if(!cookies.user){
       return{
         redirect:{
           permanent:false,
@@ -126,8 +130,10 @@ export async function getServerSideProps(context) {
       }
 
     }
+    const userData = await verifyToken(cookies.user);
+    console.log('user Data',userData)
     return{
-      props:{user:user}
+      props:{user:userData}
     }
 
   }
