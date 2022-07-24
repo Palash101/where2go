@@ -69,13 +69,26 @@ function SlideItem1(props){
 
 function Home(){
     const [eventData,setEventData] = useState({})
+    const  [category, setAllCategory] = useState([])
     useEffect(()=>{
     getHomePageEvent().then((data)=>{
         setEventData(data)
     })
+    renderData()
 
         
     },[])
+
+    const renderData =()=>{
+        Object.keys(eventData).map(function(key, value) {
+            if(eventData[key].length > 0){
+                eventData[key].map((item,key)=>{           
+                 console.log(item.status)
+                })
+
+            }
+        });
+    }
     var items = [
         {
             name: "Random Name #1",

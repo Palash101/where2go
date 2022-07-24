@@ -82,8 +82,6 @@ const LoginPage = () => {
 
 
   useEffect(()=>{
-    tetsingAPI()
-
 
   },[])
 
