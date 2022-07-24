@@ -28,7 +28,6 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 import '../../styles/globals.css'
 import { AuthUserProvider } from '../../context/userContext';
 
-import { SessionProvider } from "next-auth/react"
 
 
 const clientSideEmotionCache = createEmotionCache()
