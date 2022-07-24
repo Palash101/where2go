@@ -24,10 +24,11 @@ import LocationComponent from './components/LocationComponent'
 import ContactComponent from './components/ContactComponent'
 
 import { updateEventDetails ,updateEventDate } from 'service/admin/events'
+import { async } from '@firebase/util'
 
 
 
-const EventStep2 = ({data,eventId}) => {
+const EventStep2 = ({data,eventId,refreshData}) => {
 
   const [openState, setOpenState] = useState({
     description:false,
@@ -59,9 +60,11 @@ const EventStep2 = ({data,eventId}) => {
     setDateTimeArray(dateTime)
   }
   
-  const updateDateTime = ()=>{
+  const updateDateTime = async ()=>{
     setLoading(true)
-    updateEventDate(eventId,dateTimeArray).then((res)=>console.log(res))
+   await updateEventDate(eventId,dateTimeArray).then((res)=>console.log(res))
+   handleClose('dateTime')
+   refreshData()
     setLoading(false)
   }
 
@@ -81,8 +84,9 @@ const EventStep2 = ({data,eventId}) => {
     setLoading(true)
      await updateEventDetails(eventId,description,'description')
           .then((data)=>console.log(data))
-    setLoading(false)
     handleClose('description')
+    refreshData()
+    setLoading(false)
   }
 
   const updateLocation = async()=>{
@@ -94,12 +98,21 @@ const EventStep2 = ({data,eventId}) => {
     await updateEventDetails(eventId,location,'event_location')
           .then((data)=>console.log(data))
     setLoading(false)
+    refreshData()
     handleClose('location')
   }
   useEffect(()=>{
   },[dateTimeArray])
 
 
+  const dateTimeChip =(data)=>{
+    return(
+      <p>
+        {data.date} / From {data.from} To {data.to}
+      </p>
+    )
+
+  }
 
   return (
     <form>
@@ -112,7 +125,7 @@ const EventStep2 = ({data,eventId}) => {
                 key={key}
                 onClick={handleChipClick}
                 onDelete={handleChipDelete}
-                label={'adasd'}
+                label={dateTimeChip(item) }
                 deleteIcon={<DeleteIcon />}
                 variant="outlined"
               />
@@ -202,6 +215,7 @@ const EventStep2 = ({data,eventId}) => {
                     label="Description"
                     type="text"
                     fullWidth
+                    defaultValue={data.description != ''?data.description:''}
                     variant="standard"
                     multiline
                     rows={5}

@@ -98,11 +98,13 @@ const EventStep3 = ({data,eventId,refreshData}) => {
       alert('Image cannnot be blank')
       return
     }
+    setLoading(true)
     const storageRef = ref(storage,imagePath+`/${imageFile.name}`) 
     const task =  await uploadBytes(storageRef,imageFile).then((res)=>console.log(res.ref))
     const url =  await getDownloadURL(storageRef) 
     console.log(url,'Retured URL')
     await uploadEventImage(eventId,url,type)
+    setLoading(false)
     refreshData(true)
     
   }
@@ -134,30 +136,36 @@ const EventStep3 = ({data,eventId,refreshData}) => {
         <form>
         <Grid container spacing={7}>
           <Grid item xs={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <ImgStyled src={imgSrc} alt='Profile Pic' />
-              <Box>
-              <InputLabel>Banner Type</InputLabel>
-              <Select required  onChange={(e)=>setType(e.target.value)} label='Event Type' defaultValue={type} >
-                <MenuItem value='main'>Main</MenuItem>
-                <MenuItem value='banner1'>Banner1 640/400</MenuItem>
-                <MenuItem value='banner2'>Banner2 640/640</MenuItem>
-              </Select>
-                <ButtonStyled component='label' variant='contained' htmlFor='account-settings-upload-image'>
-                  Upload Event Images
-                  <input
-                    type='file'
-                    onChange={onChange}
-                    accept='image/png, image/jpeg'
-                    id='event-upload-image2'
-                  />
-                </ButtonStyled>
+          <Box sx={{ display: 'flex', alignItems: 'center',justifyContent:'space-between ' }}>
+              {/* <ImgStyled src={imgSrc} alt='Profile Pic' /> */}
+              <Box sx={{paddingLeft:'20px',display:'flex',justifyContent:'space-between',padding:'0 20px',width:'100%'}}>
+                <Box>
+                <InputLabel>Banner Type</InputLabel>
+                <Select required  onChange={(e)=>setType(e.target.value)} label='Event Type' defaultValue={type} >
+                  <MenuItem value='main'>Main</MenuItem>
+                  <MenuItem value='banner1'>Square Image 1</MenuItem>
+                  <MenuItem value='banner2'>Square Image 2</MenuItem>
+                </Select>
+                </Box>
+                <Box>
+                  <ButtonStyled component='label' variant='contained' htmlFor='account-settings-upload-image'>
+                    Upload Event Images
+                    <input
+                      type='file'
+                      onChange={onChange}
+                      accept='image/png, image/jpeg'
+                      id='event-upload-image2'
+                    />
+                  </ButtonStyled>
+                  <Typography variant='body2' sx={{ marginTop: 5 }}>
+                    Allowed PNG or JPEG. Max size of 800K.
+                  </Typography>
+                </Box>
+                <Box>
                 <ResetButtonStyled color='success' variant='outlined' onClick={uploadImage}>
                   Upload
                 </ResetButtonStyled>
-                <Typography variant='body2' sx={{ marginTop: 5 }}>
-                  Allowed PNG or JPEG. Max size of 800K.
-                </Typography>
+                </Box>
               </Box>
             </Box>
           </Grid>
@@ -170,15 +178,14 @@ const EventStep3 = ({data,eventId,refreshData}) => {
                   width:'100%',position:'relative',
                  
                   }}>
-                  <Typography sx={{marginBottom:'20px'}}> Main Banner Image</Typography>
+                  <Typography sx={{marginBottom:'20px',textAlign:'center'}}> Main Banner Image</Typography>
+                  <p style={{textAlign:'center',fontSize:'12px',color:'red'}}> This Image will appear when you mark this event as featured</p>
 
                   <Box sx={{ position:'relative',height:350,maxWidth:'769px',margin:'auto'}}>
                     {
                       data.images?.main ?<Image src={data.images.main} layout='fill' /> : <Image src='/images/no-image.jpg' layout='fill' />
                     }
-                  
-             
-                    
+ 
                   </Box>
                   
                   <Box sx={{display:'flex',maxWidth:'769px',margin:'auto',justifyContent:'space-between'}}>
@@ -191,7 +198,7 @@ const EventStep3 = ({data,eventId,refreshData}) => {
                         
                       </Box>
                       <Box    display='flex' justifyContent='center'>
-                        <Button variant="contained">Image 600/400</Button>
+                        <Button variant="contained">Square Image 1</Button>
                       </Box>
                     </Box>
                    
@@ -202,7 +209,7 @@ const EventStep3 = ({data,eventId,refreshData}) => {
                     }
                       </Box>
                       <Box display='flex' justifyContent='center'>
-                        <Button variant="contained">Image 800/400</Button>
+                        <Button variant="contained">Square Image 2</Button>
                       </Box>
                     </Box>
                   </Box>

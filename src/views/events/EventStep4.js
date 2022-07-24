@@ -15,6 +15,8 @@ import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Badge from '@mui/material/Badge';
+
 
 
 
@@ -145,13 +147,13 @@ const EventStep4 = ({data,eventId,refreshData}) => {
           <Grid container spacing={7}>
           <Grid item xs={12} sm={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
             {
-              data.tickets?.map((ticket)=>(
+              data.tickets?.map((ticket,key)=>(
                 <>
                   <Box sx={{ display: 'flex', alignItems: 'center',width:'100%',justifyContent:'space-between',textAlign:'center' }}>
                       <Typography>{ticket.name}</Typography>
                       <Typography>Per/Ticket Price: {ticket.price}</Typography>
                       <Typography>Total Ticket:{ticket.ticket_count}</Typography>
-                      <Typography>Sales value: {ticket.ticket_count*ticket.price}</Typography>
+                      <Typography>Sales value: {ticket.ticket_count*ticket.price} {data.currency}</Typography>
                       <DeleteIcon 
                       sx={{cursor:'pointer'}}
                       onClick={deleteTicket}

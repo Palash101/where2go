@@ -14,31 +14,36 @@ import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
 import CircularProgress from '@mui/material/CircularProgress'
+
+//Service Imports
 import {updateEventData} from '../../../service/admin/events'
 import {getAllLocations} from '../../../service/admin/location'
 import {getAllCategory} from '../../../service/admin/category'
 
 
-const EventStep1 = ({data,eventId}) => {
+const EventStep1 = ({data,eventId,refreshData}) => {
   const [name,setName] = useState(data.event_name)
   const [type,setType] = useState(data.event_type)
   const [country,setCountry] = useState(data.country)
   const [currency,setCurrency] = useState(data.currency)
+  const [category,setCategory] = useState(data.category)
   const [loading,setLoading] = useState(false)
 
   const [allCategory,setAllCategory] = useState([])
   const [allLocation,setAllLocations] = useState([])
 
 
-  const updateData = () =>{
+  const updateData = async () =>{
     setLoading(true)
     const eventData = {
       name:name,
       type:type,
       country:country,
-      currency:currency
+      currency:currency,
+      category:category
     }
-    updateEventData(eventId,eventData).then((res)=>console.log(res))
+    await updateEventData(eventId,eventData).then((res)=>console.log(res))
+    refreshData()
     setLoading(false)
 
   }
@@ -72,22 +77,12 @@ const EventStep1 = ({data,eventId}) => {
       <form>
         <Grid container spacing={7}>
 
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={12}>
             <TextField 
             onChange={(e)=>setName(e.target.value)}
             fullWidth label='Event Name' 
             defaultValue={name} 
             placeholder='Enter event name'  />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel>Event Type</InputLabel>
-              <Select  onChange={(e)=>setType(e.target.value)} label='Event Type' defaultValue={type} >
-                <MenuItem value='Show'>Show</MenuItem>
-                <MenuItem value='Music'>Music</MenuItem>
-                <MenuItem value='Game'>Game</MenuItem>
-              </Select>
-            </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
@@ -104,6 +99,17 @@ const EventStep1 = ({data,eventId}) => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
+              <InputLabel>Event Type</InputLabel>
+              <Select  onChange={(e)=>setType(e.target.value)} label='Event Type' defaultValue={type} >
+                <MenuItem value='Show'>Show</MenuItem>
+                <MenuItem value='Music'>Music</MenuItem>
+                <MenuItem value='Game'>Game</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+         
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth>
               <InputLabel>Currency</InputLabel>
               <Select  onChange={(e)=>setCurrency(e.target.value)} label='Currency' defaultValue={currency} >
                 <MenuItem value='QAR'>QAR</MenuItem>
@@ -112,6 +118,25 @@ const EventStep1 = ({data,eventId}) => {
               </Select>
             </FormControl>
           </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth>
+                <InputLabel id='form-layouts-separator-select-label'>Event Category</InputLabel>
+                <Select
+                label='Category'
+                defaultValue={category}
+                id='form-layouts-separator-select'
+                labelId='form-layouts-separator-select-label'
+                onChange={(e)=>setCategory(e.target.value)}
+                >
+
+                {allCategory.map((cat)=>(
+                    <MenuItem value={cat.name}>{cat.name}</MenuItem>
+
+                    ))
+                }
+                </Select>
+            </FormControl>
+            </Grid>
           {/* <Grid item xs={12} sm={12}>
             <TextField fullWidth label='Description' placeholder='Event Description' defaultValue='Event Description' multiline rows={4}/>
           </Grid> */}

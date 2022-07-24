@@ -20,32 +20,19 @@ import CircularProgress from '@mui/material/CircularProgress'
 
 
 //Service
-import {updateEventData} from '../../../service/admin/events'
-import {getAllLocations} from '../../../service/admin/location'
-import {getAllCategory} from '../../../service/admin/category'
+import {updateEventDetails} from '../../../service/admin/events'
 
-
-const EventStep5 = ({data,eventId}) => {
-  const [name,setName] = useState(data.event_name)
-  const [type,setType] = useState(data.event_type)
-  const [country,setCountry] = useState(data.country)
-  const [currency,setCurrency] = useState(data.currency)
+const EventStep5 = ({data,eventId,refreshData}) => {
+  const [featured,setFeature] = useState(data.featured)
+  const [status,setStatus] = useState(data.status)
   const [loading,setLoading] = useState(false)
 
-  const [allCategory,setAllCategory] = useState([])
-  const [allLocation,setAllLocations] = useState([])
 
-
-  const updateData = () =>{
+  const updateData = async() =>{
     setLoading(true)
-    const eventData = {
-      name:name,
-      type:type,
-      country:country,
-      currency:currency
-    }
-    updateEventData(eventId,eventData).then((res)=>console.log(res))
+   await  updateEventDetails(eventId,'published','status').then((res)=>console.log(res))
     setLoading(false)
+    refreshData()
 
   }
 
@@ -61,10 +48,11 @@ const EventStep5 = ({data,eventId}) => {
             <Typography>Featured</Typography>
           </Grid>
              <Grid item xs={12} sm={6}>
-             <Checkbox  defaultChecked  label="Featured" />
+             <Checkbox onChange={(e)=>setFeature(e.target.value)} defaultChecked  label="Featured" />
             </Grid>
             <Grid item xs = {12} sm={6}>
-             <Button variant="contained" onClick={()=>console.log('location')}>Save Settings</Button>
+              <Typography>Current Status : {data.status} </Typography>
+             <Button variant="contained" onClick={updateData}>Publish Event</Button>
           </Grid>
           </Grid>
       </form>

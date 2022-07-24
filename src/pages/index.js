@@ -1,4 +1,7 @@
+//React Imports
 
+import { useState } from 'react'
+//Material Imports
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Carousel from 'react-material-ui-carousel'
@@ -9,9 +12,15 @@ import HomeLayout from 'src/@core/layouts/HomeLayout'
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
+
+//Service Imports here
+
+import{getHomePageEvent} from '../../service/admin/events'
+import { useEffect } from 'react'
+
+
 function Item(props)
 {
-    console.log(props)
     
 return (
         <div style={{borderRadius:'20px',overflow:'hidden'}}>
@@ -43,7 +52,6 @@ return (
 //     )
 // }
 function SlideItem1(props){
-    console.log(props)
     return(
         <div className='slideItem'>
             <div className='slideItemImage'>
@@ -60,6 +68,14 @@ function SlideItem1(props){
 
 
 function Home(){
+    const [eventData,setEventData] = useState({})
+    useEffect(()=>{
+    getHomePageEvent().then((data)=>{
+        setEventData(data)
+    })
+
+        
+    },[])
     var items = [
         {
             name: "Random Name #1",
