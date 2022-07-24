@@ -76,7 +76,7 @@ export const userLogout = ()=>{
 
 export const  postUserToken = async (token) =>{
   var path = "/api/auth";
-  var url = 'http://localhost:3000' + path;
+  var url = 'https://where2go-xtr4m.ondigitalocean.app:8080' + path;
   var data = { token: token }
   console.log(data,'api call')
   // Default options are marked with *
@@ -93,7 +93,7 @@ export const  postUserToken = async (token) =>{
 
 export const  verifyToken = async (cookie) =>{
   var path = "/api/verifyCookie";
-  var url = 'http://localhost:3000' + path;
+  var url = 'https://where2go-xtr4m.ondigitalocean.app:8080' + path;
   var data = { cookie: cookie }
   console.log(cookie,' cookie api call')
   const response = await fetch(url, {
