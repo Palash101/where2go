@@ -42,7 +42,7 @@ import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 
 // Service Import
 
-import {emailPasswordSigin,verifyToken,tetsingAPI} from '../../../../service/auth'
+import {emailPasswordSigin,verifyToken} from '../../../../service/auth'
 
 import { userAuth } from '../../../../context/userContext'
 
