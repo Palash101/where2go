@@ -12,9 +12,10 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import moment from "moment";
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 
 
@@ -35,19 +36,29 @@ function DateTimeComponent({handleDateTimeModal}){
 
   const handleClose = () => {
 	setopen(false)
- 
+  
 };
-const dateSplit = () =>{
+
+useEffect(()=>{},[fromTimeValue])
+
+const removeFromArray =(key)=>{
+  const newArray = dateTimeArray.splice(key,1)
+  setDateTimeArray([newArray])
+  handleDateTimeModal([newArray])
+  
 }
 
   const addDateTimeArray = ()=>{
-    const dd = new Date(dateValue).toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ")
-    const fromtimeH = new Date(toTimeValue).getDate()
-    const fromtimeM = new Date(toTimeValue).getMinutes()
-    console.log({fromtimeH,fromtimeM})
-    console.log(dd)
-    setDateTimeArray([...dateTimeArray,{date:dateValue,from:fromTimeValue,to:toTimeValue}])
-    handleDateTimeModal([...dateTimeArray,{date:dateValue,from:fromTimeValue,to:toTimeValue}])
+    const date =  moment(dateValue).format('DD-MM-YYYY');
+    const formTime = moment(fromTimeValue).format('HH:mm a');
+    const toTime = moment(fromTimeValue).format('HH:mm a');
+    const data = {
+      date:date,
+      from:formTime,
+      to:toTime
+    }
+    setDateTimeArray([...dateTimeArray,data])
+    handleDateTimeModal([...dateTimeArray,data])
     handleClose()
 
   }
@@ -75,11 +86,14 @@ const dateSplit = () =>{
               </Box>
               {dateTimeArray.map((data,key)=>
                 (
+                  <>
                  <Box key={key} sx={{
                     display:'flex',
                     alignItems:'center',
-                    border:'2px solid black',
+                    border:'2px solid white',
+                    padding:'2px',
                     borderRadius:'5px',
+                    fontSize:'14px',
                     width:'100px',
                     height:'150px',
                     justifyContent:'center',
@@ -87,15 +101,16 @@ const dateSplit = () =>{
                     marginLeft:'10px'
 
                   }}>
-                <Typography>15 jun</Typography>
+                <Typography>{data.date}</Typography>
                 <Divider />
 
-                <Typography>2022</Typography>
-                <Typography>awad</Typography>
-
-
-
+                <Typography>from:{data.from} </Typography>
+                <Typography>to:{data.to} </Typography>
               </Box>
+              <DeleteIcon 
+              onClick ={(key)=>removeFromArray(key)}
+              />
+              </>
                  
                   )
               )}

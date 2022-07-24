@@ -29,9 +29,13 @@ import { updateEventDetails ,updateEventDate } from 'service/admin/events'
 
 const EventStep2 = ({data,eventId}) => {
 
-  const [openLocation, setopenLocation] = useState(false);
-  const [openDescription, setopenDescription] = useState(false);
-  const [openDate, setopenDate] = useState(false);
+  const [openState, setOpenState] = useState({
+    description:false,
+    dateTime:false,
+    location:false,
+    contact:false
+  })
+
 
   const [description,setDescription]=useState('')
   const [location ,setLocation] = useState('')
@@ -42,40 +46,26 @@ const EventStep2 = ({data,eventId}) => {
 
 
   const handleClickOpen = (type) => {
-    if(type == 'description'){
-        setopenDescription(true)
-    }
-    else if(type == 'location'){
-        setopenLocation(true);
-    }
-    else if(type == 'date'){
-      setopenDate(true);
-  }   
+    setOpenState({...openState,[type]:true})
+ 
   };
 
   const handleClose = (type) => {
-    if(type == 'description'){
-        setopenDescription(false)
-    }
-    else if(type == 'location'){
-        setopenLocation(false);
-
-    }
-    else if(type == 'date'){
-      setopenDate(false);
-
-  }
+    setOpenState({...openState,[type]:false})
 };
 
 
   const handleDateTimeModal = (dateTime) =>{
     setDateTimeArray(dateTime)
   }
+  
   const updateDateTime = ()=>{
+    setLoading(true)
     updateEventDate(eventId,dateTimeArray).then((res)=>console.log(res))
+    setLoading(false)
   }
+
   const handleChipDelete = ()=>{
-    
     console.log(data.event_date,'delete Chip')
 
   }
@@ -107,7 +97,7 @@ const EventStep2 = ({data,eventId}) => {
     handleClose('location')
   }
   useEffect(()=>{
-  },[])
+  },[dateTimeArray])
 
 
 
@@ -122,7 +112,7 @@ const EventStep2 = ({data,eventId}) => {
                 key={key}
                 onClick={handleChipClick}
                 onDelete={handleChipDelete}
-                label={Date(item.date.seconds)}
+                label={'adasd'}
                 deleteIcon={<DeleteIcon />}
                 variant="outlined"
               />
@@ -130,15 +120,15 @@ const EventStep2 = ({data,eventId}) => {
               ))}
             
             </Box>
-          <Button onClick={()=>handleClickOpen('date') } variant="contained">Date & Time</Button>
-          <Dialog open={openDate} onClose={ ()=>handleClose('date')} maxWidth="md" fullWidth>
+          <Button onClick={()=>handleClickOpen('dateTime') } variant="contained">Date & Time</Button>
+          <Dialog open={openState.dateTime} onClose={ ()=>handleClose('dateTime')} maxWidth="md" fullWidth>
             <DialogTitle>Add Event Date Time</DialogTitle>
             <DialogContent >
               <DateTimeComponent handleDateTimeModal={handleDateTimeModal} />
             </DialogContent>
             <DialogActions>
             <Button onClick={()=>updateDateTime()}>Add</Button>
-            <Button onClick={()=>handleClose('date')}>Cancel</Button>
+            <Button onClick={()=>handleClose('dateTime')}>Cancel</Button>
             </DialogActions>
         </Dialog>
           </Grid>
@@ -158,7 +148,7 @@ const EventStep2 = ({data,eventId}) => {
               
             </Box>
           <Button variant="contained" onClick={()=>handleClickOpen('location')}>Address/Map co-ordinates</Button>
-          <Dialog open={openLocation} onClose={ ()=>handleClose('location')}>
+          <Dialog open={openState.location} onClose={ ()=>handleClose('location')}>
             <DialogTitle>Enter Event Location</DialogTitle>
             <DialogContent>
               <Box>
@@ -201,7 +191,7 @@ const EventStep2 = ({data,eventId}) => {
           endIcon={data.description != ''?<EditIcon/>:<AddIcon />}
           variant="contained" 
           onClick={()=>handleClickOpen('description')}>Event Descrption</Button>
-          <Dialog fullWidth open={openDescription} onClose={ ()=>handleClose('description')}>
+          <Dialog fullWidth open={openState.description} onClose={ ()=>handleClose('description')}>
                 <DialogTitle>Enter Event Description</DialogTitle>
                 <DialogContent>
                 <TextField

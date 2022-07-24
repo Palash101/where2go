@@ -106,3 +106,16 @@ export const  verifyToken = async (cookie) =>{
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
+
+
+export const tetsingAPI = async()=>{
+  var path = "/api/test";
+  var url = 'http://localhost:3000' + path;
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+}
