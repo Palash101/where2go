@@ -70,3 +70,37 @@ h5, .h5 {
   text-align: center;
 }
 
+.detailImage{
+  border-radius: 27px;
+  width: 523px;
+  margin: 20px auto;
+  overflow: hidden;
+}
+.detailHeading{
+  font-size: 1.25rem;
+  color: #e1e5ea !important;
+  font-weight: 700;
+}
+.subDetail {
+  display: flex;
+  padding: 10px 0px;
+  border-bottom: 1px solid #dddddd54;
+}
+
+.subDetail span {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+  border-radius: 25px;
+}
+
+.subDetail h5 {
+  font-size: 14px;
+  font-weight: 400;
+}
+.contactLine{
+  margin: 11px;
+  text-align: center;
+  color: #8e8e8e;
+  font-weight: 500;
+}
