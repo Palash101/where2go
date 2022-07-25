@@ -108,14 +108,14 @@ export const  verifyToken = async (cookie) =>{
 }
 
 
-export const tetsingAPI = async()=>{
-  var path = "/api/test";
-  var url = 'http://localhost:3000' + path;
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-  });
+// export const tetsingAPI = async()=>{
+//   var path = "/api/test";
+//   var url = 'http://localhost:3000' + path;
+//   const response = await fetch(url, {
+//     method: 'GET',
+//     headers: {
+//       'Content-Type': 'application/json'
+//     },
+//   });
 
-}
+// }

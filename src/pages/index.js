@@ -21,6 +21,8 @@ import { useEffect } from 'react'
 
 function Item(props)
 {
+
+
     
 return (
         <div style={{borderRadius:'20px',overflow:'hidden'}}>
@@ -35,47 +37,54 @@ return (
     )
 }
 
-// function SlideIthem(props){
-//     console.log(props)
-//     return(
-//         <div className='slideItem'>
-//             <div className='slideItemImage'>
-//             <Image
-//             src={props.item.href}
-//             alt="Picture of the author"
-//             width={253}
-//             height={253}
-//             />
-//             </div>
-//             <p>{props.item.name}</p>
-//         </div>
-//     )
-// }
+
+function renderImage(item){
+    if(item.images){
+        return(
+            <Image
+            src={item.images.banner1}
+            alt="Picture of the author"
+           layout='fill'
+            />
+        )
+    }
+    else{
+        return(
+            <Image
+            src='/images/slide2.jpeg'
+            alt="Picture of the author"
+           layout='fill'
+            />
+        )
+    }
+}
+
 function SlideItem1(props){
+    console.log(props,'props')
     return(
-        <div className='slideItem'>
+        <div className='slideItem' >
             <div className='slideItemImage'>
-                <Image
-                src={props.item.href}
-                alt="Picture of the author"
-               layout='fill'
-                />
+               {renderImage(props.item)}
             </div>
-            <p>{props.item.name}</p>
+            <p>{props.item.event_name}</p>
         </div>
     )
 }
 
 
 function Home(){
-    const [eventData,setEventData] = useState({})
+    const  [allData, setAllData] = useState([]);
+
     useEffect(()=>{
+
     getHomePageEvent().then((data)=>{
-        setEventData(data)
+        setAllData(data)
+        console.log(data,'aadata ')
     })
 
-        
     },[])
+
+
     var items = [
         {
             name: "Random Name #1",
@@ -144,64 +153,48 @@ return(
                 items.map( (item, i) => <Item key={i} item={item} /> )
             }
             </Carousel>
-            <Typography sx={{fontSize:'20px !important',fontWeight:'bold',color:'#4b535f'}} variant='h5'>Entertainment</Typography>
-            <Swiper
-                slidesPerView={4}
-                spaceBetween={30}
-                className="mySwiper"
-                breakpoints={{
-                    "@0.00": {
-                      slidesPerView: 1,
-                      spaceBetween: 10,
-                    },
-                    "@0.75": {
-                      slidesPerView: 2,
-                      spaceBetween: 20,
-                    },
-                    "@1.00": {
-                      slidesPerView: 3,
-                      spaceBetween: 40,
-                    },
-                    "@1.50": {
-                      slidesPerView: 4,
-                      spaceBetween: 50,
-                    },
-                  }}
-            >
-                {
-                    entertainments.map((item,i) => <SwiperSlide key={i} item={item} ><SlideItem1 item={item}/></SwiperSlide>)
-                }
-               
-            </Swiper>
-            <Typography sx={{fontSize:'20px !important',fontWeight:'bold',color:'#4b535f'}} variant='h5'>Music</Typography>
-            <Swiper
-                slidesPerView={4}
-                spaceBetween={30}
-                className="mySwiper"
-                breakpoints={{
-                    "@0.00": {
-                      slidesPerView: 1,
-                      spaceBetween: 10,
-                    },
-                    "@0.75": {
-                      slidesPerView: 2,
-                      spaceBetween: 20,
-                    },
-                    "@1.00": {
-                      slidesPerView: 3,
-                      spaceBetween: 40,
-                    },
-                    "@1.50": {
-                      slidesPerView: 4,
-                      spaceBetween: 50,
-                    },
-                  }}
-            >
-                {
-                    entertainments.map((item,i) => <SwiperSlide key={i} item={item} ><SlideItem1 item={item}/></SwiperSlide>)
-                }
-               
-            </Swiper>
+
+
+            {
+                allData.map((item,key) => (
+                    <div>
+                        <Typography sx={{fontSize:'20px !important',fontWeight:'bold',color:'#4b535f'}} variant='h5'>{item.key}</Typography>
+                        <Swiper
+                            slidesPerView={4}
+                            spaceBetween={30}
+                            className="mySwiper"
+                            breakpoints={{
+                                "@0.00": {
+                                slidesPerView: 1,
+                                spaceBetween: 10,
+                                },
+                                "@0.75": {
+                                slidesPerView: 2,
+                                spaceBetween: 20,
+                                },
+                                "@1.00": {
+                                slidesPerView: 3,
+                                spaceBetween: 40,
+                                },
+                                "@1.50": {
+                                slidesPerView: 4,
+                                spaceBetween: 50,
+                                },
+                            }}
+                        >
+                            {
+                                item.data.map((item1,i) => <SwiperSlide key={i} item={item1} ><SlideItem1 item={item1}/></SwiperSlide>)
+                            }
+                        
+                        </Swiper>
+                    </div>
+                ))
+            }
+
+           
+
+
+           
 
         </Box>
        
