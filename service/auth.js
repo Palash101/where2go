@@ -25,14 +25,13 @@ import {
 import {auth,db} from './main'
 import {firebaseAdmin} from './fireAdmin';  
 
-export  const emailPasswordSigin = (email,password)=>{
+export  const emailPasswordSigin = async (email,password)=>{
   const userId = '';
   const userEmail = '';
   const idToken=';'
   console.log(email,'service')
     return signInWithEmailAndPassword(auth,email,password)
       .then( async(userCredentails)=>{
-          const expiresIn = 5 * 60 * 1000;
           userId = userCredentails.user.uid;
           userEmail = userCredentails.user.email;
           idToken = await userCredentails.user.getIdToken();
@@ -40,6 +39,7 @@ export  const emailPasswordSigin = (email,password)=>{
           //Firebase Admin session
           await postUserToken(idToken)
           console.log('created Seesion')
+          
           return idToken
 
       })
@@ -89,3 +89,33 @@ export const  postUserToken = async (token) =>{
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
+
+
+export const  verifyToken = async (cookie) =>{
+  var path = "/api/verifyCookie";
+  var url = 'http://localhost:3000' + path;
+  var data = { cookie: cookie }
+  console.log(cookie,' cookie api call')
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+  });
+  console.log(response,'client response')
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+
+
+// export const tetsingAPI = async()=>{
+//   var path = "/api/test";
+//   var url = 'http://localhost:3000' + path;
+//   const response = await fetch(url, {
+//     method: 'GET',
+//     headers: {
+//       'Content-Type': 'application/json'
+//     },
+//   });
+
+// }

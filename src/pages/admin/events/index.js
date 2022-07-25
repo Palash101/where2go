@@ -1,3 +1,4 @@
+import{useEffect} from 'react'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
@@ -15,15 +16,23 @@ import { useRouter } from 'next/router'
 import {addEevent} from '../../../../service/admin/events'
 
 import { useState } from 'react'
+import {getAllCategory} from '../../../../service/admin/category'
+import {getAllLocations} from '../../../../service/admin/location'
 
 
-function EventList() {
+function EventCreate() {
     const [eventName,seteventName] = useState('')
     const [country,setCountry] = useState('')
     const [currency,setCurrency] = useState('')
     const [eventType,seteventType] = useState('')
+    const [eventCat, setEventCat] = useState('')
     const [loading,setLoading] = useState(false)
     const router = useRouter()
+
+    const [allCategory,setAllCategory] = useState([])
+    const [allLocation,setAllLocations] = useState([])
+
+
 
 
     
@@ -35,7 +44,7 @@ function EventList() {
         event.preventDefault();
         setLoading(true)
         console.log(loading)
-         await addEevent(eventName,country,currency,eventType)
+         await addEevent(eventName,country,currency,eventType,eventCat)
         .then((data)=>{
 
         console.log(data,'Returned Data')
@@ -43,6 +52,29 @@ function EventList() {
         })
         setLoading(false)
     }
+    
+
+    useEffect(()=>{
+        const getCat =  async()=>{
+        const catData =  await getAllCategory()
+        const catArray =[];
+        catData.docs.forEach(item=>{
+        catArray.push(item.data())
+       })
+        setAllCategory(catArray)
+      }
+         getCat()
+
+        const getLocation =  async()=>{
+        const locationData =  await getAllLocations()
+        const locationArray =[];
+        locationData.docs.forEach(item=>{
+        locationArray.push(item.data())
+           })
+            setAllLocations(locationArray)
+          }
+            getLocation()
+    },[])
 
     
     if(loading == false){
@@ -73,10 +105,15 @@ function EventList() {
                     labelId='form-layouts-separator-select-label'
                     onChange={(e)=>setCountry(e.target.value)}
                     >
-                    <MenuItem value='UK'>UK</MenuItem>
-                    <MenuItem value='USA'>USA</MenuItem>
-                    <MenuItem value='Australia'>Australia</MenuItem>
-                    <MenuItem value='Germany'>Germany</MenuItem>
+                    {
+                        allLocation.map((location)=>(
+                            <MenuItem value={location.name}>{location.name}</MenuItem>
+
+                        ))
+                    }
+                    <MenuItem value='Dubai'>Dubai</MenuItem>
+                    <MenuItem value='Jordan'>Jordan</MenuItem>
+            
                     </Select>
                 </FormControl>
                 </Grid>
@@ -90,11 +127,14 @@ function EventList() {
                     labelId='form-layouts-separator-select-label'
                     onChange={(e)=>setCurrency(e.target.value)}
                     >
-                    <MenuItem value='UK'>QAR</MenuItem>
+                    
+                    <MenuItem value='QAR'>QAR</MenuItem>
+                    <MenuItem value='INR'>INR</MenuItem>
+                    <MenuItem value='USD'>USD</MenuItem>
                     </Select>
                 </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={12}>
+                <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
                     <InputLabel id='form-layouts-separator-select-label'>Event Type</InputLabel>
                     <Select
@@ -104,8 +144,28 @@ function EventList() {
                     labelId='form-layouts-separator-select-label'
                     onChange={(e)=>seteventType(e.target.value)}
                     >
-                    <MenuItem value='Classes'>Classes</MenuItem>
-                    <MenuItem value='Show'>Show</MenuItem>
+                     <MenuItem value='Show'>Show</MenuItem>
+                <MenuItem value='Music'>Music</MenuItem>
+                <MenuItem value='Game'>Game</MenuItem>
+                    </Select>
+                </FormControl>
+                </Grid>
+                 <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                    <InputLabel id='form-layouts-separator-select-label'>Event Category</InputLabel>
+                    <Select
+                    label='Category'
+                    defaultValue='Classes'
+                    id='form-layouts-separator-select'
+                    labelId='form-layouts-separator-select-label'
+                    onChange={(e)=>setEventCat(e.target.value)}
+                    >
+
+                    {allCategory.map((cat)=>(
+                        <MenuItem value={cat.name}>{cat.name}</MenuItem>
+
+                        ))
+                    }
                     </Select>
                 </FormControl>
                 </Grid>
@@ -143,4 +203,4 @@ function EventList() {
     }
 }
 
-export default EventList;
+export default EventCreate;

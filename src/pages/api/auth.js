@@ -5,40 +5,29 @@ import getFirebaseAdmin from './config'
 
 
 export default async function auth(req, res) {
-  // console.log('apl call',req)
   const firebaseAdmin = getFirebaseAdmin()
-    // console.log(firebaseAdmin.getApps(idToken),'firrrrrrrrrrrrrrr')
   try{
-  // const admin = await firebaseAdmin();
-  // console.log(admin,'node APi call')
   
     const expiresIn = 5 * 60 * 1000;
     if (req.method === 'POST') {
       var idToken = req.body.token;
-      console.log(idToken,'idToken')
+      console.log(idToken,'idToken in api')
 
       const cookie = firebaseAdmin.auth().verifyIdToken(idToken)
-      .then((decodedIdToken) => {
+      .then(async (decodedIdToken) => {
       	console.log(decodedIdToken,'decodedIdToken')
-          // Only process if the user just signed in in the last 5 minutes.
       if (new Date().getTime() / 1000 - decodedIdToken.auth_time < 5 * 60) {
           // Create session cookie and set it.
-          return firebaseAdmin.auth().createSessionCookie(idToken, {expiresIn});
+          return await firebaseAdmin.auth().createSessionCookie(idToken, {expiresIn})
+          .then((sessionCookie)=> {
+             const options = {maxAge: expiresIn, httpOnly: true, secure: "true", path: '/'};
+              console.log('Cookie serialize',serialize('user', sessionCookie, options))
+              res.setHeader('Set-Cookie', serialize('user', sessionCookie, options));
+              res.status(200).end(JSON.stringify({ response: 'Succesfull logged in' }))
+          })
           }
-          // A user that was not recently signed in is trying to set a session cookie.
-        // To guard against ID token theft, require re-authentication.
           res.status(401).send('Recent sign in required!');
       });
-
-    if(cookie) {
-      console.log('auth cookie',cookie)
-      // console.log("secure:" + process.env.NEXT_PUBLIC_SECURE_COOKIE);
-        const options = {maxAge: expiresIn, httpOnly: true, secure: "true", path: '/'};
-        res.setHeader('Set-Cookie', serialize('user', cookie, options));
-        res.status(200).end(JSON.stringify({ response: 'Succesfull logged in' }))
-    } else {
-      res.status(401).send('Invalid authentication');
-    }
       
     } 
   }

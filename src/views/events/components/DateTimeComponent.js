@@ -12,12 +12,14 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 import moment from "moment";
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 
 
-function DateTimeComponent(props){
+function DateTimeComponent({handleDateTimeModal}){
   const [open, setopen] = useState(false);
   const [dateValue, setDateValue] = useState(null);
   const [fromTimeValue, setFromTimeValue] = useState(null);
@@ -34,18 +36,30 @@ function DateTimeComponent(props){
 
   const handleClose = () => {
 	setopen(false)
- 
+  
 };
-const dateSplit = () =>{
+
+useEffect(()=>{},[fromTimeValue])
+
+const removeFromArray =(key)=>{
+  const newArray = dateTimeArray.splice(key,1)
+  setDateTimeArray([newArray])
+  handleDateTimeModal([newArray])
+  
 }
 
   const addDateTimeArray = ()=>{
-    console.log({dateValue})
-
-    setDateTimeArray([...dateTimeArray,{date:dateValue,from:fromTimeValue,to:toTimeValue}])
-    handleClose('dateTime')
-    console.log(dateTimeArray,'clicked')
-
+    const date =  moment(dateValue).format('DD-MM-YYYY');
+    const formTime = moment(fromTimeValue).format('HH:mm a');
+    const toTime = moment(fromTimeValue).format('HH:mm a');
+    const data = {
+      date:date,
+      from:formTime,
+      to:toTime
+    }
+    setDateTimeArray([...dateTimeArray,data])
+    handleDateTimeModal([...dateTimeArray,data])
+    handleClose()
 
   }
 
@@ -56,7 +70,7 @@ const dateSplit = () =>{
               You can add more than 1 date time slots
             </Typography>
             <Box sx={{display:'flex', alignItems:'center',justifyContent:'flex-start'}}>
-              <Box onClick={()=>handleClickOpen('dateTime')} width='90px'height='150px' bgcolor='white' alignItems='center' 
+              <Box onClick={()=>handleClickOpen('dateTime')} width='90px'height='150px' bgcolor='yellow' alignItems='center' 
               sx={{
                 display:'flex',
                 padding:'9px',
@@ -64,19 +78,22 @@ const dateSplit = () =>{
                 border:'1px solid #383838',
                 borderRadius:'2px',
                 fontSize:'12px',
-                cursor:'pointer'
+                cursor:'pointer',
+                borderRadius:'10px',
               }}
               >
-                +
-                Add Day
+              <Typography sx={{fontSize:'16px',fontWeight:'bold'}} color="#050721">Add Day</Typography>
               </Box>
-              {dateTimeArray.map((data)=>{
-                return(
-                  <Box sx={{
+              {dateTimeArray.map((data,key)=>
+                (
+                  <>
+                 <Box key={key} sx={{
                     display:'flex',
                     alignItems:'center',
-                    border:'2px solid black',
+                    border:'2px solid white',
+                    padding:'2px',
                     borderRadius:'5px',
+                    fontSize:'14px',
                     width:'100px',
                     height:'150px',
                     justifyContent:'center',
@@ -84,18 +101,19 @@ const dateSplit = () =>{
                     marginLeft:'10px'
 
                   }}>
-                <Typography>Jul</Typography>
-                <Typography>15</Typography>
-                <Typography>2022</Typography>
+                <Typography>{data.date}</Typography>
                 <Divider />
-                <Typography>6:00pm</Typography>
-                <Typography>8:00pm</Typography>
 
-
-
+                <Typography>from:{data.from} </Typography>
+                <Typography>to:{data.to} </Typography>
               </Box>
+              <DeleteIcon 
+              onClick ={(key)=>removeFromArray(key)}
+              />
+              </>
+                 
                   )
-              })}
+              )}
             </Box>
             
             <Dialog open={open} onClose={handleClose}>
@@ -106,7 +124,6 @@ const dateSplit = () =>{
                   <DatePicker
                     label="Date"
                     value={dateValue}
-                    format="DD-MM-YYYY"
                     inputFormat="MM/dd/yyyy"
                     closeOnSelect={true}
                     views={["year", "month", "day"]}
@@ -139,7 +156,8 @@ const dateSplit = () =>{
                   </Box>
                   </Box>
                   
-                </LocalizationProvider>
+                  </LocalizationProvider>
+                  
                 </DialogContent>
               <DialogActions>
               <Button onClick={()=>addDateTimeArray()}>Add</Button>

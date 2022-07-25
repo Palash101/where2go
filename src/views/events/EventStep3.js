@@ -9,20 +9,14 @@ import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
-import CircularProgress from '@mui/material/CircularProgress'
+import InputLabel from '@mui/material/InputLabel'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+
+
 
 import { styled } from '@mui/material/styles'
 
-import DateTimeComponent from './components/DateTimeComponent'
-import LocationComponent from './components/LocationComponent'
-import ContactComponent from './components/ContactComponent'
-
-import { updateEventById } from 'service/admin/events'
 
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
@@ -30,7 +24,6 @@ import ImageListItem from '@mui/material/ImageListItem';
 import {uploadEventImage} from '../../../service/admin/events'
 
 import {
-  deleteObject,
   getDownloadURL,
   uploadBytes,
   getStorage,
@@ -80,7 +73,8 @@ const EventStep3 = ({data,eventId,refreshData}) => {
     const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
     const [imageFile,setImageFile] = useState(null);
     const [eventAllImages,setEventAllImage]=useState([])
-    const [loadding, setLoadding]= useState(false)
+    const [loading, setLoading]= useState(false)
+    const [type,setType] =useState(null)
 
     //Firebase Storgae
     const storage = getStorage();
@@ -100,15 +94,17 @@ const EventStep3 = ({data,eventId,refreshData}) => {
   }
 
   const uploadImage = async ()=>{
-    if(!imageFile){
-      alert('Image cannnot be blacnk')
-      reutrn
+    if(!imageFile || !type){
+      alert('Image cannnot be blank')
+      return
     }
+    setLoading(true)
     const storageRef = ref(storage,imagePath+`/${imageFile.name}`) 
     const task =  await uploadBytes(storageRef,imageFile).then((res)=>console.log(res.ref))
     const url =  await getDownloadURL(storageRef) 
     console.log(url,'Retured URL')
-    await uploadEventImage(eventId,url)
+    await uploadEventImage(eventId,url,type)
+    setLoading(false)
     refreshData(true)
     
   }
@@ -140,35 +136,88 @@ const EventStep3 = ({data,eventId,refreshData}) => {
         <form>
         <Grid container spacing={7}>
           <Grid item xs={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <ImgStyled src={imgSrc} alt='Profile Pic' />
-              <Box>
-                <ButtonStyled component='label' variant='contained' htmlFor='account-settings-upload-image'>
-                  Upload Event Images
-                  <input
-                    type='file'
-                    onChange={onChange}
-                    accept='image/png, image/jpeg'
-                    id='event-upload-image2'
-                  />
-                </ButtonStyled>
+          <Box sx={{ display: 'flex', alignItems: 'center',justifyContent:'space-between ' }}>
+              {/* <ImgStyled src={imgSrc} alt='Profile Pic' /> */}
+              <Box sx={{paddingLeft:'20px',display:'flex',justifyContent:'space-between',padding:'0 20px',width:'100%'}}>
+                <Box>
+                <InputLabel>Banner Type</InputLabel>
+                <Select required  onChange={(e)=>setType(e.target.value)} label='Event Type' defaultValue={type} >
+                  <MenuItem value='main'>Main</MenuItem>
+                  <MenuItem value='banner1'>Square Image 1</MenuItem>
+                  <MenuItem value='banner2'>Square Image 2</MenuItem>
+                </Select>
+                </Box>
+                <Box>
+                  <ButtonStyled component='label' variant='contained' htmlFor='account-settings-upload-image'>
+                    Upload Event Images
+                    <input
+                      type='file'
+                      onChange={onChange}
+                      accept='image/png, image/jpeg'
+                      id='event-upload-image2'
+                    />
+                  </ButtonStyled>
+                  <Typography variant='body2' sx={{ marginTop: 5 }}>
+                    Allowed PNG or JPEG. Max size of 800K.
+                  </Typography>
+                </Box>
+                <Box>
                 <ResetButtonStyled color='success' variant='outlined' onClick={uploadImage}>
                   Upload
                 </ResetButtonStyled>
-                <Typography variant='body2' sx={{ marginTop: 5 }}>
-                  Allowed PNG or JPEG. Max size of 800K.
-                </Typography>
+                </Box>
               </Box>
             </Box>
           </Grid>
           </Grid>
           <Grid container spacing={7}>
-          <Grid item xs={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
-                    {!loadding && data.images.map((item) => (
-                      <ImageListItem key={item}>
+          <Grid item xs={12} sm={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
+          <Box  sx={{ display: 'flex', alignItems: 'center',width:'100%' }}>
+                <Box sx={{ 
+                   alignItems: 'center',
+                  width:'100%',position:'relative',
+                 
+                  }}>
+                  <Typography sx={{marginBottom:'20px',textAlign:'center'}}> Main Banner Image</Typography>
+                  <p style={{textAlign:'center',fontSize:'12px',color:'red'}}> This Image will appear when you mark this event as featured</p>
+
+                  <Box sx={{ position:'relative',height:350,maxWidth:'769px',margin:'auto'}}>
+                    {
+                      data.images?.main ?<Image src={data.images.main} layout='fill' /> : <Image src='/images/no-image.jpg' layout='fill' />
+                    }
+ 
+                  </Box>
+                  
+                  <Box sx={{display:'flex',maxWidth:'769px',margin:'auto',justifyContent:'space-between'}}>
+                    <Box sx={{display:'flex',flexDirection:'column', marginRight:'20px'}}>
+                      <Box sx={{position:'relative',height:150}}>
+                      {
+                      data.images?.banner1 ?<Image src={data.images.banner1} layout='fill' /> : <Image src='/images/no-image.jpg' layout='fill' />
+                    }
+                  
+                        
+                      </Box>
+                      <Box    display='flex' justifyContent='center'>
+                        <Button variant="contained">Square Image 1</Button>
+                      </Box>
+                    </Box>
+                   
+                    <Box sx={{display:'flex',flexDirection:'column'}}>
+                      <Box sx={{position:'relative',height:150}}>
+                      {
+                      data.images?.banner2 ?<Image src={data.images.banner2} layout='fill' /> : <Image src='/images/no-image.jpg' layout='fill' />
+                    }
+                      </Box>
+                      <Box display='flex' justifyContent='center'>
+                        <Button variant="contained">Square Image 2</Button>
+                      </Box>
+                    </Box>
+                  </Box>
+                 
+                 
+                {/* <ImageList sx={{ width: '100%', height: 450 }} cols={2} rowHeight={164}>
+                    {!loadding && data.images.map((item,key) => (
+                      <ImageListItem key={key}>
                       <img
                         src={`${item}?w=164&h=164&fit=crop&auto=format`}
                         srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
@@ -176,7 +225,7 @@ const EventStep3 = ({data,eventId,refreshData}) => {
                       />
                     </ImageListItem>
                     ))}
-                  </ImageList>
+                  </ImageList> */}
 
               </Box>
             </Box>

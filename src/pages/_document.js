@@ -13,7 +13,7 @@ import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
 class CustomDocument extends Document {
   render() {
     return (
-      <Html lang='en'>
+      <Html  lang='en'>
         <Head>
           <link rel='preconnect' href='https://fonts.googleapis.com' />
           <link rel='preconnect' href='https://fonts.gstatic.com' />
@@ -46,6 +46,7 @@ CustomDocument.getInitialProps = async ctx => {
         )
     })
   const initialProps = await Document.getInitialProps(ctx)
+  console.log(ctx?.locale,'context local')
   const emotionStyles = extractCriticalToChunks(initialProps.html)
 
   const emotionStyleTags = emotionStyles.styles.map(style => {

@@ -85,7 +85,6 @@ function ContactComponent(){
           id="outlined-required"
           type={fieldType}
           label="Required"
-          defaultValue="user@example.com"
           InputProps={{
             startAdornment: <InputAdornment position="start">
             {fieldIcon}
@@ -93,7 +92,35 @@ function ContactComponent(){
           }}
         />
         <DeleteIcon 
-        onClick={removeElFromArray}
+        onClick={(key)=>removeElFromArray(key)}
+
+        />
+        </Box>
+
+          )
+
+    }
+
+
+
+    const renderInputEl = (icon,type,key)=>{
+      const fieldType = type
+      const fieldIcon = getIconType(icon)
+        return(
+          <Box>
+          <TextField
+          required
+          id="outlined-required"
+          type={fieldType}
+          label="Required"
+          InputProps={{
+            startAdornment: <InputAdornment position="start">
+            {fieldIcon}
+            </InputAdornment>,
+          }}
+        />
+        <DeleteIcon 
+        onClick={(key)=>removeElFromArray(key)}
 
         />
         </Box>
@@ -106,7 +133,8 @@ function ContactComponent(){
       setInputElArray([...inputElArray,getInputElType(icon,type)])
     }
 
-    const removeElFromArray = ()=>{
+    const removeElFromArray = (key)=>{
+      console.log(key)
 
     }
   
@@ -179,8 +207,12 @@ function ContactComponent(){
             <DialogTitle sx={{backgroundColor:'#373c44',color:'white',fontSize:'1rem'}}>Event Contacts</DialogTitle>
             <Typography padding='10px' component='p'>Add contact details for the visitors to your event page and your event attendees.</Typography>
             <DialogContent>
-              <Box>
-                {inputElArray.map((el,key)=>el
+              <Box sx={{width:'100%'}}>
+                {inputElArray.map((el,key)=>(
+                  <Box key={key}>
+                    {el}
+                  </Box>
+                  )
                 )}
               </Box>
                 <Divider sx={{ margin: 0 }} />
