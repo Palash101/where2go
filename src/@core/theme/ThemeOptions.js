@@ -13,6 +13,7 @@ const themeOptions = settings => {
 
   const themeConfig = {
     palette: palette(mode, themeColor),
+    direction: 'rtl',
     typography: {
       fontFamily: [
         'Inter',
