@@ -17,6 +17,7 @@ import "swiper/css";
 
 import{getHomePageEvent,getCategory} from '../../service/admin/events'
 import { useEffect } from 'react'
+import CircularProgress from '@mui/material/CircularProgress'
 
 
 
@@ -24,6 +25,7 @@ import { useEffect } from 'react'
 
 function Home(navigation){
     const  [allData, setAllData] = useState([]);
+    const  [loading, setLoading] = useState(true);
     const router = useRouter();
 
     useEffect(()=>{
@@ -35,6 +37,7 @@ function Home(navigation){
     const getMainData =()=>{
         getHomePageEvent().then((data) => {
             setAllData(data)
+            setLoading(false)
             console.log(data,'alldt')
         })
 
@@ -141,7 +144,7 @@ return(
 
 
 
-             {allData.length && 
+             {allData.length > 0 && 
                 allData.map((item,key) => ( 
                     <div>
                         
@@ -187,7 +190,14 @@ return(
            
 
         </Box>
-       
+        {loading === true && (
+            <Box sx={{ display: 'flex',justifyContent:'center',alignItems:'center',backgroundColor: 'rgb(0 0 0 / 39%)',zIndex: 99999999,position: 'fixed',left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0, }}>
+                  <CircularProgress />
+              </Box>
+            )}
         </>
         
 
