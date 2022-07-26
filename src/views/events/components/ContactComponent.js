@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -49,6 +51,10 @@ function ContactComponent(){
 
     const router = useRouter()
 
+    useEffect(()=>{
+      
+    },[inputElArray])
+
 
     const handleClickOpen = () => {
         setOpen(true)
@@ -79,23 +85,19 @@ function ContactComponent(){
       const fieldType = type
       const fieldIcon = getIconType(icon)
         return(
-          <Box>
+         
           <TextField
-          required
-          id="outlined-required"
-          type={fieldType}
-          label="Required"
-          InputProps={{
-            startAdornment: <InputAdornment position="start">
-            {fieldIcon}
-            </InputAdornment>,
-          }}
-        />
-        <DeleteIcon 
-        onClick={(key)=>removeElFromArray(key)}
-
-        />
-        </Box>
+            required
+            id="outlined-required"
+            type={fieldType}
+            label="Required"
+            InputProps={{
+              startAdornment: <InputAdornment position="start">
+              {fieldIcon}
+              </InputAdornment>,
+            }}
+          />
+        
 
           )
 
@@ -120,7 +122,7 @@ function ContactComponent(){
           }}
         />
         <DeleteIcon 
-        onClick={(key)=>removeElFromArray(key)}
+        onClick={()=>removeElFromArray(key)}
 
         />
         </Box>
@@ -134,7 +136,12 @@ function ContactComponent(){
     }
 
     const removeElFromArray = (key)=>{
-      console.log(key)
+      console.log(key,inputElArray)
+
+      var array = inputElArray; 
+        array.splice(key, 1);
+        console.log(array)
+        setInputElArray(array);
 
     }
   
@@ -209,8 +216,13 @@ function ContactComponent(){
             <DialogContent>
               <Box sx={{width:'100%'}}>
                 {inputElArray.map((el,key)=>(
-                  <Box key={key}>
+                  <Box key={key} sx={{marginBottom:'10px',marginTop:'5px'}}>
+                     <Box>
                     {el}
+                    <DeleteIcon 
+                      onClick={()=>removeElFromArray(key)}
+                      />
+                      </Box>
                   </Box>
                   )
                 )}

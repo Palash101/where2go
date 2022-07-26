@@ -181,7 +181,7 @@ const EventStep3 = ({data,eventId,refreshData}) => {
                   <Typography sx={{marginBottom:'20px',textAlign:'center'}}> Main Banner Image</Typography>
                   <p style={{textAlign:'center',fontSize:'12px',color:'red'}}> This Image will appear when you mark this event as featured</p>
 
-                  <Box sx={{ position:'relative',height:350,maxWidth:'769px',margin:'auto'}}>
+                  <Box sx={{ position:'relative',height:350,maxWidth:'769px',margin:'auto',marginBottom:'20px',borderRadius:'12px',overflow:'hidden'}}>
                     {
                       data.images?.main ?<Image src={data.images.main} layout='fill' /> : <Image src='/images/no-image.jpg' layout='fill' />
                     }
@@ -189,8 +189,8 @@ const EventStep3 = ({data,eventId,refreshData}) => {
                   </Box>
                   
                   <Box sx={{display:'flex',maxWidth:'769px',margin:'auto',justifyContent:'space-between'}}>
-                    <Box sx={{display:'flex',flexDirection:'column', marginRight:'20px'}}>
-                      <Box sx={{position:'relative',height:150}}>
+                    <Box sx={{display:'flex',flexDirection:'column', marginRight:'20px',borderRadius: '12px',overflow: 'hidden'}}>
+                      <Box sx={{position:'relative',height:150,borderRadius:'12px'}}>
                       {
                       data.images?.banner1 ?<Image src={data.images.banner1} layout='fill' /> : <Image src='/images/no-image.jpg' layout='fill' />
                     }
@@ -198,18 +198,18 @@ const EventStep3 = ({data,eventId,refreshData}) => {
                         
                       </Box>
                       <Box    display='flex' justifyContent='center'>
-                        <Button variant="contained">Square Image 1</Button>
+                        <Button variant="contained" sx={{borderTopLeftRadius:0,borderTopRightRadius:0}}>Square Image 1</Button>
                       </Box>
                     </Box>
                    
-                    <Box sx={{display:'flex',flexDirection:'column'}}>
+                    <Box sx={{display:'flex',flexDirection:'column',borderRadius: '12px',overflow: 'hidden'}}>
                       <Box sx={{position:'relative',height:150}}>
                       {
                       data.images?.banner2 ?<Image src={data.images.banner2} layout='fill' /> : <Image src='/images/no-image.jpg' layout='fill' />
                     }
                       </Box>
                       <Box display='flex' justifyContent='center'>
-                        <Button variant="contained">Square Image 2</Button>
+                        <Button variant="contained" sx={{borderTopLeftRadius:0,borderTopRightRadius:0}}>Square Image 2</Button>
                       </Box>
                     </Box>
                   </Box>

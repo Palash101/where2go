@@ -24,7 +24,6 @@ import { useEffect } from 'react'
 
 function Home(navigation){
     const  [allData, setAllData] = useState([]);
-    const  [categories, setCategories] = useState([]);
     const router = useRouter();
 
     useEffect(()=>{
@@ -34,13 +33,9 @@ function Home(navigation){
     },[navigation])
 
     const getMainData =()=>{
-        getCategory().then((data)=>{
-            setCategories(data)
-        })
-
         getHomePageEvent().then((data) => {
             setAllData(data)
-            console.log(data)
+            console.log(data,'alldt')
         })
 
     }
@@ -93,10 +88,9 @@ function renderImage(item){
 }
 
 
-function SlideItem(item,cat){
-    if(item.category === cat.name){
+function SlideItem(item,i){
         return(
-            <SwiperSlide key={item.event_name} >
+            <SwiperSlide key={i} >
                 <div className='slideItem' onClick={() => router.push({
                     pathname: '/details/[id]',
                     query: { id: item.id},
@@ -108,7 +102,6 @@ function SlideItem(item,cat){
                 </div>
              </SwiperSlide>
         )
-    }
 }
 
     var items = [
@@ -148,13 +141,13 @@ return(
 
 
 
-             {categories.length && 
-                categories.map((item,key) => ( 
+             {allData.length && 
+                allData.map((item,key) => ( 
                     <div>
-                         {allData.filter(item2 => item2.category === item.name).length > 0 && (
-                            <Typography sx={{fontSize:'20px !important',fontWeight:'bold',color:'#4b535f'}} variant='h5'>{item.name}</Typography>
+                        
+                        <Typography sx={{fontSize:'20px !important',fontWeight:'bold',color:'#4b535f'}} variant='h5'>{item.key}</Typography>
                       
-                       )}
+                       
                        
                         <Swiper
                             slidesPerView={4}
@@ -179,8 +172,8 @@ return(
                                 },
                             }}
                         >
-                            {allData &&
-                                allData.map((item1,i) => SlideItem(item1,item)
+                            {item.data &&
+                                item.data.map((item1,i) => SlideItem(item1,i)
                                 )
                             }
                             

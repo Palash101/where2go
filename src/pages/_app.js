@@ -27,6 +27,8 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 // ** Global css styles
 import '../../styles/globals.css'
 import { AuthUserProvider } from '../../context/userContext';
+import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer } from 'react-toastify';
 
 
 
@@ -56,7 +58,9 @@ const App = props => {
 
 
   return (
+    
     <AuthUserProvider>
+       <ToastContainer />
     <CacheProvider value={emotionCache}>
       <Head>
         <title>{`${themeConfig.templateName} `}</title>

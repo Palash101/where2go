@@ -113,27 +113,6 @@ export const updateEventData = async (eventId,data)=>{
     
 
 }
-
-// export const getHomePageEvent = async ()=>{
-//     const q = query(collection(db, "category"), where("status", "==", '1'))
-//     const queryDoc =  await getDocs(q);
-//     const mydata =   queryDoc.forEach( async(doc) => {
-//         const cat = doc.data().name;
-//         const q = query(collection(db, "events"), where("category", "==", cat))
-//         const eventCatObj ={}
-//         const tempEventArray = [];
-//         const eventDoc = await getDocs(q);
-//         eventDoc.forEach((eventDoc)=>{
-//             tempEventArray.push(eventDoc.data())
-//         })
-//         eventCatObj[cat] = tempEventArray
-//         return eventCatObj
-
-
-//     });
-//     console.log(mydata)
-    
-// }
 export const getCategory = async ()=>{
     try{
         const q = query(collection(db, "category"), where("status", "==", '1'));
@@ -149,101 +128,34 @@ export const getCategory = async ()=>{
     }
     
 }
-// export const getHomePageEvent = async (cat)=>{
-//     try{
-//         const q = query(collection(db, "events"), where("category", "==", cat));
-//         var dt = [];
-//         const querySnapshot = await getDocs(q);
-//         querySnapshot.forEach((doc) => {
-//         dt.push(doc.data());
-//         });
-//         return dt;
-//     }
-//     catch(error){
-//         return{error:'error',message:'Something went wrong',devmsg:error}
-//     }
-    
-// }
 export const getHomePageEvent = async ()=>{
-    try{
-        const q = query(collection(db, "events"));
-        var dt = [];
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-                dt.push({
-                    ...doc.data(),
-                    id: doc.id
-                });
-        });
-        return dt;
+    const temp = []
+    const q = query(collection(db, "category"), where("status", "==", '1'))
+    const queryDoc =  await getDocs(q);
+    if(queryDoc.empty === false){
+        for(let i=0;i<queryDoc.docs.length;i++){
+            const catName =  queryDoc.docs[i].data().name;
+            const q = query(collection(db, "events"), where("category", "==", catName))
+            const d = await getDocs(q).then((doc)=>{
+                console.log('event doc',doc.empty)
+                const tempData = []
+                    doc.forEach((data)=>{
+                        if(doc.size > 0){
+                            tempData.push({
+                                ...data.data(),
+                                id:data.id
+                            })
+                        }
+                    }) 
+                console.log(tempData,'tempdata')
+                return tempData
+            })
+            if(d.length > 0){
+                temp.push({key:catName,data:d})
+            }
+            
+        }
+        console.log(temp.length,'calling main temp')
+        return temp
     }
-    catch(error){
-        return{error:'error',message:'Something went wrong',devmsg:error}
-    }
-    
 }
-// export const getHomePageEvent = async (cat) =>{
-//         let result = [];
-//             await getDocs(
-//                 query(collection(db, "events"), where("category", "==", cat))
-//             ).then((res) => {
-                
-//                 if (res.size > 0) {
-//                 let data = [];
-//                 res.docs.forEach((doc) => {
-//                     data.push(doc.data());
-//                 });
-//                 var temp = {label:data[0].category,value:data};
-
-//                 result = temp;
-//                 } else {
-//                 result = [];
-//                 }
-//             });
-//             return result;
-//     };
-
-// export const getHomePageEvent = async() =>{
-    
-//         const allEventsArray =[];
-//         const q = query(collection(db, "category"), where("status", "==", '1'))
-//         const queryDoc =  await getDocs(q);
-//         return queryDoc.forEach( async(doc) => {
-//             const cat = doc.data().name;
-//             const q1 = query(collection(db, "events"), where("category", "==", cat))
-//             const eventDoc = await getDocs(q1);
-//             eventDoc.forEach((eventDoc)=>{
-//                 const tempEventObject = {key:cat,data:eventDoc.data()}
-//                 console.log(tempEventObject)
-//                 allEventsArray.push(tempEventObject) 
-//             })
-//             return allEventsArray;
-    
-//         });
-//        // return allEventsArray;
-
-
-// }
-// export const getHomePageEvent = () =>{
-    
-//     return new Promise(async (resolve, reject) => {
-//         const eventCatObj ={};
-//         const q = query(collection(db, "category"), where("status", "==", '1'))
-//         const queryDoc =  await getDocs(q);
-//         queryDoc.forEach( async(doc) => {
-//             const cat = doc.data().name;
-//             const q = query(collection(db, "events"), where("category", "==", cat))
-//             // const eventCatObj ={}
-//             const tempEventArray = [];
-//             const eventDoc = await getDocs(q);
-//             eventDoc.forEach((eventDoc)=>{
-//                 tempEventArray.push(eventDoc.data())
-//             })
-//             eventCatObj[cat] = tempEventArray    
-    
-//         });
-//         resolve(eventCatObj);
-//       });
-
-
-// }

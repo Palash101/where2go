@@ -80,6 +80,7 @@ const AccountSettings = () => {
   }
 
   useEffect(()=>{
+   
     if(router.isReady){
       setLoading(true)
       setRouterParams(router.query.eventId)
@@ -204,10 +205,12 @@ const AccountSettings = () => {
 }
 else{
   return(
-
-    <Box sx={{ display: 'flex',justifyContent:'center',alignItems:'center' }}>
-    <CircularProgress />
-</Box>
+    <div>
+      
+      <Box sx={{ display: 'flex',justifyContent:'center',alignItems:'center' }}>
+          <CircularProgress />
+      </Box>
+    </div>
 )
 }
 }

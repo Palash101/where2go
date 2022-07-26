@@ -25,6 +25,7 @@ import ContactComponent from './components/ContactComponent'
 
 import { updateEventDetails ,updateEventDate } from 'service/admin/events'
 import { async } from '@firebase/util'
+import {toast } from 'react-toastify';
 
 
 
@@ -128,12 +129,13 @@ const EventStep2 = ({data,eventId,refreshData}) => {
                 label={dateTimeChip(item) }
                 deleteIcon={<DeleteIcon />}
                 variant="outlined"
+                sx={{marginRight:'15px'}}
               />
 
               ))}
-            
+             <Button onClick={()=>handleClickOpen('dateTime') } variant="contained">Date & Time</Button>
+         
             </Box>
-          <Button onClick={()=>handleClickOpen('dateTime') } variant="contained">Date & Time</Button>
           <Dialog open={openState.dateTime} onClose={ ()=>handleClose('dateTime')} maxWidth="md" fullWidth>
             <DialogTitle>Add Event Date Time</DialogTitle>
             <DialogContent >
@@ -198,12 +200,13 @@ const EventStep2 = ({data,eventId,refreshData}) => {
               <Typography>No Description Added. Please Add</Typography>
               :<Typography>{data.description}</Typography>
               }
-              
-            </Box>
-          <Button 
+               <Button 
           endIcon={data.description != ''?<EditIcon/>:<AddIcon />}
           variant="contained" 
+          sx={{marginTop:'10px'}}
           onClick={()=>handleClickOpen('description')}>Event Descrption</Button>
+            </Box>
+         
           <Dialog fullWidth open={openState.description} onClose={ ()=>handleClose('description')}>
                 <DialogTitle>Enter Event Description</DialogTitle>
                 <DialogContent>

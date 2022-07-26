@@ -14,6 +14,7 @@ import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
 import CircularProgress from '@mui/material/CircularProgress'
+import {toast } from 'react-toastify';
 
 //Service Imports
 import {updateEventData} from '../../../service/admin/events'
@@ -42,7 +43,7 @@ const EventStep1 = ({data,eventId,refreshData}) => {
       currency:currency,
       category:category
     }
-    await updateEventData(eventId,eventData).then((res)=>console.log(res))
+    await updateEventData(eventId,eventData).then((res)=> toast("Details updated successfully"))
     refreshData()
     setLoading(false)
 
@@ -74,6 +75,7 @@ const EventStep1 = ({data,eventId,refreshData}) => {
 
   return (
     <CardContent>
+     
       <form>
         <Grid container spacing={7}>
 
