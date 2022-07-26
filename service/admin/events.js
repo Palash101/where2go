@@ -55,7 +55,6 @@ export const getAllEvents = async()=>{
 
 
 export const getEventById = async(eventId)=>{
-    console.log(eventId)
     const docRef = doc(db, "events", eventId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
@@ -165,27 +164,44 @@ export const getCategory = async ()=>{
 //     }
     
 // }
-
-export const getHomePageEvent = async (cat) =>{
-        let result = [];
-            await getDocs(
-                query(collection(db, "events"), where("category", "==", cat))
-            ).then((res) => {
-                
-                if (res.size > 0) {
-                let data = [];
-                res.docs.forEach((doc) => {
-                    data.push(doc.data());
+export const getHomePageEvent = async ()=>{
+    try{
+        const q = query(collection(db, "events"));
+        var dt = [];
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+                dt.push({
+                    ...doc.data(),
+                    id: doc.id
                 });
-                var temp = {label:data[0].category,value:data};
+        });
+        return dt;
+    }
+    catch(error){
+        return{error:'error',message:'Something went wrong',devmsg:error}
+    }
+    
+}
+// export const getHomePageEvent = async (cat) =>{
+//         let result = [];
+//             await getDocs(
+//                 query(collection(db, "events"), where("category", "==", cat))
+//             ).then((res) => {
+                
+//                 if (res.size > 0) {
+//                 let data = [];
+//                 res.docs.forEach((doc) => {
+//                     data.push(doc.data());
+//                 });
+//                 var temp = {label:data[0].category,value:data};
 
-                result = temp;
-                } else {
-                result = [];
-                }
-            });
-            return result;
-    };
+//                 result = temp;
+//                 } else {
+//                 result = [];
+//                 }
+//             });
+//             return result;
+//     };
 
 // export const getHomePageEvent = async() =>{
     

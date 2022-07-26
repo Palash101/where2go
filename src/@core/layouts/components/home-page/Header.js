@@ -25,6 +25,7 @@ import ListItemText from '@mui/material/ListItemText';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 
 import themeConfig from 'src/configs/themeConfig'
+import router from 'next/router';
 
 
 
@@ -121,9 +122,9 @@ const list = (bgclr) => (
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h4" component="div" sx={{ flexGrow: 1,color:'yellow' }}>
+          <div style={{ flexGrow: 1,cursor:'pointer' }} onClick={() => router.push('/')}>
            <img src="/images/logos/logo.png" style={{height: '50px',marginTop: '10px'}}/>
-          </Typography>
+          </div>
           <ModeToggler settings={settings} saveSettings={saveSettings} />
           <Button color="inherit">Login</Button>
         </Toolbar>

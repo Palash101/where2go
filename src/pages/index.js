@@ -13,7 +13,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useRouter } from 'next/router'
 import "swiper/css";
 
-
 //Service Imports here
 
 import{getHomePageEvent,getCategory} from '../../service/admin/events'
@@ -25,6 +24,7 @@ import { useEffect } from 'react'
 
 function Home(navigation){
     const  [allData, setAllData] = useState([]);
+    const  [categories, setCategories] = useState([]);
     const router = useRouter();
 
     useEffect(()=>{
@@ -34,33 +34,29 @@ function Home(navigation){
     },[navigation])
 
     const getMainData =()=>{
-         var adata = [];
         getCategory().then((data)=>{
-            for(var i = 0;i<data.length;i++){
-                var dt = data[i];
-                getHomePageEvent(dt.name).then((data1)=>{
-                    console.log(data1)
-                        adata.push(data1)
-                });
-            }
+            setCategories(data)
         })
-        console.log(adata.length,'adata')
-        setAllData(adata)
+
+        getHomePageEvent().then((data) => {
+            setAllData(data)
+            console.log(data)
+        })
 
     }
 
 
-    function Item(props)
+function Item(props)
 {
     
 return (
-        <div style={{borderRadius:'20px',overflow:'hidden'}} className='bannerImage'>
-            <Image
+        <div style={{borderRadius:'20px',overflow:'hidden',backgroundImage:'url('+props.item.href+')'}} className='bannerImage'>
+            {/* <img
             src={props.item.href}
             alt="Picture of the author"
-            layout='fill'
+            className='sliderImage'
             
-            />
+            /> */}
         </div>
     )
 }
@@ -69,67 +65,57 @@ return (
 function renderImage(item){
     if(item.href){
         return(
-            <Image
+            <img
             src={item.href}
             alt="Picture of the author"
-           layout='fill'
+            className='itemImage1'
             />
         )
     }
     else if(item.images){
         return(
-            <Image
+            <img
             src={item.images.banner1}
             alt="Picture of the author"
-           layout='fill'
+            className='itemImage1'
             />
         )
     }
     else{
         return(
-            <Image
-            src='/images/slide2.jpeg'
+            <img
+            src='/images/logos/logo.png'
             alt="Picture of the author"
-           layout='fill'
+            className='itemImage'
             />
         )
     }
 }
 
-function SlideItem1(props){
-    return(
-        <div className='slideItem' onClick={() => router.push({
-            pathname: '/details/[id]',
-            query: { id: props.item.name},
-          })}>
-            <div className='slideItemImage'>
-               {renderImage(props.item)}
-            </div>
-            <p>{props.item.name}</p>
-        </div>
-    )
-}
 
-function SlideItem(props){
-    return(
-        <div className='slideItem' onClick={() => router.push({
-            pathname: '/details/[id]',
-            query: { id: props.item.event_name},
-          })}>
-            <div className='slideItemImage'>
-               {renderImage(props.item)}
-            </div>
-            <p>{props.item.event_name}</p>
-        </div>
-    )
+function SlideItem(item,cat){
+    if(item.category === cat.name){
+        return(
+            <SwiperSlide key={item.event_name} >
+                <div className='slideItem' onClick={() => router.push({
+                    pathname: '/details/[id]',
+                    query: { id: item.id},
+                    })}>
+                    <div className='slideItemImage'>
+                        {renderImage(item)}
+                    </div>
+                    <p>{item.event_name}</p>
+                </div>
+             </SwiperSlide>
+        )
+    }
 }
-    console.log(allData,'aasdata ')
 
     var items = [
         {
             name: "Random Name #1",
             description: "Probably the most random thing you have ever seen!",
-            href:'/images/slideimge1.jpg'
+            href:'/images/slideimage1.jpg'
 
         },
         {
@@ -139,41 +125,7 @@ function SlideItem(props){
         }
     ]
     
-    var entertainments = [
-        {
-            name: "Random Name #1",
-            description: "Probably the most random thing you have ever seen!",
-            href:'/images/slide1.jpeg'
-
-        },
-        {
-            name: "Random Name #2",
-            description: "Hello World!",
-            href:'/images/slide2.jpeg'
-        },
-        {
-            name: "Random Name #1",
-            description: "Probably the most random thing you have ever seen!",
-            href:'/images/slide3.jpeg'
-
-        },
-        {
-            name: "Random Name #2",
-            description: "Hello World!",
-            href:'/images/slide4.jpeg'
-        },
-        {
-            name: "Random Name #1",
-            description: "Probably the most random thing you have ever seen!",
-            href:'/images/slide1.jpeg'
-
-        },
-        {
-            name: "Random Name #2",
-            description: "Hello World!",
-            href:'/images/slide2.jpeg'
-        }
-    ]
+  
 
 return(
         <>
@@ -195,53 +147,22 @@ return(
             </Carousel>
 
 
-            {/*{allData.length && 
-                allData.map((item,key) => ( */}
-                    <div>
-                        <Typography sx={{fontSize:'20px !important',fontWeight:'bold',color:'#4b535f'}} variant='h5'>Entertainment</Typography>
-                        <Swiper
-                            slidesPerView={4}
-                            spaceBetween={30}
-                            className="mySwiper"
-                            breakpoints={{
-                                "@0.00": {
-                                slidesPerView: 1,
-                                spaceBetween: 10,
-                                },
-                                "@0.75": {
-                                slidesPerView: 2,
-                                spaceBetween: 20,
-                                },
-                                "@1.00": {
-                                slidesPerView: 3,
-                                spaceBetween: 40,
-                                },
-                                "@1.50": {
-                                slidesPerView: 4,
-                                spaceBetween: 50,
-                                },
-                            }}
-                        >
-                            {
-                                entertainments.map((item1,i) => <SwiperSlide key={i} item={item1} ><SlideItem1 item={item1}/></SwiperSlide>)
-                            }
-                        
-                        </Swiper>
-                    </div>
-                {/* ))
-            } */}
 
-             {allData.length && 
-                allData.map((item,key) => ( 
+             {categories.length && 
+                categories.map((item,key) => ( 
                     <div>
-                        <Typography sx={{fontSize:'20px !important',fontWeight:'bold',color:'#4b535f'}} variant='h5'>{item.label}</Typography>
+                         {allData.filter(item2 => item2.category === item.name).length > 0 && (
+                            <Typography sx={{fontSize:'20px !important',fontWeight:'bold',color:'#4b535f'}} variant='h5'>{item.name}</Typography>
+                      
+                       )}
+                       
                         <Swiper
                             slidesPerView={4}
                             spaceBetween={30}
                             className="mySwiper"
                             breakpoints={{
                                 "@0.00": {
-                                slidesPerView: 1,
+                                slidesPerView: 2,
                                 spaceBetween: 10,
                                 },
                                 "@0.75": {
@@ -258,10 +179,11 @@ return(
                                 },
                             }}
                         >
-                            {item.value &&
-                                item.value.map((item1,i) => <SwiperSlide key={i} item={item1} ><SlideItem item={item1}/></SwiperSlide>)
+                            {allData &&
+                                allData.map((item1,i) => SlideItem(item1,item)
+                                )
                             }
-                        
+                            
                         </Swiper>
                     </div>
                  ))
