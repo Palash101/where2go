@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { styled, useTheme } from '@mui/material/styles'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -34,6 +34,8 @@ import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { signInWithPhoneNumber } from "firebase/auth";
 import { RecaptchaVerifier } from "firebase/auth";
+import {toast} from 'react-toastify';
+import OtpInput from 'react-otp-input';
 
 
 
@@ -43,60 +45,6 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }))
 
 
-const list = (bgclr) => (
-  <Box
-    sx={{ width:250, height:'100%',backgroundColor:bgclr }}
-  >
-    <Box
-    sx={{backgroundColor:'#ffe600', padding:'20px 0px ', display:'flex',alignItems:'center',justifyContent:'center'}}
-    >
-      <Button sx={{backgroundColor:"#17a2b8",color:'white'}}>Sign up / Log In</Button>
-
-    </Box>
-    <List>
-    <ListItem  disablePadding>
-      <ListItemButton>
-        <ListItemIcon>
-        <HomeIcon />
-        </ListItemIcon>
-        <ListItemText primary='Home' />
-      </ListItemButton>
-    </ListItem>
-    <ListItem  disablePadding>
-      <ListItemButton>
-        <ListItemIcon>
-        <MailIcon />
-        </ListItemIcon>
-        <ListItemText primary='Browse Events' />
-      </ListItemButton>
-    </ListItem>
-    <ListItem  disablePadding>
-      <ListItemButton>
-        <ListItemIcon>
-        <LocalActivityIcon />
-        </ListItemIcon>
-        <ListItemText primary='My Tickets' />
-      </ListItemButton>
-    </ListItem>
-    <Divider />
-    <ListItem  disablePadding>
-      <ListItemButton>
-        <ListItemIcon>
-        <MailIcon />
-        </ListItemIcon>
-        <ListItemText primary='Contact Us' />
-      </ListItemButton>
-    </ListItem>
-    <Divider />
-    <ListItem  disablePadding>
-      <ListItemButton>
-      About us
-      </ListItemButton>
-    </ListItem>
-    </List>
-   
-  </Box>
-);
 
 const style = {
   position: 'absolute',
@@ -119,20 +67,26 @@ const style = {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
   const [phone, setPhone] = useState('');
-
-  const [values, setValues] = useState({
-    otp: '',
-    showOtp: false,
-    phone:'',
-  })
+  const [otp, setOtp] = useState('');
+  const [user, setUser] = useState({});
+  const [showOtp, setShowOtp] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [reloadPage, setReloadPage] = useState(false)
 
-  const handleChange = prop => event => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
+  useEffect(() => {
+   
 
+    if(localStorage.getItem('user')){
+      var newuser = localStorage.getItem('user');
+    
+      setUser(JSON.parse(newuser));
+    }
+    else{
+      setUser({});
+    }
+
+  },[reloadPage])
 
   const requestOtp = ()=>{
     window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-verfier', {
@@ -142,35 +96,36 @@ const style = {
         onSignInSubmit();
       }
     }, auth);
-
 }
 
 
-const handleOtpVerifcation = (e)=>{
-  e.preventDefault();
-
-  // set OTP in State ot and use it here
-   const otp = '0384939'
-   // Check for OTP lenght Must be 6 digit
-
+const handleOtpVerifcation = ()=>{
+  console.log(otp)
+  if(otp && otp.length === 6){
+    setLoading(true)
    let confirmationResult = window.confirmationResult;
-   // Handle Error if not window resultl
-
    confirmationResult.confirm(otp).then((loginResult)=>{
-
-    //Console.log(loginResult)
-    const user = resultl.user
-
+    console.log(loginResult.user.phoneNumber,loginResult.user.accessToken)
+    toast("You have successfully login");
+   var user ={
+    phoneNumber:loginResult.user.phoneNumber,
+    accessToken:loginResult.user.accessToken
+   }
+   setUser(user)
+    localStorage.setItem('user',JSON.stringify(user))
+    setOpen(false);
+    router.push('user/dashboard')
+    setLoading(false)
    })
    .catch((error)=>{
-
-    //Handle Errors
-    //Console.log(error)
-
-
+    setLoading(false)
+    console.log(error)
+    toast(error.message);
    })
-
-
+  }
+  else{
+    toast("please enter 6 digit OTP.")
+  }
 
 
 }
@@ -178,28 +133,22 @@ const handleOtpVerifcation = (e)=>{
 
   
   const handleLogin = ()=>{
-    // if(values.phone == ''){
-    //   alert('Please enter vaild phone number')
-    // }
-    // else{
-      const pp = '+917224901787'
       setLoading(true)
       requestOtp()
       let appVerfier = window.recaptchaVerifier
-      signInWithPhoneNumber(auth,pp,appVerfier).then((confirmationResult)=>{
+      signInWithPhoneNumber(auth,phone,appVerfier).then((confirmationResult)=>{
         console.log(confirmationResult);
         window.confirmationResult = confirmationResult;
+        setShowOtp(true);
+        setLoading(false)
+        toast("We have sent OTP onn your mobile number please enter your OTP.")
+
       })
       .catch((err)=>{
         alert(err)
         setLoading(false)
 
       })
-    // }
-  }
-
-  const verify = () => {
-
   }
 
   const toggleNavVisibility = (event) => {
@@ -214,6 +163,92 @@ const handleOtpVerifcation = (e)=>{
     console.log('toggled')
   }
 
+  const logout = () => {
+    localStorage.removeItem('user');
+    setReloadPage(true)
+    setUser({});
+
+  }
+
+  const list = (bgclr) => (
+    <Box
+      sx={{ width:250, height:'100%',backgroundColor:bgclr }}
+    >
+      <Box
+      sx={{backgroundColor:'#ffe600', padding:'20px 0px ', display:'flex',alignItems:'center',justifyContent:'center'}}
+      >
+        {user && user.phoneNumber ? (
+          <Typography style={{color:`${theme.palette.primary.dark}`}}>{user.phoneNumber}</Typography>
+        ):
+        ( 
+        <Button sx={{backgroundColor:"#17a2b8",color:'white'}} onClick={handleOpen}>Sign up / Log In</Button>
+          
+        )}
+       
+      </Box>
+      <List>
+      {user && user.phoneNumber && (
+      <ListItem  disablePadding>
+        <ListItemButton  onClick={() => router.push('user/dashboard')} >
+          <ListItemIcon>
+          <HomeIcon />
+          </ListItemIcon>
+          <ListItemText primary='Dashboard'/>
+        </ListItemButton>
+      </ListItem>
+      )}
+
+
+      <ListItem  disablePadding>
+        <ListItemButton onClick={() => router.push('/')} >
+          <ListItemIcon>
+          <HomeIcon />
+          </ListItemIcon>
+          <ListItemText primary='Home' />
+        </ListItemButton>
+      </ListItem>
+      <ListItem  disablePadding>
+        <ListItemButton>
+          <ListItemIcon>
+          <MailIcon />
+          </ListItemIcon>
+          <ListItemText primary='Browse Events' />
+        </ListItemButton>
+      </ListItem>
+      <ListItem  disablePadding>
+        <ListItemButton>
+          <ListItemIcon>
+          <LocalActivityIcon />
+          </ListItemIcon>
+          <ListItemText primary='My Tickets' />
+        </ListItemButton>
+      </ListItem>
+      <Divider />
+      <ListItem  disablePadding>
+        <ListItemButton>
+          <ListItemIcon>
+          <MailIcon />
+          </ListItemIcon>
+          <ListItemText primary='Contact Us' />
+        </ListItemButton>
+      </ListItem>
+      <Divider />
+      <ListItem  disablePadding>
+        <ListItemButton>
+        About us
+        </ListItemButton>
+      </ListItem>
+      {user && user.phoneNumber && (
+      <ListItem  disablePadding onClick={() => logout()}>
+        <ListItemButton>
+        Logout
+        </ListItemButton>
+      </ListItem>
+      )}
+      </List>
+      
+    </Box>
+  );
 
   return (
     <>
@@ -235,8 +270,10 @@ const handleOtpVerifcation = (e)=>{
            <img src="/images/logos/logo.png" style={{height: '50px',marginTop: '10px'}}/>
           </div>
           <ModeToggler settings={settings} saveSettings={saveSettings} />
-          <Button color="inherit" onClick={handleOpen}>Login</Button>
-        </Toolbar>
+          {!user.phoneNumber && (
+         <Button color="inherit" onClick={handleOpen}>Login</Button>
+          )}
+         </Toolbar>
       </AppBar>
     </Box>
     <Drawer  width={800}  open={navVisible} onClose={toggleNavVisibility} >
@@ -251,7 +288,7 @@ const handleOtpVerifcation = (e)=>{
           aria-labelledby="keep-mounted-modal-title"
           aria-describedby="keep-mounted-modal-description"
         >
-          <Card sx={{ zIndex: 1,margin:'100px auto' }}>
+          <Card sx={{ zIndex: 1,margin:'100px auto',backgroundColor:theme => `${theme.palette.customColors.userTheme}` }}>
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
          
           <Box sx={{ mb: 6 }}>
@@ -262,8 +299,9 @@ const handleOtpVerifcation = (e)=>{
             <div id = "recaptcha-verfier"></div>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-          {values.showOtp === false ? (
+          {showOtp === false ? (
             <PhoneInput
+            international
             placeholder='Enter phone number'
             value={phone}
             className="form-control d-flex"
@@ -273,27 +311,86 @@ const handleOtpVerifcation = (e)=>{
          
             )
             :(
-              <TextField onChange={handleChange('otp')} autoFocus fullWidth id='otp' label='OTP' sx={{ marginBottom: 4 }} />
+              <div>
+                  <OtpInput
+                    value={otp}
+                    onChange={setOtp}
+                    numInputs={6}
+                    separator={<span> </span>}
+                    containerStyle={{
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      marginTop: '1.5rem',
+                      marginBottom: '4px',
+                      paddingLeft: 10,
+                    }}
+                    inputStyle={{
+                      borderStyle: 'solid',
+                      padding: 10,
+                      width: '85%',
+                      height: 55,
+                      borderWidth: 1,
+                      borderColor: '#ddd',
+                      borderRadius: 4,
+                      fontWeight: '600',
+                      fontSize: '1.5rem',
+                    }}
+                  />
+                 
+              </div>
             )}
 
-          {values.showOtp === false ? (
-             <Button
-             fullWidth
-             size='large'
-             variant='contained'
-             sx={{ marginBottom: 7 }}
-             onClick={() => handleLogin()}
-           >
-             Login
-           </Button>
+          {showOtp === false ? (
+            <div>
+              {phone && isValidPhoneNumber(phone) ? (
+                 <Button
+                 fullWidth
+                 size='large'
+                 variant='contained'
+                 sx={{background: '#ffe600',
+                 color: '#1f2227',
+                 padding: '5px 0px',
+                 margin: '10px 0px',
+                 fontSize: '1rem',
+                 fontWeight: 'bold'}}
+                 onClick={() => handleLogin()}
+                 disabled={false}
+               >
+                 Login
+               </Button>
+              )
+              :
+              (
+                <Button
+                fullWidth
+                size='large'
+                variant='contained'
+                sx={{ 
+                padding: '5px 0px',
+                margin: '10px 0px',
+                fontSize: '1rem',
+                fontWeight: 'bold'}}
+                onClick={() => handleLogin()}
+                disabled={true}
+              >
+                Login
+              </Button>
+              )}
+            
+            </div>
           )
             :(
               <Button
               fullWidth
               size='large'
               variant='contained'
-              sx={{ marginBottom: 7 }}
-              onClick={() => verify()}
+              sx={{  background: '#ffe600',
+              color: '#1f2227',
+              padding: '5px 0px',
+              margin: '10px 0px',
+              fontSize: '1rem',
+              fontWeight: 'bold' }}
+              onClick={() => handleOtpVerifcation()}
             >
               Verify
             </Button>
