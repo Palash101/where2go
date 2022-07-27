@@ -1,26 +1,43 @@
 import { NextResponse } from 'next/server'
+import {verifyToken} from '../../service/auth'
 
 
-
-export function middleware(request) {
+export async function middleware(request) {
 	const { cookies } = request;
-	const user = cookies.user
-	console.log(cookies,'User in middleware')
-	const url  = request.url;
-	console.log(url,'admin url')
-
-	if(url.includes('/admin/events/')){
-		if(!user){
-		return NextResponse.redirect('/')
-		}
-
+	const userToken = cookies.user
+	if(userToken){
+		await verifyToken(userToken).then((resp)=>{
+			if(!resp.userType === 'admin'&& adminProtectedRoutes.includes(request.nextUrl.pathname)=== true){
+				NextResponse.redirect('/')
+	
+			}
+			else if(!resp.userType === 'user'&& userProtectedRoutes.includes(request.nextUrl.pathname)=== true){
+				NextResponse.redirect('/')
+	
+			}
+		})
 	}
+
   
 }
 
-const adminUrls = [
-'/admin/category/*',
-'/admin/events/*',
-'/admin/location',
-'/admin/user',
+const adminProtectedRoutes = [
+	'/admin',
+	'/admin/',
+	'/admin/category/',
+	'/admin/category/add',
+	'/admin/events/edit',
+	'/admin/location/',
+	'/admin/login/'
+
 ]
+
+const userProtectedRoutes = [
+	'/user/',
+	'/user/dashnoard',
+
+]
+
+export const config = {
+	matcher: ['/user/:path*', '/admin/:path*'],
+  }

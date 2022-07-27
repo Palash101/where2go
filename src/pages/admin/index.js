@@ -33,7 +33,6 @@ import {emailPasswordSigin,verifyToken} from '../../../service/auth'
 
 
 const Dashboard = ({user}) => {
-  console.log(user,'admin index props')
   const router = useRouter()
   const userContext =  userAuth()
 
@@ -132,7 +131,6 @@ export async function getServerSideProps(context) {
 
     }
     const userData = await verifyToken(cookies.user);
-    console.log('user Data',userData)
     return{
       props:{user:userData}
     }

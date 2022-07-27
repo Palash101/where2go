@@ -105,18 +105,10 @@ const LoginPage = () => {
       setLoading(true)
       emailPasswordSigin(values.email,values.password)
       .then((data)=>{
-        if(data.role === 3){
-          userContext.setUserAuthState({
-            isAuthenticated:true,
-            isAdmin:true,
-            accesstoken:JSON.stringify(data.id || null),
-        })
+        console.log(data)
+
         setLoading(false)
         router.push('/admin')
-      }
-      else{
-        alert('not allowed to access')
-      }
       })
       .catch((err)=>{
         alert(err)

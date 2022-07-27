@@ -8,6 +8,7 @@ import {
     sendPasswordResetEmail,
     sendEmailVerification,
     getAuth,
+    getCookie
   } from "firebase/auth";
 
   import {
@@ -32,23 +33,33 @@ export  const emailPasswordSigin = async (email,password)=>{
   console.log(email,'service')
     return signInWithEmailAndPassword(auth,email,password)
       .then( async(userCredentails)=>{
+
+          //User Data
           userId = userCredentails.user.uid;
           userEmail = userCredentails.user.email;
           idToken = await userCredentails.user.getIdToken();
 
-          //Firebase Admin session
-          await postUserToken(idToken)
-          console.log('created Seesion')
+          // await postUserToken(idToken)
+          // console.log('created Seesion')
           
           return idToken
-
       })
-      .then((idtoken)=>{
-        return getUsersByEmail(userEmail);
+      .then(async()=>{
+        const adminUser = await getUsersByEmail(userEmail);
+        console.log(adminUser.role,'admin role')
+        if(adminUser.role == 3){
+          console.log('calling user create user session')
+         await createUserSession(idToken,userId,'admin');
+          
+        }
+     
       })
-      .catch(err=> {console.log(err)})
+      .catch((err)=>{
+        return{error:'error',message:'something went wrong',deverr:err}
+      })
 
 }
+
 
 const getUsersByEmail = async (email) => {
   console.log('calling get user by email')
@@ -62,7 +73,6 @@ const getUsersByEmail = async (email) => {
   );
   if (docsF.docs.size !== 0) {
     docsF.docs.forEach((doc) => {
-      console.log(doc,'Users Doc')
       profile = { ...doc.data(), id: doc.id };
     });
   }
@@ -74,24 +84,25 @@ export const userLogout = ()=>{
   signOut(auth);
 }
 
-export const  postUserToken = async (token) =>{
+// This function create user session on firebase admin 
+// by taking getIdToken() returend from client side login method
+// Old function name:  postUserToken
+
+
+export const  createUserSession = async (token,uId,userType) =>{
   var path = "/api/auth";
   var url = getApiUrl()+path;
-   const ss = getApiUrl()
-  console.log(ss)
-    console.log(url)
+  var data = { token: token,uId:uId,userType:userType}
 
-  var data = { token: token }
-  console.log(data,'api call')
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    body: JSON.stringify(data) 
   });
-  return response.json(); // parses JSON response into native JavaScript objects
+  return response.json();
 }
 
 
@@ -100,7 +111,6 @@ export const  verifyToken = async (cookie) =>{
  
   var url = getApiUrl()+ path;
   var data = { cookie: cookie }
-  console.log(cookie,' cookie api call')
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -108,7 +118,6 @@ export const  verifyToken = async (cookie) =>{
     },
     body: JSON.stringify(data) // body data type must match "Content-Type" header
   });
-  console.log(response,'client response')
   return response.json(); // parses JSON response into native JavaScript objects
 }
 

@@ -146,7 +146,7 @@ export const getCategory = async ()=>{
 }
 export const getHomePageEvent = async ()=>{
     const temp = []
-    const q = query(collection(db, "category"), where("status", "==", '1'),orderBy('position','asc'))
+    const q = query(collection(db, "category"), where("status", "==", '1'))
     const queryDoc =  await getDocs(q);
     if(queryDoc.empty === false){
         for(let i=0;i<queryDoc.docs.length;i++){
