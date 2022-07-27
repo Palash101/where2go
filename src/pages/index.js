@@ -19,7 +19,7 @@ import { RecaptchaVerifier } from "firebase/auth";
 
 //Service Imports here
 
-import{getHomePageEvent,getCategory} from '../../service/admin/events'
+import{getHomePageEvent} from '../../service/admin/events'
 import { useEffect } from 'react'
 import {auth} from '../../service/main'
 
@@ -115,13 +115,18 @@ function SlideItem(item,i){
         {
             name: "Random Name #1",
             description: "Probably the most random thing you have ever seen!",
-            href:'/images/slideimage1.jpg'
+            href:'/images/b1.jpeg'
 
         },
         {
             name: "Random Name #2",
             description: "Hello World!",
-            href:'/images/bannerImage2.jpg'
+            href:'/images/b2.jpeg'
+        },
+        {
+            name: "Random Name #3",
+            description: "Hello World!",
+            href:'/images/b3.jpeg'
         }
     ]
 
