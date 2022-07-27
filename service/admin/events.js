@@ -15,6 +15,7 @@ import {
     arrayRemove,
     where,
     limit,
+    orderBy,
   } from "firebase/firestore";
 import { async } from "@firebase/util";
 import { CellphoneSound } from "mdi-material-ui";
@@ -130,7 +131,7 @@ export const getCategory = async ()=>{
 }
 export const getHomePageEvent = async ()=>{
     const temp = []
-    const q = query(collection(db, "category"), where("status", "==", '1'))
+    const q = query(collection(db, "category"), where("status", "==", '1'),orderBy('position','asc'))
     const queryDoc =  await getDocs(q);
     if(queryDoc.empty === false){
         for(let i=0;i<queryDoc.docs.length;i++){

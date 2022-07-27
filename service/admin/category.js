@@ -15,12 +15,20 @@ import {
     arrayRemove,
     where,
     limit,
+    serverTimestamp,
+    orderBy
   } from "firebase/firestore";
 import { async } from "@firebase/util";
 import { EmailNewsletter } from "mdi-material-ui";
 
   export const getAllCategory=  async()=>{
-    return getDocs(collection(db, 'category'));
+    let q = query(
+      collection(db, 'category'),
+      orderBy('position','asc')
+    );
+    const data = await getDocs(q);
+    return data
+    // return getDocs(collection(db, 'category'),orderBy());
 
   }
   export const getCategory = ()=>{
@@ -41,7 +49,8 @@ export const addCategory = async (name,status)=>{
   if(querySnapshot.empty){
         return addDoc(collection(db,'category'),{
           name:name,
-          status:status
+          status:status,
+          created_at: serverTimestamp()
         })
         .then((data)=>{
             return {success:'success',message:'Category Added successfully'}

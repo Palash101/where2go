@@ -25,8 +25,10 @@ function CategoryList() {
     useEffect(()=>{
       const getData =  async()=>{
         const catData =  await getAllCategory()
+        console.log(catData)
         const catArray =[];
         catData.docs.forEach(item=>{
+          console.log(item.data())
         catArray.push(item.data())
        })
         setAllCategory(catArray)
@@ -64,6 +66,7 @@ function CategoryList() {
                 <TableRow>
                   <TableCell>Category Name</TableCell>
                   <TableCell>Status</TableCell>
+                  <TableCell>Position</TableCell>
                   <TableCell align='right'>Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -82,6 +85,9 @@ function CategoryList() {
                     </TableCell>
                     <TableCell component='th' scope='row'>
                       {row.status == 1 ? renderStatusChip('Active','#56ca00'):renderStatusChip('Block','#ff4c51')}
+                    </TableCell>
+                    <TableCell component='th' scope='row'>
+                      {row.position}
                     </TableCell>
                   
                     <TableCell align='right'>Edit</TableCell>
