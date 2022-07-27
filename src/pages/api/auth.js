@@ -11,8 +11,6 @@ export default async function auth(req, res) {
     const expiresIn = 5 * 60 * 1000;
     if (req.method === 'POST') {
       var idToken = req.body.token;
-      console.log(idToken,'idToken in api')
-
       const cookie = firebaseAdmin.auth().verifyIdToken(idToken)
       .then(async (decodedIdToken) => {
       	console.log(decodedIdToken,'decodedIdToken')

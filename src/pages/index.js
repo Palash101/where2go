@@ -6,18 +6,22 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Carousel from 'react-material-ui-carousel'
 import { Paper, Button } from '@mui/material'
+import CircularProgress from '@mui/material/CircularProgress'
+
 import Image from 'next/image'
 
 import HomeLayout from 'src/@core/layouts/HomeLayout'
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useRouter } from 'next/router'
 import "swiper/css";
+import { RecaptchaVerifier } from "firebase/auth";
+
 
 //Service Imports here
 
 import{getHomePageEvent,getCategory} from '../../service/admin/events'
 import { useEffect } from 'react'
-import CircularProgress from '@mui/material/CircularProgress'
+import {auth} from '../../service/main'
 
 
 
@@ -120,6 +124,8 @@ function SlideItem(item,i){
             href:'/images/bannerImage2.jpg'
         }
     ]
+
+
     
   
 

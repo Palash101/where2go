@@ -28,10 +28,14 @@ import MuiCard from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import TextField from '@mui/material/TextField'
 import { userAuth } from 'context/userContext';
-import { emailPasswordSigin } from 'service/auth'; 
+import { auth } from 'service/main'; 
 import CircularProgress from '@mui/material/CircularProgress';
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import { signInWithPhoneNumber } from "firebase/auth";
+import { RecaptchaVerifier } from "firebase/auth";
+
+
 
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -129,26 +133,69 @@ const style = {
     setValues({ ...values, [prop]: event.target.value })
   }
 
+
+  const requestOtp = ()=>{
+    window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-verfier', {
+      'size': 'invisible',
+      'callback': (response) => {
+        // reCAPTCHA solved, allow signInWithPhoneNumber.
+        onSignInSubmit();
+      }
+    }, auth);
+
+}
+
+
+const handleOtpVerifcation = (e)=>{
+  e.preventDefault();
+
+  // set OTP in State ot and use it here
+   const otp = '0384939'
+   // Check for OTP lenght Must be 6 digit
+
+   let confirmationResult = window.confirmationResult;
+   // Handle Error if not window resultl
+
+   confirmationResult.confirm(otp).then((loginResult)=>{
+
+    //Console.log(loginResult)
+    const user = resultl.user
+
+   })
+   .catch((error)=>{
+
+    //Handle Errors
+    //Console.log(error)
+
+
+   })
+
+
+
+
+}
+
+
   
   const handleLogin = ()=>{
-    if(values.phone == ''){
-      alert('Please enter vaild phone number')
-    }
-    else{
+    // if(values.phone == ''){
+    //   alert('Please enter vaild phone number')
+    // }
+    // else{
+      const pp = '+917224901787'
       setLoading(true)
-      emailPasswordSigin(values.phone)
-      .then((data)=>{
-      
-        setLoading(false)
-        router.push('/admin')
-    
+      requestOtp()
+      let appVerfier = window.recaptchaVerifier
+      signInWithPhoneNumber(auth,pp,appVerfier).then((confirmationResult)=>{
+        console.log(confirmationResult);
+        window.confirmationResult = confirmationResult;
       })
       .catch((err)=>{
         alert(err)
         setLoading(false)
 
       })
-    }
+    // }
   }
 
   const verify = () => {
@@ -212,6 +259,7 @@ const style = {
               Welcome to {themeConfig.templateName}! 👋🏻
             </Typography>
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
+            <div id = "recaptcha-verfier"></div>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
           {values.showOtp === false ? (
