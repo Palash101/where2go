@@ -1,6 +1,6 @@
 import FormLayoutsBasic from 'src/views/form-layouts/FormLayoutsBasic'
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
-
+import { useState } from 'react'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
@@ -24,7 +24,11 @@ import { useRouter } from 'next/router'
 
 
 import {addCategory} from '../../../../service/admin/category'
-import { useState } from 'react'
+
+
+import {verifyToken} from '../../../../service/auth'
+import nookies from "nookies";
+
 
 
 function CategoryAdd() {
@@ -133,3 +137,46 @@ function CategoryAdd() {
 }
 
 export default CategoryAdd;
+
+export async function getServerSideProps(context) {
+  try{
+    const cookies = nookies.get(context);
+    if(!cookies.user){
+      return{
+        redirect:{
+          permanent:false,
+          destination:'/admin/login',
+        },
+        props:{}
+      }
+
+    }
+    const userData = await verifyToken(cookies.user);
+    console.log(userData,'in index page')
+    if(!userData.userType === 'admin'){
+      return{
+        redirect:{
+          permanent:false,
+          destination:'/admin/login',
+        },
+        props:{}
+      }
+
+    }
+    return{
+      props:{user:userData}
+    }
+
+  }
+  catch(err){
+    return{
+      redirect:{
+          permanent:false,
+          destination:'/admin/login'
+        },
+      props:{}
+    }
+  }
+
+
+}

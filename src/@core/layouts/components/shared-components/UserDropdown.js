@@ -50,10 +50,10 @@ const UserDropdown = () => {
       router.push(url)
     }
     setAnchorEl(null)
-  }
-  const handleLogout = ()=>{
+  } 
+  const handleLogout = async()=>{
     console.log('logging out user')
-    userLogout()
+    await userLogout()
     router.push('/admin/login')
 
   }

@@ -80,8 +80,17 @@ const getUsersByEmail = async (email) => {
   return profile;
 };
 
-export const userLogout = ()=>{
-  signOut(auth);
+export const userLogout = async ()=>{
+  var path = "/api/logout";
+  var url = getApiUrl()+path;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+  return response.json();
+
 }
 
 // This function create user session on firebase admin 
@@ -94,7 +103,6 @@ export const  createUserSession = async (token,uId,userType) =>{
   var url = getApiUrl()+path;
   var data = { token: token,uId:uId,userType:userType}
 
-  // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST',
     headers: {

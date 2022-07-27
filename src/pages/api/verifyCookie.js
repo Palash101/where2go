@@ -4,7 +4,7 @@ import getFirebaseAdmin from './config'
 
 export async function verifyCookie(req,res){
     const cookie = req.body.cookie
-    const admin = await getFirebaseAdmin();
+    const admin =  getFirebaseAdmin();
     if(!admin){
       return null;
     }
@@ -16,7 +16,8 @@ export async function verifyCookie(req,res){
 
        })
        .catch(err=>{
-        res.status(401).send({error:err})
+        console.log('error in verfying cookie',err)
+        res.redirect('/');
        })
     
       }

@@ -14,9 +14,12 @@ import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 import Chip from '@mui/material/Chip'
 import EditIcon from '@mui/icons-material/Edit';
+import nookies from "nookies";
+
 
 
 import {getAllLocations} from '../../../../service/admin/location'
+import {verifyToken} from '../../../../service/auth'
 
 function LocationList() {
     const[allLocations ,setAllLocations] =  useState([])
@@ -94,4 +97,51 @@ function LocationList() {
      );
 }
 
+
+
 export default LocationList;
+
+
+export async function getServerSideProps(context) {
+  try{
+    const cookies = nookies.get(context);
+    console.log(cookies.user,'cookire in page')
+    if(!cookies.user){
+      return{
+        redirect:{
+          permanent:false,
+          destination:'/admin/login',
+        },
+        props:{}
+      }
+
+    }
+    const userData = await verifyToken(cookies.user);
+    console.log(userData,'user Datat')
+    if(!userData.userType === 'admin'){
+      return{
+        redirect:{
+          permanent:false,
+          destination:'/admin/login',
+        },
+        props:{}
+      }
+
+    }
+    return{
+      props:{user:userData}
+    }
+
+  }
+  catch(err){
+    return{
+      redirect:{
+          permanent:false,
+          destination:'/admin/login'
+        },
+      props:{}
+    }
+  }
+
+
+}

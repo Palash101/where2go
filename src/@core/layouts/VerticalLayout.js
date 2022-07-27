@@ -22,6 +22,9 @@ import ScrollToTop from 'src/@core/components/scroll-to-top'
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 
+import {verifyToken} from '../../../service/auth'
+import nookies from "nookies";
+
 const VerticalLayoutWrapper = styled('div')({
   height: '100%',
   display: 'flex'
@@ -49,6 +52,9 @@ const ContentWrapper = styled('main')(({ theme }) => ({
 const VerticalLayout = props => {
   // ** Props
   const { settings, children, scrollToTop } = props
+
+
+  console.log('user in vertical layour',children.props)
 
   // ** Vars
   const { contentWidth } = settings

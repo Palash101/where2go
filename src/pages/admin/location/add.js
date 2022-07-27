@@ -16,6 +16,8 @@ import Snackbar from '@mui/material/Snackbar';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box'
 import { useRouter } from 'next/router'
+import {verifyToken} from '../../../../service/auth'
+import nookies from "nookies";
 
 
 
@@ -127,3 +129,46 @@ function LocationAdd() {
 }
 
 export default LocationAdd;
+
+export async function getServerSideProps(context) {
+  try{
+    const cookies = nookies.get(context);
+    if(!cookies.user){
+      return{
+        redirect:{
+          permanent:false,
+          destination:'/admin/login',
+        },
+        props:{}
+      }
+
+    }
+    const userData = await verifyToken(cookies.user);
+    console.log(userData,'in index page')
+    if(!userData.userType === 'admin'){
+      return{
+        redirect:{
+          permanent:false,
+          destination:'/admin/login',
+        },
+        props:{}
+      }
+
+    }
+    return{
+      props:{user:userData}
+    }
+
+  }
+  catch(err){
+    return{
+      redirect:{
+          permanent:false,
+          destination:'/admin/login'
+        },
+      props:{}
+    }
+  }
+
+
+}

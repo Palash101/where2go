@@ -10,6 +10,8 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import EditIcon from '@mui/icons-material/Edit';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { useRouter } from 'next/router'
+import {verifyToken} from '../../../../service/auth'
+import nookies from "nookies";
 
 
 import {getAllEvents} from '../../../../service/admin/events'
@@ -115,3 +117,46 @@ const handleEditEvent=(value)=>{
 }
 
 export default EventList;
+
+export async function getServerSideProps(context) {
+	try{
+	  const cookies = nookies.get(context);
+	  if(!cookies.user){
+		return{
+		  redirect:{
+			permanent:false,
+			destination:'/admin/login',
+		  },
+		  props:{}
+		}
+  
+	  }
+	  const userData = await verifyToken(cookies.user);
+	  console.log(userData,'in index page')
+	  if(!userData.userType === 'admin'){
+		return{
+		  redirect:{
+			permanent:false,
+			destination:'/admin/login',
+		  },
+		  props:{}
+		}
+  
+	  }
+	  return{
+		props:{user:userData}
+	  }
+  
+	}
+	catch(err){
+	  return{
+		redirect:{
+			permanent:false,
+			destination:'/admin/login'
+		  },
+		props:{}
+	  }
+	}
+  
+  
+  }

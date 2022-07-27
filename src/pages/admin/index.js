@@ -131,6 +131,17 @@ export async function getServerSideProps(context) {
 
     }
     const userData = await verifyToken(cookies.user);
+    console.log(userData,'in index page')
+    if(!userData.userType === 'admin'){
+      return{
+        redirect:{
+          permanent:false,
+          destination:'/admin/login',
+        },
+        props:{}
+      }
+
+    }
     return{
       props:{user:userData}
     }

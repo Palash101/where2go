@@ -32,6 +32,8 @@ import EventStep4 from 'src/views/events/EventStep4'
 import EventStep5 from 'src/views/events/EventStep5'
 
 import { getEventById } from 'service/admin/events'
+import {verifyToken} from '../../../../service/auth'
+import nookies from "nookies";
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
@@ -216,3 +218,46 @@ else{
 }
 
 export default AccountSettings
+
+export async function getServerSideProps(context) {
+  try{
+    const cookies = nookies.get(context);
+    if(!cookies.user){
+      return{
+        redirect:{
+          permanent:false,
+          destination:'/admin/login',
+        },
+        props:{}
+      }
+
+    }
+    const userData = await verifyToken(cookies.user);
+    console.log(userData,'in index page')
+    if(!userData.userType === 'admin'){
+      return{
+        redirect:{
+          permanent:false,
+          destination:'/admin/login',
+        },
+        props:{}
+      }
+
+    }
+    return{
+      props:{user:userData}
+    }
+
+  }
+  catch(err){
+    return{
+      redirect:{
+          permanent:false,
+          destination:'/admin/login'
+        },
+      props:{}
+    }
+  }
+
+
+}

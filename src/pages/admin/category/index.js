@@ -14,7 +14,8 @@ import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 import Chip from '@mui/material/Chip'
 import { useRouter } from 'next/router'
-
+import {verifyToken} from '../../../../service/auth'
+import nookies from "nookies";
 
 
 import {getAllCategory} from '../../../../service/admin/category'
@@ -102,3 +103,45 @@ function CategoryList() {
 }
 
 export default CategoryList;
+export async function getServerSideProps(context) {
+  try{
+    const cookies = nookies.get(context);
+    if(!cookies.user){
+      return{
+        redirect:{
+          permanent:false,
+          destination:'/admin/login',
+        },
+        props:{}
+      }
+
+    }
+    const userData = await verifyToken(cookies.user);
+    console.log(userData,'in index page')
+    if(!userData.userType === 'admin'){
+      return{
+        redirect:{
+          permanent:false,
+          destination:'/admin/login',
+        },
+        props:{}
+      }
+
+    }
+    return{
+      props:{user:userData}
+    }
+
+  }
+  catch(err){
+    return{
+      redirect:{
+          permanent:false,
+          destination:'/admin/login'
+        },
+      props:{}
+    }
+  }
+
+
+}
