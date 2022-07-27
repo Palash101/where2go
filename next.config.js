@@ -3,6 +3,12 @@ const path = require('path')
 module.exports = {
   trailingSlash: true,
   reactStrictMode: false,
+  env:{
+    PROD_API:'https://where2go-xtr4m.ondigitalocean.app',
+    DEV_API:'http://localhost:3000',
+    DEBUG:true,
+    
+  },
   images: {
     domains: ['firebasestorage.googleapis.com'],
   },
