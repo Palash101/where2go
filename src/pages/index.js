@@ -6,17 +6,22 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Carousel from 'react-material-ui-carousel'
 import { Paper, Button } from '@mui/material'
+import CircularProgress from '@mui/material/CircularProgress'
+
 import Image from 'next/image'
 
 import HomeLayout from 'src/@core/layouts/HomeLayout'
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useRouter } from 'next/router'
 import "swiper/css";
+import { RecaptchaVerifier } from "firebase/auth";
+
 
 //Service Imports here
 
 import{getHomePageEvent,getCategory} from '../../service/admin/events'
 import { useEffect } from 'react'
+import {auth} from '../../service/main'
 
 
 
@@ -24,6 +29,7 @@ import { useEffect } from 'react'
 
 function Home(navigation){
     const  [allData, setAllData] = useState([]);
+    const  [loading, setLoading] = useState(true);
     const router = useRouter();
 
     useEffect(()=>{
@@ -35,6 +41,7 @@ function Home(navigation){
     const getMainData =()=>{
         getHomePageEvent().then((data) => {
             setAllData(data)
+            setLoading(false)
             console.log(data,'alldt')
         })
 
@@ -117,6 +124,8 @@ function SlideItem(item,i){
             href:'/images/bannerImage2.jpg'
         }
     ]
+
+
     
   
 
@@ -141,7 +150,7 @@ return(
 
 
 
-             {allData.length && 
+             {allData.length > 0 && 
                 allData.map((item,key) => ( 
                     <div>
                         
@@ -187,7 +196,14 @@ return(
            
 
         </Box>
-       
+        {loading === true && (
+            <Box sx={{ display: 'flex',justifyContent:'center',alignItems:'center',backgroundColor: 'rgb(0 0 0 / 39%)',zIndex: 99999999,position: 'fixed',left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0, }}>
+                  <CircularProgress />
+              </Box>
+            )}
         </>
         
 

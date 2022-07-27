@@ -94,7 +94,8 @@ const removeFromArray =(key)=>{
                     padding:'2px',
                     borderRadius:'5px',
                     fontSize:'14px',
-                    width:'100px',
+                    width: 'auto',
+                    padding: '0px 10px',
                     height:'150px',
                     justifyContent:'center',
                     flexDirection:'column',
@@ -102,7 +103,7 @@ const removeFromArray =(key)=>{
 
                   }}>
                 <Typography>{data.date}</Typography>
-                <Divider />
+                <Divider sx={{ background: '#fff',height:'1px',width: '100%'}}/>
 
                 <Typography>from:{data.from} </Typography>
                 <Typography>to:{data.to} </Typography>

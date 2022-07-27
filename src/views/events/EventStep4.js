@@ -17,11 +17,11 @@ import Divider from '@mui/material/Divider';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Badge from '@mui/material/Badge';
 
+import {toast} from 'react-toastify'
 
 
 
-
-import {updateEventTicket} from '../../../service/admin/events'
+import {updateEventTicket,deleteEventTicket} from '../../../service/admin/events'
 
 
 
@@ -73,7 +73,7 @@ const EventStep4 = ({data,eventId,refreshData}) => {
     }
     else{
       setLoading(false)
-      alert('Not a Valid Data or Incomplete Data')
+      toast('Not a Valid Data or Incomplete Data')
     }
    
 
@@ -97,8 +97,12 @@ const EventStep4 = ({data,eventId,refreshData}) => {
 
   }
 
-  const deleteTicket = ()=>{
-    console.log('deleting Ticket')
+  const deleteTicket = (ticket)=>{
+    console.log('deleting Ticket',ticket)
+    setLoading(true)
+    deleteEventTicket(eventId,ticket)
+    setLoading(false)
+    refreshData()
   }
 
   const ticketForm =(eventId)=>{
@@ -156,7 +160,7 @@ const EventStep4 = ({data,eventId,refreshData}) => {
                       <Typography>Sales value: {ticket.ticket_count*ticket.price} {data.currency}</Typography>
                       <DeleteIcon 
                       sx={{cursor:'pointer'}}
-                      onClick={deleteTicket}
+                      onClick={() => deleteTicket(ticket)}
                       />
                       
                   </Box>

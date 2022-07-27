@@ -23,7 +23,7 @@ import DateTimeComponent from './components/DateTimeComponent'
 import LocationComponent from './components/LocationComponent'
 import ContactComponent from './components/ContactComponent'
 
-import { updateEventDetails ,updateEventDate } from 'service/admin/events'
+import { updateEventDetails ,updateEventDate,deleteEventDate } from 'service/admin/events'
 import { async } from '@firebase/util'
 import {toast } from 'react-toastify';
 
@@ -69,8 +69,12 @@ const EventStep2 = ({data,eventId,refreshData}) => {
     setLoading(false)
   }
 
-  const handleChipDelete = ()=>{
-    console.log(data.event_date,'delete Chip')
+  const handleChipDelete = async(event_date)=>{
+    console.log(event_date,'delete Chip')
+    setLoading(true)
+    await deleteEventDate(eventId,event_date).then((res)=>console.log(res))
+    refreshData()
+     setLoading(false)
 
   }
   const handleChipClick = ()=>{
@@ -125,9 +129,9 @@ const EventStep2 = ({data,eventId,refreshData}) => {
                 <Chip
                 key={key}
                 onClick={handleChipClick}
-                onDelete={handleChipDelete}
+                onDelete={() => handleChipDelete(item)}
                 label={dateTimeChip(item) }
-                deleteIcon={<DeleteIcon />}
+                deleteIcon={<DeleteIcon/>}
                 variant="outlined"
                 sx={{marginRight:'15px'}}
               />

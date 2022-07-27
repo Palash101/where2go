@@ -12,6 +12,7 @@ import CardContent from '@mui/material/CardContent'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
+import CircularProgress from '@mui/material/CircularProgress'
 
 
 
@@ -32,6 +33,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { ImageFilterHdr } from 'mdi-material-ui'
+import {toast} from 'react-toastify';
 
 
 const ImgStyled = styled('img')(({ theme }) => ({
@@ -104,6 +106,7 @@ const EventStep3 = ({data,eventId,refreshData}) => {
     const url =  await getDownloadURL(storageRef) 
     console.log(url,'Retured URL')
     await uploadEventImage(eventId,url,type)
+    toast("image uploaded successfully")
     setLoading(false)
     refreshData(true)
     
@@ -231,6 +234,17 @@ const EventStep3 = ({data,eventId,refreshData}) => {
             </Box>
           </Grid>
           </Grid>
+
+          {loading === true && (
+
+      
+            <Box sx={{ display: 'flex',justifyContent:'center',alignItems:'center',backgroundColor: 'rgb(0 0 0 / 39%)',zIndex: 99999999,position: 'fixed',left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0, }}>
+                  <CircularProgress />
+              </Box>
+              )}
         </form>
 
     )

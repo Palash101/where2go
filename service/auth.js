@@ -76,7 +76,11 @@ export const userLogout = ()=>{
 
 export const  postUserToken = async (token) =>{
   var path = "/api/auth";
-  var url = 'https://where2go-xtr4m.ondigitalocean.app' + path;
+  var url = getApiUrl()+path;
+   const ss = getApiUrl()
+  console.log(ss)
+    console.log(url)
+
   var data = { token: token }
   console.log(data,'api call')
   // Default options are marked with *
@@ -93,7 +97,8 @@ export const  postUserToken = async (token) =>{
 
 export const  verifyToken = async (cookie) =>{
   var path = "/api/verifyCookie";
-  var url = 'https://where2go-xtr4m.ondigitalocean.app' + path;
+ 
+  var url = getApiUrl()+ path;
   var data = { cookie: cookie }
   console.log(cookie,' cookie api call')
   const response = await fetch(url, {
@@ -108,14 +113,13 @@ export const  verifyToken = async (cookie) =>{
 }
 
 
-// export const tetsingAPI = async()=>{
-//   var path = "/api/test";
-//   var url = 'http://localhost:3000' + path;
-//   const response = await fetch(url, {
-//     method: 'GET',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//   });
+const getApiUrl = ()=>{
+  console.log(process.env.DEBUG == true)
+  if(process.env.DEBUG === true ){
+    return process.env.DEV_API
+  }
+  else{
+    return process.env.PROD_API
+  }
 
-// }
+}

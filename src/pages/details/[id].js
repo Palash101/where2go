@@ -64,17 +64,17 @@ return(
                 </div>
            </Box>
            <Box sx={{textAlign:'center',
-                    background: '#22262b!important',
+                    background: '#84848426 !important',
                     margin: '25px 0px',
                     padding: '20px',
                     borderRadius: '10px'}}>
-                <TodayIcon  sx={{ fontSize: 40,color:'#373c44!important', }}/>
+                <TodayIcon  sx={{ fontSize: 40, }}/>
                 {item.event_date && item.event_date.map((item1,key) => (
                     <h6 className='dayLine' key={key}>{item1.date} From {item1.from} - {item1.to}</h6>
                 ))}
                 {item.event_location && (
                     <div className='locbox'>
-                        <MapIcon  sx={{ fontSize: 40,color:'#9ca1a8!important', }}/>
+                        <MapIcon  sx={{ fontSize: 40, }}/>
                         <h6 className='dayLine2'> {item.event_location}</h6>
                     </div>
                 )}

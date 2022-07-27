@@ -85,6 +85,13 @@ export const updateEventDate = async (eventId,data)=>{
         event_date:arrayUnion(...data)
       })
 }
+export const deleteEventDate = async (eventId,data)=>{
+    const docRef = doc(db, "events", eventId);
+    return await updateDoc(docRef, {
+        event_date:arrayRemove(data)
+      })
+}
+
 
 export const updateEventTicket = async (eventId,data)=>{
     console.log(data)
@@ -94,6 +101,14 @@ export const updateEventTicket = async (eventId,data)=>{
       })
 
 }
+
+export const deleteEventTicket = async (eventId,data)=>{
+    const docRef = doc(db, "events", eventId);
+    return await updateDoc(docRef, {
+        tickets:arrayRemove(data)
+      })
+}
+
 
 export const updateEventData = async (eventId,data)=>{
     try{
