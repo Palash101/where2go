@@ -1,15 +1,19 @@
 import getFirebaseAdmin from './config';
+import { parseCookies } from 'nookies'
 
 export default async function logout(req, res) {
+
+    const cookies =  parseCookies({ req });
+
     const firebaseAdmin = getFirebaseAdmin()
-    const cookie = req.cookies.session
+    const cookie = req.body.token
     console.log(cookie)
     const token = await firebaseAdmin.auth().verifySessionCookie(
-        cookie)
+        cookies.user)
         .then((decodedClaims) => {
            return firebaseAdmin.auth().revokeRefreshTokens(decodedClaims.sub)
         })
-        then(()=>{
+        .then(()=>{
             res.redirect('/');
         })
         .catch(()=>{

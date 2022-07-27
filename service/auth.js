@@ -48,11 +48,11 @@ export  const emailPasswordSigin = async (email,password)=>{
         const adminUser = await getUsersByEmail(userEmail);
         console.log(adminUser.role,'admin role')
         if(adminUser.role == 3){
-          console.log('calling user create user session')
-         await createUserSession(idToken,userId,'admin');
-          
+          await createUserSession(idToken,userId,'admin');  
         }
-     
+        return {uId:userId,email:userEmail,token:idToken}
+
+
       })
       .catch((err)=>{
         return{error:'error',message:'something went wrong',deverr:err}

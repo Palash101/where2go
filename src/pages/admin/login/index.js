@@ -79,7 +79,7 @@ const LoginPage = () => {
   const theme = useTheme()
   const router = useRouter()
   const userContext = userAuth()
-
+// console.log(userContext)
 
   useEffect(()=>{
 
@@ -105,7 +105,11 @@ const LoginPage = () => {
       setLoading(true)
       emailPasswordSigin(values.email,values.password)
       .then((data)=>{
-        console.log(data)
+        userContext.setUserAuthState({
+          accesstoken:data.token,
+          isAuthenticated:true,
+        })
+        console.log(data,'sign process login in admin login page')
 
         setLoading(false)
         router.push('/admin')

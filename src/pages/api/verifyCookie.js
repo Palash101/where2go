@@ -1,8 +1,13 @@
 import 'firebase/auth';
+import { parseCookies } from 'nookies'
+
 
 import getFirebaseAdmin from './config'
 
 export async function verifyCookie(req,res){
+    const cookies = parseCookies(req)
+    console.log(cookies,'no cookie');
+
     const cookie = req.body.cookie
     const admin =  getFirebaseAdmin();
     if(!admin){

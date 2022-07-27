@@ -11,13 +11,11 @@ import { useState } from 'react';
        });
 
     const setUserAuthInfo = (data) => {
-        const {accesstoken,isAdmin,isAuthenticated} = data;
+        const {accesstoken,isAuthenticated} = data;
         localStorage.setItem("accesstoken", accesstoken);
-        localStorage.setItem("isAdmin", isAdmin);
         localStorage.setItem("isAuthenticated", isAuthenticated);
         setAuthState({
         accesstoken:accesstoken,
-         isAdmin,
          isAuthenticated
         });
       };
