@@ -94,7 +94,7 @@ const DefaultPalette = (mode, themeColor) => {
       paper: mode === 'light' ? '#FFF' : '#040020',
       default: mode === 'light' ? '#F4F5FA' : '#1f2227',
       //old
-       default1: mode === 'light' ? '#F4F5FA' : '#28243D'
+       default1: mode === 'light' ? '#e4e5e9' : '#2e3135'
       //paper: mode === 'light' ? '#FFF' : '#312D4B',
 
     },

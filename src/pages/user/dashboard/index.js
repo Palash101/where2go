@@ -7,14 +7,20 @@ import { useRouter } from 'next/router'
 import CircularProgress from '@mui/material/CircularProgress'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid';
-
 import { getAllEvents } from 'service/admin/events'
-function Dashboard(navigation){
+import nookies from "nookies";
+import { verifyToken } from 'service/auth'
+
+
+
+function Dashboard({user}){
     const  [allData, setAllData] = useState([]);
     const  [loading, setLoading] = useState(true);
     const router = useRouter();
+    
 
     useEffect(async ()=>{
+        console.log(user,'uuu')
     if(router.isReady){
         const eventData =  await getAllEvents()
         const eventArray =[];
@@ -27,7 +33,7 @@ function Dashboard(navigation){
         setLoading(false);
         console.log(eventArray ,'eventArray')
     }
-},[router.isReady,navigation])
+},[router.isReady])
 
    
 function renderImage(item){
@@ -140,3 +146,47 @@ return(
 Dashboard.getLayout = page => <HomeLayout>{page}</HomeLayout>
 
 export default Dashboard;
+
+export async function getServerSideProps(context) {
+    try{
+      const cookies = nookies.get(context);
+      console.log(cookies.user,'userr')
+      if(!cookies.user){
+        return{
+          redirect:{
+            permanent:false,
+            destination:'/',
+          },
+          props:{}
+        }
+  
+      }
+      const userData = await verifyToken(cookies.user);
+      console.log(userData,'in index page')
+      if(!userData.userType === 'customer'){
+        return{
+          redirect:{
+            permanent:false,
+            destination:'/',
+          },
+          props:{}
+        }
+  
+      }
+      return{
+        props:{user:userData}
+      }
+  
+    }
+    catch(err){
+      return{
+        redirect:{
+            permanent:false,
+            destination:'/'
+          },
+        props:{}
+      }
+    }
+  
+  
+  }

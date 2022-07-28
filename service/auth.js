@@ -51,13 +51,58 @@ export  const emailPasswordSigin = async (email,password)=>{
           await createUserSession(idToken,userId,'admin');  
         }
         return {uId:userId,email:userEmail,token:idToken}
-
-
       })
       .catch((err)=>{
         return{error:'error',message:'something went wrong',deverr:err}
       })
 
+}
+
+const setUser = async(user) =>{
+  return await addDoc(collection(db,'users'),user)
+.then((data)=>{
+    console.log(data,'user data  ')
+    return {docId:data.id,success:'success'}
+})
+.catch((err)=>{
+    console.log(err,'Add Category Error Service file')
+
+})
+}
+
+
+
+export const signinUser = async(user) =>{
+  const newUser = await getUsersByUid(user.uId);
+  console.log(newUser,'admin role')
+  if(newUser.role === 1){
+    await createUserSession(user.accessToken,user.uId,'customer');  
+  }
+  else{
+    await setUser({uId:user.uId,phoneNumber:user.phoneNumber,role:1})
+    await createUserSession(user.accessToken,user.uId,'customer');  
+  }
+  return {uId:user.uId,phoneNumber:user.phoneNumber,accessToken:user.accessToken}
+} 
+
+
+const getUsersByUid = async (uId) => {
+  console.log('calling get user by uid')
+  let profile = "";
+  let docsF = await getDocs(
+    query(
+      collection(db, 'users'),
+      where("uId", "==", uId),
+      limit(1)
+    )
+  );
+  if (docsF.docs.size !== 0) {
+    docsF.docs.forEach((doc) => {
+      profile = { ...doc.data(), id: doc.id };
+    });
+  }
+
+  return profile;
 }
 
 
@@ -138,5 +183,4 @@ const getApiUrl = ()=>{
   else{
     return process.env.PROD_API
   }
-
 }

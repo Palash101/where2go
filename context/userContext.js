@@ -11,6 +11,7 @@ import { useState } from 'react';
        });
 
     const setUserAuthInfo = (data) => {
+        console.log(data,'adta')
         const {accesstoken,isAuthenticated} = data;
         localStorage.setItem("accesstoken", accesstoken);
         localStorage.setItem("isAuthenticated", isAuthenticated);

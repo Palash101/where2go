@@ -27,7 +27,6 @@ import { Modal } from '@mui/material';
 import MuiCard from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import TextField from '@mui/material/TextField'
-import { userAuth } from 'context/userContext';
 import { auth } from 'service/main'; 
 import CircularProgress from '@mui/material/CircularProgress';
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
@@ -36,6 +35,8 @@ import { signInWithPhoneNumber } from "firebase/auth";
 import { RecaptchaVerifier } from "firebase/auth";
 import {toast} from 'react-toastify';
 import OtpInput from 'react-otp-input';
+import { signinUser,userLogout } from 'service/auth';
+import { userAuth } from 'context/userContext';
 
 
 
@@ -74,29 +75,34 @@ const style = {
   const [loading, setLoading] = useState(false);
   const [reloadPage, setReloadPage] = useState(false)
 
-  useEffect(() => {
-   
+  const userContext = userAuth()
 
-    if(localStorage.getItem('user')){
-      var newuser = localStorage.getItem('user');
-    
-      setUser(JSON.parse(newuser));
+
+  useEffect(() => {
+    if(localStorage.getItem('isAuthenticated')){
+      var user = {
+        phoneNumber:localStorage.getItem('phoneNumber'),
+        uId:localStorage.getItem('uId'),
+        role:localStorage.getItem('role'),
+        isAuthenticated:localStorage.getItem('isAuthenticated'),
+        accesstoken:localStorage.getItem('accesstoken')
+      };
+      console.log(user)
+      setUser(user);
     }
     else{
       setUser({});
     }
-
   },[reloadPage])
 
   const requestOtp = ()=>{
-    window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-verfier', {
-      'size': 'invisible',
-      'callback': (response) => {
-        // reCAPTCHA solved, allow signInWithPhoneNumber.
-        onSignInSubmit();
-      }
-    }, auth);
-}
+      window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-verfier', {
+        'size': 'invisible',
+        'callback': (response) => {
+          onSignInSubmit();
+        }
+      }, auth);
+  }
 
 
 const handleOtpVerifcation = ()=>{
@@ -105,17 +111,37 @@ const handleOtpVerifcation = ()=>{
     setLoading(true)
    let confirmationResult = window.confirmationResult;
    confirmationResult.confirm(otp).then((loginResult)=>{
-    console.log(loginResult.user.phoneNumber,loginResult.user.accessToken)
-    toast("You have successfully login");
-   var user ={
-    phoneNumber:loginResult.user.phoneNumber,
-    accessToken:loginResult.user.accessToken
-   }
-   setUser(user)
-    localStorage.setItem('user',JSON.stringify(user))
-    setOpen(false);
-    router.push('user/dashboard')
-    setLoading(false)
+
+        console.log(loginResult)
+      
+        var user ={
+          phoneNumber:loginResult.user.phoneNumber,
+          accessToken:loginResult.user.accessToken,
+          uId:loginResult.user.uid
+        }
+        signinUser(user).then(res => {
+          console.log(res)
+
+          userContext.setUserAuthState({
+            accesstoken:res.accessToken,
+            uId:res.uId,
+            phoneNumber:res.phoneNumber,
+            role:1,
+            isAuthenticated:true,
+          })
+          localStorage.setItem("uId", res.uId);
+          localStorage.setItem("phoneNumber", res.phoneNumber);
+          localStorage.setItem("role", 1);
+
+          toast("You have successfully login");
+
+        })
+        
+         setOpen(false);
+         router.push('user/dashboard')
+        setLoading(false)
+        setReloadPage(true)
+
    })
    .catch((error)=>{
     setLoading(false)
@@ -126,13 +152,11 @@ const handleOtpVerifcation = ()=>{
   else{
     toast("please enter 6 digit OTP.")
   }
-
-
 }
 
 
   
-  const handleLogin = ()=>{
+const handleLogin = ()=>{
       setLoading(true)
       requestOtp()
       let appVerfier = window.recaptchaVerifier
@@ -141,18 +165,15 @@ const handleOtpVerifcation = ()=>{
         window.confirmationResult = confirmationResult;
         setShowOtp(true);
         setLoading(false)
-        toast("We have sent OTP onn your mobile number please enter your OTP.")
-
+        toast("We have sent OTP onn your mobile number please enter your OTP.");
       })
       .catch((err)=>{
         alert(err)
         setLoading(false)
-
       })
   }
 
   const toggleNavVisibility = (event) => {
-    
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
@@ -164,10 +185,12 @@ const handleOtpVerifcation = ()=>{
   }
 
   const logout = () => {
-    localStorage.removeItem('user');
+    userLogout().then(res => {
+      console.log(res);
+    })
+    localStorage.clear();
     setReloadPage(true)
     setUser({});
-
   }
 
   const list = (bgclr) => (
@@ -177,8 +200,8 @@ const handleOtpVerifcation = ()=>{
       <Box
       sx={{backgroundColor:'#ffe600', padding:'20px 0px ', display:'flex',alignItems:'center',justifyContent:'center'}}
       >
-        {user && user.phoneNumber ? (
-          <Typography style={{color:`${theme.palette.primary.dark}`}}>{user.phoneNumber}</Typography>
+        {user && user.isAuthenticated ? (
+          <Typography style={{color:`${theme.palette.primary.dark}`}}>{user.isAuthenticated}</Typography>
         ):
         ( 
         <Button sx={{backgroundColor:"#17a2b8",color:'white'}} onClick={handleOpen}>Sign up / Log In</Button>
@@ -187,7 +210,7 @@ const handleOtpVerifcation = ()=>{
        
       </Box>
       <List>
-      {user && user.phoneNumber && (
+      {user && user.isAuthenticated && (
       <ListItem  disablePadding>
         <ListItemButton  onClick={() => router.push('user/dashboard')} >
           <ListItemIcon>
@@ -238,7 +261,7 @@ const handleOtpVerifcation = ()=>{
         About us
         </ListItemButton>
       </ListItem>
-      {user && user.phoneNumber && (
+      {user && user.isAuthenticated && (
       <ListItem  disablePadding onClick={() => logout()}>
         <ListItemButton>
         Logout
@@ -270,7 +293,7 @@ const handleOtpVerifcation = ()=>{
            <img src="/images/logos/logo.png" style={{height: '50px',marginTop: '10px'}}/>
           </div>
           <ModeToggler settings={settings} saveSettings={saveSettings} />
-          {!user.phoneNumber && (
+          {!user.isAuthenticated && (
          <Button color="inherit" onClick={handleOpen}>Login</Button>
           )}
          </Toolbar>
