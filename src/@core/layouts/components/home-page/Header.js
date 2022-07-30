@@ -61,7 +61,6 @@ const style = {
 
  function HomeAppBar(props) {
   const {settings,saveSettings} = useContext(SettingsContext)
-  console.log(settings,'settngs')
   const [navVisible, setNavVisible] = useState(false)
   const theme  = useTheme()
 
@@ -79,16 +78,18 @@ const style = {
 
 
   useEffect(() => {
+    console.log('calling')
     if(localStorage.getItem('isAuthenticated')){
-      var user = {
-        phoneNumber:localStorage.getItem('phoneNumber'),
+      const userData = {
+        phoneNumber:localStorage.getItem('userInfo'),
         uId:localStorage.getItem('uId'),
         role:localStorage.getItem('role'),
         isAuthenticated:localStorage.getItem('isAuthenticated'),
         accesstoken:localStorage.getItem('accesstoken')
       };
-      console.log(user)
-      setUser(user);
+      console.log(userData,'user Data')
+      setUser(userData);
+      console.log(user,'user Data')
     }
     else{
       setUser({});
@@ -103,7 +104,7 @@ const style = {
         }
       }, auth);
   }
-
+ 
 
 const handleOtpVerifcation = ()=>{
   console.log(otp)
@@ -112,7 +113,7 @@ const handleOtpVerifcation = ()=>{
    let confirmationResult = window.confirmationResult;
    confirmationResult.confirm(otp).then((loginResult)=>{
 
-        console.log(loginResult)
+        console.log(loginResult,'Login Result')
       
         var user ={
           phoneNumber:loginResult.user.phoneNumber,
@@ -125,22 +126,17 @@ const handleOtpVerifcation = ()=>{
           userContext.setUserAuthState({
             accesstoken:res.accessToken,
             uId:res.uId,
-            phoneNumber:res.phoneNumber,
-            role:1,
+            userInfo:res.phoneNumber,
             isAuthenticated:true,
           })
-          localStorage.setItem("uId", res.uId);
-          localStorage.setItem("phoneNumber", res.phoneNumber);
-          localStorage.setItem("role", 1);
-
-          toast("You have successfully login");
-
+          toast("You have logged in successfully");
         })
-        
          setOpen(false);
+         setReloadPage(!reloadPage)
+         setLoading(false)
+
+
          router.push('user/dashboard')
-        setLoading(false)
-        setReloadPage(true)
 
    })
    .catch((error)=>{
@@ -189,7 +185,7 @@ const handleLogin = ()=>{
       console.log(res);
     })
     localStorage.clear();
-    setReloadPage(true)
+    setReloadPage(!reloadPage)
     setUser({});
   }
 
@@ -200,8 +196,8 @@ const handleLogin = ()=>{
       <Box
       sx={{backgroundColor:'#ffe600', padding:'20px 0px ', display:'flex',alignItems:'center',justifyContent:'center'}}
       >
-        {user && user.isAuthenticated ? (
-          <Typography style={{color:`${theme.palette.primary.dark}`}}>{user.isAuthenticated}</Typography>
+        {!loading && user && user.isAuthenticated ? (
+          <Typography style={{color:`${theme.palette.primary.dark}`}}>{user.phoneNumber}</Typography>
         ):
         ( 
         <Button sx={{backgroundColor:"#17a2b8",color:'white'}} onClick={handleOpen}>Sign up / Log In</Button>
@@ -272,6 +268,8 @@ const handleLogin = ()=>{
       
     </Box>
   );
+
+  console.log('Rendering')
 
   return (
     <>

@@ -45,7 +45,7 @@ export  const emailPasswordSigin = async (email,password)=>{
           return idToken
       })
       .then(async()=>{
-        const adminUser = await getUsersByEmail(userEmail);
+        const adminUser = await getUsersByProvider(userEmail,'email');
         console.log(adminUser.role,'admin role')
         if(adminUser.role == 3){
           await createUserSession(idToken,userId,'admin');  
@@ -73,8 +73,7 @@ const setUser = async(user) =>{
 
 
 export const signinUser = async(user) =>{
-  const newUser = await getUsersByUid(user.uId);
-  console.log(newUser,'admin role')
+  const newUser = await getUsersByProvider(user.uId,'uId');
   if(newUser.role === 1){
     await createUserSession(user.accessToken,user.uId,'customer');  
   }
@@ -86,33 +85,13 @@ export const signinUser = async(user) =>{
 } 
 
 
-const getUsersByUid = async (uId) => {
-  console.log('calling get user by uid')
+ const getUsersByProvider = async (value,provider) => {
+  console.log({value:value,provider:provider})
   let profile = "";
   let docsF = await getDocs(
     query(
       collection(db, 'users'),
-      where("uId", "==", uId),
-      limit(1)
-    )
-  );
-  if (docsF.docs.size !== 0) {
-    docsF.docs.forEach((doc) => {
-      profile = { ...doc.data(), id: doc.id };
-    });
-  }
-
-  return profile;
-}
-
-
-const getUsersByEmail = async (email) => {
-  console.log('calling get user by email')
-  let profile = "";
-  let docsF = await getDocs(
-    query(
-      collection(db, 'users'),
-      where("email", "==", email),
+      where(provider, "==", value),
       limit(1)
     )
   );

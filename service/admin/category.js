@@ -39,29 +39,34 @@ import { EmailNewsletter } from "mdi-material-ui";
 
 }
 
-export const addCategory = async (name,status)=>{
+export const addCategory = async (name,currentLanguage,status)=>{
 
   let q = query(
     collection(db, 'category'),
     where("name", "==", name)
   );
   const querySnapshot = await getDocs(q);
+ 
   if(querySnapshot.empty){
         return addDoc(collection(db,'category'),{
           name:name,
+          name_tr:{
+            [currentLanguage]:name
+          },
+
           status:status,
           created_at: serverTimestamp()
         })
         .then((data)=>{
-            return {success:'success',message:'Category Added successfully'}
+            return {success:data,message:'Category Added successfully'}
         })
         .catch((err)=>{
-          return{error:'error',message:'Something went wrong',devmsg:err}
+          return{error:err,message:'Something went wrong',devmsg:err}
         })
       
       }
   else{
-    console.log('category already exist')
+   console.log('category already exist')
     return{error:'error',message:'Something went wrong'}
   }
 

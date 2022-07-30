@@ -16,7 +16,8 @@ import Snackbar from '@mui/material/Snackbar';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box'
 import Switch from '@mui/material/Switch';
-
+import Input from '@mui/material/Input';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 
 
@@ -33,9 +34,11 @@ import nookies from "nookies";
 
 function CategoryAdd() {
     const router  = useRouter()
-
+    const [show,setShow]=useState(true)
 
     const [categoryName,setCategoryName] = useState('')
+    const [arabicName,setArabicName] = useState('')
+    const [englishName,setEnglishName] = useState('')
     const [status,setStatus] = useState(1)
     const [loading,setLoading] = useState(false)
     const [snackState,setSnackState] = useState({
@@ -44,6 +47,8 @@ function CategoryAdd() {
       horizontal: 'right',
       message:'asdasd'
     })
+
+    const [currentLanguage,setCurrentLanguage] = useState('en')
 
     const { vertical, horizontal, open,message } = snackState;
 
@@ -58,25 +63,31 @@ function CategoryAdd() {
           alert('Please enter Valid data')
           return;
         }
+       
         setLoading(true)
-        console.log(categoryName,'submitting')
-        await addCategory(categoryName,status).then((res)=>{
+       // alert(englishName)
+        await addCategory(categoryName,currentLanguage,status).then((res)=>{
           console.log(res,'ress')
+         // alert(res);
           handleMessage()
-          setLoading(false)
-          router.push('/admin/category')
+         setLoading(false)
+         router.push('/admin/category')
         })
         
 
     }
     const handleMessage = (msg) => () => {
-      console.log(msg,'hdling adasd')
+      console.log(msg)
       setSnackState({ open: true,...snackState });
     };
+    const changLanguage =()=>{
+      setCurrentLanguage(currentLanguage == 'en' ? 'ar' : 'en')
+
+    }
 
 
     return ( 
-    <DatePickerWrapper>
+    <DatePickerWrapper dir = {currentLanguage == 'ar'?'rtl':'ltr'}>
       <Grid container spacing={6}>
         <Grid item xs={12} md={12}>
             <Card>
@@ -99,6 +110,16 @@ function CategoryAdd() {
                   <MenuItem value='1'>Active</MenuItem>
                   <MenuItem value='0'>Block</MenuItem>
                 </Select>
+                
+                <div>
+                <FormControlLabel 
+                control={<Switch 
+                  onChange={changLanguage}
+                />} label={currentLanguage} />
+                </div>
+                
+              
+
               </FormControl>
                                 </Grid>
                                 <Grid item xs={12}>
