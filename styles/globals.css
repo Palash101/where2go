@@ -253,6 +253,70 @@ ul.seatList li button {
     font-size: 17px;
     text-align: center;
 }
+ul.filterList {
+  padding: 0px;
+  padding-right: 20px;
+  border-bottom: 1px solid #474747;
+  margin: 0px;
+  list-style: none;
+}
+
+.filterList li {
+  padding: 4px 0px;
+}
+.searchForm{
+  position: absolute;
+  left: 155px;
+}
+input#searchInput {
+  background: #333333;
+  padding: 10px;
+  min-width: 207px;
+  border-radius: 5px;
+  color:#ddd;
+  padding-right: 40px;
+  border: 0px;
+}
+.searchForm button{
+  position: absolute;
+  background: transparent;
+  right: 0;
+  border: 0px;
+  padding: 6px;
+  color: #ddd;
+}
+.para-text p{
+font-size: 14px;
+}
+.about-box {
+  background: #40bed2;
+  padding: 50px 90px;
+  margin: 50px 0px;
+  border-radius: 14px;
+  box-shadow: 1px 1px 5px 1px rgb(0 0 0 / 20%);
+  font-size: 14px;
+}
+.about-box p,.about-box h1{
+  color:#333; 
+
+}
+.about-logo {
+  text-align: center;
+  margin: 33px;
+}
+
+.about-logo img {
+  max-width: 200px;
+}
+.contact-content h3{
+  font-size: 26px;
+  color: #000;
+  margin: 0px;
+}
+.contact-content p{
+    font-size: 16px;
+    color: #000;
+}
 @media (max-width:769px) {
   img.sliderImage {
     border-radius: 20px;

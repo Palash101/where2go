@@ -11,7 +11,7 @@ import CardContent from '@mui/material/CardContent'
 import Box from '@mui/material/Box'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import Button from '@mui/material/Button'
-
+import nookies from "nookies";
 
 
 
@@ -380,4 +380,4 @@ function changeCol(e){
 }
 Seat.getLayout = page => <BlankLayout>{page}</BlankLayout>
 
-export default Seat
+export default Seat;

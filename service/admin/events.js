@@ -129,6 +129,17 @@ export const updateEventData = async (eventId,data)=>{
     
 
 }
+
+export const getFilterEvent = async(cat) =>{
+    console.log(cat)
+    try{
+        return getDocs(collection(db, 'events'),  where("category", "==", cat));
+    }
+    catch(error){
+        return{error:'error',message:'Something went wrong',devmsg:error}
+    }
+}
+
 export const getCategory = async ()=>{
     try{
         const q = query(collection(db, "category"), where("status", "==", '1'));

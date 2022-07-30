@@ -37,7 +37,7 @@ import {toast} from 'react-toastify';
 import OtpInput from 'react-otp-input';
 import { signinUser,userLogout } from 'service/auth';
 import { userAuth } from 'context/userContext';
-
+import SearchIcon from '@mui/icons-material/Search';
 
 
 
@@ -65,8 +65,14 @@ const style = {
   const theme  = useTheme()
 
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => {
+    setOpen(true);
+    setNavVisible(false)
+  }
+  const handleClose = () => {
+    setOpen(false);
+    setNavVisible(false)
+  }
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
   const [user, setUser] = useState({});
@@ -129,11 +135,25 @@ const handleOtpVerifcation = ()=>{
             userInfo:res.phoneNumber,
             isAuthenticated:true,
           })
+
+          const userData = {
+            phoneNumber:res.phoneNumber,
+            uId:res.uId,
+            role:'customer',
+            isAuthenticated:true,
+            accesstoken:res.accessToken
+          };
+          console.log(userData,'user Data')
+          setUser(userData);
+          setShowOtp(false)
+
           toast("You have logged in successfully");
         })
          setOpen(false);
          setReloadPage(!reloadPage)
          setLoading(false)
+         setOtp('')
+         setPhone('')
 
 
          router.push('user/dashboard')
@@ -161,7 +181,7 @@ const handleLogin = ()=>{
         window.confirmationResult = confirmationResult;
         setShowOtp(true);
         setLoading(false)
-        toast("We have sent OTP onn your mobile number please enter your OTP.");
+        toast("We have sent OTP on your mobile number please enter your OTP.");
       })
       .catch((err)=>{
         alert(err)
@@ -219,7 +239,7 @@ const handleLogin = ()=>{
 
 
       <ListItem  disablePadding>
-        <ListItemButton onClick={() => router.push('/')} >
+        <ListItemButton onClick={() => router.replace('/')} >
           <ListItemIcon>
           <HomeIcon />
           </ListItemIcon>
@@ -227,7 +247,7 @@ const handleLogin = ()=>{
         </ListItemButton>
       </ListItem>
       <ListItem  disablePadding>
-        <ListItemButton>
+        <ListItemButton onClick={() => router.replace('/browse')} >
           <ListItemIcon>
           <MailIcon />
           </ListItemIcon>
@@ -242,9 +262,17 @@ const handleLogin = ()=>{
           <ListItemText primary='My Tickets' />
         </ListItemButton>
       </ListItem>
-      <Divider />
       <ListItem  disablePadding>
         <ListItemButton>
+          <ListItemIcon>
+          <LocalActivityIcon />
+          </ListItemIcon>
+          <ListItemText primary='Your Events' />
+        </ListItemButton>
+      </ListItem>
+      <Divider />
+      <ListItem  disablePadding>
+        <ListItemButton onClick={() => router.replace('/contact-us','/contact-us')}>
           <ListItemIcon>
           <MailIcon />
           </ListItemIcon>
@@ -253,10 +281,21 @@ const handleLogin = ()=>{
       </ListItem>
       <Divider />
       <ListItem  disablePadding>
-        <ListItemButton>
+        <ListItemButton onClick={() => router.replace('/about')}>
         About us
         </ListItemButton>
       </ListItem>
+      <ListItem  disablePadding>
+        <ListItemButton onClick={() => router.replace('/privacy-policy','/privacy-policy')}>
+        Privacy Policy
+        </ListItemButton>
+      </ListItem>
+      <ListItem  disablePadding>
+        <ListItemButton onClick={() => router.replace('/terms-of-use')}>
+       Terms of use
+        </ListItemButton>
+      </ListItem>
+
       {user && user.isAuthenticated && (
       <ListItem  disablePadding onClick={() => logout()}>
         <ListItemButton>
@@ -290,6 +329,17 @@ const handleLogin = ()=>{
           <div style={{ flexGrow: 1,cursor:'pointer' }} onClick={() => router.push('/')}>
            <img src="/images/logos/logo.png" style={{height: '50px',marginTop: '10px'}}/>
           </div>
+          <form action='/browse' className='searchForm'>
+              <input
+                type='search'
+                name='search'
+                id='searchInput'
+                placeholder="Search for event you love"
+              />
+              <button type='submit'>
+              <SearchIcon/>
+              </button>
+          </form>
           <ModeToggler settings={settings} saveSettings={saveSettings} />
           {!user.isAuthenticated && (
          <Button color="inherit" onClick={handleOpen}>Login</Button>
@@ -313,9 +363,7 @@ const handleLogin = ()=>{
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
          
           <Box sx={{ mb: 6 }}>
-            <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
-              Welcome to {themeConfig.templateName}! 👋🏻
-            </Typography>
+          <img src="/images/logos/logo.png" style={{height: '50px',margin: '20px auto',display: 'block',marginTop: '0px'}}/>
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
             <div id = "recaptcha-verfier"></div>
           </Box>
