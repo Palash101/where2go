@@ -18,7 +18,8 @@ import Box from '@mui/material/Box'
 import { useRouter } from 'next/router'
 import {verifyToken} from '../../../../service/auth'
 import nookies from "nookies";
-
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 
 import {addLocation} from '../../../../service/admin/location'
@@ -36,13 +37,17 @@ function LocationAdd() {
       horizontal: 'right',
       message:'asdasd'
     })
-
+    const [currentLanguage,setCurrentLanguage] = useState('en')
     const { vertical, horizontal, open,message } = snackState;
 
     const handleClose = () => {
       setSnackState({ ...snackState, open: false });
     };
-  
+    const changLanguage =()=>{
+      setCurrentLanguage(currentLanguage == 'en' ? 'ar' : 'en')
+
+    }
+
 
     //Firebase Store Category
     const storeLocation = async ()=>{
@@ -52,7 +57,7 @@ function LocationAdd() {
         }
         setLoading(true)
         console.log(locationName,'submitting')
-        await addLocation(locationName,status).then((res)=>{
+        await addLocation(locationName,currentLanguage,status).then((res)=>{
           console.log(res,'ress')
           handleMessage()
           setLoading(false)
@@ -91,6 +96,10 @@ function LocationAdd() {
                   <MenuItem value='1'>Active</MenuItem>
                   <MenuItem value='0'>Block</MenuItem>
                 </Select>
+                <FormControlLabel 
+                control={<Switch 
+                  onChange={changLanguage}
+                />} label={currentLanguage} />
               </FormControl>
                                 </Grid>
                                 <Grid item xs={12}>

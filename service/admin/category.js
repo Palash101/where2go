@@ -39,18 +39,19 @@ import { EmailNewsletter } from "mdi-material-ui";
 
 }
 
-export const addCategory = async (name,englishName,arabicName,status)=>{
+export const addCategory = async (name,currentLanguage,status)=>{
 
   let q = query(
     collection(db, 'category'),
     where("name", "==", name)
   );
   const querySnapshot = await getDocs(q);
+ 
   if(querySnapshot.empty){
         return addDoc(collection(db,'category'),{
           name:name,
           name_tr:{
-            ar:arabicName,en:englishName
+            [currentLanguage]:name
           },
 
           status:status,

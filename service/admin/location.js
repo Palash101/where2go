@@ -22,7 +22,7 @@ export const getAllLocations = async()=>{
     return getDocs(collection(db, 'locations'));
 }
 
-export const addLocation = async (name,status)=>{
+export const addLocation = async (name,currentLanguage,status)=>{
     let q = query(
         collection(db, 'locations'),
         where("name", "==", name)
@@ -31,7 +31,10 @@ export const addLocation = async (name,status)=>{
       if(querySnapshot.empty){
             return addDoc(collection(db,'locations'),{
               name:name,
-              status:status
+              status:status,
+              name_tr:{
+                [currentLanguage]:name
+              },
             })
             .then((data)=>{
                 return {success:'success',message:'Category Added successfully'}

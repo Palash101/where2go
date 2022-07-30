@@ -63,6 +63,7 @@ function CategoryAdd() {
           alert('Please enter Valid data')
           return;
         }
+       
         setLoading(true)
        // alert(englishName)
         await addCategory(categoryName,currentLanguage,status).then((res)=>{
@@ -76,7 +77,7 @@ function CategoryAdd() {
 
     }
     const handleMessage = (msg) => () => {
-      console.log(msg,'hdling adasd')
+      console.log(msg)
       setSnackState({ open: true,...snackState });
     };
     const changLanguage =()=>{

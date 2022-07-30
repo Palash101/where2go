@@ -11,16 +11,17 @@ import { useState } from 'react';
        });
 
     const setUserAuthInfo = (data) => {
-        console.log(data,'adta')
-        const {accesstoken,isAuthenticated} = data;
+        const {accesstoken,isAuthenticated,userInfo} = data;
         localStorage.setItem("accesstoken", accesstoken);
         localStorage.setItem("isAuthenticated", isAuthenticated);
+        localStorage.setItem("userInfo", userInfo);
         setAuthState({
+            ...authState,
         accesstoken:accesstoken,
-         isAuthenticated
+         isAuthenticated,
+         userInfo:userInfo
         });
       };
-
     const isUserAuthenticated = () => {
      const token = localStorage.getItem('accesstoken')
     if (token) {
@@ -37,7 +38,6 @@ import { useState } from 'react';
     value={{
         authState,
         setUserAuthState: (userAuthInfo) => setUserAuthInfo(userAuthInfo),
-        isUserAuthenticated,
     }}
 
     >

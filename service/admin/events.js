@@ -163,7 +163,6 @@ export const getHomePageEvent = async ()=>{
                             })
                         }
                     }) 
-                console.log(tempData,'tempdata')
                 return tempData
             })
             if(d.length > 0){
@@ -171,7 +170,6 @@ export const getHomePageEvent = async ()=>{
             }
             
         }
-        console.log(temp.length,'calling main temp')
         return temp
     }
 }
