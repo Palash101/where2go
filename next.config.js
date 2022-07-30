@@ -6,7 +6,7 @@ module.exports = {
   env:{
     PROD_API:'https://where2go-xtr4m.ondigitalocean.app',
     DEV_API:'http://localhost:3000',
-    DEBUG:false,
+    DEBUG:true,
     
   },
   images: {

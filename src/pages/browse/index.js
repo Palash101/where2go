@@ -97,10 +97,10 @@ function Browse() {
     function Item(item, i) {
         return (
             <div key={i} >
-                <div className='slideItem' onClick={() => router.push({
+                <div className='slideItem' onClick={() => {router.push({
                     pathname: '/details/[id]',
-                    query: { id: item.id },
-                })}>
+                    query: { id: item.docId },
+                })}}>
                     <div className='slideItemImage'>
                         {renderImage(item)}
                     </div>

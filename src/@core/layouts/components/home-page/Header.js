@@ -67,11 +67,11 @@ const style = {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
-    setNavVisible(!navVisible)
+    setNavVisible(false)
   }
   const handleClose = () => {
     setOpen(false);
-    setNavVisible(!navVisible)
+    setNavVisible(false)
   }
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
@@ -181,7 +181,7 @@ const handleLogin = ()=>{
         window.confirmationResult = confirmationResult;
         setShowOtp(true);
         setLoading(false)
-        toast("We have sent OTP onn your mobile number please enter your OTP.");
+        toast("We have sent OTP on your mobile number please enter your OTP.");
       })
       .catch((err)=>{
         alert(err)
@@ -262,9 +262,17 @@ const handleLogin = ()=>{
           <ListItemText primary='My Tickets' />
         </ListItemButton>
       </ListItem>
-      <Divider />
       <ListItem  disablePadding>
         <ListItemButton>
+          <ListItemIcon>
+          <LocalActivityIcon />
+          </ListItemIcon>
+          <ListItemText primary='Your Events' />
+        </ListItemButton>
+      </ListItem>
+      <Divider />
+      <ListItem  disablePadding>
+        <ListItemButton onClick={() => router.replace('/contact-us','/contact-us')}>
           <ListItemIcon>
           <MailIcon />
           </ListItemIcon>
@@ -273,10 +281,21 @@ const handleLogin = ()=>{
       </ListItem>
       <Divider />
       <ListItem  disablePadding>
-        <ListItemButton>
+        <ListItemButton onClick={() => router.replace('/about')}>
         About us
         </ListItemButton>
       </ListItem>
+      <ListItem  disablePadding>
+        <ListItemButton onClick={() => router.replace('/privacy-policy','/privacy-policy')}>
+        Privacy Policy
+        </ListItemButton>
+      </ListItem>
+      <ListItem  disablePadding>
+        <ListItemButton onClick={() => router.replace('/terms-of-use')}>
+       Terms of use
+        </ListItemButton>
+      </ListItem>
+
       {user && user.isAuthenticated && (
       <ListItem  disablePadding onClick={() => logout()}>
         <ListItemButton>
