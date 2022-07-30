@@ -208,44 +208,47 @@ function EventCreate() {
 export default EventCreate;
 
 export async function getServerSideProps(context) {
-    try{
-      const cookies = nookies.get(context);
-      if(!cookies.user){
-        return{
-          redirect:{
-            permanent:false,
-            destination:'/admin/login',
-          },
-          props:{}
-        }
-  
+  try{
+    const cookies = nookies.get(context);
+    if(!cookies.user){
+      return{
+        redirect:{
+          permanent:false,
+          destination:'/admin/login',
+        },
+        props:{}
       }
-      const userData = await verifyToken(cookies.user);
-      console.log(userData,'in index page')
-      if(!userData.userType === 'admin'){
-        return{
-          redirect:{
-            permanent:false,
-            destination:'/admin/login',
-          },
-          props:{}
-        }
-  
-      }
+
+    }
+    const userData = await verifyToken(cookies.user);
+    console.log(userData,'in index page')
+ 
+   if(userData.userType === 'admin'){
       return{
         props:{user:userData}
       }
-  
     }
-    catch(err){
+    else{
       return{
         redirect:{
-            permanent:false,
-            destination:'/admin/login'
-          },
+          permanent:false,
+          destination:'/admin/login',
+        },
         props:{}
       }
     }
-  
-  
+    
+
   }
+  catch(err){
+    return{
+      redirect:{
+          permanent:false,
+          destination:'/admin/login'
+        },
+      props:{}
+    }
+  }
+
+
+}

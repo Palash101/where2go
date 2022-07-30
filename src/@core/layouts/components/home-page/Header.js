@@ -37,7 +37,7 @@ import {toast} from 'react-toastify';
 import OtpInput from 'react-otp-input';
 import { signinUser,userLogout } from 'service/auth';
 import { userAuth } from 'context/userContext';
-
+import SearchIcon from '@mui/icons-material/Search';
 
 
 
@@ -65,8 +65,14 @@ const style = {
   const theme  = useTheme()
 
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => {
+    setOpen(true);
+    setNavVisible(!navVisible)
+  }
+  const handleClose = () => {
+    setOpen(false);
+    setNavVisible(!navVisible)
+  }
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
   const [user, setUser] = useState({});
@@ -129,11 +135,25 @@ const handleOtpVerifcation = ()=>{
             userInfo:res.phoneNumber,
             isAuthenticated:true,
           })
+
+          const userData = {
+            phoneNumber:res.phoneNumber,
+            uId:res.uId,
+            role:'customer',
+            isAuthenticated:true,
+            accesstoken:res.accessToken
+          };
+          console.log(userData,'user Data')
+          setUser(userData);
+          setShowOtp(false)
+
           toast("You have logged in successfully");
         })
          setOpen(false);
          setReloadPage(!reloadPage)
          setLoading(false)
+         setOtp('')
+         setPhone('')
 
 
          router.push('user/dashboard')
@@ -290,12 +310,16 @@ const handleLogin = ()=>{
           <div style={{ flexGrow: 1,cursor:'pointer' }} onClick={() => router.push('/')}>
            <img src="/images/logos/logo.png" style={{height: '50px',marginTop: '10px'}}/>
           </div>
-          <form>
+          <form action='/browse' className='searchForm'>
               <input
                 type='search'
+                name='search'
                 id='searchInput'
                 placeholder="Search for event you love"
               />
+              <button type='submit'>
+              <SearchIcon/>
+              </button>
           </form>
           <ModeToggler settings={settings} saveSettings={saveSettings} />
           {!user.isAuthenticated && (

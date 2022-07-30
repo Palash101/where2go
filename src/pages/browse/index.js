@@ -22,6 +22,10 @@ function Browse() {
 
     useEffect(async () => {
         if (router.isReady) {
+            if(router.query.search){
+                var search = router.query.search;
+            }
+
             const eventData = await getAllEvents()
             const eventArray = [];
             eventData.docs.forEach(item => {
@@ -127,6 +131,8 @@ function Browse() {
                             <li>
                                 <Button verient='default' color={category.name === 'all' ? 'warning' : 'inherit'} onClick={() => selectCategory({name:'all',status:1})}>All</Button>
                             </li>
+                        </ul>
+                        <ul className='filterList'>
                             {categories.length > 0 &&
                                 categories.map((item, key) => (
                                     <li>
