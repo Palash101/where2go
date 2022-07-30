@@ -223,7 +223,7 @@ const handleLogin = ()=>{
 
 
       <ListItem  disablePadding>
-        <ListItemButton onClick={() => router.push('/')} >
+        <ListItemButton onClick={() => router.replace('/')} >
           <ListItemIcon>
           <HomeIcon />
           </ListItemIcon>
@@ -231,7 +231,7 @@ const handleLogin = ()=>{
         </ListItemButton>
       </ListItem>
       <ListItem  disablePadding>
-        <ListItemButton>
+        <ListItemButton onClick={() => router.replace('/browse')} >
           <ListItemIcon>
           <MailIcon />
           </ListItemIcon>
@@ -292,6 +292,13 @@ const handleLogin = ()=>{
           <div style={{ flexGrow: 1,cursor:'pointer' }} onClick={() => router.push('/')}>
            <img src="/images/logos/logo.png" style={{height: '50px',marginTop: '10px'}}/>
           </div>
+          <form>
+              <input
+                type='search'
+                id='searchInput'
+                placeholder="Search for event you love"
+              />
+          </form>
           <ModeToggler settings={settings} saveSettings={saveSettings} />
           {!user.isAuthenticated && (
          <Button color="inherit" onClick={handleOpen}>Login</Button>
@@ -315,9 +322,7 @@ const handleLogin = ()=>{
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
          
           <Box sx={{ mb: 6 }}>
-            <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
-              Welcome to {themeConfig.templateName}! 👋🏻
-            </Typography>
+          <img src="/images/logos/logo.png" style={{height: '50px',margin: '20px auto',display: 'block',marginTop: '0px'}}/>
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
             <div id = "recaptcha-verfier"></div>
           </Box>
