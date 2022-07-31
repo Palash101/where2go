@@ -355,7 +355,7 @@ function changeCol(e){
                                             <SeatComponent
                                                 color={item1.fill}
                                                 className={item1.class}
-                                                id={item1.x + "" + item1.y}
+                                                id={`${item1.x}${item1.y}`}
                                                 startingXPosition={item1.x}
                                                 startingYPosition={item1.y}
                                                 key={key1}
