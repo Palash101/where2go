@@ -159,9 +159,11 @@ export const getHomePageEvent = async ()=>{
     const temp = []
     const q = query(collection(db, "category"), where("status", "==", '1'))
     const queryDoc =  await getDocs(q);
-    if(queryDoc.empty === false){
-        for(let i=0;i<queryDoc.docs.length;i++){
-            const catName =  queryDoc.docs[i].data().name;
+   console.log(queryDoc);
+ if(queryDoc.empty === false){
+        await Promise.all(queryDoc.docs.map(async (doc) => {
+            console.log(doc.data())
+            const catName =  doc.data().name;
             const q = query(collection(db, "events"), where("category", "==", catName))
             const d = await getDocs(q).then((doc)=>{
                 console.log('event doc',doc.empty)
@@ -177,10 +179,10 @@ export const getHomePageEvent = async ()=>{
                 return tempData
             })
             if(d.length > 0){
-                temp.push({key:catName,data:d})
-            }
-            
-        }
+                        temp.push({key:catName,data:d})
+                    }
+          }));
+    
         return temp
     }
 }
