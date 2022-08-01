@@ -51,3 +51,7 @@ export const addLocation = async (name,currentLanguage,status)=>{
     
 
 }
+
+export const deleteLocation = async(docId)=>{
+  await deleteDoc(doc(db, "locations", docId));
+}

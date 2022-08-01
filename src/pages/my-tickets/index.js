@@ -9,19 +9,21 @@ import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid';
 import { getAllEvents,getCategory,getFilterEvent } from 'service/admin/events'
 import { Button } from '@mui/material'
+import nookies from "nookies";
 
 
-function Browse() {
+function MyTickets({user}) {
     const [data, setData] = useState([]);
     const [allData, setAllData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [categories, setCategories] = useState([]);
-    const [dlist,setDlist] = useState(false)
     const [category, setCategory] = useState({name:'all',status:1});
     const router = useRouter();
 
 
     useEffect(async () => {
+
+        console.log(user,'user')
         if (router.isReady) {
             if(router.query.search){
                 var search = router.query.search;
@@ -53,7 +55,6 @@ function Browse() {
             setLoading(true)
             setAllData(data)
             setLoading(false);
-            setDlist(false);
         }
         else{
             setLoading(true)
@@ -61,7 +62,6 @@ function Browse() {
             console.log(edata)
             setAllData(edata)
             setLoading(false);
-            setDlist(false);
         }
     }
 
@@ -116,24 +116,30 @@ function Browse() {
 
     return (
         <>
-            <Box
-                sx={{
-                    marginRight: '5rem',
-                    marginLeft: '5rem',
-                    marginTop: '90px',
-                    maxWidth: 1180,
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    paddingLeft: '20px',
-                    paddingRight: '20px',
-                }}>
-                <Grid container spacing={5} sx={{}}>
-                    <Grid item xs={12} md={3} sx={{}}>
-                        <Box onClick={() => setDlist(!dlist)}>Filter</Box>
-                       
-                            <div className={dlist === true ? 'dideList active' : 'dideList'} >
+        {user === undefined || !user.length ? (
+            <div className='login-cont'>
+                <h5>To see your tickets login with your phone number.</h5>
+                <Button  size='small'
+              variant='contained'
+              sx={{  background: '#ffe600',color:'#000'}}>Login</Button>
+            </div>
+        ):
+        (
+            <div>
+                <Box
+                    sx={{
+                        marginRight: '5rem',
+                        marginLeft: '5rem',
+                        marginTop: '90px',
+                        maxWidth: 1180,
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        paddingLeft: '20px',
+                        paddingRight: '20px',
+                    }}>
+                    <Grid container spacing={5} sx={{}}>
+                        <Grid item xs={4} md={3} sx={{}}>
                             <h3>Category</h3>
-                            <span className='catRemove' onClick={() => setDlist(!dlist)}>X</span>
                             <ul className='filterList'>
                                 <li>
                                     <Button verient='default' color={category.name === 'all' ? 'warning' : 'inherit'} onClick={() => selectCategory({name:'all',status:1})}>All</Button>
@@ -148,43 +154,72 @@ function Browse() {
                                     ))
                                 }
                             </ul>
-                            </div>
-                    
-                      
-                    </Grid>
-                    <Grid item xs={12} md={9} sx={{ paddingLeft: '0px' }}>
-                        <Grid container spacing={8} sx={{}}>
+                        </Grid>
+                        <Grid item xs={8} md={9} sx={{ paddingLeft: '0px' }}>
+                            <Grid container spacing={8} sx={{}}>
 
-                            {allData.length > 0 &&
-                                allData.map((item, key) => (
-                                    <Grid item xs={6} md={3} key={key} sx={{ paddingLeft: '0px' }}>
-                                        {Item(item, key)}
-                                    </Grid>
-                                ))
-                            }
+                                {allData.length > 0 &&
+                                    allData.map((item, key) => (
+                                        <Grid item xs={6} md={3} key={key} sx={{ paddingLeft: '0px' }}>
+                                            {Item(item, key)}
+                                        </Grid>
+                                    ))
+                                }
 
+                            </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
 
-            </Box>
-            {loading === true && (
-                <Box sx={{
-                    display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgb(0 0 0 / 39%)', zIndex: 99999999, position: 'fixed', left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                }}>
-                    <CircularProgress />
                 </Box>
+                {loading === true && (
+                    <Box sx={{
+                        display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgb(0 0 0 / 39%)', zIndex: 99999999, position: 'fixed', left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                    }}>
+                        <CircularProgress />
+                    </Box>
+                )}
+            </div>
             )}
         </>
-
-
 
     )
 }
 
-Browse.getLayout = page => <HomeLayout>{page}</HomeLayout>
+MyTickets.getLayout = page => <HomeLayout>{page}</HomeLayout>
 
-export default Browse;
+export default MyTickets;
+
+export async function getServerSideProps(context) {
+    try{
+      const cookies = nookies.get(context);
+      console.log(cookies.user,'userr')
+      if(!cookies.user){
+        return{
+          props:{user:{}}
+        }
+  
+      }
+      const userData = await verifyToken(cookies.user);
+      console.log(userData,'in index page')
+      if(!userData.userType === 'customer'){
+        return{
+          rprops:{user:{}}
+        }
+  
+      }
+      return{
+        props:{user:userData}
+      }
+  
+    }
+    catch(err){
+      return{
+        props:{user:{}}
+      }
+    }
+  
+  
+  }

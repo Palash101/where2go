@@ -24,9 +24,10 @@ import { EmailNewsletter } from "mdi-material-ui";
   export const getAllCategory=  async()=>{
     let q = query(
       collection(db, 'category'),
-      orderBy('position','asc')
+      // orderBy('position','asc')
     );
     const data = await getDocs(q);
+    console.log(data,'cats')
     return data
     // return getDocs(collection(db, 'category'),orderBy());
 
@@ -35,9 +36,10 @@ import { EmailNewsletter } from "mdi-material-ui";
 
   }
 
-  export const deleteCategory = ()=>{
-
+  export const deleteCategory = async(docId)=>{
+    await deleteDoc(doc(db, "category", docId));
 }
+
 
 export const addCategory = async (name,currentLanguage,status)=>{
 

@@ -16,28 +16,36 @@ import Chip from '@mui/material/Chip'
 import { useRouter } from 'next/router'
 import {verifyToken} from '../../../../service/auth'
 import nookies from "nookies";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-
-import {getAllCategory} from '../../../../service/admin/category'
+import {getAllCategory,deleteCategory} from '../../../../service/admin/category'
+import { getHomePageEvent } from '../../../../service/admin/events'
+import { CircularProgress } from '@mui/material'
+import {toast} from 'react-toastify'
 
 function CategoryList() {
     const[allCategory ,setAllCategory] =  useState([])
+    const[loading ,setLoading] =  useState(false)
 
     useEffect(()=>{
-      const getData =  async()=>{
-        const catData =  await getAllCategory()
-        console.log(catData)
-        const catArray =[];
-        catData.docs.forEach(item=>{
-          console.log(item.data())
-        catArray.push(item.data())
-       })
-        setAllCategory(catArray)
-      }
+      
       getData()
       
 
     },[])
+
+    const getData =  async()=>{
+      const catData =  await getAllCategory()
+      const catArray =[];
+      catData.docs.forEach(item=>{
+        const docId = {docId:item.id}
+      const data = Object.assign(docId,item.data());
+
+      catArray.push(data)
+     })
+      setAllCategory(catArray)
+    }
 
     const renderStatusChip = (status,color) =>{
       return(
@@ -53,9 +61,20 @@ function CategoryList() {
         </div>
       )
     }
-
+    const DeleteClick = async(row) =>{
+      if(window.confirm('Are you sure? you want to delete this category.')){
+      console.log(row)
+      setLoading(true)
+        deleteCategory(row.docId).then(res => {
+          toast("Category deleted successfully")
+          setLoading(false)
+          getData();
+        })
+      }
+    }
 
     return ( 
+      <>
         <Grid item xs={12}>
           <Card>
             <CardHeader title='Event Categories' titleTypographyProps={{ variant: 'h6' }} />
@@ -91,7 +110,13 @@ function CategoryList() {
                       {row.position}
                     </TableCell>
                   
-                    <TableCell align='right'>Edit</TableCell>
+                    <TableCell align='right'>
+                        <EditIcon sx={{color:'#d7c602',cursor:'pointer'}} />
+                        <DeleteIcon
+                        onClick={()=>DeleteClick(row)}
+                        sx={{color:'#d7c602',cursor:'pointer', marginLeft:'10px'}}
+                        ></DeleteIcon>
+                    </TableCell>
                   </TableRow>
 
                 ))}
@@ -99,6 +124,16 @@ function CategoryList() {
             </Table>
          </TableContainer>
       </Grid>
+       {loading &&(
+        <CircularProgress 
+        sx={{
+          position:'absolute',
+          right:'40%',
+          top:'50%',
+
+        }}/>
+            )}
+            </>
      );
 }
 
