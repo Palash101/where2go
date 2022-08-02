@@ -117,8 +117,6 @@ function Seat (){
 			rowStartPoisition:currentState.rowStartPoisition+10
 
 			}
-			
-
 		})
 
 	}
@@ -130,8 +128,6 @@ function Seat (){
 			colStartingPoistion:currentState.colStartingPoistion+10
 
 			}
-			
-
 		})
 
 	}

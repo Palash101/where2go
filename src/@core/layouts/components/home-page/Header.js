@@ -229,10 +229,10 @@ const handleLogin = ()=>{
       {user && user.isAuthenticated && (
       <ListItem  disablePadding>
         <ListItemButton  onClick={() => router.push('user/dashboard')} >
-          <ListItemIcon>
+          <ListItemIcon  size={24}>
           <HomeIcon />
           </ListItemIcon>
-          <ListItemText primary='Dashboard'/>
+          <ListItemText sx={{fontSize:'0.75rem'}} primary='Dashboard'/>
         </ListItemButton>
       </ListItem>
       )}
@@ -243,7 +243,7 @@ const handleLogin = ()=>{
           <ListItemIcon>
           <HomeIcon />
           </ListItemIcon>
-          <ListItemText primary='Home' />
+          <ListItemText sx={{fontSize:'14px'}} primary='Home' />
         </ListItemButton>
       </ListItem>
       <ListItem  disablePadding>
@@ -251,7 +251,7 @@ const handleLogin = ()=>{
           <ListItemIcon>
           <MailIcon />
           </ListItemIcon>
-          <ListItemText primary='Browse Events' />
+          <ListItemText sx={{fontSize:'14px'}} primary='Browse Events' />
         </ListItemButton>
       </ListItem>
       <ListItem  disablePadding>
@@ -259,7 +259,7 @@ const handleLogin = ()=>{
           <ListItemIcon>
           <LocalActivityIcon />
           </ListItemIcon>
-          <ListItemText primary='My Tickets' />
+          <ListItemText sx={{fontSize:'14px'}} primary='My Tickets' />
         </ListItemButton>
       </ListItem>
       <ListItem  disablePadding>
@@ -267,7 +267,7 @@ const handleLogin = ()=>{
           <ListItemIcon>
           <LocalActivityIcon />
           </ListItemIcon>
-          <ListItemText primary='Your Events' />
+          <ListItemText sx={{fontSize:'14px'}} primary='Your Events' />
         </ListItemButton>
       </ListItem>
       <Divider />
@@ -276,29 +276,30 @@ const handleLogin = ()=>{
           <ListItemIcon>
           <MailIcon />
           </ListItemIcon>
-          <ListItemText primary='Contact Us' />
+          <ListItemText 
+          sx={{fontSize:'14px'}} primary='Contact Us' />
         </ListItemButton>
       </ListItem>
       <Divider />
       <ListItem  disablePadding>
-        <ListItemButton onClick={() => router.replace('/about')}>
+        <ListItemButton sx={{fontSize:'14px'}} onClick={() => router.replace('/about')}>
         About us
         </ListItemButton>
       </ListItem>
       <ListItem  disablePadding>
-        <ListItemButton onClick={() => router.replace('/privacy-policy','/privacy-policy')}>
+        <ListItemButton sx={{fontSize:'14px'}} onClick={() => router.replace('/privacy-policy','/privacy-policy')}>
         Privacy Policy
         </ListItemButton>
       </ListItem>
       <ListItem  disablePadding>
-        <ListItemButton onClick={() => router.replace('/terms-of-use')}>
+        <ListItemButton sx={{fontSize:'14px'}} onClick={() => router.replace('/terms-of-use')}>
        Terms of use
         </ListItemButton>
       </ListItem>
 
       {user && user.isAuthenticated && (
       <ListItem  disablePadding onClick={() => logout()}>
-        <ListItemButton>
+        <ListItemButton sx={{fontSize:'14px'}}>
         Logout
         </ListItemButton>
       </ListItem>
@@ -326,7 +327,7 @@ const handleLogin = ()=>{
           >
             <MenuIcon />
           </IconButton>
-          <div style={{ flexGrow: 1,cursor:'pointer' }} onClick={() => router.push('/')}>
+          <div style={{ flexGrow: 1,cursor:'pointer' }} className='logo-center' onClick={() => router.push('/')}>
            <img src="/images/logos/logo.png" style={{height: '50px',marginTop: '10px'}}/>
           </div>
           <form action='/browse' className='searchForm'>

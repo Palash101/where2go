@@ -15,28 +15,39 @@ import TablePagination from '@mui/material/TablePagination'
 import Chip from '@mui/material/Chip'
 import EditIcon from '@mui/icons-material/Edit';
 import nookies from "nookies";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Box } from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
+import {toast} from 'react-toastify'
 
 
 
-import {getAllLocations} from '../../../../service/admin/location'
+import {getAllLocations,deleteLocation} from '../../../../service/admin/location'
 import {verifyToken} from '../../../../service/auth'
 
 function LocationList() {
+
     const[allLocations ,setAllLocations] =  useState([])
+    const [loading, setLoading]= useState(false)
 
     useEffect(()=>{
-      const getData =  async()=>{
-        const catData =  await getAllLocations()
-        const catArray =[];
-        catData.docs.forEach(item=>{
-        catArray.push(item.data())
-       })
-        setAllLocations(catArray)
-      }
+     
       getData()
       
 
-    },[])
+    },[setAllLocations])
+
+    const getData =  async()=>{
+      const catData =  await getAllLocations()
+      const catArray =[];
+      catData.docs.forEach(item=>{
+        const docId = {docId:item.id}
+        const data = Object.assign(docId,item.data());
+        catArray.push(data)
+      })
+     console.log(catArray)
+      setAllLocations(catArray)
+    }
 
     const renderStatusChip = (status,color) =>{
       return(
@@ -53,8 +64,23 @@ function LocationList() {
       )
     }
 
+    const DeleteClick = (id) =>{
+      if(window.confirm('Are you sure? you want to delete this location.')){
+          console.log(id)
+          setLoading(true)
+          deleteLocation(id).then(res => {
+            toast('Location deleted successfully.')
+          
+          setLoading(false)
+          getData();
+    
+          })
+      };
+     
+    }
 
     return ( 
+      <div>
         <Grid item xs={12}>
           <Card>
             <CardHeader title='Locations' titleTypographyProps={{ variant: 'h6' }} />
@@ -86,14 +112,31 @@ function LocationList() {
                       {row.status == 1 ? renderStatusChip('Active','#56ca00'):renderStatusChip('Block','#ff4c51')}
                     </TableCell>
                   
-                    <TableCell align='right'><EditIcon sx={{color:'#d7c602',cursor:'pointer'}} /></TableCell>
+                    <TableCell align='right'>
+                      <EditIcon sx={{color:'#d7c602',cursor:'pointer'}} />
+                      <DeleteIcon
+                        onClick={()=>DeleteClick(row.docId)}
+                        sx={{color:'#d7c602',cursor:'pointer', marginLeft:'10px'}}
+                        ></DeleteIcon>
+                      </TableCell>
                   </TableRow>
 
                 ))}
               </TableBody>
             </Table>
          </TableContainer>
+         
       </Grid>
+      {loading &&(
+        <CircularProgress 
+        sx={{
+          position:'absolute',
+          right:'40%',
+          top:'50%',
+
+        }}/>
+            )}
+        </div>
      );
 }
 

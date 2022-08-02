@@ -317,7 +317,77 @@ font-size: 14px;
     font-size: 16px;
     color: #000;
 }
+
+.mobile-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1f2227;
+  z-index: 999;
+  padding: 6px 0px;
+  display: none;
+}
+
+.mobile-footer ul {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.mobile-footer li p {
+  font-size: 0.5em;
+  margin: 0px;
+  line-height: 16px;
+}
+.mobile-footer li.active{
+  color:#FFB400;
+}
+.login-cont {
+  margin-top: 100px;
+  padding: 20px;
+  text-align: center;
+}
+.catRemove{
+  display: none;
+}
 @media (max-width:769px) {
+.dideList{
+  display: none;
+}
+  .dideList.active {
+    display: block;
+    position: fixed;
+    z-index: 9999;
+    background: #333;
+    text-align: center;
+    width: calc(100% - 40px);
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    overflow: auto;
+}
+.catRemove{
+  display: block;
+}
+.dideList h3 {
+  text-align: left;
+  padding-left: 15px;
+}
+span.catRemove {
+  position: absolute;
+  right: 15px;
+  top: 21px;
+}
+  .mobile-footer{
+    display: block;
+  }
+  .searchForm{
+    display: none;
+  }
   img.sliderImage {
     border-radius: 20px;
     --aspect-ratio: 1;
@@ -325,6 +395,9 @@ font-size: 14px;
 }
 .slideItemImage {
   height: 170px;
+}
+.logo-center{
+  text-align: center;
 }
 }
 @media (max-width: 394px){

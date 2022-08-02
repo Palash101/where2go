@@ -4,9 +4,9 @@ module.exports = {
   trailingSlash: true,
   reactStrictMode: false,
   env:{
-    PROD_API:'https://where2go-xtr4m.ondigitalocean.app',
+    PROD_API:'https://www.where2go.qa/',
     DEV_API:'http://localhost:3000',
-    DEBUG:true,
+    DEBUG:false,
     
   },
   images: {
