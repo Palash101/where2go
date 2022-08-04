@@ -1,6 +1,7 @@
 html,
 body {
   min-height: 100%;
+  overflow-x: hidden !important;
 /*  background-color: #1f2227 !important;
 */}
 
@@ -354,6 +355,7 @@ font-size: 14px;
 .catRemove{
   display: none;
 }
+
 @media (max-width:769px) {
 .dideList{
   display: none;

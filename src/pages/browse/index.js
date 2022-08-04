@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid';
 import { getAllEvents,getCategory,getFilterEvent } from 'service/admin/events'
 import { Button } from '@mui/material'
-
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 function Browse() {
     const [data, setData] = useState([]);
@@ -129,7 +129,7 @@ function Browse() {
                 }}>
                 <Grid container spacing={5} sx={{}}>
                     <Grid item xs={12} md={3} sx={{}}>
-                        <Box onClick={() => setDlist(!dlist)}>Filter</Box>
+                       
                        
                             <div className={dlist === true ? 'dideList active' : 'dideList'} >
                             <h3>Category</h3>
@@ -178,6 +178,20 @@ function Browse() {
                     <CircularProgress />
                 </Box>
             )}
+
+            <Box sx={{position: 'fixed',
+                    bottom: '100px',
+                    background: '#f7a906c7',
+                    width: '72px',
+                    height: '72px',
+                    textAlign: 'center',
+                    lineHeight: '72px',
+                    color: '#000',
+                    borderRadius: '42px',
+                    right: '20px',
+                }} onClick={() => setDlist(!dlist)}>
+                <FilterListIcon fontSize={'large'} sx={{marginTop:'20px'}}></FilterListIcon>
+            </Box>
         </>
 
 

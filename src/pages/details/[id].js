@@ -31,20 +31,26 @@ function Details(navigation) {
     const [item, setItem] = useState({});
     const [lowest, setLowest] = useState('');
     const [open, setopen] = useState(false);
+    const [showModal,setShowModal] = useState(false);
     const [dateValue, setDateValue] = useState(null);
     const [fromTimeValue, setFromTimeValue] = useState(null);
     const [dateTimeArray, setDateTimeArray] = useState([]);
 
 
     const handleClickOpen = () => {
-        setopen(true)
-
+       // setopen(true)
+        setShowModal(true)
     };
+
+    
 
     const handleClose = () => {
         setopen(false)
 
     };
+    const handleCloseShowModal = () => {
+        setShowModal(false);
+    }
 
     const addDateTimeArray = () => {
         const date = moment(dateValue).format('DD-MM-YYYY');
@@ -90,13 +96,13 @@ function Details(navigation) {
             <Grid container spacing={4} justifyContent="center" sx={{
                 marginTop: '60px',
                 maxWidth: 900,
+                width:'100%',
                 marginLeft: 'auto',
                 marginRight: 'auto',
-                paddingLeft: '20px',
-                paddingRight: '20px',
-                paddingBottom: '20px'
+                paddingBottom: '20px',
+                paddingLeft: '1rem',paddingRight: '1rem' 
             }}>
-                <Grid item xs={12} md={8} sx={{ paddingLeft: '0px' }}>
+                <Grid item xs={12} md={8} sx={{ paddingLeft: '1rem',paddingRight: '1rem'  }}>
                     <div className='detailImage'>
                         {item.images && (
                             <img src={item.images.banner1} className='detailImg' />
@@ -104,7 +110,7 @@ function Details(navigation) {
 
                     </div>
                 </Grid>
-                <Grid item md={4} xs={12} alignItems="center" sx={{ paddingTop: '50px', paddingLeft: '0px' }}>
+                <Grid item md={4} xs={12} alignItems="center" sx={{ paddingTop: '50px', paddingLeft: '1rem',paddingRight: '1rem'  }}>
                     <h3 className='detailHeading'>{item.event_name}</h3>
                     <Box>
                         <div className='catdet'>
@@ -160,12 +166,12 @@ function Details(navigation) {
                     </Button>
 
                 </Grid>
-                <Grid item xs={12} sx={{ paddingLeft: '0px' }}>
+                <Grid item xs={12} sx={{ paddingLeft: '1rem',paddingRight: '1rem' }}>
                     <p className='descPara'><b>Description</b></p>
                     <p className='descPara'>{item.description}</p>
 
                 </Grid>
-                <Grid item xs={12} sx={{ paddingLeft: '0px' }}>
+                <Grid item xs={12} sx={{ paddingLeft: '1rem',paddingRight: '1rem' }}>
                     <Box sx={{
                         marginBottom: '25px',
                         background: '#c6cbd1',
@@ -221,6 +227,45 @@ function Details(navigation) {
                         </Box>
 
                     </LocalizationProvider>
+
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => addDateTimeArray()}>Add</Button>
+                    <Button onClick={handleClose}>Cancel</Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog open={showModal} onClose={handleCloseShowModal}>
+                <DialogTitle>Select Show</DialogTitle>
+                <DialogContent>
+                   
+                   <Box>
+                    {item.event_date && item.event_date.map((item1,key) => (
+                            <Box key={key} sx={{background: '#f7a906',
+                            padding: '12px',
+                            cursor:'pointer',
+                            borderRadius: '12px',
+                            marginBottom: '10px',
+                            display: 'flex',
+                            alignItems: 'center'}}>
+                            <Typography variant='div' sx={{color: '#000',
+                                                fontSize: '12px',
+                                                maxWidth: '46px',
+                                                textAlign: 'center'}}>
+                            SAT <span style={{fontSize: '24px',
+                                    lineHeight: '19px'}}>10</span> SEP
+                            </Typography>
+
+                            <Typography variant='h5' style={{ color: '#000',
+                                                fontSize: '16px',
+                                                padding: '0px 20px',
+                                                textAlign: 'center'}}>
+                            6:30 PM - 7:30 PM
+                            </Typography>
+                            </Box>
+                    ))}
+                   
+                   </Box>
 
                 </DialogContent>
                 <DialogActions>
