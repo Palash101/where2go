@@ -88,9 +88,11 @@ const DeleteClick=(value, tableMeta)=>{
        const userData =  await getAllUsers()
        const userArray =[];
        userData.docs.forEach(item=>{
+		if(item.data().role == 1){
        	const docId = {docId:item.id}
        	const data = Object.assign(docId,item.data());
          userArray.push(data)
+	   }
        })
        setAllUsers(userArray)
        console.log(allUsers,'users Array')

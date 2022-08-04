@@ -21,5 +21,6 @@ import { async } from "@firebase/util";
 import { CellphoneSound } from "mdi-material-ui";
 
 export const getAllUsers = async()=>{
-    return getDocs(collection(db, 'users'));
+  
+    return getDocs(collection(db, 'users'),  where("role", "===", '1'));
 }
