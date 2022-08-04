@@ -16,6 +16,8 @@ import { useRouter } from 'next/router'
 import "swiper/css";
 import { RecaptchaVerifier } from "firebase/auth";
 
+//utils import
+import Translations from '../../utils/trans'
 
 //Service Imports here
 
@@ -31,6 +33,10 @@ function Home(navigation){
     const  [allData, setAllData] = useState([]);
     const  [loading, setLoading] = useState(true);
     const router = useRouter();
+    const { locale } = router
+    const t =  Translations(locale)
+    console.log('local',t)
+
 
     useEffect(()=>{
     
@@ -61,6 +67,13 @@ return (
             /> */}
         </div>
     )
+}
+
+const arSlide = () =>{
+    if(locale === 'ar'){
+        return {marginLeft: '50px !important',
+        marginRight: '0px !important'}
+    }
 }
 
 
@@ -97,7 +110,9 @@ function renderImage(item){
 
 function SlideItem(item,i){
         return(
-            <SwiperSlide key={i} >
+            <SwiperSlide key={i} style={locale === 'ar' ? {marginLeft: '50px !important',
+                marginRight: '0px !important'}:{marginRight: '50px !important',
+                marginLeft: '0px !important'}} >
                 <div className='slideItem' onClick={() => router.push({
                     pathname: '/details/[id]',
                     query: { id: item.id},
@@ -160,29 +175,27 @@ return(
                     <div>
                         
                         <Typography sx={{fontSize:'20px !important',fontWeight:'bold',color:'#4b535f'}} variant='h5'>{item.key}</Typography>
-                      
-                       
                        
                         <Swiper
                             slidesPerView={4}
-                            spaceBetween={30}
+                             spaceBetween={30}
                             className="mySwiper"
                             breakpoints={{
                                 "@0.00": {
                                 slidesPerView: 2,
-                                spaceBetween: 10,
+                                // spaceBetween: 10,
                                 },
                                 "@0.75": {
                                 slidesPerView: 2,
-                                spaceBetween: 20,
+                                // spaceBetween: 20,
                                 },
                                 "@1.00": {
                                 slidesPerView: 3,
-                                spaceBetween: 40,
+                                // spaceBetween: 40,
                                 },
                                 "@1.50": {
                                 slidesPerView: 4,
-                                spaceBetween: 50,
+                                // spaceBetween: 50,
                                 },
                             }}
                         >

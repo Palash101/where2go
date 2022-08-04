@@ -1,5 +1,5 @@
 import { createContext, useContext, Context } from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
  const authUserContext = createContext();
 
@@ -9,6 +9,22 @@ import { useState } from 'react';
     const [authState, setAuthState] = useState({
         accesstoken: "",
        });
+    
+    const [locale, setLocale] = useState('en')
+
+    useEffect(()=>{
+        const ll = localStorage.getItem('locale')
+        if (ll == undefined || ll == null || ll == ''  ) {
+            localStorage.setItem('locale', locale)
+          }
+        else{
+            setLocale(ll)
+        }
+        let dir =ll == "ar" ? "rtl" : "ltr";
+        document.querySelector("html").setAttribute("dir", dir);
+
+
+    },[locale])
 
     const setUserAuthInfo = (data) => {
         const {accesstoken,isAuthenticated,userInfo} = data;
@@ -31,6 +47,18 @@ import { useState } from 'react';
         return false;
     }
     };
+    const switchLang = ()=>{
+       const currentLang =  localStorage.getItem('locale')
+       if(currentLang == 'en'){
+        setLocale('ar')
+        localStorage.setItem('locale','ar')
+       }
+       else if(currentLang == 'ar'){
+        setLocale('en')
+        localStorage.setItem('locale','en')
+       }
+
+    }
     const logoutUser = () =>{
 
     }
@@ -38,6 +66,8 @@ import { useState } from 'react';
     value={{
         authState,
         setUserAuthState: (userAuthInfo) => setUserAuthInfo(userAuthInfo),
+        locale:locale,
+        switchLang:()=>switchLang()
     }}
 
     >

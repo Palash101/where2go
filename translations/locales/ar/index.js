@@ -1,0 +1,22 @@
+export const ar ={
+    about: 'معلومات عنا',
+    allRightReserved: 'جميع الحقوق محفوظة.',
+    browseEvents: 'تصفح الأحداث',
+    contactUs: 'اتصل بنا',
+    copyright: 'حقوق النشر',
+    dashboard: 'لوحة القيادة',
+    date: "Date",
+    enterOtp: 'أدخل OTP',
+    getTickets: 'أحصل على تذاكر',
+    home: 'مسكن',
+    login: 'تسجيل الدخول',
+    logout: 'تسجيل خروج',
+    mobile: 'رقم الهاتف المحمول',
+    myTickets: 'تذاكري',
+    otp: 'OTP',
+    privacy: 'سياسة الخصوصية',
+    search: 'يبحث',
+    searchText: 'ابحث عن الأحداث التي تحبها',
+    termsUse: 'شروط الاستخدام',
+    time: "Time"
+}

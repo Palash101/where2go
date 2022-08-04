@@ -3,6 +3,10 @@ const path = require('path')
 module.exports = {
   trailingSlash: true,
   reactStrictMode: false,
+  i18n: {
+    locales: ['en', 'ar'],
+    defaultLocale:'en',
+  },
   env:{
     PROD_API:'https://www.where2go.qa/',
     DEV_API:'http://localhost:3000',

@@ -266,8 +266,10 @@ ul.filterList {
   padding: 4px 0px;
 }
 .searchForm{
-  position: absolute;
-  left: 155px;
+  /* position: absolute;
+  left: 155px; */
+  position: relative;
+  margin-top: 15px;
 }
 input#searchInput {
   background: #333333;

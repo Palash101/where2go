@@ -4,9 +4,16 @@ import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import Translations from 'utils/trans';
+import { userAuth } from 'context/userContext';
+
 
  function Footer() {
   const router = useRouter();
+
+  const userContext = userAuth()
+  const locale = userContext.locale
+  const t =  Translations(locale)
 
   useEffect(() => {
     
@@ -15,7 +22,7 @@ import { useEffect } from 'react';
   return (
     <>
       <div className='footer'>
-        <p>Copyright © 2022. All Rights Reserved.</p>
+        <p>{t.copyright} © 2022. {t.allRightReserved}</p>
     </div>
     <div className='mobile-footer'>
       <ul>

@@ -38,8 +38,18 @@ import OtpInput from 'react-otp-input';
 import { signinUser,userLogout } from 'service/auth';
 import { userAuth } from 'context/userContext';
 import SearchIcon from '@mui/icons-material/Search';
-
-
+import { useRouter } from 'next/router'
+import Translations from 'utils/trans';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import LanguageIcon from '@mui/icons-material/Language';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import LoginIcon from '@mui/icons-material/Login';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
@@ -62,12 +72,23 @@ const style = {
  function HomeAppBar(props) {
   const {settings,saveSettings} = useContext(SettingsContext)
   const [navVisible, setNavVisible] = useState(false)
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openMenu = Boolean(anchorEl);
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+
   const theme  = useTheme()
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
     setNavVisible(false)
+    handleMenuClose();
   }
   const handleClose = () => {
     setOpen(false);
@@ -81,10 +102,28 @@ const style = {
   const [reloadPage, setReloadPage] = useState(false)
 
   const userContext = userAuth()
+  const locale = userContext.locale
+  const t =  Translations(locale)
+
+  const changeLang = ()=>{
+    userContext.switchLang();
+    handleMenuClose();
+  }
+const handleMode = () =>{
+  if(settings.mode === 'dark'){
+    saveSettings({themeColor: 'primary', mode: 'light', contentWidth: 'boxed'})
+  }
+  else{
+    saveSettings({themeColor: 'primary', mode: 'dark', contentWidth: 'boxed'})
+  }
+  handleMenuClose();
+}
+
+
 
 
   useEffect(() => {
-    console.log('calling')
+    console.log(settings,'calling')
     if(localStorage.getItem('isAuthenticated')){
       const userData = {
         phoneNumber:localStorage.getItem('userInfo'),
@@ -207,6 +246,7 @@ const handleLogin = ()=>{
     localStorage.clear();
     setReloadPage(!reloadPage)
     setUser({});
+    handleMenuClose();
   }
 
   const list = (bgclr) => (
@@ -232,7 +272,7 @@ const handleLogin = ()=>{
           <ListItemIcon  size={24}>
           <HomeIcon />
           </ListItemIcon>
-          <ListItemText sx={{fontSize:'0.75rem'}} primary='Dashboard'/>
+          <ListItemText sx={{fontSize:'0.75rem'}} primary={t.dashboard}/>
         </ListItemButton>
       </ListItem>
       )}
@@ -243,7 +283,7 @@ const handleLogin = ()=>{
           <ListItemIcon>
           <HomeIcon />
           </ListItemIcon>
-          <ListItemText sx={{fontSize:'14px'}} primary='Home' />
+          <ListItemText sx={{fontSize:'14px'}} primary={t.home} />
         </ListItemButton>
       </ListItem>
       <ListItem  disablePadding>
@@ -251,7 +291,7 @@ const handleLogin = ()=>{
           <ListItemIcon>
           <MailIcon />
           </ListItemIcon>
-          <ListItemText sx={{fontSize:'14px'}} primary='Browse Events' />
+          <ListItemText sx={{fontSize:'14px'}} primary={t.browseEvents} />
         </ListItemButton>
       </ListItem>
       <ListItem  disablePadding>
@@ -259,15 +299,7 @@ const handleLogin = ()=>{
           <ListItemIcon>
           <LocalActivityIcon />
           </ListItemIcon>
-          <ListItemText sx={{fontSize:'14px'}} primary='My Tickets' />
-        </ListItemButton>
-      </ListItem>
-      <ListItem  disablePadding>
-        <ListItemButton>
-          <ListItemIcon>
-          <LocalActivityIcon />
-          </ListItemIcon>
-          <ListItemText sx={{fontSize:'14px'}} primary='Your Events' />
+          <ListItemText sx={{fontSize:'14px'}} primary={t.myTickets} />
         </ListItemButton>
       </ListItem>
       <Divider />
@@ -277,30 +309,30 @@ const handleLogin = ()=>{
           <MailIcon />
           </ListItemIcon>
           <ListItemText 
-          sx={{fontSize:'14px'}} primary='Contact Us' />
+          sx={{fontSize:'14px'}} primary={t.contactUs} />
         </ListItemButton>
       </ListItem>
       <Divider />
       <ListItem  disablePadding>
         <ListItemButton sx={{fontSize:'14px'}} onClick={() => router.replace('/about')}>
-        About us
+        {t.about}
         </ListItemButton>
       </ListItem>
       <ListItem  disablePadding>
         <ListItemButton sx={{fontSize:'14px'}} onClick={() => router.replace('/privacy-policy','/privacy-policy')}>
-        Privacy Policy
+        {t.privacy}
         </ListItemButton>
       </ListItem>
       <ListItem  disablePadding>
         <ListItemButton sx={{fontSize:'14px'}} onClick={() => router.replace('/terms-of-use')}>
-       Terms of use
+        {t.termsUse}
         </ListItemButton>
       </ListItem>
 
       {user && user.isAuthenticated && (
       <ListItem  disablePadding onClick={() => logout()}>
         <ListItemButton sx={{fontSize:'14px'}}>
-        Logout
+        {t.logout}
         </ListItemButton>
       </ListItem>
       )}
@@ -316,18 +348,21 @@ const handleLogin = ()=>{
     
     <Box sx={{ flexGrow: 1,position: 'fixed',top: 0,zIndex: 99,left:0,right:0 }}>
       <AppBar position="static" sx={{backgroundColor:'#1f2227'}}>
-        <Toolbar>
+        <Toolbar sx={{    display: 'flex',
+          justifyContent: 'space-between'}}>
+         <div style={{display: 'flex',
+          justifyContent: 'space-between'}}>
           <IconButton
               size="large"
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2 }}
+            sx={{ mr: 2}}
             onClick={toggleNavVisibility}
           >
             <MenuIcon />
           </IconButton>
-          <div style={{ flexGrow: 1,cursor:'pointer' }} className='logo-center' onClick={() => router.push('/')}>
+          <div style={{ cursor:'pointer',marginLeft:10,marginRight:10 }} className='logo-center' onClick={() => router.push('/')}>
            <img src="/images/logos/logo.png" style={{height: '50px',marginTop: '10px'}}/>
           </div>
           <form action='/browse' className='searchForm'>
@@ -335,20 +370,79 @@ const handleLogin = ()=>{
                 type='search'
                 name='search'
                 id='searchInput'
-                placeholder="Search for event you love"
+                placeholder={t.browseEvents}
               />
               <button type='submit'>
               <SearchIcon/>
               </button>
           </form>
-          <ModeToggler settings={settings} saveSettings={saveSettings} />
+          {/* <ModeToggler settings={settings} saveSettings={saveSettings} />
+          
+
+          
           {!user.isAuthenticated && (
          <Button color="inherit" onClick={handleOpen}>Login</Button>
-          )}
+          )} */}
+</div>
+<div>
+            <Button
+                id="basic-button"
+                aria-controls={openMenu ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={openMenu ? 'true' : undefined}
+                onClick={handleMenuClick}
+              >
+                <MoreVertIcon sx={{ color: '#fff' }}></MoreVertIcon>
+              </Button>
+            <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={openMenu}
+                onClose={handleMenuClose}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button',
+                }}
+              >
+            <MenuItem onClick={changeLang} sx={{fontSize:'12px'}}>
+                {locale === 'ar' ? (
+                  <div><LanguageIcon sx={{fontSize: '1.2rem',float: 'left',marginRight: '5px'}}></LanguageIcon> English</div>
+                ):
+                (
+                  <div><LanguageIcon sx={{fontSize: '1.2rem',float: 'left', marginRight: '5px'}}></LanguageIcon> Arabic</div>
+                )
+                }
+              {/* <FormControlLabel onChange={changeLang} control={<Switch defaultChecked />} label={locale} /> */}
+            </MenuItem>
+            <MenuItem sx={{fontSize:'12px'}} onClick={handleMode}>
+                {settings.mode === 'dark' ? (
+                  <div><LightModeIcon sx={{fontSize: '1.2rem',float: 'left',marginRight: '5px'}}></LightModeIcon> Light Mode</div>
+                ):
+                (
+                  <div><DarkModeIcon sx={{fontSize: '1.2rem',float: 'left', marginRight: '5px'}}></DarkModeIcon> Dark Mode</div>
+                )
+                }
+            </MenuItem>
+            <Divider />
+            
+            {!user.isAuthenticated ? (
+                  <MenuItem sx={{fontSize:'12px'}} onClick={handleOpen}>
+                <div><LoginIcon sx={{fontSize: '1.2rem',float: 'left',marginRight: '5px'}}></LoginIcon>
+                Login</div></MenuItem>
+              )
+            :
+            (
+              <MenuItem sx={{fontSize:'12px'}} onClick={logout}>
+                <div><ExitToAppIcon sx={{fontSize: '1.2rem',float: 'left',marginRight: '5px'}}></ExitToAppIcon>
+                Logout</div></MenuItem>
+            )}
+            
+            </Menu>
+            </div>
          </Toolbar>
       </AppBar>
     </Box>
-    <Drawer  width={800}  open={navVisible} onClose={toggleNavVisibility} >
+
+         <Drawer  anchor={locale === 'ar' ? 'right' :'left'}  width={800}  open={navVisible} onClose={toggleNavVisibility} >
           <AppBar title="Tasks" />
           {list(theme.palette.customColors.userTheme)}
         </Drawer>
@@ -375,7 +469,7 @@ const handleLogin = ()=>{
             placeholder='Enter phone number'
             value={phone}
             className="form-control d-flex"
-            defaultCountry="IN"
+            defaultCountry="QA"
             onChange={setPhone}
           />
          
