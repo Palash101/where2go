@@ -1,5 +1,12 @@
 export const ar ={
     about: 'معلومات عنا',
+    add:'Add',
+    location:'Location',
+    submit:'Submit',
+    status:'Status',
+    active:'Active',
+    block:'Block',
+
     allRightReserved: 'جميع الحقوق محفوظة.',
     browseEvents: 'تصفح الأحداث',
     contactUs: 'اتصل بنا',

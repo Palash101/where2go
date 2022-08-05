@@ -1,6 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
-import { useEffect } from 'react'
+import { useState,useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 
@@ -90,8 +89,10 @@ const AccountSettings = () => {
         .then(data=>{
           if(!data.err){
             console.log('Seeting upd data state')
+            console.log(data)
             setEventData(data)
             setLoading(false)
+            
           }
           else{
             setError(true)

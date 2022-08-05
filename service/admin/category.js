@@ -75,34 +75,41 @@ export const addCategory = async (name,currentLanguage,status)=>{
 
   }
 
-  // console.log(querySnapshot)
-  // return querySnapshot.forEach((doc) => {
 
-  //   //Use this console log For checking returend data
-  //   console.log(doc.id, ' => ', doc.data());
+  export const getCategoryById = async(catId) =>{
+    console.log(catId);
+    const docRef = doc(db, "category", catId);
+    const docSnap = await getDoc(docRef);
+    console.log(docSnap, 'docSnap')
+    if (docSnap.exists()) {
+      console.log(docSnap,'docSnap 2')
+        return docSnap.data()
+      } else {
+        return{err:'error',message:'Document not found'}
+      }
 
-  //   if(doc.id){
-  //     console.log(doc.id,'exists')
-  //     return{error:'error',message:'Category already Exist'}
-      
-  //   }
-  //   else{
-  //     console.log('adding')
-  //     return  addDoc(collection(db,'category'),{
-  //       name:name,
-  //       status:status
-  //      })
-  //     .then((data)=>{
-  //       collection.log(data)
-  //         return {sucess:'success',msg:'Category Added successfully'}
-  //     })
-  //     .catch((err)=>{
-  //       return{error:'error',message:'Something went wrong',devmsg:err}
-  //     })
+  }
+
+
+  export const updateCategoryData = async (catId,data)=>{
+
+    console.log(catId)
+    try{
+        const docRef = doc(db, "events", catId);
+        console.log(docRef);
+        const catData  = data.name_tr
+        console.log()
+        return await updateDoc(docRef, {
+          name_tr:arrayUnion(catData)
+          }).then((res)=>console.log(res))
+
+    }
+    catch(error){
+        return{error:'error',message:'Something went wrong',devmsg:error}
+    }
     
-  //   }
+}
 
-    
-//});
+
   
   
