@@ -77,7 +77,6 @@ export const addCategory = async (name,currentLanguage,status)=>{
 
 
   export const getCategoryById = async(catId) =>{
-    console.log(catId);
     const docRef = doc(db, "category", catId);
     const docSnap = await getDoc(docRef);
     console.log(docSnap, 'docSnap')
@@ -92,16 +91,14 @@ export const addCategory = async (name,currentLanguage,status)=>{
 
 
   export const updateCategoryData = async (catId,data)=>{
+    const {status, lang} = data;
 
-    console.log(catId)
     try{
-        const docRef = doc(db, "events", catId);
-        console.log(docRef);
-        const catData  = data.name_tr
-        console.log()
+        const docRef = doc(db, "category", catId);
         return await updateDoc(docRef, {
-          name_tr:arrayUnion(catData)
-          }).then((res)=>console.log(res))
+          [`name_tr.${lang}`]:data[lang],
+          status:status
+          })
 
     }
     catch(error){

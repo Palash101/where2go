@@ -1,8 +1,6 @@
-import { useState,useEffect } from 'react'
-
-//Mui Import
 import FormLayoutsBasic from 'src/views/form-layouts/FormLayoutsBasic'
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
@@ -14,154 +12,119 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import CardContent from '@mui/material/CardContent'
+import Snackbar from '@mui/material/Snackbar';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box'
+import { useRouter } from 'next/router'
+import nookies from "nookies";
 import Switch from '@mui/material/Switch';
-import Input from '@mui/material/Input';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 
-
-import { useRouter } from 'next/router'
-
-
-import {getCategoryById,updateCategoryData} from '../../../../../service/admin/category'
+import {updateLocation,getLocationById} from '../../../../../service/admin/location'
+import { useState,useEffect } from 'react'
 
 
+function LocationEdit() {
+    const router = useRouter()
+   const [locationData, setLocationData] = useState({});
 
-
-
-function CategoryEdit() {
-    const router  = useRouter()
-    const [show,setShow]=useState(true)
-
-    const [categoryData, setCategoryData] = useState({});
-
-    const [categoryName,setCategoryName] = useState('')
-    const [status,setStatus] = useState(1)
+    const [locationName,setlocationName] = useState('')
+    const [status,setStatus] = useState('1')
     const [loading,setLoading] = useState(false)
+
     const [currentLanguage,setCurrentLanguage] = useState('')
 
 
 
+    //Use Effect Load Data initial Data and Set Data and set langugae
 
     useEffect(()=>{
-    	const storageLocale =  localStorage.getItem('locale')
+    	const storageLocale =  localStorage.getItem('locale');
     	setCurrentLanguage(storageLocale);
     	if(router.isReady){
     		(async()=>{
     		setLoading(true)
-    		await getCategoryById(router.query.id)
+    		await getLocationById(router.query.id)
     		.then((data)=>{
     			 if(!data.err){
-    			 	setCategoryData(data);
-    			 	setCategoryName(data.name_tr[currentLanguage])
+    			 	console.log(data)
+    			 	setLocationData(data);
+    			 	setlocationName(data.name)
     			 	setStatus(data.status)
     			 	setLoading(false)
     			 }
     			 else{
+    			 	setLoading(false)
     			 	console.log(data.message)
     			 }
     		})    	   
 
     		})()
-}
-    	
-    	
+
+    	}
+
+
     },[router.isReady])
 
 
 
 
-  
 
-    //Firebase Uodate Category
-    const storeCategory = async ()=>{
-        if(categoryName === ''|| status === ''){
+    //Firebase update Location
+    const storeLocation = async ()=>{
+        if(locationName === ''|| status === ''){
           alert('Please enter Valid data')
           return;
         }
-        const data = {
-        	[currentLanguage]:categoryName,
+         const data = {
+        	[currentLanguage]:locationName,
         	status:status,
         	lang:currentLanguage
         }
-        await updateCategoryData(router.query.id,data).then((data)=>{
-        	console.log(data)
+        setLoading(true)
+        await updateLocation(router.query.id,data).then((res)=>{
+          console.log(res,'ress')
+          setLoading(false)
+          router.push('/admin/location')
         })
-       
-        // setLoading(true)
-
-       // alert(englishName)
-        // await addCategory(categoryName,currentLanguage,status).then((res)=>{
-        //   console.log(res,'ress')
-        //  // alert(res);
-        //   handleMessage()
-        //  setLoading(false)
-        //  router.push('/admin/category')
-        // })
         
 
     }
 
-    const changLanguage =()=>{
-      setCurrentLanguage(currentLanguage == 'en' ? 'ar' : 'en')
-
-    }
-
-    console.log('rendering')
-
-    // if(Object.keys(categoryData).length === 0){
-    // 	console.log('checking render.....',categoryData)
-    // 	return (<>
-    // 		loading
-
-    // 		</>)
-    // }
-
-
-
-    // else{
-
-    console.log('main render')
 
 
     return ( 
-    	<div>
-    	{Object.keys(categoryData).length ? (
-    		 <DatePickerWrapper dir = {currentLanguage == 'ar'?'rtl':'ltr'}>
+    <DatePickerWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12} md={12}>
             <Card>
-            {console.log(categoryData.name_tr[currentLanguage])}
-                <CardHeader title='Add Category' titleTypographyProps={{ variant: 'h6' }} />
+           
+                <CardHeader title='Add Location' titleTypographyProps={{ variant: 'h6' }} />
                     <CardContent>
-                        <form >
+                        <form onSubmit={storeLocation}>
                             <Grid container spacing={5}>
                                 <Grid item xs={12}>
-                                <TextField required onChange={(e)=>setCategoryName(e.target.value)} value={categoryName} fullWidth label='Category Name' placeholder='Ex: Drama, Game, Movie' />
+                                <TextField required onChange={(e)=>setlocationName(e.target.value)} value={locationName} fullWidth label='Location' placeholder='Ex: Qatar,Dubai,Jordan' />
                                 <FormControl sx={{marginTop:'20px'}} fullWidth>
                 <InputLabel  id='form-layouts-separator-multiple-select-label'>Status</InputLabel>
                 <Select
                   onChange={(e)=>setStatus(e.target.value)}
                   id='form-layouts-separator-multiple-select'
                   labelId='form-layouts-separator-multiple-select-label'
-                  defaultValue = {status}
+                  defaultValue={status}
                   input={<OutlinedInput label='Language' id='select-multiple-language' />}
                   required
                 >
                   <MenuItem value='1'>Active</MenuItem>
                   <MenuItem value='0'>Block</MenuItem>
                 </Select>
-                
-              
-
               </FormControl>
                                 </Grid>
                                 <Grid item xs={12}>
                                 <Button 
                                 disabled={loading}
-                                  type='button' onClick={storeCategory} variant='contained' size='large'>
+                                  type='button' onClick={()=>storeLocation()} variant='contained' size='large'>
                                     Submit
                                 </Button>
                                 </Grid>
@@ -179,17 +142,10 @@ function CategoryEdit() {
 
           }}/>
               )}
+  
       </Grid>
     </DatePickerWrapper>
-    		)
-    	:
-    	(
-    		<div>Loading</div>
-    		)}
-   
-    </div>
      );
- // }
 }
 
-export default CategoryEdit;
+export default LocationEdit;

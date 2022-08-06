@@ -27,6 +27,7 @@ import {toast} from 'react-toastify'
 function CategoryList() {
     const[allCategory ,setAllCategory] =  useState([])
     const[loading ,setLoading] =  useState(false)
+    const router = useRouter()
 
     useEffect(()=>{
       
@@ -73,6 +74,11 @@ function CategoryList() {
       }
     }
 
+
+    const editCategory = (docId)=>{
+      router.push(`/admin/category/edit/${docId}`)
+    }
+
     return ( 
       <>
         <Grid item xs={12}>
@@ -111,7 +117,9 @@ function CategoryList() {
                     </TableCell>
                   
                     <TableCell align='right'>
-                        <EditIcon sx={{color:'#d7c602',cursor:'pointer'}} />
+                        <EditIcon
+                        onClick = {()=>editCategory(row.docId)}
+                         sx={{color:'#d7c602',cursor:'pointer'}} />
                         <DeleteIcon
                         onClick={()=>DeleteClick(row)}
                         sx={{color:'#d7c602',cursor:'pointer', marginLeft:'10px'}}

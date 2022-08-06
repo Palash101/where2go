@@ -19,6 +19,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Box } from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import {toast} from 'react-toastify'
+import { useRouter } from 'next/router'
+
 
 
 
@@ -27,6 +29,7 @@ import {verifyToken} from '../../../../service/auth'
 
 function LocationList() {
 
+    const router =  useRouter();
     const[allLocations ,setAllLocations] =  useState([])
     const [loading, setLoading]= useState(false)
 
@@ -47,6 +50,10 @@ function LocationList() {
       })
      console.log(catArray)
       setAllLocations(catArray)
+    }
+
+    const editLocation = (docId)=>{
+      router.push(`/admin/location/edit/${docId}`)
     }
 
     const renderStatusChip = (status,color) =>{
@@ -113,7 +120,10 @@ function LocationList() {
                     </TableCell>
                   
                     <TableCell align='right'>
-                      <EditIcon sx={{color:'#d7c602',cursor:'pointer'}} />
+                      <EditIcon
+                        onClick={()=>editLocation(row.docId)}
+
+                       sx={{color:'#d7c602',cursor:'pointer'}} />
                       <DeleteIcon
                         onClick={()=>DeleteClick(row.docId)}
                         sx={{color:'#d7c602',cursor:'pointer', marginLeft:'10px'}}
