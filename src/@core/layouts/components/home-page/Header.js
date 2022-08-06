@@ -108,6 +108,7 @@ const style = {
   const changeLang = ()=>{
     userContext.switchLang();
     handleMenuClose();
+    window.location.reload();
   }
 const handleMode = () =>{
   if(settings.mode === 'dark'){
@@ -449,12 +450,13 @@ const handleLogin = ()=>{
 
         <Modal
           keepMounted
+          
           open={open}
           onClose={handleClose}
           aria-labelledby="keep-mounted-modal-title"
           aria-describedby="keep-mounted-modal-description"
         >
-          <Card sx={{ zIndex: 1,margin:'100px auto',backgroundColor:theme => `${theme.palette.customColors.userTheme}` }}>
+          <Card sx={{ zIndex: 1,margin:'40px auto',backgroundColor:theme => `${theme.palette.customColors.userTheme}` }}>
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
          
           <Box sx={{ mb: 6 }}>
