@@ -55,7 +55,7 @@ function CategoryEdit() {
     		.then((data)=>{
     			 if(!data.err){
     			 	setCategoryData(data);
-    			 	setCategoryName(data.name_tr[currentLanguage])
+    			 	setCategoryName(data.name[currentLanguage])
     			 	setStatus(data.status)
     			 	setLoading(false)
     			 }
@@ -133,7 +133,6 @@ function CategoryEdit() {
       <Grid container spacing={6}>
         <Grid item xs={12} md={12}>
             <Card>
-            {console.log(categoryData.name_tr[currentLanguage])}
                 <CardHeader title='Add Category' titleTypographyProps={{ variant: 'h6' }} />
                     <CardContent>
                         <form >

@@ -19,6 +19,10 @@ import { useState } from 'react'
 import {getAllCategory} from '../../../../service/admin/category'
 import {getAllLocations} from '../../../../service/admin/location'
 import {verifyToken} from '../../../../service/auth'
+import {userAuth} from 'context/userContext'
+import Translations from 'utils/trans'
+
+
 import nookies from "nookies";
 
 
@@ -33,6 +37,11 @@ function EventCreate() {
 
     const [allCategory,setAllCategory] = useState([])
     const [allLocation,setAllLocations] = useState([])
+
+
+    const userContext = userAuth()
+    const locale = userContext.locale
+    const t =  Translations(locale)
 
 
 
@@ -61,7 +70,7 @@ function EventCreate() {
         const catData =  await getAllCategory()
         const catArray =[];
         catData.docs.forEach(item=>{
-        catArray.push(item.data())
+        catArray.push({...item.data(),docId:item.id})
        })
         setAllCategory(catArray)
       }
@@ -157,16 +166,22 @@ function EventCreate() {
                     <InputLabel id='form-layouts-separator-select-label'>Event Category</InputLabel>
                     <Select
                     label='Category'
-                    defaultValue='Classes'
+                    defaultValue=''
                     id='form-layouts-separator-select'
                     labelId='form-layouts-separator-select-label'
                     onChange={(e)=>setEventCat(e.target.value)}
                     >
 
-                    {allCategory.map((cat)=>(
-                        <MenuItem value={cat.name}>{cat.name}</MenuItem>
-
-                        ))
+                    {allCategory.map((item ,key)=>{
+                        const {docId,name} =item
+                        return(
+                        <MenuItem 
+                        key={key} 
+                        value={docId}>
+                        {name.hasOwnProperty(locale) ? name[locale] : name[Object.keys(name)[0]]}
+                        </MenuItem>
+                        )
+                    })
                     }
                     </Select>
                 </FormControl>

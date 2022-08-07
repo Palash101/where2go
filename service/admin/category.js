@@ -18,8 +18,6 @@ import {
     serverTimestamp,
     orderBy
   } from "firebase/firestore";
-import { async } from "@firebase/util";
-import { EmailNewsletter } from "mdi-material-ui";
 
   export const getAllCategory=  async()=>{
     let q = query(
@@ -51,8 +49,7 @@ export const addCategory = async (name,currentLanguage,status)=>{
  
   if(querySnapshot.empty){
         return addDoc(collection(db,'category'),{
-          name:name,
-          name_tr:{
+          name:{
             [currentLanguage]:name
           },
 

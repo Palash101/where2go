@@ -159,14 +159,14 @@ export const getHomePageEvent = async ()=>{
     const temp = []
     const q = query(collection(db, "category"), where("status", "==", '1'))
     const queryDoc =  await getDocs(q);
-   console.log(queryDoc);
- if(queryDoc.empty === false){
+    if(queryDoc.empty === false){
         await Promise.all(queryDoc.docs.map(async (doc) => {
-            console.log(doc.data())
-            const catName =  doc.data().name;
-            const q = query(collection(db, "events"), where("category", "==", catName))
+            const catDocId =  doc.id;
+            const catName = doc.data().name;
+            const q = query(collection(db, "events"), where("cat_id", "==", catDocId))
             const d = await getDocs(q).then((doc)=>{
-                console.log('event doc',doc.empty)
+                console.log('event doc',doc)
+
                 const tempData = []
                     doc.forEach((data)=>{
                         if(doc.size > 0){
@@ -179,9 +179,11 @@ export const getHomePageEvent = async ()=>{
                 return tempData
             })
             if(d.length > 0){
-                        temp.push({key:catName,data:d})
+                        temp.push({key:catDocId,catName:catName,data:d})
                     }
           }));
+
+        console.log(temp,'event home data')
     
         return temp
     }

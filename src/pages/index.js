@@ -24,6 +24,7 @@ import Translations from '../../utils/trans'
 import{getHomePageEvent} from '../../service/admin/events'
 import { useEffect } from 'react'
 import {auth} from '../../service/main'
+import {userAuth} from 'context/userContext'
 
 
 
@@ -33,9 +34,11 @@ function Home(navigation){
     const  [allData, setAllData] = useState([]);
     const  [loading, setLoading] = useState(true);
     const router = useRouter();
-    const { locale } = router
+    // const { locale } = router
+    const userContext = userAuth()
+    const locale = userContext.locale
     const t =  Translations(locale)
-    console.log('local',t)
+
 
 
     useEffect(()=>{
@@ -50,6 +53,7 @@ function Home(navigation){
             setLoading(false)
             console.log(data,'alldt')
         })
+
 
     }
 
@@ -120,7 +124,8 @@ function SlideItem(item,i){
                     <div className='slideItemImage'>
                         {renderImage(item)}
                     </div>
-                    <p>{item.event_name}</p>
+                    <p>{item.event_name.hasOwnProperty(locale) ? item.event_name[locale] : item.event_name[Object.keys(item.event_name)[0]]
+}</p>
                 </div>
              </SwiperSlide>
         )
@@ -174,7 +179,11 @@ return(
                 allData.map((item,key) => ( 
                     <div>
                         
-                        <Typography sx={{fontSize:'20px !important',fontWeight:'bold',color:'#4b535f'}} variant='h5'>{item.key}</Typography>
+                        <Typography 
+                        sx={{fontSize:'20px !important',fontWeight:'bold',color:'#4b535f'}} 
+                        variant='h5'>
+                        {item.catName.hasOwnProperty(locale) ? item.catName[locale] : item.catName[Object.keys(item.catName)[0]]}
+                        </Typography>
                        
                         <Swiper
                             slidesPerView={4}

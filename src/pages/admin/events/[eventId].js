@@ -32,6 +32,12 @@ import EventStep5 from 'src/views/events/EventStep5'
 
 import { getEventById } from 'service/admin/events'
 import {verifyToken} from '../../../../service/auth'
+
+import {getAllLocations} from 'service/admin/location'
+import {getAllCategory} from 'service/admin/category'
+
+import {userAuth} from 'context/userContext'
+import Translations from 'utils/trans'
 import nookies from "nookies";
 
 // ** Third Party Styles Imports
@@ -55,16 +61,24 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-const AccountSettings = () => {
+const EventEdit = () => {
   // ** State
   const router = useRouter();
   const [value, setValue] = useState('account')
   const [eventData, setEventData] = useState({});
-  const [error, setError] = useState(true);
-  const [errorMsg, setErrorMsg] = useState('');
+
   const [loading, setLoading] = useState(false);
+
   const [routerParams, setRouterParams] = useState('');
   const [reloadPage, setReloadPage] = useState(false)
+
+  const [categories,setAllCategory] = useState([])
+  const [locations,setAllLocations] = useState([])
+
+
+  const userContext = userAuth()
+  const locale = userContext.locale
+  const t =  Translations(locale)
 
 
   const handleChange = (event, newValue) => {
@@ -81,29 +95,49 @@ const AccountSettings = () => {
   }
 
   useEffect(()=>{
-   
     if(router.isReady){
       setLoading(true)
       setRouterParams(router.query.eventId)
       getEventById(router.query.eventId)
         .then(data=>{
           if(!data.err){
-            console.log('Seeting upd data state')
-            console.log(data)
             setEventData(data)
             setLoading(false)
             
           }
           else{
-            setError(true)
-            setErrorMsg(data.err)
             setLoading(false)
           }
-        console.log('data in event Page',data)
       })
 
     }
   },[router.isReady,reloadPage])
+
+
+  const getCat =  async()=>{
+    const catData =  await getAllCategory()
+    const catArray =[];
+    catData.docs.forEach(item=>{
+    catArray.push({...item.data(),docId:item.id})
+   })
+    setAllCategory(catArray)
+  }
+
+  const getLocation =  async()=>{
+    const locationData =  await getAllLocations()
+    const locationArray =[];
+    locationData.docs.forEach(item=>{
+    locationArray.push(item.data())
+       })
+        setAllLocations(locationArray)
+      }
+
+
+ useEffect(()=>{
+   getCat()
+   getLocation()
+
+  },[])
 
   if(!loading){
 
@@ -165,6 +199,8 @@ const AccountSettings = () => {
         <TabPanel sx={{ p: 0 }} value='account'>
         <EventStep1 
         data={eventData}
+        allCategory = {categories}
+        allLocation = {locations}
         eventId = {routerParams}
         refreshData = {refreshData}
         />
@@ -218,7 +254,7 @@ else{
 }
 }
 
-export default AccountSettings
+export default EventEdit
 
 export async function getServerSideProps(context) {
   try{

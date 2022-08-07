@@ -152,7 +152,7 @@ const EventStep4 = ({data,eventId,refreshData}) => {
           <Grid item xs={12} sm={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
             {
               data.tickets?.map((ticket,key)=>(
-                <>
+                <div key = {key} >
                   <Box sx={{ display: 'flex', alignItems: 'center',width:'100%',justifyContent:'space-between',textAlign:'center' }}>
                       <Typography>{ticket.name}</Typography>
                       <Typography>Per/Ticket Price: {ticket.price}</Typography>
@@ -166,7 +166,7 @@ const EventStep4 = ({data,eventId,refreshData}) => {
                   </Box>
                   
               <Divider />
-              </>
+              </div>
 
               ))
             }

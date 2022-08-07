@@ -27,6 +27,10 @@ import { updateEventDetails ,updateEventDate,deleteEventDate } from 'service/adm
 import { async } from '@firebase/util'
 import {toast } from 'react-toastify';
 
+import {userAuth} from 'context/userContext'
+import Translations from 'utils/trans'
+
+
 
 
 const EventStep2 = ({data,eventId,refreshData}) => {
@@ -45,6 +49,11 @@ const EventStep2 = ({data,eventId,refreshData}) => {
 
   const [loading,setLoading]=useState(false)
   const [dateTimeArray,setDateTimeArray] =useState([])
+
+  const userContext = userAuth()
+  const locale = userContext.locale
+  const t =  Translations(locale)
+
 
 
   const handleClickOpen = (type) => {
@@ -199,11 +208,13 @@ const EventStep2 = ({data,eventId,refreshData}) => {
         <Grid container spacing={5}>
           <Grid item sx={{paddingBottom:'1.25rem', display:'flex',justifyContent:'center',flexDirection:'column'}} xs={12} sm={12}>
             <Box sx={{marginBottom:'10px'}}>
-            {data.description == undefined ?
-              <Typography>Description Not Defined</Typography>:data.description == '' ? 
-              <Typography>No Description Added. Please Add</Typography>
-              :<Typography>{data.description}</Typography>
-              }
+            {
+              data.hasOwnProperty('description') ? 
+              data.description.hasOwnProperty(locale) ?<Typography> {data.description[locale]}</Typography> : 
+              <Typography>{data.description[Object.keys(data.description)[0]]}</Typography> :
+              <Typography>Description Not Defined</Typography>
+
+            }
                <Button 
           endIcon={data.description != ''?<EditIcon/>:<AddIcon />}
           variant="contained" 

@@ -83,7 +83,6 @@ const handleEditEvent=(value)=>{
         eventArray.push(data)
        })
        setAllEventData(eventArray)
-       console.log(allEvents,'eventData Array')
 
     },[])
 

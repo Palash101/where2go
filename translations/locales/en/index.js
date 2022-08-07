@@ -18,5 +18,16 @@ export const en = {
     search: 'Search',
     searchText: 'Search for events you love',
     termsUse: 'Terms of Use',
-    time: "Time"
+    time: "Time",
+    add:'Add',
+    location:'Location',
+    submit:'Submit',
+    status:'Status',
+    active:'Active',
+    block:'Block',
+    event:'Event',
+    categories:'Categories',
+    name:'Name',
+     position:'Position',
+    actions:'Actions',
 }

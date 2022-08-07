@@ -18,20 +18,25 @@ import {toast } from 'react-toastify';
 
 //Service Imports
 import {updateEventData} from '../../../service/admin/events'
-import {getAllLocations} from '../../../service/admin/location'
-import {getAllCategory} from '../../../service/admin/category'
+
+import {userAuth} from 'context/userContext'
+import Translations from 'utils/trans'
 
 
-const EventStep1 = ({data,eventId,refreshData}) => {
-  const [name,setName] = useState(data.event_name)
+const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
+  const [name,setName] = useState('')
   const [type,setType] = useState(data.event_type)
   const [country,setCountry] = useState(data.country)
   const [currency,setCurrency] = useState(data.currency)
   const [category,setCategory] = useState(data.category)
   const [loading,setLoading] = useState(false)
 
-  const [allCategory,setAllCategory] = useState([])
-  const [allLocation,setAllLocations] = useState([])
+
+
+  const userContext = userAuth()
+  const locale = userContext.locale
+  const t =  Translations(locale)
+
 
 
   const updateData = async () =>{
@@ -49,27 +54,18 @@ const EventStep1 = ({data,eventId,refreshData}) => {
 
   }
 
+  const eventName = ()=>{
+    console.log('calling event Name')
+    if(data.hasOwnProperty('event_name')){
+      const ename = data.event_name.hasOwnProperty(locale) ? data.event_name[locale] : data.event_name[Object.keys(data.name)[0]]
+      return ename
+    }
+
+  }
+
   useEffect(()=>{
-    const getCat =  async()=>{
-        const catData =  await getAllCategory()
-        const catArray =[];
-        catData.docs.forEach(item=>{
-        catArray.push(item.data())
-       })
-        setAllCategory(catArray)
-      }
-         getCat()
-
-        const getLocation =  async()=>{
-        const locationData =  await getAllLocations()
-        const locationArray =[];
-        locationData.docs.forEach(item=>{
-        locationArray.push(item.data())
-           })
-            setAllLocations(locationArray)
-          }
-            getLocation()
-
+    console.log(data.event_name[locale])
+      
 
   },[])
 
@@ -83,7 +79,7 @@ const EventStep1 = ({data,eventId,refreshData}) => {
             <TextField 
             onChange={(e)=>setName(e.target.value)}
             fullWidth label='Event Name' 
-            defaultValue={name} 
+            defaultValue={eventName()} 
             placeholder='Enter event name'  />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -124,19 +120,25 @@ const EventStep1 = ({data,eventId,refreshData}) => {
             <FormControl fullWidth>
                 <InputLabel id='form-layouts-separator-select-label'>Event Category</InputLabel>
                 <Select
-                label='Category'
-                defaultValue={category}
-                id='form-layouts-separator-select'
-                labelId='form-layouts-separator-select-label'
-                onChange={(e)=>setCategory(e.target.value)}
-                >
+                    label='Category'
+                    defaultValue={data.cat_id}
+                    id='form-layouts-separator-select'
+                    labelId='form-layouts-separator-select-label'
+                    onChange={(e)=>setEventCat(e.target.value)}
+                    >
 
-                {allCategory.map((cat)=>(
-                    <MenuItem value={cat.name}>{cat.name}</MenuItem>
-
-                    ))
-                }
-                </Select>
+                    {allCategory.map((item ,key)=>{
+                        const {docId,name} =item
+                        return(
+                        <MenuItem 
+                        key={key} 
+                        value={docId}>
+                        {name.hasOwnProperty(locale) ? name[locale] : name[Object.keys(name)[0]]}
+                        </MenuItem>
+                        )
+                    })
+                    }
+                    </Select>
             </FormControl>
             </Grid>
           {/* <Grid item xs={12} sm={12}>

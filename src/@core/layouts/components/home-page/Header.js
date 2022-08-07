@@ -108,7 +108,6 @@ const style = {
   const changeLang = ()=>{
     userContext.switchLang();
     handleMenuClose();
-    window.location.reload();
   }
 const handleMode = () =>{
   if(settings.mode === 'dark'){
