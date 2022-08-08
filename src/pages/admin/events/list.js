@@ -12,6 +12,9 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { useRouter } from 'next/router'
 import {verifyToken} from '../../../../service/auth'
 import nookies from "nookies";
+import {userAuth} from 'context/userContext'
+import Translations from 'utils/trans'
+
 
 
 import {getAllEvents} from '../../../../service/admin/events'
@@ -19,6 +22,11 @@ import {getAllEvents} from '../../../../service/admin/events'
 function EventList() {
 	const router = useRouter()
 	const[allEvents,setAllEventData] =  useState([])
+
+	const userContext = userAuth()
+    const locale = userContext.locale
+    const t =  Translations(locale)
+
     const options = {
 	  filterType: 'checkbox',
 	};
@@ -79,7 +87,10 @@ const handleEditEvent=(value)=>{
        const eventArray =[];
        eventData.docs.forEach(item=>{
        	const docId = {docId:item.id}
-       	const data = Object.assign(docId,item.data());
+		const {event_name} = item.data()
+		console.log(event_name[locale]);
+		const event_data = {...item.data(),event_name:event_name[locale]}
+       	const data = Object.assign(docId,event_data);
         eventArray.push(data)
        })
        setAllEventData(eventArray)

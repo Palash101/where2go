@@ -96,7 +96,7 @@ const EventStep2 = ({data,eventId,refreshData}) => {
       return
     }
     setLoading(true)
-     await updateEventDetails(eventId,description,'description')
+     await updateEventDetails(eventId,description,'description',locale)
           .then((data)=>console.log(data))
     handleClose('description')
     refreshData()
@@ -233,7 +233,7 @@ const EventStep2 = ({data,eventId,refreshData}) => {
                     label="Description"
                     type="text"
                     fullWidth
-                    defaultValue={data.description != ''?data.description:''}
+                    defaultValue={data.description.hasOwnProperty(locale) ? data.description[locale]:''}
                     variant="standard"
                     multiline
                     rows={5}

@@ -65,11 +65,18 @@ export const getEventById = async(eventId)=>{
       }
 }
 
-export const updateEventDetails = async(eventId,data,objKey)=>{
+export const updateEventDetails = async(eventId,data,objKey,lang)=>{
     const docRef = doc(db, "events", eventId);
+    if(lang){
+        return await updateDoc(docRef, {
+            [`${objKey}.${lang}`]: data
+          })
+    }
+    else{
     return await updateDoc(docRef, {
         [objKey]: data
       })
+    }
 }
 
 export const uploadEventImage = async(eventId,image,type)=>{
@@ -110,15 +117,15 @@ export const deleteEventTicket = async (eventId,data)=>{
 }
 
 
-export const updateEventData = async (eventId,data)=>{
+export const updateEventData = async (eventId,data,lang)=>{
     try{
         const docRef = doc(db, "events", eventId);
         return await updateDoc(docRef, {
-            event_name:data.name,
+            [`event_name.${lang}`]:data.name,
             country:data.country,
             currency:data.currency,
             event_type:data.type,
-            category:data.category
+            cat_id:data.cat_id
             
           }).then((res)=>console.log(res))
 

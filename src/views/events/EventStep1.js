@@ -28,7 +28,7 @@ const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
   const [type,setType] = useState(data.event_type)
   const [country,setCountry] = useState(data.country)
   const [currency,setCurrency] = useState(data.currency)
-  const [category,setCategory] = useState(data.category)
+  const [category,setCategory] = useState(data.cat_id)
   const [loading,setLoading] = useState(false)
 
 
@@ -46,9 +46,9 @@ const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
       type:type,
       country:country,
       currency:currency,
-      category:category
+      cat_id:category
     }
-    await updateEventData(eventId,eventData).then((res)=> toast("Details updated successfully"))
+    await updateEventData(eventId,eventData,locale).then((res)=> toast("Details updated successfully"))
     refreshData()
     setLoading(false)
 
@@ -64,10 +64,9 @@ const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
   }
 
   useEffect(()=>{
-    console.log(data.event_name[locale])
       
 
-  },[])
+  },[locale])
 
   return (
     <CardContent>
@@ -124,7 +123,7 @@ const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
                     defaultValue={data.cat_id}
                     id='form-layouts-separator-select'
                     labelId='form-layouts-separator-select-label'
-                    onChange={(e)=>setEventCat(e.target.value)}
+                    onChange={(e)=>setCategory(e.target.value)}
                     >
 
                     {allCategory.map((item ,key)=>{
