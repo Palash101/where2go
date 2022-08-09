@@ -186,7 +186,8 @@ img.itemImage1 {
     padding: 5px 29px;
     border: 1px solid #ddd;
     border-radius: 19px;
-    margin-top: 16px;
+    margin-top: 8px;
+    margin-bottom: 8px;
     cursor: pointer;
 }
 .cartLeft h5 {
@@ -357,7 +358,46 @@ font-size: 14px;
 .catRemove{
   display: none;
 }
+ul.prlist {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    min-width: 250px;
+}
 
+.prlist li {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.prlist li span {
+       width: 20px;
+    height: 20px;
+    border: 2px solid #fff;
+    border-radius: 20px;
+    display: inline-block;
+    margin-right: 7px;
+    float: left;
+}
+ul.ticketList {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+}
+
+ul.ticketList li {
+   margin: 10px 0px;
+    justify-content: space-between;
+    width: 100%;
+    display: flex;
+}
+ul.ticketList li span {
+    font-weight: 600;
+}
 @media (max-width:769px) {
 .dideList{
   display: none;

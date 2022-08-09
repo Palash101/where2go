@@ -78,12 +78,17 @@ function Details(navigation) {
 
     }
 
-    const clickEvent = (item1) => {
-        console.log(item1)
-        // router.replace({
-        //     pathname: '/bookings/[id]',
-        //     query: { id: router.query.id, },
-        // })
+    const clickEvent = (item1,item) => {
+        const data = {
+            date: item1.date,
+            from: item1.from,
+            to: item1.to
+        }
+        router.replace({
+            pathname: '/bookings/[id]',
+            query: { id: router.query.id ,date:item1.date},
+        })
+        handleClose()
     }
 
     useEffect(() => {
@@ -290,17 +295,15 @@ function Details(navigation) {
                                             marginBottom: '10px',
                                             display: 'flex',
                                             alignItems: 'center'
-                                        }} onClick={() => clickEvent(item1)}>
+                                        }} onClick={() => clickEvent(item1,item)}>
                                             <Typography variant='div' sx={{
                                                 color: '#000',
                                                 fontSize: '12px',
-                                                maxWidth: '46px',
+                                                maxWidth: '90px',
                                                 textAlign: 'center'
                                             }}>
-                                                SAT <span style={{
-                                                    fontSize: '24px',
-                                                    lineHeight: '19px'
-                                                }}>10</span> SEP
+                                                {item1.date} 
+                                               
                                             </Typography>
 
                                             <Typography variant='h5' style={{
@@ -309,7 +312,7 @@ function Details(navigation) {
                                                 padding: '0px 20px',
                                                 textAlign: 'center'
                                             }}>
-                                                6:30 PM - 7:30 PM
+                                                {item1.from} - {item1.to}
                                             </Typography>
                                         </Box>
                                     ))}

@@ -11,7 +11,7 @@ function SeatComponent (props){
 		x={props.startingXPosition} 
 		y={props.startingYPosition}
 		>
-		<circle id={props.id} cx="10" cy="10" r="8"></circle></svg>
+		<circle id={props.id} cx="10" cy="10" r="8" stroke={props.border ? props.border : "black"} stroke-width="2"></circle></svg>
 
 			)
 		

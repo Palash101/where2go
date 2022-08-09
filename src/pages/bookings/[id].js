@@ -26,12 +26,16 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { useTheme } from '@mui/material';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import { TruckDelivery } from 'mdi-material-ui'
+import { TruckDelivery } from 'mdi-material-ui';
+import SeatLayout from 'src/pages/bookings/component/SeatLayout';
 
 function Bookings(navigation) {
     const router = useRouter();
     const id = router.query.id;
+    const propDate = router.query.date;
     const [item, setItem] = useState({});
+    const [itemNew, setItemNew] = useState({});
+    const [featured,setFeatured] = useState(false)
     const [date, setDate] = useState('');
     const [open, setopen] = useState(false);
     const [dateValue, setDateValue] = useState(null);
@@ -41,14 +45,18 @@ function Bookings(navigation) {
     const [counter, setCounter] = useState(0);
     const [displayCounter, setDisplayCounter] = useState(false)
     const [exist, setExist] = useState(false)
+    const [priceOpen,setPriceOpen] = useState(false)
 
-    function handleIncrement() {
-        setCounter(counter + 1)
-        setDisplayCounter(true)
+    function handleIncrement(maxbooking) {
+        if(counter !== JSON.parse(maxbooking)){
+            setCounter(counter + 1)
+            setDisplayCounter(true)
+        }
+        
     };
 
-    function handleDecrement() {
-        if (counter === 1) {
+    function handleDecrement(minbooking) {
+        if (counter === JSON.parse(minbooking)) {
             setDisplayCounter(false)
         }
         else {
@@ -77,7 +85,7 @@ function Bookings(navigation) {
         var time = moment(fromTimeValue).format('LT');
         setDate(dt + ', ' + time)
 
-        item.event_date.map(item1 => {
+        itemNew.event_date.map(item1 => {
             if (date === item1.date) {
                 setExist(true)
             }
@@ -90,22 +98,36 @@ function Bookings(navigation) {
     useEffect(() => {
         if (router.isReady) {
             getEventById(router.query.id).then((data) => {
-                console.log(data)
-                setItem(data)
-                const date = moment().format('DD-MM-YYYY');
+                console.log(data,'item')
+                setItemNew(data)
                 data.event_date.map(item1 => {
-                    if (date === item1.date) {
+                    if (propDate === item1.date) {
                         setExist(true)
                     }
                 });
-
             })
-            var dt = moment().format('LLLL');;
-            setDate(dt)
+
+
+          //  var dt = moment().format('LLLL');
+            setDate(propDate)
         }
     }, [router.isReady, navigation])
 
     console.log(exist)
+
+    const handlePriceClick = () => {
+        setPriceOpen(true)
+    }
+    const handlePriceClose = () => {
+        setPriceOpen(false)
+    }
+    const puchaseClick = () => {
+
+    }
+
+    const toggleType = () => {
+        setFeatured(!featured)
+    }
 
     return (
         <>
@@ -123,20 +145,39 @@ function Bookings(navigation) {
                     </Grid>
                     <Grid item xs={12} md={6} sx={{}}>
                         <Box className='calenderDate' onClick={() => handleClickOpen('dateTime')}>{date}</Box>
+                        <Box onClick={toggleType} sx={{position: 'absolute',
+                                                        right: '10px',
+                                                        marginTop: '-39px'}}>Toggle Type</Box>
                     </Grid>
                 </Grid>
             </Box>
-            <Box sx={{ textAlign: 'center', }}>
-                <Typography sx={{ lineHeight: '32px', marginTop: '15px' }}>Set the quantity of tickets you would like to purchase</Typography>
+
+         
+            <Box sx={{position: 'absolute',
+                    zIndex: 9,
+                    margin: '15px',
+                    border: '3px solid #8d8d8d',
+                    padding: '5px 21px',
+                    borderRadius: '20px',
+                    background: '#000',
+                    fontSize: '14px'}} onClick={handlePriceClick}>
+                Ticket Prices
             </Box>
 
+
+        {featured === true && (
+            <SeatLayout />
+        )}
+
+          {featured === false && (
+                <div>
             {exist === true && (
                 <Box sx={{
                     maxWidth: '764px', margin: 'auto',
                     marginTop: '24px'
                 }}>
 
-                    {item.tickets && item.tickets.map((item1, key) => (
+                    {itemNew.tickets && itemNew.tickets.map((item1, key) => (
 
                         <Paper elevation={3} key={key} sx={{
                             padding: '15px',
@@ -167,6 +208,11 @@ function Bookings(navigation) {
 
                 </Box>
             )}
+        </div>
+            )}
+        
+        
+
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Select Date</DialogTitle>
                 <DialogContent>
@@ -204,6 +250,27 @@ function Bookings(navigation) {
                     <Button onClick={() => addDateTimeArray()}>Add</Button>
                     <Button onClick={handleClose}>Cancel</Button>
                 </DialogActions>
+            </Dialog>
+
+              <Dialog open={priceOpen} onClose={handlePriceClose}>
+                <DialogContent>
+                    <ul className="prlist">
+                         <li>
+                           <Box><span className="circleList" style={{backgroundColor:'blue'}}></span> Primary Seat</Box>
+                           <Box>7000 KWD</Box>
+                        </li>
+                        <li>
+                            <Box><span className="circleList" style={{backgroundColor:'yellow'}}></span> Secondary Seat</Box>
+                            <Box>7000 KWD</Box>
+                        </li>
+                        <li>
+                           <Box><span className="circleList" style={{backgroundColor:'green'}}></span> Selected Seat</Box>
+                           <Box>7000 KWD</Box>
+                        </li>
+                       
+                    </ul>
+                </DialogContent>
+              
             </Dialog>
 
         </>
