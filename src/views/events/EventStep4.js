@@ -16,6 +16,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Badge from '@mui/material/Badge';
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
 
 import {toast} from 'react-toastify'
 
@@ -121,6 +123,7 @@ const EventStep4 = ({data,eventId,refreshData}) => {
         required
         onChange={(e)=>setPrice(e.target.value)}
          fullWidth label='Price' type='number' placeholder='Price'  />
+        
         <TextField 
         required
          onChange={(e)=>setTicketCount(e.target.value)}
@@ -133,7 +136,9 @@ const EventStep4 = ({data,eventId,refreshData}) => {
         required
         onChange={(e)=>setMaxBooking(e.target.value)}
         sx={{marginBottom:'10px'}}type='number' fullWidth placeholder="Maximum allowed quantity in a single booking"  />
-  			<TextField 
+  			
+      
+        <TextField 
         required
         onChange={(e)=>setDescription(e.target.value)}
         sx={{marginBottom:'10px'}} fullWidth label='Description' placeholder='Ticket Description'  />

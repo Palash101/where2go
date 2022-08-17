@@ -34,6 +34,7 @@ function Bookings(navigation) {
     const id = router.query.id;
     const propDate = router.query.date;
     const [item, setItem] = useState({});
+    const [floorType, setFloorType] = useState(router.query.floor_type);
     const [itemNew, setItemNew] = useState({});
     const [featured,setFeatured] = useState(false)
     const [date, setDate] = useState('');
@@ -47,20 +48,20 @@ function Bookings(navigation) {
     const [exist, setExist] = useState(false)
     const [priceOpen,setPriceOpen] = useState(false)
 
-    function handleIncrement(maxbooking) {
-        if(counter !== JSON.parse(maxbooking)){
-            setCounter(counter + 1)
+    function handleIncrement(item) {
+        if(item.qty !== JSON.parse(item.max_booking)){
+            item.qty = item.qty + 1;
             setDisplayCounter(true)
         }
         
     };
 
-    function handleDecrement(minbooking) {
-        if (counter === JSON.parse(minbooking)) {
+    function handleDecrement(item) {
+        if (item.qty === JSON.parse(item.min_booking)) {
             setDisplayCounter(false)
         }
         else {
-            setCounter(counter - 1)
+            item.qty = item.qty - 1;
         }
     };
 
@@ -85,6 +86,11 @@ function Bookings(navigation) {
         var time = moment(fromTimeValue).format('LT');
         setDate(dt + ', ' + time)
 
+        // router.replace({
+        //     pathname: '/bookings/[id]',
+        //     query: { id: router.query.id ,date:date,from:formTime,to:toTime,floor_type:itemNew.floor_type},
+        // })
+
         itemNew.event_date.map(item1 => {
             if (date === item1.date) {
                 setExist(true)
@@ -99,12 +105,20 @@ function Bookings(navigation) {
         if (router.isReady) {
             getEventById(router.query.id).then((data) => {
                 console.log(data,'item')
+                var arr = [];
+                data.tickets.map(item2 => {
+                    item2.qty = JSON.parse(item2.min_booking);
+                    arr.push(item2)
+                });
+                data.tickets = arr;
+                console.log(data,'booking')
                 setItemNew(data)
                 data.event_date.map(item1 => {
                     if (propDate === item1.date) {
                         setExist(true)
                     }
                 });
+               
             })
 
 
@@ -165,11 +179,11 @@ function Bookings(navigation) {
             </Box>
 
 
-        {featured === true && (
+        {floorType === '1' && (
             <SeatLayout />
         )}
 
-          {featured === false && (
+          {floorType === '0' && (
                 <div>
             {exist === true && (
                 <Box sx={{
@@ -183,10 +197,10 @@ function Bookings(navigation) {
                             padding: '15px',
                             display: 'flex',
                             backgroundColor: `${theme.palette.background.default1}`,
-                            marginBottom: 10,
-                            borderTopWidth: '4px',
-                            borderTopColor: `${item1.color}`,
-                            borderTopStyle: 'solid',
+                            marginBottom: 5,
+                          /// borderTopWidth: '4px',
+                            //borderTopColor: `${item1.color}`,
+                          //  borderTopStyle: 'solid',
                             justifyContent: 'space-between'
                         }}>
                             <div className='cartLeft'>
@@ -195,12 +209,12 @@ function Bookings(navigation) {
 
                             </div>
                             <div className='cartRight'>
-                                <ButtonGroup size="small" variant="text" aria-label="small button group" >
-                                    <Button onClick={() => handleIncrement(item1.max_booking)}>+</Button>
-                                    <Button variant="outlined" disabled>{counter}</Button>
-                                    <Button onClick={() => handleDecrement(item1.min_booking)}>-</Button>
-                                </ButtonGroup>
-                                <h4>{item1.price} {item.currency}</h4>
+                                {/* <ButtonGroup size="small" variant="text" aria-label="small button group" >
+                                    <Button onClick={() => handleIncrement(item1)}>+</Button>
+                                    <Button variant="outlined" disabled>{item1.qty}</Button>
+                                    <Button onClick={() => handleDecrement(item1)}>-</Button>
+                                </ButtonGroup> */}
+                                <h4>{item1.price} {itemNew.currency}</h4>
                             </div>
                         </Paper>
                     ))}
@@ -224,6 +238,7 @@ function Bookings(navigation) {
                                 inputFormat="MM/dd/yyyy"
                                 closeOnSelect={true}
                                 views={["year", "month", "day"]}
+                                minDate={new Date()}
                                 onChange={(newValue) => {
                                     setDateValue(newValue);
                                 }}

@@ -10,6 +10,8 @@ import Grid from '@mui/material/Grid';
 import { getAllEvents,getCategory,getFilterEvent } from 'service/admin/events'
 import { Button } from '@mui/material'
 import FilterListIcon from '@mui/icons-material/FilterList';
+import {userAuth} from 'context/userContext'
+import Translations from 'utils/trans'
 
 function Browse() {
     const [data, setData] = useState([]);
@@ -19,6 +21,9 @@ function Browse() {
     const [dlist,setDlist] = useState(false)
     const [category, setCategory] = useState({name:'all',status:1});
     const router = useRouter();
+    const userContext = userAuth()
+    const locale = userContext.locale
+    const t =  Translations(locale)
 
 
     useEffect(async () => {
@@ -107,7 +112,7 @@ function Browse() {
                     <div className='slideItemImage'>
                         {renderImage(item)}
                     </div>
-                    <p>{item.event_name}</p>
+                    <p>{item.event_name.hasOwnProperty(locale) ? item.event_name[locale] : item.event_name[Object.keys(item.event_name)[0]]}</p>
                 </div>
             </div>
         )
@@ -143,7 +148,7 @@ function Browse() {
                                 {categories.length > 0 &&
                                     categories.map((item, key) => (
                                         <li>
-                                            <Button verient='default' color={category.name === item.name ? 'warning' : 'inherit'} onClick={() => selectCategory(item)}>{item.name}</Button>
+                                            <Button verient='default' color={category.name === item.name ? 'warning' : 'inherit'} onClick={() => selectCategory(item)}>{item.name.hasOwnProperty(locale) ? item.name[locale] : item.name[Object.keys(item.name)[0]]}</Button>
                                         </li>
                                     ))
                                 }

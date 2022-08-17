@@ -30,6 +30,7 @@ const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
   const [currency,setCurrency] = useState(data.currency)
   const [category,setCategory] = useState(data.cat_id)
   const [loading,setLoading] = useState(false)
+  const [floorType,setFloorType] = useState('0')
 
 
 
@@ -46,7 +47,8 @@ const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
       type:type,
       country:country,
       currency:currency,
-      cat_id:category
+      cat_id:category,
+      foor_type:floorType
     }
     await updateEventData(eventId,eventData,locale).then((res)=> toast("Details updated successfully"))
     refreshData()
@@ -139,6 +141,17 @@ const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
                     }
                     </Select>
             </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel id='form-layouts-separator-select-label'>Floor Type</InputLabel>
+                
+                <Select  onChange={(e)=>setFloorType(e.target.value)} sx={{marginBottom:'10px'}} fullWidth label='Ticket Floor Type' defaultValue={floorType} >
+                  <MenuItem value='' selected>Select Type</MenuItem>
+                  <MenuItem value='0'>Cards</MenuItem>
+                  <MenuItem value='1'>Floot Plan</MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
           {/* <Grid item xs={12} sm={12}>
             <TextField fullWidth label='Description' placeholder='Event Description' defaultValue='Event Description' multiline rows={4}/>

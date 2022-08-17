@@ -47,8 +47,13 @@ function Details(navigation) {
 
 
     const handleClickOpen = () => {
-        // setopen(true)
-        setShowModal(true)
+        if(item.floor_type === '0'){
+            setopen(true)
+            
+        }
+        else{
+            setShowModal(true)
+        }
     };
 
 
@@ -70,9 +75,10 @@ function Details(navigation) {
             from: formTime,
             to: toTime
         }
+        console.log(data)
         router.replace({
             pathname: '/bookings/[id]',
-            query: { id: router.query.id },
+            query: { id: router.query.id ,date:date,from:formTime,to:toTime,floor_type:item.floor_type},
         })
         handleClose()
 
@@ -86,7 +92,7 @@ function Details(navigation) {
         }
         router.replace({
             pathname: '/bookings/[id]',
-            query: { id: router.query.id ,date:item1.date},
+            query: { id: router.query.id ,date:item1.date,floor_type:item.floor_type},
         })
         handleClose()
     }
@@ -168,9 +174,9 @@ function Details(navigation) {
                                     borderRadius: '10px'
                                 }}>
                                     <TodayIcon sx={{ fontSize: 40, }} />
-                                    {item.event_date && item.event_date.map((item1, key) => (
-                                        <h6 className='dayLine' key={key}>{item1.date} From {item1.from} - {item1.to}</h6>
-                                    ))}
+                                    {item.event_date && (
+                                        <h6 className='dayLine' >{item.event_date[0].date} - {item.event_date[item.event_date.length - 1].date}</h6>
+                                    )}
                                     {item.event_location && (
                                         <div className='locbox'>
                                             <MapIcon sx={{ fontSize: 40, }} />
@@ -250,9 +256,10 @@ function Details(navigation) {
                                         <DatePicker
                                             label="Date"
                                             value={dateValue}
-                                            inputFormat="MM/dd/yyyy"
+                                            inputFormat="dd-MM-yyyy"
                                             closeOnSelect={true}
                                             views={["year", "month", "day"]}
+                                            minDate={new Date()}
                                             onChange={(newValue) => {
                                                 setDateValue(newValue);
                                             }}
@@ -268,6 +275,25 @@ function Details(navigation) {
                                                 }}
                                                 renderInput={(params) => <TextField {...params} />}
                                             />
+
+
+                                            {/* <TextField
+                                                    id="time"
+                                                    label="Time"
+                                                    type="time"
+                                                    defaultValue={fromTimeValue}
+                                                    fullWidth
+                                                    onChange={(newValue) => {
+                                                        setFromTimeValue(newValue);
+                                                    }}
+                                                    InputLabelProps={{
+                                                    shrink: true,
+                                                    }}
+                                                    inputProps={{
+                                                    step: 300, // 5 min
+                                                    }}
+                                                    sx={{ width: 251}}
+                                            /> */}
 
                                         </Box>
                                     </Box>

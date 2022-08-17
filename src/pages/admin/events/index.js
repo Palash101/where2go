@@ -33,6 +33,8 @@ function EventCreate() {
     const [eventType,seteventType] = useState('')
     const [eventCat, setEventCat] = useState('')
     const [loading,setLoading] = useState(false)
+    const [floorType,setFloorType] = useState('0')
+
     const router = useRouter()
 
     const [allCategory,setAllCategory] = useState([])
@@ -55,7 +57,7 @@ function EventCreate() {
         event.preventDefault();
         setLoading(true)
         console.log(loading)
-         await addEevent(eventName,country,currency,eventType,eventCat)
+         await addEevent(eventName,country,currency,eventType,eventCat,floorType)
         .then((data)=>{
 
         console.log(data,'Returned Data')
@@ -186,6 +188,18 @@ function EventCreate() {
                     </Select>
                 </FormControl>
                 </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    <InputLabel id='form-layouts-separator-select-label'>Floor Type</InputLabel>
+                    
+                    <Select  onChange={(e)=>setFloorType(e.target.value)} sx={{marginBottom:'10px'}} fullWidth label='Ticket Floor Type' defaultValue={floorType} >
+                      <MenuItem value='' selected>Select Type</MenuItem>
+                      <MenuItem value='0'>Cards</MenuItem>
+                      <MenuItem value='1'>Floot Plan</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+
                 <Grid item xs={12}>
                 <Box
                     sx={{

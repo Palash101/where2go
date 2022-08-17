@@ -51,7 +51,7 @@ const removeFromArray =(key)=>{
   const addDateTimeArray = ()=>{
     const date =  moment(dateValue).format('DD-MM-YYYY');
     const formTime = moment(fromTimeValue).format('HH:mm a');
-    const toTime = moment(fromTimeValue).format('HH:mm a');
+    const toTime = moment(toTimeValue).format('HH:mm a');
     const data = {
       date:date,
       from:formTime,

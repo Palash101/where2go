@@ -28,15 +28,17 @@ export const addEevent = async (
     country,
     currency,
     event_type,
-    category
+    category,
+    foor_type
     )=>{
     return await addDoc(collection(db,'events'),{
-        event_name:name,
+        event_name:{ar:'',en:name},
         country:country,
         currency:currency,
         event_type:event_type,
         category:category,
-        status:'draft'
+        status:'draft',
+        foor_type:foor_type
     })
     .then((data)=>{
         //console.log(data.id,'docid  ')
@@ -125,7 +127,8 @@ export const updateEventData = async (eventId,data,lang)=>{
             country:data.country,
             currency:data.currency,
             event_type:data.type,
-            cat_id:data.cat_id
+            cat_id:data.cat_id,
+            floor_type:data.foor_type,
             
           }).then((res)=>console.log(res))
 
