@@ -455,3 +455,8 @@ span.catRemove {
 .SelectedSVG{
   fill:orange
 }
+.selectedRect{
+  outline: thick solid black;
+  outlineOffset: 5px;
+
+}

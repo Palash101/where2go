@@ -15,6 +15,8 @@ import nookies from "nookies";
 // import { D3DragEvent, drag } from "d3-drag";
 import * as d3 from 'd3';
 
+import {createFloorPlan} from 'service/admin/floorPlan'
+
 
 
 
@@ -39,6 +41,7 @@ function Seat() {
     const [selected, setSelected] = useState([])
     const [selectedRect, setSelectedRect] = useState(null)
     const [myColor, setColor] = useState('black')
+    const [planName, setPlanName] = useState('')
 
 
     const [reactArray,setRectArray] = useState([])
@@ -84,7 +87,7 @@ function Seat() {
     useEffect(()=>{
     	
 
-    },[selectedRect])
+    },[])
 
 
     const updateMousePos =(rectSVG)=>{
@@ -99,33 +102,14 @@ function Seat() {
 
 
 
-
-
-
-
-    const getElementFromArray = () => {
-
-    }
-
-    // const addNewRow = () => {
-    //     setMapValue((currentState) => {
-    //         return {
-    //             ...currentState,
-    //             row: currentState.row + 1
-    //         }
-    //     })
-    // }
-
-
-    const addNewRowCol = (type) => {
+    const addNewRowCol = (type,value) => {
     	if(selectedRect === null){
     		alert('Please select the rect')
     		return
     	}
-    	console.log(reactArray)
     	const selectedArrayIndex = reactArray[selectedRect]
     	const seatStateInSelected = selectedArrayIndex.seatState
-    	const newSeatState = {...seatStateInSelected,[type]:seatStateInSelected[type] + 1}
+    	const newSeatState = {...seatStateInSelected,[type]:seatStateInSelected[type] + value}
 
     	const newSeatDots = seatPlanerRender(newSeatState)
 
@@ -133,66 +117,63 @@ function Seat() {
 		const lastObjectFromLastArray = lastArrayFromSeat[lastArrayFromSeat.length-1]
 
     	const newStateOfSelectedIndex = {...selectedArrayIndex,seatState:newSeatState,seatDots:newSeatDots,width:lastObjectFromLastArray.x+50,height:lastObjectFromLastArray.y+50}
-    	console.log(newStateOfSelectedIndex);
     	const reactArrayStateCopy = [...reactArray]
     	reactArrayStateCopy[selectedRect] = newStateOfSelectedIndex
-    	console.log(reactArrayStateCopy)
     	setRectArray(reactArrayStateCopy)
     }
 
 
+    const moveReactXY = (type,value) =>{
+    	if(selectedRect === null){
+    		alert('Please select the rect')
+    		return
+    	}
+    	const selectedArrayIndex = reactArray[selectedRect]
+    	const newSeatState = {...selectedArrayIndex,[type]:selectedArrayIndex[type] + value}
 
-    const addNewCol = () => {
-        setMapValue((currentState) => {
-            return {
-                ...currentState,
-                col: currentState.col + 1
-            }
-        })
-    }
-    const increaseXSpace = () => {
-        setMapValue((currentState) => {
-            return {
-                ...currentState,
-                rowIncrementPoistionBy: currentState.rowIncrementPoistionBy + 10
-            }
-        })
-    }
-    const increaseYSpace = () => {
-        setMapValue((currentState) => {
-            return {
-                ...currentState,
-                colIncrementPoistionBy: currentState.colIncrementPoistionBy + 15
-            }
-        })
+    	const reactArrayStateCopy = [...reactArray]
+    	reactArrayStateCopy[selectedRect] = newSeatState
+    	setRectArray(reactArrayStateCopy)
 
     }
 
-    const shiftXAxis = () => {
-        setMapValue((currentState) => {
-            return {
-                ...currentState,
-                rowStartPoisition: currentState.rowStartPoisition + 10
+    const decrementReactXY = (type,value) =>{
+    	if(selectedRect === null){
+    		alert('Please select the rect')
+    		return
+    	}
+    	const selectedArrayIndex = reactArray[selectedRect]
+    	const newSeatState = {...selectedArrayIndex,[type]:selectedArrayIndex[type] - value}
 
-            }
-
-
-        })
-
-    }
-
-    const shiftYAxis = () => {
-        setMapValue((currentState) => {
-            return {
-                ...currentState,
-                colStartingPoistion: currentState.colStartingPoistion + 10
-
-            }
-
-
-        })
+    	const reactArrayStateCopy = [...reactArray]
+    	reactArrayStateCopy[selectedRect] = newSeatState
+    	setRectArray(reactArrayStateCopy)
 
     }
+
+
+
+const decrementState = (type,value) => {
+    	if(selectedRect === null){
+    		alert('Please select the rect')
+    		return
+    	}
+    	const selectedArrayIndex = reactArray[selectedRect]
+    	const seatStateInSelected = selectedArrayIndex.seatState
+    	const newSeatState = {...seatStateInSelected,[type]:seatStateInSelected[type] - value}
+
+    	const newSeatDots = seatPlanerRender(newSeatState)
+
+    	const lastArrayFromSeat =newSeatDots[newSeatDots.length-1]
+		const lastObjectFromLastArray = lastArrayFromSeat[lastArrayFromSeat.length-1]
+
+    	const newStateOfSelectedIndex = {...selectedArrayIndex,seatState:newSeatState,seatDots:newSeatDots}
+    	const reactArrayStateCopy = [...reactArray]
+    	reactArrayStateCopy[selectedRect] = newStateOfSelectedIndex
+    	setRectArray(reactArrayStateCopy)
+    }
+
+
 
 
 
@@ -241,7 +222,6 @@ function Seat() {
 
     const SelectRectangle = (key)=>{
     	setSelectedRect(key)
-    	console.log('Selected rectangle')
     }
 
 
@@ -287,6 +267,31 @@ function Seat() {
 	}
 
 
+	const fillColour = () =>{
+		console.log(reactArray);
+		const selectedArrayIndex = reactArray[selectedRect]
+    	const seatStateInSelected = selectedArrayIndex.seatState
+    	const newSeatState = {...seatStateInSelected,fill:myColor}
+    	const newSeatDots = seatPlanerRender(newSeatState)
+    	const newStateOfSelectedIndex = {...selectedArrayIndex,seatState:newSeatState,seatDots:newSeatDots}
+    	const reactArrayStateCopy = [...reactArray]
+    	reactArrayStateCopy[selectedRect] = newStateOfSelectedIndex
+    	setRectArray(reactArrayStateCopy)
+
+	}
+
+
+	const saveData = async()=>{
+		if(planName == ''){
+			alert('Please enter Valid Name')
+			return
+		}
+		// await createFloorPlan(planName,reactArray).then((res)=>console.log(res))
+		console.log(reactArray)
+
+	}
+
+
 
 
 
@@ -314,7 +319,7 @@ function Seat() {
 			for(let z = 0; z<rowCount; z++){
 				colStartingPoistion += colIncrementPoistionBy
 
-				yElement.push({x:rowStartPoisition,y:colStartingPoistion,class:'blankSVG',color:''}
+				yElement.push({x:rowStartPoisition,y:colStartingPoistion,class:'blankSVG',fill:initalState.fill}
 				)
 			}
 			colStartingPoistion = initalState.colStartingPoistion
@@ -338,6 +343,8 @@ function changeCol(e){
     })
 }
 
+
+console.log('rendering')
 
     return (
         <>
@@ -371,41 +378,101 @@ function changeCol(e){
                                 </Button>
                             </li>
                             <li>
+                            <div>
+
                                 <Button
-                                    type='button' onClick={() => addNewRowCol('row')} variant='contained' color='secondary' size='small'>
-                                    Add Row By 1
+                                    type='button' onClick={() => addNewRowCol('row',1)} variant='contained' color='secondary' size='small'>
+                                     +
                                 </Button>
+                                <span>Row</span>
+
+                                <Button
+                                    type='button' onClick={() => decrementState('row',1)} variant='contained' color='secondary' size='small'>
+                                     -
+                                </Button>
+                            </div>
                             </li>
                             <li>
+                            <div>
+
                                 <Button
-                                    type='button' onClick={() => addNewRowCol('col')} variant='contained' color='secondary' size='small'>
-                                    Add Column By 1
+                                    type='button' onClick={() => addNewRowCol('col',1)} variant='contained' color='secondary' size='small'>
+                                     +
                                 </Button>
+                                <span>Column</span>
+
+                                <Button
+                                    type='button' onClick={() => decrementState('col',1)} variant='contained' color='secondary' size='small'>
+                                     -
+                                </Button>
+                            </div>
+
                             </li>
                            
                             <li>
+                            <div>
+
                                 <Button
-                                    type='button' onClick={increaseXSpace} variant='contained' color='secondary' size='small'>
-                                    Incearase X Axis Space
+                                    type='button' onClick={() => addNewRowCol('rowIncrementPoistionBy',10)} variant='contained' color='secondary' size='small'>
+                                     +
                                 </Button>
+                                <span>Horizontal Space</span>
+
+                                <Button
+                                    type='button' onClick={() => decrementState('rowIncrementPoistionBy',10)} variant='contained' color='secondary' size='small'>
+                                     -
+                                </Button>
+                            </div>
+                                
                             </li>
                             <li>
+                            	<div>
+
                                 <Button
-                                    type='button' onClick={increaseYSpace} variant='contained' color='secondary' size='small'>
-                                    Incearase Y Axis Di
+                                    type='button' onClick={() => addNewRowCol('colIncrementPoistionBy',10)} variant='contained' color='secondary' size='small'>
+                                     +
                                 </Button>
+                                <span>Vertical Space</span>
+
+                                <Button
+                                    type='button' onClick={() => decrementState('colIncrementPoistionBy',10)} variant='contained' color='secondary' size='small'>
+                                     -
+                                </Button>
+                            </div>
+
+                                
                             </li>
                             <li>
+                            <div>
+
                                 <Button
-                                    type='button' onClick={shiftYAxis} variant='contained' color='secondary' size='small'>
-                                    Shift Y Axis
+                                    type='button' onClick={() => moveReactXY('y',10)} variant='contained' color='secondary' size='small'>
+                                     +
                                 </Button>
+                                <span>Move vertically</span>
+
+                                <Button
+                                    type='button' onClick={() => decrementReactXY('y',10)} variant='contained' color='secondary' size='small'>
+                                     -
+                                </Button>
+                            </div>
+                               
                             </li>
                             <li>
+                            <div>
+
                                 <Button
-                                    type='button' onClick={shiftXAxis} variant='contained' color='secondary' size='small'>
-                                    Shift X Axis
+                                    type='button' onClick={() => moveReactXY('x',10)} variant='contained' color='secondary' size='small'>
+                                     +
                                 </Button>
+                                <span>Move Horizontaly</span>
+
+                                <Button
+                                    type='button' onClick={() => decrementReactXY('x',10)} variant='contained' color='secondary' size='small'>
+                                     -
+                                </Button>
+                            </div>
+                               
                             </li>
                             <li>
                             <p style={{marginTop:10,marginBottom:10,}}>Delete or UnDo</p>
@@ -436,6 +503,22 @@ function changeCol(e){
                                
                                 </div>
                             </li>
+                            <li>
+                            	<Button
+                                    type='button' onClick={() => fillColour()} variant='contained' color='secondary' size='small'>
+                                     fill color
+                                </Button>
+
+                            </li>
+                            <li>
+                            <input type="text" onChange={(e)=>setPlanName(e.target.value)} />
+                            </li>
+                            <li>
+                            <Button
+                                    type='button' onClick={() => saveData()} variant='contained' color='secondary' size='small'>
+                                     Save Data
+                                </Button>
+                            </li>
 
                         </ul>
 
@@ -462,8 +545,7 @@ function changeCol(e){
 
 							  			return(
 
-							  			<svg  ref={rectSvgRef} style={{ border: '1px solid'}}  width={item1.width} height={item1.height} x={item1.x}  y={item1.y}>
-							  										  			<circle  cx="50%" cy="15" r="5" />
+							  			<svg  ref={rectSvgRef} style={{ cursor:'grap', border: '1px solid'}}  width={item1.width} height={item1.height} x={item1.x}  y={item1.y}>
 
 							  			<g className={selectedRect == key? "selectedRect" : ''} onClick={()=>SelectRectangle(key)}>
 							  			{
@@ -471,7 +553,6 @@ function changeCol(e){
 			                                        item2.map((item3, key2) => (
 			                                            <SeatComponent
 			                                                color={item3.fill}
-			                                                className={item3.class}
 			                                                id={`${item3.x}${item3.y}`}
 			                                                startingXPosition={item3.x}
 			                                                startingYPosition={item3.y}
