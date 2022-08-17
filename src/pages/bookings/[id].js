@@ -28,6 +28,7 @@ import { useTheme } from '@mui/material';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { TruckDelivery } from 'mdi-material-ui';
 import SeatLayout from 'src/pages/bookings/component/SeatLayout';
+import {getAllFloorPLan} from 'service/admin/floorPlan';
 
 function Bookings(navigation) {
     const router = useRouter();
@@ -47,6 +48,7 @@ function Bookings(navigation) {
     const [displayCounter, setDisplayCounter] = useState(false)
     const [exist, setExist] = useState(false)
     const [priceOpen,setPriceOpen] = useState(false)
+    const [floorData,setFloorData] = useState({});
 
     function handleIncrement(item) {
         if(item.qty !== JSON.parse(item.max_booking)){
@@ -101,10 +103,25 @@ function Bookings(navigation) {
 
     }
 
-    useEffect(() => {
+    useEffect(async() => {
         if (router.isReady) {
+            const fdata = await getAllFloorPLan()
+            const fData1 = [];
+            fdata.docs.forEach(item => {
+                const docId = { docId: item.id }
+                const dt1 = item.data().plan;
+                const dt = {plan:JSON.parse(dt1)}
+                const name = {name:item.data().name};
+                const data = Object.assign(docId, dt, name);
+                fData1.push(data)
+            })
+            setFloorData(fData1[0])
+            console.log(fData1[0],'fdata')
+
+
             getEventById(router.query.id).then((data) => {
                 console.log(data,'item')
+                setFloorType(data.floor_type)
                 var arr = [];
                 data.tickets.map(item2 => {
                     item2.qty = JSON.parse(item2.min_booking);
@@ -180,7 +197,7 @@ function Bookings(navigation) {
 
 
         {floorType === '1' && (
-            <SeatLayout />
+            <SeatLayout data={floorData} />
         )}
 
           {floorType === '0' && (

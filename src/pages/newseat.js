@@ -13,7 +13,7 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import Button from '@mui/material/Button'
 import nookies from "nookies";
 // import { D3DragEvent, drag } from "d3-drag";
-import * as d3 from 'd3';
+// import * as d3 from 'd3';
 
 import {createFloorPlan} from 'service/admin/floorPlan'
 
@@ -286,7 +286,7 @@ const decrementState = (type,value) => {
 			alert('Please enter Valid Name')
 			return
 		}
-		// await createFloorPlan(planName,reactArray).then((res)=>console.log(res))
+		 await createFloorPlan(planName,JSON.stringify(reactArray)).then((res)=>console.log(res))
 		console.log(reactArray)
 
 	}

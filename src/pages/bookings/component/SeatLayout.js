@@ -19,11 +19,11 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography'
 
 
-const SeatLayout = () => {
+const SeatLayout = (props) => {
 
     //Hooks
     const Viewer = useRef(null);
-
+    const rectSvgRef = useRef(null);
     //Inital State
     const [loading, setLoading] = useState(false);
     const [plannerArray, setPlannerArray] = useState([])
@@ -56,6 +56,7 @@ const SeatLayout = () => {
 
 
     useEffect(() => {
+        console.log(props.data.plan)
         const planner = seatPlanerRender()
             setPlannerArray(planner)
         }, [mapValue.row, mapValue.col,
@@ -186,7 +187,7 @@ const puchaseClick = () => {
                                             font-weight="bold">Stage Text</text>
                                     </svg>
 
-                                {
+                                {/* {
                                     plannerArray.map((item, key) => (
                                         item.map((item1, key1) => (
                                             <SeatComponent
@@ -201,6 +202,33 @@ const puchaseClick = () => {
                                         ))
                                     ))
 
+                                } */}
+
+{props.data && props.data.plan && props.data.plan.map((item1,key)=>{
+
+                                        return(
+
+                                        <svg  width={item1.width} height={item1.height} x={item1.x}  y={item1.y}>
+
+                                        <g>
+                                        {
+                                            item1.seatDots?.map((item2, key1) => (
+                                                  item2.map((item3, key2) => (
+                                                      <SeatComponent
+                                                          color={item3.fill}
+                                                          id={`${item3.x}${item3.y}`}
+                                                          startingXPosition={item3.x}
+                                                          startingYPosition={item3.y}
+                                                          key={key2}
+                                                         />
+                                                  ))
+                                              ))
+                                        }
+                                        </g>
+
+                                         </svg>
+                                        )
+                                    })
                                 }
                             </g>
                         </svg>
