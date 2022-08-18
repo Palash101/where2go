@@ -34,3 +34,13 @@ export const createFloorPlan =  async (name,data) =>{
                 console.log(err)
             })
 }
+
+export const getFloorPlanById = async (docId) =>{
+    const docRef = doc(db, "floorPlans", docId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        return docSnap.data()
+      } else {
+        return{err:'error',message:'Document not found'}
+      }
+}

@@ -45,7 +45,7 @@ function EventCreate() {
     const locale = userContext.locale
     const t =  Translations(locale)
 
-
+ 
 
 
     
@@ -57,7 +57,7 @@ function EventCreate() {
         event.preventDefault();
         setLoading(true)
         console.log(loading)
-         await addEevent(eventName,country,currency,eventType,eventCat,floorType)
+         await addEevent(eventName,country,currency,eventType,eventCat,locale,floorType)
         .then((data)=>{
 
         console.log(data,'Returned Data')
@@ -190,12 +190,12 @@ function EventCreate() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
-                    <InputLabel id='form-layouts-separator-select-label'>Floor Type</InputLabel>
+                    <InputLabel id='form-layouts-separator-select-label'>Event Ticket Type</InputLabel>
                     
                     <Select  onChange={(e)=>setFloorType(e.target.value)} sx={{marginBottom:'10px'}} fullWidth label='Ticket Floor Type' defaultValue={floorType} >
                       <MenuItem value='' selected>Select Type</MenuItem>
-                      <MenuItem value='0'>Cards</MenuItem>
-                      <MenuItem value='1'>Floot Plan</MenuItem>
+                      <MenuItem value='0'>Dont have floor plan</MenuItem>
+                      <MenuItem value='1'>Includes floor plan</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>

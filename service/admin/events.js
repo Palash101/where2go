@@ -29,16 +29,19 @@ export const addEevent = async (
     currency,
     event_type,
     category,
-    foor_type
+    locale,
+    floor_type
     )=>{
     return await addDoc(collection(db,'events'),{
-        event_name:{ar:'',en:name},
+        event_name:{
+            [locale]:name
+        },
         country:country,
         currency:currency,
         event_type:event_type,
         category:category,
         status:'draft',
-        foor_type:foor_type
+        floor_type:floor_type
     })
     .then((data)=>{
         //console.log(data.id,'docid  ')
@@ -111,6 +114,14 @@ export const updateEventTicket = async (eventId,data)=>{
 
 }
 
+export const updateFloorPlan = async (eventId,data)=>{
+    const docRef = doc(db, "events", eventId);
+    return await updateDoc(docRef, {
+        plan:data
+      })
+
+}
+
 export const deleteEventTicket = async (eventId,data)=>{
     const docRef = doc(db, "events", eventId);
     return await updateDoc(docRef, {
@@ -128,12 +139,13 @@ export const updateEventData = async (eventId,data,lang)=>{
             currency:data.currency,
             event_type:data.type,
             cat_id:data.cat_id,
-            floor_type:data.foor_type,
+            floor_type:data.floor_type,
             
           }).then((res)=>console.log(res))
 
     }
     catch(error){
+        console.log(error)
         return{error:'error',message:'Something went wrong',devmsg:error}
     }
     

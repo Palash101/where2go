@@ -12,8 +12,6 @@ import Box from '@mui/material/Box'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import Button from '@mui/material/Button'
 import nookies from "nookies";
-// import { D3DragEvent, drag } from "d3-drag";
-// import * as d3 from 'd3';
 
 import {createFloorPlan} from 'service/admin/floorPlan'
 

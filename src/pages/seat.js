@@ -29,18 +29,21 @@ function Seat (){
 	//Hooks
 	const Viewer = useRef(null);
 
+
+
 	//Inital State
 	const [loading,setLoading] = useState(false);
 	const [plannerArray,setPlannerArray] = useState([])
+	const [reactArray,setRectArray] = useState([])
 
 	const  [selected, setSelected] = useState([])
 	const [mapValue, setMapValue] = useState({
 		row:3,
 		col:5,
-		rowStartPoisition:120,
-		rowIncrementPoistionBy:20,
-		colStartingPoistion:230,
-		colIncrementPoistionBy:30,
+		rowStartPoisition:10,
+		rowIncrementPoistionBy:25,
+		colStartingPoistion:35,
+		colIncrementPoistionBy:25,
 		defaultColor:'red',
 		selected:false,
 		stage:{
@@ -60,15 +63,12 @@ function Seat (){
 
 
 
+	
+
+
 	useEffect(()=>{
-		const planner =  seatPlanerRender()
-		setPlannerArray(planner)
-	},[mapValue.row,mapValue.col,
-	mapValue.rowIncrementPoistionBy,
-	mapValue.colIncrementPoistionBy,
-	mapValue.colStartingPoistion,
-	mapValue.rowStartingPoistion,
-	])
+
+	},[])
 
 
 	const getElementFromArray =()=>{
@@ -175,22 +175,61 @@ function Seat (){
 
 	}
 
+	const addReactangle = ()=>{
+		const initalSeatValue = {
+		row:3,
+		col:5,
+		rowStartPoisition:10,
+		rowIncrementPoistionBy:25,
+		colStartingPoistion:15,
+		colIncrementPoistionBy:25,
+		defaultColor:'red',
+		selected:false,
+		}
+
+		const reactangleInitalState = {
+			height:100,
+			width:100,
+			x:0,
+			y:0,
+		}
+		if(reactArray.length == 0){
+			const seatDots = seatPlanerRender(initalSeatValue)
+			const lastArrayFromSeat =seatDots[seatDots.length-1]
+			const lastObjectFromLastArray = lastArrayFromSeat[lastArrayFromSeat.length-1]
+			const newRectState = {...reactangleInitalState,width:lastObjectFromLastArray.x+50,height:lastObjectFromLastArray.y+50, seatDots:seatDots}
+			setRectArray([...reactArray,newRectState])
+		}
+		else{
+			const seatDots = seatPlanerRender(initalSeatValue)
+			const lastArrayFromSeat =seatDots[seatDots.length-1]
+			const lastObjectFromLastArray = lastArrayFromSeat[lastArrayFromSeat.length-1]
+
+			const newRectState = {...reactangleInitalState,width:lastObjectFromLastArray.x+50,height:lastObjectFromLastArray.y+50,seatDots:seatDots}
+			const lastArrayPoisition   = reactArray[reactArray.length-1]
+			const newReactPosition = {...newRectState, x:lastArrayPoisition.x+150,y:lastArrayPoisition.y+150}
+			setRectArray([...reactArray,newReactPosition])
+
+		}
+	
+
+	}
 
 
 
-console.log('rendering')
 
-	const seatPlanerRender =  ()=>{
-		const rowCount = mapValue.row
-		const columnCount = mapValue.col
+
+	const seatPlanerRender =  (initalState)=>{
+		const rowCount = initalState.row
+		const columnCount = initalState.col
 
 		//X axis poisitions
-		const rowStartPoisition = mapValue.rowStartPoisition
-		const rowIncrementPoistionBy = mapValue.rowIncrementPoistionBy
+		let rowStartPoisition = initalState.rowStartPoisition
+		let rowIncrementPoistionBy = initalState.rowIncrementPoistionBy
 
 		//Y Axis Poistions
-		const colStartingPoistion = mapValue.colStartingPoistion
-		const colIncrementPoistionBy = mapValue.colIncrementPoistionBy
+		let colStartingPoistion = initalState.colStartingPoistion
+		let colIncrementPoistionBy = initalState.colIncrementPoistionBy
 
 
 		const xelement = []
@@ -206,7 +245,7 @@ console.log('rendering')
 				yElement.push({x:rowStartPoisition,y:colStartingPoistion,class:'blankSVG',color:''}
 				)
 			}
-			colStartingPoistion = mapValue.colStartingPoistion
+			colStartingPoistion = initalState.colStartingPoistion
 			xelement.push(yElement)	
 		}
 		return xelement
@@ -226,41 +265,7 @@ console.log('rendering')
                 	<p> Column Count: {mapValue.col}</p>
                     <CardContent>
                     <Box>
-                    	<Button 
-                          type='button' onClick={()=>addNewRow()} variant='contained' size='large'>
-                            AddRow By 1
-                        </Button>
-                        <Button 
-                          type='button' onClick={()=>addNewCol()} variant='contained' size='large'>
-                            Add Column By 1
-                        </Button>
-
-                        <Button 
-                          type='button' onClick={deleteItems} variant='contained' size='large'>
-                            Delete Item
-                        </Button>
-
-                        <Button 
-                          type='button' onClick={increaseXSpace} variant='contained' size='large'>
-                            Incearase X Axis Space
-                        </Button>
-
-                        <Button 
-                          type='button' onClick={increaseYSpace} variant='contained' size='large'>
-                            Incearase Y Axis Di
-                        </Button>
-
-                        
-                        <Button 
-                          type='button' onClick={shiftYAxis} variant='contained' size='large'>
-                            Shift Y Axis
-                        </Button>
-                        <Button 
-                          type='button' onClick={shiftXAxis} variant='contained' size='large'>
-                            Shift X Axis
-                        </Button>
-
-
+                    	<Button onClick={addReactangle}>Add reactangle</Button>
 
 
 
@@ -278,20 +283,33 @@ console.log('rendering')
 			 	<svg width="100%" height="100%" fill="blue" >
 			 		<g fill="blue" stroke="green" >
 				  <rect fill="#5B5F6B" width={mapValue.stage.width} height={mapValue.stage.height} rx="5" ry="5" x={mapValue.stage.xStartPoistion}  y="70"></rect>
-				  	{ 
-				  		plannerArray.map((item,key)=>(	
-				  		item.map((item1,key1)=>(
-				  		<SeatComponent 
-				  		color={color}
-				  		className={item1.class} 
-				  		id ={item1.x+""+item1.y} 
-				  		startingXPosition={item1.x} 
-				  		startingYPosition={item1.y} 
-				  		key={key1} 
-				  		handleClick ={()=>handleClick(key,key1)} />
-				  		))	
-				  	))
 
+				  	{
+				  		reactArray.map((item,key)=>{
+
+				  			console.log(item)
+				  			return(
+				  			<svg fill="blue" width={item.width} height={item.height} x={item.x}  y={item.y}>
+				  			<g>
+				  			{
+				  				item.seatDots.map((item, key) => (
+                                        item.map((item1, key1) => (
+                                            <SeatComponent
+                                                color={item1.fill}
+                                                className={item1.class}
+                                                id={`${item1.x}${item1.y}`}
+                                                startingXPosition={item1.x}
+                                                startingYPosition={item1.y}
+                                                key={key1}
+                                                handleClick={() => handleClick(key, key1)} />
+                                        ))
+                                    ))
+				  			}
+				  			</g>
+
+				  			 </svg>
+				  			)
+				  		})
 				  	}
 				  	</g>
 				</svg>

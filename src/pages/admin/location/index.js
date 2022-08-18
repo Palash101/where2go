@@ -20,6 +20,8 @@ import { Box } from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import {toast} from 'react-toastify'
 import { useRouter } from 'next/router'
+import {userAuth} from 'context/userContext'
+
 
 
 
@@ -32,6 +34,8 @@ function LocationList() {
     const router =  useRouter();
     const[allLocations ,setAllLocations] =  useState([])
     const [loading, setLoading]= useState(false)
+    const userContext = userAuth()
+    const t =  userContext.getTrans()
 
     useEffect(()=>{
      
@@ -90,16 +94,16 @@ function LocationList() {
       <div>
         <Grid item xs={12}>
           <Card>
-            <CardHeader title='Locations' titleTypographyProps={{ variant: 'h6' }} />
+            <CardHeader title={`${t.location} ${t.list}`} titleTypographyProps={{ variant: 'h6' }} />
             
           </Card>
           <TableContainer sx={{marginTop:'10px'}} component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label='simple table'>
               <TableHead>
                 <TableRow>
-                  <TableCell>Location Name</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell align='right'>Action</TableCell>
+                  <TableCell>{`${t.location} ${t.name}`}</TableCell>
+                  <TableCell>{t.status}</TableCell>
+                  <TableCell align='right'>{t.actions}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -116,7 +120,7 @@ function LocationList() {
                       {row.name}
                     </TableCell>
                     <TableCell component='th' scope='row'>
-                      {row.status == 1 ? renderStatusChip('Active','#56ca00'):renderStatusChip('Block','#ff4c51')}
+                      {row.status == 1 ? renderStatusChip(t.active,'#56ca00'):renderStatusChip(t.block,'#ff4c51')}
                     </TableCell>
                   
                     <TableCell align='right'>

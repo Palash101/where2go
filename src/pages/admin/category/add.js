@@ -19,6 +19,7 @@ import Switch from '@mui/material/Switch';
 import Input from '@mui/material/Input';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
+import {userAuth} from 'context/userContext'
 
 
 import { useRouter } from 'next/router'
@@ -51,6 +52,8 @@ function CategoryAdd() {
     const [currentLanguage,setCurrentLanguage] = useState('en')
 
     const { vertical, horizontal, open,message } = snackState;
+    const userContext = userAuth()
+    const t =  userContext.getTrans()
 
     const handleClose = () => {
       setSnackState({ ...snackState, open: false });
@@ -92,14 +95,14 @@ function CategoryAdd() {
         <Grid item xs={12} md={12}>
             <Card>
            
-                <CardHeader title='Add Category' titleTypographyProps={{ variant: 'h6' }} />
+                <CardHeader title={`${t.add} ${t.categories}`} titleTypographyProps={{ variant: 'h6' }} />
                     <CardContent>
                         <form >
                             <Grid container spacing={5}>
                                 <Grid item xs={12}>
-                                <TextField required onChange={(e)=>setCategoryName(e.target.value)} fullWidth label='Category Name' placeholder='Ex: Drama, Game, Movie' />
+                                <TextField required onChange={(e)=>setCategoryName(e.target.value)} fullWidth label={`${t.categories} ${t.name} `}  placeholder='Ex: Drama, Game, Movie' />
                                 <FormControl sx={{marginTop:'20px'}} fullWidth>
-                <InputLabel  id='form-layouts-separator-multiple-select-label'>Status</InputLabel>
+                <InputLabel  id='form-layouts-separator-multiple-select-label'>{t.status}</InputLabel>
                 <Select
                   onChange={(e)=>setStatus(e.target.value)}
                   id='form-layouts-separator-multiple-select'
@@ -107,8 +110,8 @@ function CategoryAdd() {
                   input={<OutlinedInput label='Language' id='select-multiple-language' />}
                   required
                 >
-                  <MenuItem value='1'>Active</MenuItem>
-                  <MenuItem value='0'>Block</MenuItem>
+                  <MenuItem value='1'>{t.active}</MenuItem>
+                  <MenuItem value='0'>{t.block}</MenuItem>
                 </Select>
                 
                 <div>
@@ -126,7 +129,7 @@ function CategoryAdd() {
                                 <Button 
                                 disabled={loading}
                                   type='button' onClick={storeCategory} variant='contained' size='large'>
-                                    Submit
+                                    {t.submit}
                                 </Button>
                                 </Grid>
                             </Grid>

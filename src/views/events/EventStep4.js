@@ -18,18 +18,27 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Badge from '@mui/material/Badge';
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import {getAllFloorPLan} from 'service/admin/floorPlan'
+import InputLabel from '@mui/material/InputLabel'
+
+
 
 import {toast} from 'react-toastify'
 
 
 
-import {updateEventTicket,deleteEventTicket} from '../../../service/admin/events'
+import {updateEventTicket,deleteEventTicket,updateFloorPlan} from '../../../service/admin/events'
+import {getFloorPlanById} from '../../../service/admin/floorPlan'
 
 
 
 
 const EventStep4 = ({data,eventId,refreshData}) => {
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState({
+      ticketModal:false,
+      PlanModal:false
+    })
     const [loading, setLoading]= useState(false)
     const [name, setName]= useState('')
     const [description, setDescription]= useState('')
@@ -38,21 +47,42 @@ const EventStep4 = ({data,eventId,refreshData}) => {
     const [maxBooking, setMaxBooking]= useState('')
     const [price, setPrice]= useState('')
     const [color, setColor]= useState('')
+    const [floorPlanId, setSelectedFloorPlan] = useState(null)
+    const [floorPlanData,setFloorPlanData] = useState([])
 
 
   useEffect(()=>{
+     getFloorPlanData()
 
-    console.log('data in event step 4',data)
   },[])
 
 
-  const handleDialogOpen =()=>{
-  	setOpen(true)
+  const getFloorPlanData = async() =>{
+    const plans =  await getAllFloorPLan()
+    const plansArray =[];
+    plans.docs.forEach(item=>{
+      const docId = {docId:item.id}
+      const data = Object.assign(docId,item.data());
+      plansArray.push(data)
+    })
+      setFloorPlanData(plansArray)
 
   }
 
-  const handleDialogClose=()=>{
-  	setOpen(false)
+
+  const handleDialogOpen =(type)=>{
+    if(data.floor_type == '1'){
+      setOpen({...open,PlanModal:true})
+    }
+    else{
+      setOpen({...open,ticketModal:true})
+
+    }
+
+  }
+
+  const handleDialogClose=(type)=>{
+  	setOpen({...open,[type]:false})
   }
 
   const updateTicketdData = ()=>{
@@ -78,6 +108,17 @@ const EventStep4 = ({data,eventId,refreshData}) => {
       toast('Not a Valid Data or Incomplete Data')
     }
    
+
+  }
+
+  const addFloorPlan =  async()=>{
+    if(floorPlanId == ''){
+      alert('Please choose right plan')
+      return
+    }
+    const data = await getFloorPlanById(floorPlanId)
+    await updateFloorPlan(eventId,data.plan).then((res)=>console.log('uploaded'))
+
 
   }
 
@@ -149,6 +190,73 @@ const EventStep4 = ({data,eventId,refreshData}) => {
   		)
   }
 
+
+  const floorPlanForm = ()=>{
+    return(
+      <Box>
+       <FormControl fullWidth>
+        <InputLabel>Select Plan</InputLabel>
+        <Select  onChange={(e)=>setSelectedFloorPlan(e.target.value)} label='Floor Plan' >
+        {floorPlanData.map((item,key)=>(
+          <MenuItem key={key} value={item.docId}>{item.name}</MenuItem>
+
+          ))}
+        </Select>
+      </FormControl>
+      <Button >Create New Plan</Button>
+      </Box>
+
+
+    )
+  }
+
+  const renderTicketList = (ticketData)=>{
+    return(
+    <>
+       {
+        ticketData.tickets?.map((ticket,key)=>(
+          <div key = {key} >
+            <Box sx={{ display: 'flex', alignItems: 'center',width:'100%',justifyContent:'space-between',textAlign:'center' }}>
+                <Typography>{ticket.name}</Typography>
+                <Typography>Per/Ticket Price: {ticket.price}</Typography>
+                <Typography>Total Ticket:{ticket.ticket_count}</Typography>
+                <Typography>Sales value: {ticket.ticket_count*ticket.price} {data.currency}</Typography>
+                <DeleteIcon 
+                sx={{cursor:'pointer'}}
+                onClick={() => deleteTicket(ticket)}
+                />
+                
+            </Box>
+            
+        <Divider />
+        </div>
+        ))
+      }
+
+    </>
+
+    )
+  }
+
+  const renderFloorPlanList = (planData)=>{
+    console.log(planData,'renderFloorPlanList')
+    return(
+     <>
+      <Box sx={{ display: 'flex', alignItems: 'center',width:'100%',justifyContent:'space-between',textAlign:'center' }}>
+                <Typography>{planData.name}</Typography>
+                <DeleteIcon 
+                sx={{cursor:'pointer'}}
+                onClick={() => deleteTicket(ticket)}
+                />
+                
+            </Box>
+
+    </>
+
+
+    )
+  }
+
     return(
         <form>
            <CardContent sx={{ paddingBottom: 0 }}>
@@ -156,38 +264,43 @@ const EventStep4 = ({data,eventId,refreshData}) => {
           <Grid container spacing={7}>
           <Grid item xs={12} sm={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
             {
-              data.tickets?.map((ticket,key)=>(
-                <div key = {key} >
-                  <Box sx={{ display: 'flex', alignItems: 'center',width:'100%',justifyContent:'space-between',textAlign:'center' }}>
-                      <Typography>{ticket.name}</Typography>
-                      <Typography>Per/Ticket Price: {ticket.price}</Typography>
-                      <Typography>Total Ticket:{ticket.ticket_count}</Typography>
-                      <Typography>Sales value: {ticket.ticket_count*ticket.price} {data.currency}</Typography>
-                      <DeleteIcon 
-                      sx={{cursor:'pointer'}}
-                      onClick={() => deleteTicket(ticket)}
-                      />
-                      
-                  </Box>
-                  
-              <Divider />
-              </div>
-
-              ))
+            data.floor_type == '1' && data.plan ? 
+            renderFloorPlanList(data.plan)
+            : data.tickets ?
+              renderTicketList(data.tickets)
+            :
+            <Typography>No data found start adding new ticket</Typography>
             }
         
           <Box  sx={{ display: 'flex', alignItems: 'center',width:'100%',justifyContent:'center' }}>
-          		<Button onClick={()=>handleDialogOpen()}>Add Tickets</Button>
+              {
+                data.floor_type == '1' ?
+                 <Button onClick={()=>handleDialogOpen()}>Add Floor Plan</Button>
+                 :
+                 <Button onClick={()=>handleDialogOpen()}>Add Tickets</Button>
+              }
+          		
             </Box>
           </Grid>
-            <Dialog open={open} onClose={handleDialogClose}>
+            <Dialog open={open.ticketModal} onClose={()=>handleDialogClose('ticketModal')}>
             <DialogTitle>Ticket</DialogTitle>
             <DialogContent>
             	{ticketForm()}
             </DialogContent>
             <DialogActions>
             <Button onClick={updateTicketdData}>Add</Button>
-            <Button onClick={handleDialogClose}>Cancel</Button>
+            <Button onClick={()=>handleDialogClose('ticketModal')}>Cancel</Button>
+            </DialogActions>
+            </Dialog>
+
+            <Dialog open={open.PlanModal} onClose={()=>handleDialogClose('PlanModal')}>
+            <DialogTitle>Floor Plan</DialogTitle>
+            <DialogContent>
+              {floorPlanForm()}
+            </DialogContent>
+            <DialogActions>
+            <Button onClick={addFloorPlan}>Add</Button>
+            <Button onClick={()=>handleDialogClose('PlanModal')}>Cancel</Button>
             </DialogActions>
         </Dialog>
           </Grid>

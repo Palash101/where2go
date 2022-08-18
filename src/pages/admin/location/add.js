@@ -20,7 +20,7 @@ import {verifyToken} from '../../../../service/auth'
 import nookies from "nookies";
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
-
+import {userAuth} from 'context/userContext'
 
 import {addLocation} from '../../../../service/admin/location'
 import { useState } from 'react'
@@ -39,6 +39,8 @@ function LocationAdd() {
     })
     const [currentLanguage,setCurrentLanguage] = useState('en')
     const { vertical, horizontal, open,message } = snackState;
+    const userContext = userAuth()
+    const t =  userContext.getTrans()
 
     const handleClose = () => {
       setSnackState({ ...snackState, open: false });
@@ -78,14 +80,14 @@ function LocationAdd() {
         <Grid item xs={12} md={12}>
             <Card>
            
-                <CardHeader title='Add Location' titleTypographyProps={{ variant: 'h6' }} />
+                <CardHeader title={`${t.add} ${t.location}`} titleTypographyProps={{ variant: 'h6' }} />
                     <CardContent>
                         <form onSubmit={storeLocation}>
                             <Grid container spacing={5}>
                                 <Grid item xs={12}>
-                                <TextField required onChange={(e)=>setlocationName(e.target.value)} fullWidth label='Location' placeholder='Ex: Qatar,Dubai,Jordan' />
+                                <TextField required onChange={(e)=>setlocationName(e.target.value)} fullWidth label={t.location} placeholder='Ex: Qatar,Dubai,Jordan' />
                                 <FormControl sx={{marginTop:'20px'}} fullWidth>
-                <InputLabel  id='form-layouts-separator-multiple-select-label'>Status</InputLabel>
+                <InputLabel  id='form-layouts-separator-multiple-select-label'>{t.status}</InputLabel>
                 <Select
                   onChange={(e)=>setStatus(e.target.value)}
                   id='form-layouts-separator-multiple-select'
@@ -93,8 +95,8 @@ function LocationAdd() {
                   input={<OutlinedInput label='Language' id='select-multiple-language' />}
                   required
                 >
-                  <MenuItem value='1'>Active</MenuItem>
-                  <MenuItem value='0'>Block</MenuItem>
+                  <MenuItem value='1'>{t.active}</MenuItem>
+                  <MenuItem value='0'>{t.block}</MenuItem>
                 </Select>
                 <FormControlLabel 
                 control={<Switch 
@@ -106,7 +108,7 @@ function LocationAdd() {
                                 <Button 
                                 disabled={loading}
                                   type='button' onClick={()=>storeLocation()} variant='contained' size='large'>
-                                    Submit
+                                    {t.submit}
                                 </Button>
                                 </Grid>
                             </Grid>

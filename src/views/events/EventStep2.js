@@ -233,7 +233,7 @@ const EventStep2 = ({data,eventId,refreshData}) => {
                     label="Description"
                     type="text"
                     fullWidth
-                    defaultValue={data.description.hasOwnProperty(locale) ? data.description[locale]:''}
+                    defaultValue={data.description?.hasOwnProperty(locale) ? data.description[locale]:''}
                     variant="standard"
                     multiline
                     rows={5}

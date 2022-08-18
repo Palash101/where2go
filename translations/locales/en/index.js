@@ -1,4 +1,13 @@
 export const en = {
+    dashboard:'Dashboard',
+    users:'Users',
+    location:'Location',
+    list:'List',
+    addnew:'Add New',
+    setting:'Setting',
+    admin:'Admin',
+    phone:'Phone Number',
+
     about: 'About Us',
     allRightReserved: 'All Right Reserved.',
     browseEvents: 'Browse Events',

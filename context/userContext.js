@@ -1,5 +1,6 @@
 import { createContext, useContext, Context } from 'react'
 import { useState, useEffect } from 'react';
+import Translations from 'utils/trans'
 
  const authUserContext = createContext();
 
@@ -59,15 +60,22 @@ import { useState, useEffect } from 'react';
        }
 
     }
+
     const logoutUser = () =>{
 
+    }
+
+    const getTrans = () =>{
+      const t = Translations(locale)
+      return t
     }
     return <authUserContext.Provider 
     value={{
         authState,
         setUserAuthState: (userAuthInfo) => setUserAuthInfo(userAuthInfo),
         locale:locale,
-        switchLang:()=>switchLang()
+        switchLang:()=>switchLang(),
+        getTrans:()=>getTrans()
     }}
 
     >

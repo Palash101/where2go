@@ -12,12 +12,17 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { useRouter } from 'next/router'
 import {verifyToken} from '../../../../service/auth'
 import nookies from "nookies";
+import {userAuth} from 'context/userContext'
+
 
 
 import {getAllUsers} from '../../../../service/admin/users'
 
 function UserList() {
 	const router = useRouter()
+	const userContext = userAuth()
+  	const t =  userContext.getTrans()
+
 	const[allUsers,setAllUsers] =  useState([])
     const options = {
 	  filterType: 'checkbox',
@@ -26,7 +31,7 @@ function UserList() {
 	const columns = [
 	 {
 	  name: "phoneNumber",
-	  label: "Phone Number",
+	  label: t.phone,
 	  options: {
 	   filter: false,
 	   sort: true,
@@ -58,7 +63,7 @@ function UserList() {
 	 },
 	  {
 	  name: "docId",
-	  label: "Action",
+	  label: t.actions,
 
 	  options: {
 	  	filter:false,
@@ -119,7 +124,7 @@ const DeleteClick=(value, tableMeta)=>{
 
         <Grid item xs={12}>
           <MUIDataTable
-			  title={"Users List"}
+			  title={`${t.users} ${t.list}`}
 			  data={allUsers}
 			  columns={columns}
 			  options={options}

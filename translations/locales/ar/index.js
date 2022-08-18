@@ -1,4 +1,13 @@
 export const ar ={
+    dashboard:'لوحة القيادة',
+    users:'المستخدمون',
+    location:'موقع',
+    list:'قائمة',
+    addnew:'اضف جديد',
+    setting:'ضبط',
+    admin:'مسؤل',
+    phone:'رقم الهاتف',
+
     about: 'معلومات عنا',
     add:'يضيف',
     location:'موقع',

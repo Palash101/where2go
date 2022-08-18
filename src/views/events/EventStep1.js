@@ -28,9 +28,9 @@ const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
   const [type,setType] = useState(data.event_type)
   const [country,setCountry] = useState(data.country)
   const [currency,setCurrency] = useState(data.currency)
-  const [category,setCategory] = useState(data.cat_id)
+  const [category,setCategory] = useState("")
   const [loading,setLoading] = useState(false)
-  const [floorType,setFloorType] = useState('0')
+  const [floorType,setFloorType] = useState("")
 
 
 
@@ -48,8 +48,9 @@ const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
       country:country,
       currency:currency,
       cat_id:category,
-      foor_type:floorType
+      floor_type:floorType
     }
+    console.log(eventData,'eventData')
     await updateEventData(eventId,eventData,locale).then((res)=> toast("Details updated successfully"))
     refreshData()
     setLoading(false)
@@ -59,7 +60,7 @@ const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
   const eventName = ()=>{
     console.log('calling event Name')
     if(data.hasOwnProperty('event_name')){
-      const ename = data.event_name.hasOwnProperty(locale) ? data.event_name[locale] : data.event_name[Object.keys(data.name)[0]]
+      const ename = data.event_name.hasOwnProperty(locale) ? data.event_name[locale] : data.event_name[Object.keys(data.event_name)[0]]
       return ename
     }
 
@@ -144,12 +145,12 @@ const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-                <InputLabel id='form-layouts-separator-select-label'>Floor Type</InputLabel>
+                <InputLabel id='form-layouts-separator-select-label'>Event Ticket Type</InputLabel>
                 
                 <Select  onChange={(e)=>setFloorType(e.target.value)} sx={{marginBottom:'10px'}} fullWidth label='Ticket Floor Type' defaultValue={floorType} >
                   <MenuItem value='' selected>Select Type</MenuItem>
-                  <MenuItem value='0'>Cards</MenuItem>
-                  <MenuItem value='1'>Floot Plan</MenuItem>
+                  <MenuItem value='0'>Dont have floor plan</MenuItem>
+                  <MenuItem value='1'>Includes floor plan</MenuItem>
                 </Select>
               </FormControl>
             </Grid>

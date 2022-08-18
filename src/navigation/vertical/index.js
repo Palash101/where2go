@@ -13,11 +13,19 @@ import Account from 'mdi-material-ui/Account'
 import CategoryIcon from '@mui/icons-material/Category';
 import AddIcon from '@mui/icons-material/Add';
 import EventIcon from '@mui/icons-material/Event';
+import {userAuth} from 'context/userContext'
+import Translations from 'utils/trans'
+
+
 
 const navigation = () => {
+
+  const userContext = userAuth()
+  const t =  userContext.getTrans()
+
   return [
     {
-      title: 'Dashboard',
+      title: t.dashboard,
       icon: HomeOutline,
       path: '/admin'
     },
@@ -33,7 +41,7 @@ const navigation = () => {
       sectionTitle: 'User Managment'
     },
     {
-      title: 'Users',
+      title: t.users,
       icon: Account,
       path: '/admin/users'
     },
@@ -41,12 +49,12 @@ const navigation = () => {
       sectionTitle: 'Location'
     },
     {
-      title: 'Location',
+      title: t.location,
       icon: CategoryIcon  ,
       path: '/admin/location'
     },
     {
-      title: 'Add Location',
+      title: `${t.addnew} ${t.location}`,
       icon: AddIcon  ,
       path: '/admin/location/add'
     },
@@ -55,13 +63,13 @@ const navigation = () => {
     },
 
     {
-      title: 'Category',
+      title: t.categories,
       icon: CategoryIcon  ,
       path: '/admin/category'
     },
    
     {
-      title: 'Add New Category',
+      title: `${t.addnew} ${t.categories}`,
       icon: AddIcon,
       path: '/admin/category/add'
     },
@@ -69,20 +77,20 @@ const navigation = () => {
       sectionTitle: 'Events'
     },
     {
-      title: 'Events List',
+      title: t.event,
       icon: EventIcon,
       path: '/admin/events/list'
     },
     {
-      title: 'Create New Event',
+      title: `${t.addnew} ${t.event}` ,
       icon: AddIcon ,
       path: '/admin/events/'
     },
     {
-      sectionTitle: 'Events'
+      sectionTitle: t.setting
     },
     {
-      title: 'Admin Account',
+      title: `${t.admin}  ${t.setting}`,
       icon: AccountCogOutline,
       path: '/account-settings'
     },
