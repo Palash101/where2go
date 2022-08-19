@@ -115,6 +115,7 @@ export const updateEventTicket = async (eventId,data)=>{
 }
 
 export const updateFloorPlan = async (eventId,data)=>{
+    console.log(eventId,'eventid')
     const docRef = doc(db, "events", eventId);
     return await updateDoc(docRef, {
         plan:data

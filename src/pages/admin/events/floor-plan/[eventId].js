@@ -1,5 +1,7 @@
 //React Imports
 import { useState, useEffect, useRef } from 'react'
+import { useRouter } from 'next/router'
+
 
 
 
@@ -16,7 +18,9 @@ import nookies from "nookies";
 import {createFloorPlan} from 'service/admin/floorPlan'
 import SideMenu from 'src/views/planner/SideMenu'
 import FooterMenu from 'src/views/planner/FooterMenu'
+import TicketComponent from 'src/views/planner/TicketComponent'
 
+import { getEventById,updateFloorPlan } from 'service/admin/events'
 
 
 
@@ -33,6 +37,7 @@ function Seat() {
 
     //Hooks
     const rectSvgRef = useRef(null);
+    const router = useRouter();
 
     //Inital State
     const [loading, setLoading] = useState(false);
@@ -41,8 +46,11 @@ function Seat() {
     const [selectedRect, setSelectedRect] = useState(null)
     const [myColor, setColor] = useState('black')
     const [planName, setPlanName] = useState('')
-    const [seatAlpha,setSeatAlpha]= useState(null)
-    const [seatNumberic,setSeatNumberic]= useState(null)
+    // const [seatAlpha,setSeatAlpha]= useState(null)
+    // const [seatNumberic,setSeatNumberic]= useState(null)
+    const [routerParams, setRouterParams] = useState('');
+    const [showticketComponent,setShowTicketComponent] = useState(false);
+
 
     const [ticketModal,setTicketModal]=useState(false)
 
@@ -58,10 +66,27 @@ function Seat() {
     })
 
 
-    useEffect(()=>{
-    	
+     useEffect(()=>{
+    if(router.isReady){
+      setLoading(true)
+      setRouterParams(router.query.eventId)
+      getEventById(router.query.eventId)
+        .then(data=>{
+          if(data.plan){
+            console.log(data.plan)
+            const parsedData = JSON.parse(data.plan)
+          	setRectArray(parsedData)
+            // setEventData(data)
+            setLoading(false)
+            
+          }
+          else{
+            setLoading(false)
+          }
+      })
 
-    },[])
+    }
+  },[router.isReady])
 
 
     const addNewRowCol = (type,value) => {
@@ -182,9 +207,9 @@ function Seat() {
         console.log('deleting')
     }
 
-    const addTicketsInSelectedElement = ()=>{
-        console.log('selected element')
-    }
+    // const addTicketsInSelectedElement = ()=>{
+    //     console.log('selected element')
+    // }
 
 
     const addReactangle = ()=>{
@@ -254,6 +279,11 @@ function Seat() {
 
 	}
 
+    const updateData = async()=>{
+        await updateFloorPlan(routerParams,JSON.stringify(reactArray)).then((res)=>console.log(res))
+
+    }
+
 
 
 
@@ -293,7 +323,7 @@ function Seat() {
 
 
 
-const addSeatname = ()=>{
+const addSeatname = (seatAlpha,seatNumberic)=>{
     console.log(reactArray)
     const selectedElement = reactArray[selectedRect]
     const mainSeatDots = selectedElement.seatDots
@@ -331,6 +361,20 @@ const addSeatname = ()=>{
     setRectArray(reactArrcy)
 }
 
+const addTicketsInSelectedElement =()=>{
+    if(selectedRect === null){
+            alert('Please select the Element')
+            return
+        }
+    setShowTicketComponent(true)
+}
+
+
+const updateTicketData = (data)=>{
+    console.log(data,'ticketdata')
+
+}
+
 
 console.log('rendering')
 
@@ -357,15 +401,21 @@ console.log('rendering')
             addTicketData={addTicketsInSelectedElement}
             addNewElement={addReactangle}
             deleteSelectedElement = {deleteSelectedElement}
+            saveData={updateData}
                 />
-            <input onChange={(e)=>setSeatAlpha(e.target.value)}  type="text" />
-            <input onChange={(e)=>setSeatNumberic(e.target.value)} type="number" />
-            <Button onClick={addSeatname}> Add seat Name</Button>
-
-
-
+            
+    
 
             </Grid>
+            {showticketComponent ? 
+             <TicketComponent 
+             open={showticketComponent}
+             onClose={setShowTicketComponent}
+             saveData ={updateTicketData}
+
+             
+
+                /> : null}
 
                 <Grid item xs={12} md={10}>
                     <UncontrolledReactSVGPanZoom

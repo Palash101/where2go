@@ -44,3 +44,4 @@ export const getFloorPlanById = async (docId) =>{
         return{err:'error',message:'Document not found'}
       }
 }
+
