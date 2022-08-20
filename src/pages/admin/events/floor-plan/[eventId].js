@@ -46,6 +46,7 @@ function Seat() {
     const [selectedRect, setSelectedRect] = useState(null)
     const [myColor, setColor] = useState('black')
     const [planName, setPlanName] = useState('')
+    const [showFooter,setShowFooter]= useState(false)
     // const [seatAlpha,setSeatAlpha]= useState(null)
     // const [seatNumberic,setSeatNumberic]= useState(null)
     const [routerParams, setRouterParams] = useState('');
@@ -201,6 +202,7 @@ function Seat() {
 
     const SelectRectangle = (key)=>{
     	setSelectedRect(key)
+        setShowFooter(true)
     }
 
     const deleteSelectedElement = ()=>{
@@ -255,11 +257,10 @@ function Seat() {
 	}
 
 
-	const fillColour = () =>{
-		console.log(reactArray);
+	const addDataInSeatDots = (color,price) =>{
 		const selectedArrayIndex = reactArray[selectedRect]
     	const seatStateInSelected = selectedArrayIndex.seatState
-    	const newSeatState = {...seatStateInSelected,fill:myColor}
+    	const newSeatState = {...seatStateInSelected,fill:color,price:price}
     	const newSeatDots = seatPlanerRender(newSeatState)
     	const newStateOfSelectedIndex = {...selectedArrayIndex,seatState:newSeatState,seatDots:newSeatDots}
     	const reactArrayStateCopy = [...reactArray]
@@ -366,11 +367,15 @@ const addTicketsInSelectedElement =()=>{
             alert('Please select the Element')
             return
         }
-    setShowTicketComponent(true)
+        setShowFooter(false)
+        setShowTicketComponent(true)
 }
 
 
 const updateTicketData = (data)=>{
+    addDataInSeatDots('red',data.price)
+    addSeatname(data.rowAlphabets,data.numeric)
+    updateData()
     console.log(data,'ticketdata')
 
 }
@@ -380,21 +385,19 @@ console.log('rendering')
 
     return (
         <>
-        <FooterMenu 
-        MoveUp={decrementRectXY}
-        MoveRight={moveReactXY}
-        MoveLeft={decrementRectXY}
-        MoveDown={moveReactXY}
-        increaseRow={addNewRowCol}
-        decreaseRow={decrementState}
-        increaseCol={addNewRowCol}
-        decreaseCol={decrementState}
-        // increaseXSpace={}
-        // decraseXSpace={}
-        // increaseYSpace={}
-        // decraseYSpace={}
-        />
 
+        {showFooter && <FooterMenu 
+                MoveUp={decrementRectXY}
+                MoveRight={moveReactXY}
+                MoveLeft={decrementRectXY}
+                MoveDown={moveReactXY}
+                increaseRow={addNewRowCol}
+                decreaseRow={decrementState}
+                increaseCol={addNewRowCol}
+                decreaseCol={decrementState}
+                
+                />
+        }
         <Grid container >
             <Grid item xs={12} md={2}>
             <SideMenu 
