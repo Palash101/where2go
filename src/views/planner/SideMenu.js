@@ -29,8 +29,8 @@ import Translations from 'utils/trans'
 const SideMenu = (props) => {
 return(
 
-	<Box sx={{marginTop:'40%',}}>
-		<Box sx={{display:'flex',alignItems:'center',flexDirection:'column',}}>
+	<Box sx={{marginTop:'40%'}}>
+		<Box sx={{display:'flex',alignItems:'center',flexDirection:'column',position: 'fixed',paddingLeft: 'calc(8.33% - 51px)'}}>
 			<Box sx={{marginBottom:'10px'}}>
 				<AddIcon sx={{fontSize:'50px',cursor:'pointer'}}
 				onClick = {props.addNewElement}
@@ -45,6 +45,7 @@ return(
 				<ConfirmationNumberIcon sx={{fontSize:'40px',cursor:'pointer'}} 
 				onClick = {props.addTicketData}/>
 			</Box>
+			<Box className='placer' sx={{marginBlock:'150%'}}></Box>
 			<Box sx={{marginBottom:'10px'}}>
 			<Button onClick={props.saveData}>Save Data</Button>
 				

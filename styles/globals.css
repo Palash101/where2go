@@ -8,7 +8,13 @@ body {
 #__next {
   height: 100%;
 }
-
+/* Changes start */
+.ticketform div {
+  padding: 3px;
+  margin-top: 5px;
+  color: #9692ad;
+}
+/* changes end */
 code {
   font-family: 'Inter', sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
