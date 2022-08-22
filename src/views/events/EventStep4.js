@@ -21,6 +21,7 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import {getAllFloorPLan} from 'service/admin/floorPlan'
 import InputLabel from '@mui/material/InputLabel'
+import { useRouter } from 'next/router'
 
 
 
@@ -49,6 +50,7 @@ const EventStep4 = ({data,eventId,refreshData}) => {
     const [color, setColor]= useState('')
     const [floorPlanId, setSelectedFloorPlan] = useState(null)
     const [floorPlanData,setFloorPlanData] = useState([])
+    const router = useRouter();
 
 
   useEffect(()=>{
@@ -120,6 +122,9 @@ const EventStep4 = ({data,eventId,refreshData}) => {
     await updateFloorPlan(eventId,data.plan).then((res)=>console.log('uploaded'))
 
 
+  }
+  const editFloorPlan =()=>{
+    router.push(`floor-plan/${eventId}`)
   }
 
   const filedValidation = () =>{
@@ -243,7 +248,8 @@ const EventStep4 = ({data,eventId,refreshData}) => {
     return(
      <>
       <Box sx={{ display: 'flex', alignItems: 'center',width:'100%',justifyContent:'space-between',textAlign:'center' }}>
-                <Typography>{planData.name}</Typography>
+                <Typography>Untitled</Typography>
+                <Typography onClick={editFloorPlan}>Edit</Typography>
                 <DeleteIcon 
                 sx={{cursor:'pointer'}}
                 onClick={() => deleteTicket(ticket)}
