@@ -24,19 +24,21 @@ import Translations from 'utils/trans'
 
 
 const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
+  const userContext = userAuth()
+  const locale = userContext.locale
+  const t =  Translations(locale)
+
   const [name,setName] = useState('')
   const [type,setType] = useState(data.event_type)
   const [country,setCountry] = useState(data.country)
   const [currency,setCurrency] = useState(data.currency)
-  const [category,setCategory] = useState("")
+  const [category,setCategory] = useState(data.cat_id)
   const [loading,setLoading] = useState(false)
   const [floorType,setFloorType] = useState("")
 
 
 
-  const userContext = userAuth()
-  const locale = userContext.locale
-  const t =  Translations(locale)
+ 
 
 
 
@@ -67,8 +69,11 @@ const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
   }
 
   useEffect(()=>{
-      
-
+      console.log(data,'userdaysw')
+      setName(eventName());
+      if(data.floor_type){
+      setFloorType(data.floor_type)
+      }
   },[locale])
 
   return (
@@ -147,7 +152,7 @@ const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
               <FormControl fullWidth>
                 <InputLabel id='form-layouts-separator-select-label'>Event Ticket Type</InputLabel>
                 
-                <Select  onChange={(e)=>setFloorType(e.target.value)} sx={{marginBottom:'10px'}} fullWidth label='Ticket Floor Type' defaultValue={floorType} >
+                <Select  onChange={(e)=>setFloorType(e.target.value)} sx={{marginBottom:'10px'}} fullWidth label='Ticket Floor Type' defaultValue={data.floor_type} >
                   <MenuItem value='' selected>Select Type</MenuItem>
                   <MenuItem value='0'>Dont have floor plan</MenuItem>
                   <MenuItem value='1'>Includes floor plan</MenuItem>

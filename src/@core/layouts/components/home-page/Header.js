@@ -266,7 +266,7 @@ const handleLogin = ()=>{
        
       </Box>
       <List>
-      {user && user.isAuthenticated && (
+      {user && user.isAuthenticated && user.phoneNumber !== 'undefined' && (
       <ListItem  disablePadding>
         <ListItemButton  onClick={() => router.push('user/dashboard')} >
           <ListItemIcon  size={24}>
@@ -275,6 +275,17 @@ const handleLogin = ()=>{
           <ListItemText sx={{fontSize:'0.75rem'}} primary={t.dashboard}/>
         </ListItemButton>
       </ListItem>
+      )}
+
+      {user && user.isAuthenticated && user.phoneNumber === 'undefined' && (
+         <ListItem  disablePadding>
+         <ListItemButton  onClick={() => router.push('/admin')} >
+           <ListItemIcon  size={24}>
+           <HomeIcon />
+           </ListItemIcon>
+           <ListItemText sx={{fontSize:'0.75rem'}} primary={t.dashboard}/>
+         </ListItemButton>
+       </ListItem>
       )}
 
 

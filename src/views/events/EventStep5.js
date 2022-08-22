@@ -30,26 +30,26 @@ const EventStep5 = ({data,eventId,refreshData}) => {
 
 
   const updateData = async() =>{
-    if(data.description && data.event_date && data.images && data.tickets){
+    // if(data.description && data.event_date && data.images && data.tickets){
       setLoading(true)
       await updateEventDetails(eventId,'published','status').then((res)=>toast("Status updated successfully"))
       setLoading(false)
       refreshData()
-    }
-    else{
-      toast("Please add description,events,images and tockets.")
-    }
+    // }
+    // else{
+    //   toast("Please add description,events,images and tockets.")
+    // }
   }
   const updateFeature = async() =>{
-    if(data.images){
+    // if(data.images){
       setLoading(true)
       await updateEventDetails(eventId,'true','featured').then((res)=>toast("fetured updated successfully"))
       setLoading(false)
       refreshData()
-    }
-    else{
-      toast("Please add event images.")
-    }
+    // }
+    // else{
+    //   toast("Please add event images.")
+    // }
   }
 
   useEffect(()=>{

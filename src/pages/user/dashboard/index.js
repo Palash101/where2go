@@ -10,13 +10,17 @@ import Grid from '@mui/material/Grid';
 import { getAllEvents } from 'service/admin/events'
 import nookies from "nookies";
 import { verifyToken } from 'service/auth'
-
-
+import Translations from 'utils/trans'
+import { userAuth } from 'context/userContext'
 
 function Dashboard({user}){
     const  [allData, setAllData] = useState([]);
     const  [loading, setLoading] = useState(true);
     const router = useRouter();
+
+    const userContext = userAuth()
+    const locale = userContext.locale
+    const t =  Translations(locale)
     
 
     useEffect(async ()=>{
@@ -77,7 +81,7 @@ function Item(item,i){
                     <div className='slideItemImage'>
                         {renderImage(item)}
                     </div>
-                    <p>{item.event_name}</p>
+                    <p>{item.event_name.hasOwnProperty(locale) ? item.event_name[locale] : item.event_name[Object.keys(item.event_name)[0]]}</p>
                 </div>
              </div>
         )

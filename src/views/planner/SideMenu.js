@@ -24,9 +24,11 @@ import {updateEventData} from '../../../service/admin/events'
 
 import {userAuth} from 'context/userContext'
 import Translations from 'utils/trans'
+import { useRouter } from 'next/router'
 
 
 const SideMenu = (props) => {
+	const router = useRouter();
 return(
 
 	<Box sx={{marginTop:'40%'}}>
@@ -47,6 +49,8 @@ return(
 			</Box>
 			<Box className='placer' sx={{marginBlock:'150%'}}></Box>
 			<Box sx={{marginBottom:'10px'}}>
+
+			<Button onClick={() => router.back()}>Back</Button>
 			<Button onClick={props.saveData}>Save Data</Button>
 				
 			</Box>

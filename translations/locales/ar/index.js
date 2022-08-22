@@ -29,7 +29,7 @@ export const ar ={
     date: "Date",
     enterOtp: 'أدخل OTP',
     getTickets: 'أحصل على تذاكر',
-    home: 'مسكن',
+    home: 'الرئيسية',
     login: 'تسجيل الدخول',
     logout: 'تسجيل خروج',
     mobile: 'رقم الهاتف المحمول',

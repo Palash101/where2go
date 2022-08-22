@@ -53,16 +53,18 @@ function Browse() {
     }, [router.isReady,setAllData])
 
    const selectCategory = async(item) => {
-    console.log(item)
+    console.log(item,data,'hhh')
         if(item.name === 'all'){
             setLoading(true)
             setAllData(data)
             setLoading(false);
             setDlist(false);
+            setCategory(item)
         }
         else{
             setLoading(true)
-            var edata = data.filter(item1 => item1.category === item.name);
+            var edata = data.filter(item1 => item1.cat_id === item.id);
+            setCategory(item)
             console.log(edata)
             setAllData(edata)
             setLoading(false);
@@ -148,7 +150,7 @@ function Browse() {
                                 {categories.length > 0 &&
                                     categories.map((item, key) => (
                                         <li>
-                                            <Button verient='default' color={category.name === item.name ? 'warning' : 'inherit'} onClick={() => selectCategory(item)}>{item.name.hasOwnProperty(locale) ? item.name[locale] : item.name[Object.keys(item.name)[0]]}</Button>
+                                            <Button verient='default' color={category.id === item.id ? 'warning' : 'inherit'} onClick={() => selectCategory(item)}>{item.name.hasOwnProperty(locale) ? item.name[locale] : item.name[Object.keys(item.name)[0]]}</Button>
                                         </li>
                                     ))
                                 }

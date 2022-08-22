@@ -345,7 +345,7 @@ console.log('rendering')
         decreaseRow={decrementState}
         increaseCol={addNewRowCol}
         decreaseCol={decrementState}
-        // increaseXSpace={}
+        increaseXSpace={addNewRowCol}
         // decraseXSpace={}
         // increaseYSpace={}
         // decraseYSpace={}

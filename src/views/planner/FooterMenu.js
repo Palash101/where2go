@@ -117,8 +117,8 @@ const FooterMenu = (props) => {
 					</Box>
 					<Box sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}>
 						<AddIcon onClick={() => props.increaseRow('row', 1)} sx={{ fontSize: '20px', cursor: 'pointer' }} />
-						<Typography sx={{ fontSize: '12px' }}>R-rotet</Typography>
-						<RemoveIcon onClick={() => props.decreaseRow('row', 1)} sx={{ fontSize: '20px', cursor: 'pointer' }} />
+						<Typography sx={{ fontSize: '12px' }}>R-test</Typography>
+						<RemoveIcon onClick={() => props.increaseXSpace('rowIncrementPoistionBy', 10)} sx={{ fontSize: '20px', cursor: 'pointer' }} />
 					</Box>
 
 

@@ -169,7 +169,9 @@ export const getCategory = async ()=>{
         var dt = [];
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
-        dt.push(doc.data());
+            const catId =  doc.id;
+             dt.push({...doc.data(),
+             id:catId});
         });
         return dt;
     }
@@ -185,6 +187,8 @@ export const getHomePageEvent = async ()=>{
     if(queryDoc.empty === false){
         await Promise.all(queryDoc.docs.map(async (doc) => {
             const catDocId =  doc.id;
+
+            console.log(doc.data(),'dttt')
             const catName = doc.data().name;
             const q = query(collection(db, "events"), where("cat_id", "==", catDocId))
             const d = await getDocs(q).then((doc)=>{
@@ -201,6 +205,7 @@ export const getHomePageEvent = async ()=>{
                     }) 
                 return tempData
             })
+            console.log(d,'ddd')
             if(d.length > 0){
                         temp.push({key:catDocId,catName:catName,data:d})
                     }

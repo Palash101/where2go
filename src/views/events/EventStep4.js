@@ -145,6 +145,10 @@ const EventStep4 = ({data,eventId,refreshData}) => {
 
   }
 
+  const goToFloorPlan = () =>{
+    router.push(`floor-plan/${eventId}`)
+  }
+
   const deleteTicket = (ticket)=>{
     console.log('deleting Ticket',ticket)
     setLoading(true)
@@ -281,7 +285,7 @@ const EventStep4 = ({data,eventId,refreshData}) => {
           <Box  sx={{ display: 'flex', alignItems: 'center',width:'100%',justifyContent:'center' }}>
               {
                 data.floor_type == '1' ?
-                 <Button onClick={()=>handleDialogOpen()}>Add Floor Plan</Button>
+                 <Button onClick={()=>goToFloorPlan()}>Add Floor Plan</Button>
                  :
                  <Button onClick={()=>handleDialogOpen()}>Add Tickets</Button>
               }

@@ -72,14 +72,14 @@ function PrivacyPolicy() {
                     <p>Contacting Us</p>
                     <p>If there are any questions regarding this privacy policy, you may contact us using the information below.
                     </p>
-                    <p>13th floor, Mazaya Tower 1, Khalid ibn Alwaleed Street
+                    <p>Lorem ipsum , lorem ipsum, Lorem ipsum street address
                     </p>
-                    <p>Sharq,</p>
-                    <p>Kuwait</p>
-                    <p>info@eventat.com</p>
-                    <p>+965 22050004</p>
+                    <p>Lorem,</p>
+                    <p>Qatart</p>
+                    <p>info@where2go.com</p>
+                    <p>+965 4564563456</p>
 
-                    <p>Last Edited on 2017-01-08</p>
+                    <p>Last Edited on 2022-08-22</p>
                 </div>
             </Box>
 

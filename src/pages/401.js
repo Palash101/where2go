@@ -10,9 +10,6 @@ import Box from '@mui/material/Box'
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
-// ** Demo Imports
-import FooterIllustrations from 'src/views/pages/misc/FooterIllustrations'
-
 // ** Styled Components
 const BoxWrapper = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -52,7 +49,6 @@ const Error401 = () => {
           </Button>
         </Link>
       </Box>
-      <FooterIllustrations />
     </Box>
   )
 }

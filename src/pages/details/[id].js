@@ -272,7 +272,7 @@ function Details(navigation) {
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                                         <DatePicker
-                                            label="Date"
+                                           
                                             value={dateValue}
                                             inputFormat="dd-MM-yyyy"
                                             closeOnSelect={true}

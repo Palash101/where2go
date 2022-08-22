@@ -33,7 +33,7 @@ function ContactUs() {
                 <Grid item xs={12} md={9} sx={{}}>
                     <div className='contact-content'>
                         <h3>Get in touch</h3>
-                        <p>If you have any questions, comments or suggestions you would like to share, email us at <Link href='mailto:support@eventat.com'>support@eventat.com</Link></p>
+                        <p>If you have any questions, comments or suggestions you would like to share, email us at <Link href='mailto:support@where2go.com'>support@where2go.com</Link></p>
                     </div>
                 </Grid>
             </Grid>
