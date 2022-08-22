@@ -29,6 +29,9 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import { TruckDelivery } from 'mdi-material-ui';
 import SeatLayout from 'src/pages/bookings/component/SeatLayout';
 import {getAllFloorPLan} from 'service/admin/floorPlan';
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+
 
 function Bookings(navigation) {
     const router = useRouter();
@@ -49,6 +52,17 @@ function Bookings(navigation) {
     const [exist, setExist] = useState(false)
     const [priceOpen,setPriceOpen] = useState(false)
     const [floorData,setFloorData] = useState({});
+    const times = [
+        '10:00 AM',
+        '11:30 AM',
+        '01:00 PM',
+        '02:30 PM',
+        '04:00 PM',
+        '05:30 PM',
+        '07:00 PM',
+        '08:30 PM',
+        '10:00 PM'
+    ]
 
     function handleIncrement(item) {
         if(item.qty !== JSON.parse(item.max_booking)){
@@ -77,15 +91,15 @@ function Bookings(navigation) {
 
     const addDateTimeArray = () => {
         const date = moment(dateValue).format('DD-MM-YYYY');
-        const formTime = moment(fromTimeValue).format('HH:mm a');
-        const toTime = moment(fromTimeValue).format('HH:mm a');
+       // const formTime = moment(fromTimeValue).format('HH:mm a');
+       // const toTime = moment(fromTimeValue).format('HH:mm a');
         const data = {
             date: date,
-            from: formTime,
-            to: toTime
+            from: fromTimeValue,
+            to: fromTimeValue
         }
         var dt = moment(dateValue).format('ll');
-        var time = moment(fromTimeValue).format('LT');
+        var time = fromTimeValue;
         setDate(dt + ', ' + time)
 
         // router.replace({
@@ -105,23 +119,27 @@ function Bookings(navigation) {
 
     useEffect(async() => {
         if (router.isReady) {
-            const fdata = await getAllFloorPLan()
-            const fData1 = [];
-            fdata.docs.forEach(item => {
-                const docId = { docId: item.id }
-                const dt1 = item.data().plan;
-                const dt = {plan:JSON.parse(dt1)}
-                const name = {name:item.data().name};
-                const data = Object.assign(docId, dt, name);
-                fData1.push(data)
-            })
-            setFloorData(fData1[0])
-            console.log(fData1[0],'fdata')
+            // const fdata = await getAllFloorPLan()
+            // const fData1 = [];
+            // fdata.docs.forEach(item => {
+            //     const docId = { docId: item.id }
+            //     const dt1 = item.data().plan;
+            //     const dt = {plan:JSON.parse(dt1)}
+            //     const name = {name:item.data().name};
+            //     const data = Object.assign(docId, dt, name);
+            //     fData1.push(data)
+            // })
+            // setFloorData(fData1[0])
+            // console.log(fData1[0],'fdata')
 
 
             getEventById(router.query.id).then((data) => {
                 console.log(data,'item')
                 setFloorType(data.floor_type)
+                if(data.plan){
+                    setFloorData(JSON.parse(data.plan))
+                }
+               
                 var arr = [];
                 data.tickets.map(item2 => {
                     item2.qty = JSON.parse(item2.min_booking);
@@ -152,12 +170,18 @@ function Bookings(navigation) {
     const handlePriceClose = () => {
         setPriceOpen(false)
     }
-    const puchaseClick = () => {
-
-    }
+    
 
     const toggleType = () => {
         setFeatured(!featured)
+    }
+
+    const puchaseClick = (selected) => {
+        console.log(selected,'ss')
+        router.replace({
+            pathname: '/bookings/detail/[id]',
+            query: { id: router.query.id},
+        })
     }
 
     return (
@@ -176,9 +200,7 @@ function Bookings(navigation) {
                     </Grid>
                     <Grid item xs={12} md={6} sx={{}}>
                         <Box className='calenderDate' onClick={() => handleClickOpen('dateTime')}>{date}</Box>
-                        <Box onClick={toggleType} sx={{position: 'absolute',
-                                                        right: '10px',
-                                                        marginTop: '-39px'}}>Toggle Type</Box>
+                       
                     </Grid>
                 </Grid>
             </Box>
@@ -197,7 +219,7 @@ function Bookings(navigation) {
 
 
         {floorType === '1' && (
-            <SeatLayout data={floorData} />
+            <SeatLayout data={floorData} click={puchaseClick} />
         )}
 
           {floorType === '0' && (
@@ -262,15 +284,20 @@ function Bookings(navigation) {
                                 renderInput={(params) => <TextField {...params} />}
                             />
                             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                <Typography sx={{ marginBottom: '5px' }} variant="subtitle1">Time</Typography>
-                                <TimePicker
+                                <Typography sx={{ marginTop: '5px' }} variant="subtitle1">Time</Typography>
+                                {/* <TimePicker
                                     label="Time"
                                     value={fromTimeValue}
                                     onChange={(newValue) => {
                                         setFromTimeValue(newValue);
                                     }}
                                     renderInput={(params) => <TextField {...params} />}
-                                />
+                                /> */}
+                                 <Select required sx={{width:'250px'}} onChange={(e)=>setFromTimeValue(e.target.value)} label='Time' defaultValue={fromTimeValue} >
+                                    {times.map((item) => (
+                                        <MenuItem value={item}>{item}</MenuItem>
+                                    ))}
+                                </Select>
 
                             </Box>
                         </Box>
@@ -287,18 +314,13 @@ function Bookings(navigation) {
               <Dialog open={priceOpen} onClose={handlePriceClose}>
                 <DialogContent>
                     <ul className="prlist">
+                    {itemNew.tickets && itemNew.tickets.map((item1, key) => (
                          <li>
-                           <Box><span className="circleList" style={{backgroundColor:'blue'}}></span> Primary Seat</Box>
-                           <Box>7000 KWD</Box>
+                           <Box><span className="circleList" style={{backgroundColor:item1.color}}></span> {item1.name}</Box>
+                           <Box>{item1.price} {itemNew.currency}</Box>
                         </li>
-                        <li>
-                            <Box><span className="circleList" style={{backgroundColor:'yellow'}}></span> Secondary Seat</Box>
-                            <Box>7000 KWD</Box>
-                        </li>
-                        <li>
-                           <Box><span className="circleList" style={{backgroundColor:'green'}}></span> Selected Seat</Box>
-                           <Box>7000 KWD</Box>
-                        </li>
+                    ))}
+                 
                        
                     </ul>
                 </DialogContent>

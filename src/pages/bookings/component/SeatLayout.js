@@ -56,7 +56,7 @@ const SeatLayout = (props) => {
 
 
     useEffect(() => {
-        console.log(props.data.plan)
+        console.log(props.data,'propdata')
         const planner = seatPlanerRender()
             setPlannerArray(planner)
         }, [mapValue.row, mapValue.col,
@@ -161,9 +161,7 @@ function changeCol(e){
 }
 
 
-const puchaseClick = () => {
-  
-}
+
 
     return (
         <>
@@ -204,7 +202,7 @@ const puchaseClick = () => {
 
                                 } */}
 
-{props.data && props.data.plan && props.data.plan.map((item1,key)=>{
+{props.data && props.data.length && props.data.map((item1,key)=>{
 
                                         return(
 
@@ -215,11 +213,14 @@ const puchaseClick = () => {
                                             item1.seatDots?.map((item2, key1) => (
                                                   item2.map((item3, key2) => (
                                                       <SeatComponent
+                                                         border={item3.fill === 'green' ? 'white' : 'black'}
                                                           color={item3.fill}
+                                                          className={item1.class}
                                                           id={`${item3.x}${item3.y}`}
                                                           startingXPosition={item3.x}
                                                           startingYPosition={item3.y}
                                                           key={key2}
+                                                          handleClick={() => handleClick(key1, key2)}
                                                          />
                                                   ))
                                               ))
@@ -238,16 +239,7 @@ const puchaseClick = () => {
                 </Grid>
             </Grid>
 
-               <Box sx={{position: 'fixed',
-                    zIndex: 99,
-                    bottom: '10px',
-                    left: 0,
-                    right: 0,
-                    maxWidth: '600px',
-                    background: '#ddd',
-                    borderRadius: '8px',
-                    margin: 'auto',
-                    padding: '10px'}} >
+               <Box className="bottomBlock" >
              <Accordion sx={{
                         background: '#7b7b7c',
                          color: '#000'}}>
@@ -282,7 +274,8 @@ const puchaseClick = () => {
                                                 padding: '10px',
                                                 justifyContent: 'space-between',
                                                 width: '100%',
-                                                }} onClick={() => puchaseClick()}>Purchase</Button>
+                                                   
+                                                }} onClick={() => props.click(selected)}>Purchase</Button>
             </Box>
 
         </>

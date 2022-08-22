@@ -398,7 +398,26 @@ ul.ticketList li {
 ul.ticketList li span {
     font-weight: 600;
 }
+.bottomBlock{
+  position: fixed;
+  z-index: 99;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  max-width: 600px;
+  background: #ddd;
+  border-radius: 8px;
+  margin: auto;
+  padding: 10px;
+}
 @media (max-width:769px) {
+  .bottomBlock{
+    position: fixed;
+    z-index: 99;
+    bottom: 70px !important;
+    left: 10px;
+    right:10px;
+  }
 .dideList{
   display: none;
 }

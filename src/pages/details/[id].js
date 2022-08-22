@@ -26,6 +26,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { userAuth } from 'context/userContext'
 import Translations from '/utils/trans'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
 
 function Details(navigation) {
     const router = useRouter();
@@ -38,6 +40,17 @@ function Details(navigation) {
     const [fromTimeValue, setFromTimeValue] = useState(null);
     const [dateTimeArray, setDateTimeArray] = useState([]);
     const [loading, setLoading] = useState(false);
+    const times = [
+        '10:00 AM',
+        '11:30 AM',
+        '01:00 PM',
+        '02:30 PM',
+        '04:00 PM',
+        '05:30 PM',
+        '07:00 PM',
+        '08:30 PM',
+        '10:00 PM'
+    ]
 
 
     const userContext = userAuth()
@@ -68,17 +81,17 @@ function Details(navigation) {
 
     const addDateTimeArray = () => {
         const date = moment(dateValue).format('DD-MM-YYYY');
-        const formTime = moment(fromTimeValue).format('HH:mm a');
-        const toTime = moment(fromTimeValue).format('HH:mm a');
-        const data = {
+      //  const formTime = moment(fromTimeValue).format('HH:mm a');
+       // const toTime = moment(fromTimeValue).format('HH:mm a');
+       const data = {
             date: date,
-            from: formTime,
-            to: toTime
+            from: fromTimeValue,
+            to: fromTimeValue
         }
         console.log(data)
         router.replace({
             pathname: '/bookings/[id]',
-            query: { id: router.query.id ,date:date,from:formTime,to:toTime,floor_type:item.floor_type},
+            query: { id: router.query.id ,date:date,from:fromTimeValue,to:fromTimeValue,floor_type:item.floor_type},
         })
         handleClose()
 
@@ -103,16 +116,21 @@ function Details(navigation) {
             getEventById(router.query.id).then((data) => {
                 console.log(data)
                 setItem(data)
-
-                var lowest = Number.POSITIVE_INFINITY;
-                var highest = Number.NEGATIVE_INFINITY;
-                var tmp;
-                for (var i = data.tickets.length - 1; i >= 0; i--) {
-                    tmp = JSON.parse(data.tickets[i].price);
-                    if (tmp < lowest) lowest = tmp;
-                    if (tmp > highest) highest = tmp;
+                if(data.tickets && data.tickets.length){
+                    var lowest = Number.POSITIVE_INFINITY;
+                    var highest = Number.NEGATIVE_INFINITY;
+                    var tmp;
+                    for (var i = data.tickets.length - 1; i >= 0; i--) {
+                        tmp = JSON.parse(data.tickets[i].price);
+                        if (tmp < lowest) lowest = tmp;
+                        if (tmp > highest) highest = tmp;
+                    }
+                    setLowest(lowest);
                 }
-                setLowest(lowest);
+                else{
+                    setLowest(0); 
+                }
+               
             })
             setLoading(false)
         }
@@ -266,17 +284,21 @@ function Details(navigation) {
                                             renderInput={(params) => <TextField {...params} />}
                                         />
                                         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                            <Typography sx={{ marginBottom: '5px' }} variant="subtitle1">Time</Typography>
-                                            <TimePicker
+                                            <Typography sx={{ marginTop: '5px' }} variant="subtitle1">Time</Typography>
+                                            {/* <TimePicker
                                                 label="Time"
                                                 value={fromTimeValue}
                                                 onChange={(newValue) => {
                                                     setFromTimeValue(newValue);
                                                 }}
                                                 renderInput={(params) => <TextField {...params} />}
-                                            />
+                                            /> */}
 
-
+                                            <Select required sx={{width:'250px'}} onChange={(e)=>setFromTimeValue(e.target.value)} label='Time' defaultValue={fromTimeValue} >
+                                                {times.map((item) => (
+                                                    <MenuItem value={item}>{item}</MenuItem>
+                                                ))}
+                                            </Select>
                                             {/* <TextField
                                                     id="time"
                                                     label="Time"
