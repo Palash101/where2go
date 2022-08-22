@@ -142,9 +142,15 @@ function Bookings(navigation) {
                
                 var arr = [];
                 data.tickets.map(item2 => {
-                    item2.qty = JSON.parse(item2.min_booking);
+                    if(item2.min_booking){
+                        item2.qty = JSON.parse(item2.min_booking);
+                    }
+                    else{
+                        item2.qty = 1;
+                    }
                     arr.push(item2)
                 });
+
                 data.tickets = arr;
                 console.log(data,'booking')
                 setItemNew(data)
@@ -205,7 +211,7 @@ function Bookings(navigation) {
                 </Grid>
             </Box>
 
-         
+            {floorType === '1' && (
             <Box sx={{position: 'absolute',
                     zIndex: 9,
                     margin: '15px',
@@ -216,7 +222,7 @@ function Bookings(navigation) {
                     fontSize: '14px'}} onClick={handlePriceClick}>
                 Ticket Prices
             </Box>
-
+            )}
 
         {floorType === '1' && (
             <SeatLayout data={floorData} click={puchaseClick} />

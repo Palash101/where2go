@@ -55,6 +55,7 @@ const EventStep4 = ({data,eventId,refreshData}) => {
 
   useEffect(()=>{
      getFloorPlanData()
+     console.log(data,'datata')
 
   },[])
 
@@ -67,6 +68,8 @@ const EventStep4 = ({data,eventId,refreshData}) => {
       const data = Object.assign(docId,item.data());
       plansArray.push(data)
     })
+
+    console.log(plansArray,'plansArray')
       setFloorPlanData(plansArray)
 
   }
@@ -220,6 +223,8 @@ const EventStep4 = ({data,eventId,refreshData}) => {
   }
 
   const renderTicketList = (ticketData)=>{
+    console.log(ticketData,'tdata')
+    if(ticketData.tickets && ticketData.tickets.length){
     return(
     <>
        {
@@ -245,6 +250,12 @@ const EventStep4 = ({data,eventId,refreshData}) => {
     </>
 
     )
+    }
+    else{
+      return(
+        <Typography>No data found start adding new ticket</Typography>
+      )
+    }
   }
 
   const renderFloorPlanList = (planData)=>{
@@ -274,14 +285,11 @@ const EventStep4 = ({data,eventId,refreshData}) => {
           <Grid container spacing={7}>
           <Grid item xs={12} sm={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
             {
-            data.floor_type == '1' && data.plan ? 
+            (data.floor_type == '1' && data.plan) ? 
             renderFloorPlanList(data.plan)
-            : data.tickets ?
-              renderTicketList(data.tickets)
-            :
-            <Typography>No data found start adding new ticket</Typography>
+            : renderTicketList(data)
             }
-        
+
           <Box  sx={{ display: 'flex', alignItems: 'center',width:'100%',justifyContent:'center' }}>
               {
                 data.floor_type == '1' ?

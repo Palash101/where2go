@@ -20,7 +20,8 @@ import SideMenu from 'src/views/planner/SideMenu'
 import FooterMenu from 'src/views/planner/FooterMenu'
 import TicketComponent from 'src/views/planner/TicketComponent'
 
-import { getEventById,updateFloorPlan } from 'service/admin/events'
+import { getEventById,updateFloorPlan,updateEventTicket } from 'service/admin/events'
+import CircularProgress from '@mui/material/CircularProgress'
 
 
 
@@ -40,7 +41,7 @@ function Seat() {
     const router = useRouter();
 
     //Inital State
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [plannerArray, setPlannerArray] = useState([])
     const [selected, setSelected] = useState([])
     const [selectedRect, setSelectedRect] = useState(null)
@@ -224,7 +225,9 @@ function Seat() {
 		colIncrementPoistionBy:25,
 		defaultColor:'red',
 		selected:false,
-        name:''
+        name:'',
+        price:0,
+        ticketName:''
 		}
 
 		const reactangleInitalState = {
@@ -281,8 +284,9 @@ function Seat() {
 	}
 
     const updateData = async()=>{
+        setLoading(true)
         await updateFloorPlan(routerParams,JSON.stringify(reactArray)).then((res)=>console.log(res))
-
+        setLoading(false)
     }
 
 
@@ -324,7 +328,7 @@ function Seat() {
 
 
 
-const addSeatname = (seatAlpha,seatNumberic)=>{
+const addSeatname = (seatAlpha,seatNumberic,color,price,ticketName)=>{
     console.log(reactArray)
     const selectedElement = reactArray[selectedRect]
     const mainSeatDots = selectedElement.seatDots
@@ -347,15 +351,23 @@ const addSeatname = (seatAlpha,seatNumberic)=>{
     const seatDotsArrayCopy = [...mainSeatDots]
     mainSeatDots.map((arrItem,colkey)=>{
         arrItem.map((item,rowKey)=>{
+           
             const k = {key1:colkey,key2:rowKey}
             const data = mainSeatDots[colkey][rowKey]
             const name  = seatNameArray[rowKey][colkey]
             const updatedData = {...data,name:name}
+
+          
             seatDotsArrayCopy[colkey][rowKey]=updatedData;
+            seatDotsArrayCopy[colkey][rowKey].fill = color;
+            seatDotsArrayCopy[colkey][rowKey].price = price;
+            seatDotsArrayCopy[colkey][rowKey].ticketName = ticketName;
+            console.log(seatDotsArrayCopy[colkey][rowKey],'updatedData')
         })
 
 
     })
+
     const updtedelement = {...selectedElement,seatDots:seatDotsArrayCopy}
     const reactArrcy = [...reactArray]
     reactArrcy[selectedRect] =updtedelement
@@ -371,12 +383,34 @@ const addTicketsInSelectedElement =()=>{
         setShowTicketComponent(true)
 }
 
+const updateTicket = (data) => {
+        setLoading(true)
+        if(data.name && data.color && data.price){
+          const ticketData ={
+            name:data.name,
+            color:data.color,
+            price:data.price,
+          }
+          updateEventTicket(router.query.eventId,ticketData)
+          setLoading(false)
+        }
+        else{
+          setLoading(false)
+          toast('Not a Valid Data or Incomplete Data')
+        }
+}
 
 const updateTicketData = (data)=>{
+
+    setLoading(true)
+
     addDataInSeatDots('red',data.price)
-    addSeatname(data.rowAlphabets,data.numeric)
+    addSeatname(data.rowAlphabets,data.numeric,data.color,data.price,data.name)
+    setShowTicketComponent(false);
     updateData()
+    updateTicket(data)
     console.log(data,'ticketdata')
+    setLoading(false)
 
 }
 
@@ -427,7 +461,7 @@ console.log('rendering')
                         >
 
                         <svg width="100%" height="100%" fill="#24262b" >
-                            <g fill="black" >
+                            <g fill="grey" >
 
                                 {/* <rect fill="#40444d" width={mapValue.stage.width} height={mapValue.stage.height} rx="5" ry="5" x={mapValue.stage.xStartPoistion} y="70"></rect>
                                 <text x="120" y="50" font-size="35" fill="white">Stage Text</text>
@@ -455,6 +489,8 @@ console.log('rendering')
 			                                                startingYPosition={item3.y}
 			                                                key={key2}
                                                             name={item3.name}
+                                                            price={item3.price}
+                                                            ticketName={item3.ticketName}
 			                                                handleClick={() => handleClick(key1, key2)} />
 			                                        ))
 			                                    ))
@@ -471,10 +507,19 @@ console.log('rendering')
                         </svg>
 
                     </UncontrolledReactSVGPanZoom>
-
+                    {loading === true && (
+                <Box sx={{
+                    display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgb(0 0 0 / 39%)', zIndex: 99999999, position: 'fixed', left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                }}>
+                    <CircularProgress />
+                </Box>
+            )}
                 </Grid>
             </Grid>
-
+           
         </>
     )
 

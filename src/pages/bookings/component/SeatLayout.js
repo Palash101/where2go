@@ -220,6 +220,7 @@ function changeCol(e){
                                                           startingXPosition={item3.x}
                                                           startingYPosition={item3.y}
                                                           key={key2}
+                                                          name={item3.name}
                                                           handleClick={() => handleClick(key1, key2)}
                                                          />
                                                   ))

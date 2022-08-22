@@ -10,6 +10,8 @@ function SeatComponent (props){
 		id={props.key} 
 		x={props.startingXPosition} 
 		y={props.startingYPosition}
+		price={props.price}
+		ticketName={props.ticketName}
 		>
 		<text x="5" y="25" style={{fontSize:'8px'}}>{props.name}</text>
 		<circle id={props.id} cx="10" cy="10" r="8" stroke={props.border ? props.border : "black"} stroke-width="2"></circle></svg>

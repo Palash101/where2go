@@ -22,7 +22,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-// import ColorPicker from "material-ui-color-picker";
+// import ColorPicker from 'material-ui-color-picker'
 
 
 //Service Imports
@@ -68,6 +68,12 @@ const TicketComponent = (props) => {
 					defaultValue={color}
 					onChange={color => setColor(color)}
 				/> */}
+				  <Select fullWidth onChange={(e)=>setColor(e.target.value)} label='color' placeholder='color' defaultValue={color} >
+						<MenuItem value='yellow'>Yellow</MenuItem>
+						<MenuItem value='blue'>Blue</MenuItem>
+						<MenuItem value='orange'>Orange</MenuItem>
+						<MenuItem value='pink'>Pink</MenuItem>
+					</Select>
 				<TextField
 					required
 					onChange={(e) => setPrice(e.target.value)}

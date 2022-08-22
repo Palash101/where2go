@@ -50,7 +50,6 @@ return(
 			<Box className='placer' sx={{marginBlock:'150%'}}></Box>
 			<Box sx={{marginBottom:'10px'}}>
 
-			<Button onClick={() => router.back()}>Back</Button>
 			<Button onClick={props.saveData}>Save Data</Button>
 				
 			</Box>
