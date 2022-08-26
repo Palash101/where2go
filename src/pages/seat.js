@@ -275,46 +275,48 @@ function Seat (){
             </Card>
 			</Grid>
 			<Grid item xs={8} md={8}>
-				<UncontrolledReactSVGPanZoom
-				 	ref={Viewer}
-			        width={800} height={650}
-			        onClick={event => console.log(event.x, event.y, event)}>
+			<UncontrolledReactSVGPanZoom
+				ref={Viewer}
+				width={500} height={500}
+				onZoom={e => console.log('zoom')}
+				onPan={e => console.log('pan')}
+				onClick={event => console.log('click', event.x, event.y, event.originalEvent)}
+			>
+				<svg width={617} height={316}>
+				<g fillOpacity=".5" strokeWidth="4">
+				<rect fill="#40444d" width="100" height="200" rx="5" ry="5" x="400" y="70"></rect>
+                    <text x="45%" y="125" width='100%' fill="#fff"
+                    font-weight="bold">Stage Text</text>
+				{
+					reactArray.map((item1,key)=>{
+						return(
+							<svg  ref={rectSvgRef} style={{ cursor:'grap', border: '1px solid'}}  width={item1.width} height={item1.height} x={item1.x}  y={item1.y}>
+							  	<g  className={selectedRect == key? "selectedRect" : ''} onClick={()=>SelectRectangle(key)}>
+							  		{
+							  			item1.seatDots?.map((item2, key1) => (
+			                                item2.map((item3, key2) => (
+												<SeatComponent
+													color={item3.fill}
+													id={`${item3.x}${item3.y}`}
+													startingXPosition={item3.x}
+													startingYPosition={item3.y}
+													key={key2}
+													name={item3.name}
+													price={item3.price}
+													ticketName={item3.ticketName}
+													handleClick={() => handleClick(key1, key2)} />
+											))
+										))
+							  		}
+							  	</g>
 
-			 	<svg width="100%" height="100%" fill="blue" >
-			 		<g fill="blue" stroke="green" >
-				  <rect fill="#5B5F6B" width={mapValue.stage.width} height={mapValue.stage.height} rx="5" ry="5" x={mapValue.stage.xStartPoistion}  y="70"></rect>
-
-				  	{
-				  		reactArray.map((item,key)=>{
-
-				  			console.log(item)
-				  			return(
-				  			<svg fill="blue" width={item.width} height={item.height} x={item.x}  y={item.y}>
-				  			<g>
-				  			{
-				  				item.seatDots.map((item, key) => (
-                                        item.map((item1, key1) => (
-                                            <SeatComponent
-                                                color={item1.fill}
-                                                className={item1.class}
-                                                id={`${item1.x}${item1.y}`}
-                                                startingXPosition={item1.x}
-                                                startingYPosition={item1.y}
-                                                key={key1}
-                                                handleClick={() => handleClick(key, key1)} />
-                                        ))
-                                    ))
-				  			}
-				  			</g>
-
-				  			 </svg>
-				  			)
-				  		})
-				  	}
-				  	</g>
+							</svg>
+						)
+						})
+					}
+				</g>
 				</svg>
-	 	
-	 		</UncontrolledReactSVGPanZoom>
+			</UncontrolledReactSVGPanZoom>
 
 			</Grid>
 		</Grid>

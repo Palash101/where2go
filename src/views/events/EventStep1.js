@@ -69,7 +69,6 @@ const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
   }
 
   useEffect(()=>{
-      console.log(data,'userdaysw')
       setName(eventName());
       if(data.floor_type){
       setFloorType(data.floor_type)

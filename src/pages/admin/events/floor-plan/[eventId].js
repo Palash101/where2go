@@ -38,6 +38,7 @@ function Seat() {
 
     //Hooks
     const rectSvgRef = useRef(null);
+    const Viewer = useRef(null);
     const router = useRouter();
 
     //Inital State
@@ -48,8 +49,6 @@ function Seat() {
     const [myColor, setColor] = useState('black')
     const [planName, setPlanName] = useState('')
     const [showFooter,setShowFooter]= useState(false)
-    // const [seatAlpha,setSeatAlpha]= useState(null)
-    // const [seatNumberic,setSeatNumberic]= useState(null)
     const [routerParams, setRouterParams] = useState('');
     const [showticketComponent,setShowTicketComponent] = useState(false);
 
@@ -67,8 +66,8 @@ function Seat() {
         text:'Stage Text Comes here'
     })
 
-
-     useEffect(()=>{
+    // Setting Main Data from Firebase if exist
+    useEffect(()=>{
     if(router.isReady){
       setLoading(true)
       setRouterParams(router.query.eventId)
@@ -90,8 +89,9 @@ function Seat() {
     }
   },[router.isReady])
 
+    //For Increasing Row, Col and X/Y direction space
 
-    const addNewRowCol = (type,value) => {
+    const increaseRowColAttribute = (type,value) => {
     	if(selectedRect === null){
     		alert('Please select the rect')
     		return
@@ -112,37 +112,9 @@ function Seat() {
     }
 
 
-    const moveReactXY = (type,value) =>{
-    	if(selectedRect === null){
-    		alert('Please select the rect')
-    		return
-    	}
-    	const selectedArrayIndex = reactArray[selectedRect]
-    	const newSeatState = {...selectedArrayIndex,[type]:selectedArrayIndex[type] + value}
 
-    	const reactArrayStateCopy = [...reactArray]
-    	reactArrayStateCopy[selectedRect] = newSeatState
-    	setRectArray(reactArrayStateCopy)
-
-    }
-
-    const decrementRectXY = (type,value) =>{
-    	if(selectedRect === null){
-    		alert('Please select the rect')
-    		return
-    	}
-    	const selectedArrayIndex = reactArray[selectedRect]
-    	const newSeatState = {...selectedArrayIndex,[type]:selectedArrayIndex[type] - value}
-
-    	const reactArrayStateCopy = [...reactArray]
-    	reactArrayStateCopy[selectedRect] = newSeatState
-    	setRectArray(reactArrayStateCopy)
-
-    }
-
-
-
-    const decrementState = (type,value) => {
+    //For Decresing Row, Col and X/Y direction space
+    const decrementRowColAttribute = (type,value) => {
     	if(selectedRect === null){
     		alert('Please select the rect')
     		return
@@ -162,6 +134,36 @@ function Seat() {
     	setRectArray(reactArrayStateCopy)
     }
 
+    //Move up and Down in addition 
+
+    const moveReactXY = (type,value) =>{
+    	if(selectedRect === null){
+    		alert('Please select the rect')
+    		return
+    	}
+    	const selectedArrayIndex = reactArray[selectedRect]
+    	const newSeatState = {...selectedArrayIndex,[type]:selectedArrayIndex[type] + value}
+
+    	const reactArrayStateCopy = [...reactArray]
+    	reactArrayStateCopy[selectedRect] = newSeatState
+    	setRectArray(reactArrayStateCopy)
+
+    }
+
+    //Move up and Down in subtraction 
+    const decrementRectXY = (type,value) =>{
+    	if(selectedRect === null){
+    		alert('Please select the rect')
+    		return
+    	}
+    	const selectedArrayIndex = reactArray[selectedRect]
+    	const newSeatState = {...selectedArrayIndex,[type]:selectedArrayIndex[type] - value}
+
+    	const reactArrayStateCopy = [...reactArray]
+    	reactArrayStateCopy[selectedRect] = newSeatState
+    	setRectArray(reactArrayStateCopy)
+
+    }
 
 
 
@@ -171,35 +173,7 @@ function Seat() {
    
     }
 
-    const deleteItems = () => {
-        if (selected.length > 0) {
-            const copyArray = [...plannerArray];
-            for (let i = 0; i < selected.length; i++) {
-                const index = selected[i]
-                console.log(index, 'unbbd')
-                const a = copyArray[index.col]
-                a.splice(index.row, 1)
-            }
-            setPlannerArray(copyArray)
-            setSelected([])
-        }
-        else {
-            alert('Please select slot to get it delete')
 
-        }
-    }
-
-
-
-    const refreshStateToInital = () => {
-        setMapValue((currentState) => {
-            return {
-                ...currentState,
-                rowIncrementPoistionBy: currentState.rowIncrementPoistionBy + 10
-            }
-        })
-
-    }
 
     const SelectRectangle = (key)=>{
     	setSelectedRect(key)
@@ -207,12 +181,15 @@ function Seat() {
     }
 
     const deleteSelectedElement = ()=>{
-        console.log('deleting')
-    }
+        if(selectedRect === null){
+    		alert('Please select the rect')
+    		return
+    	}
+        const arrayCopy = [...reactArray];
+        arrayCopy.splice(selectedRect,1)
+        setRectArray(arrayCopy)
 
-    // const addTicketsInSelectedElement = ()=>{
-    //     console.log('selected element')
-    // }
+    }
 
 
     const addReactangle = ()=>{
@@ -421,14 +398,11 @@ console.log('rendering')
         <>
 
         {showFooter && <FooterMenu 
-                MoveUp={decrementRectXY}
-                MoveRight={moveReactXY}
-                MoveLeft={decrementRectXY}
-                MoveDown={moveReactXY}
-                increaseRow={addNewRowCol}
-                decreaseRow={decrementState}
-                increaseCol={addNewRowCol}
-                decreaseCol={decrementState}
+                decrementRectXY={decrementRectXY}
+                moveReactXY={moveReactXY}
+                increaseRowColAttribute={increaseRowColAttribute}
+                decrementRowColAttribute={decrementRowColAttribute}
+
                 
                 />
         }
@@ -455,58 +429,51 @@ console.log('rendering')
                 /> : null}
 
                 <Grid item xs={12} md={10}>
-                    <UncontrolledReactSVGPanZoom
-                    SVGBackground='#24262b'
-                        width={'100%'} height={1300}
-                        >
+                <UncontrolledReactSVGPanZoom
+                SVGBackground="#1f2227"
+				ref={Viewer}
+				width={800} height={600}
+				onZoom={e => console.log('zoom')}
+				onPan={e => console.log('pan')}
+				onClick={event => console.log('click', event.x, event.y, event.originalEvent)}
+			>   
+                {/*Increase width and height of main rectangle*/}
 
-                        <svg width="100%" height="100%" fill="#24262b" >
-                            <g fill="grey" >
+				<svg width={1500} height={2000} >
+				<g fillOpacity=".5" strokeWidth="4">
+				<rect fill="#40444d" width="800" height="100" rx="5" ry="5" x="400" y="70"></rect>
+                    <text x="800" y="125" width='100' fill="#fff"
+                    font-weight="bold">Stage Text</text>
+				{
+					reactArray.map((item1,key)=>{
+						return(
+							<svg  ref={rectSvgRef} style={{ cursor:'grap', border: '1px solid'}}  width={item1.width} height={item1.height} x={item1.x}  y={item1.y}>
+							  	<g  className={selectedRect == key? "selectedRect" : ''} onClick={()=>SelectRectangle(key)}>
+							  		{
+							  			item1.seatDots?.map((item2, key1) => (
+			                                item2.map((item3, key2) => (
+												<SeatComponent
+													color={item3.fill}
+													id={`${item3.x}${item3.y}`}
+													startingXPosition={item3.x}
+													startingYPosition={item3.y}
+													key={key2}
+													name={item3.name}
+													price={item3.price}
+													ticketName={item3.ticketName}
+													handleClick={() => handleClick(key1, key2)} />
+											))
+										))
+							  		}
+							  	</g>
 
-                                {/* <rect fill="#40444d" width={mapValue.stage.width} height={mapValue.stage.height} rx="5" ry="5" x={mapValue.stage.xStartPoistion} y="70"></rect>
-                                <text x="120" y="50" font-size="35" fill="white">Stage Text</text>
-                                 */}
-                                	<svg>
-                                    <rect fill="#40444d" width={stage.width} height={stage.height} rx="5" ry="5" x={stage.xStartPoistion} y="70"></rect>
-                                        <text x="45%" y="125" width='100%' fill="#fff"
-                                            font-weight="bold">Stage Text</text>
-                                    </svg>
-                                    {
-							  		reactArray.map((item1,key)=>{
-
-							  			return(
-
-							  			<svg  ref={rectSvgRef} style={{ cursor:'grap', border: '1px solid'}}  width={item1.width} height={item1.height} x={item1.x}  y={item1.y}>
-
-							  			<g className={selectedRect == key? "selectedRect" : ''} onClick={()=>SelectRectangle(key)}>
-							  			{
-							  				item1.seatDots?.map((item2, key1) => (
-			                                        item2.map((item3, key2) => (
-			                                            <SeatComponent
-			                                                color={item3.fill}
-			                                                id={`${item3.x}${item3.y}`}
-			                                                startingXPosition={item3.x}
-			                                                startingYPosition={item3.y}
-			                                                key={key2}
-                                                            name={item3.name}
-                                                            price={item3.price}
-                                                            ticketName={item3.ticketName}
-			                                                handleClick={() => handleClick(key1, key2)} />
-			                                        ))
-			                                    ))
-							  			}
-							  			</g>
-
-							  			 </svg>
-							  			)
-							  		})
-							  	}
-
-                              
-                            </g>
-                        </svg>
-
-                    </UncontrolledReactSVGPanZoom>
+							</svg>
+						)
+						})
+					}
+				</g>
+				</svg>
+			</UncontrolledReactSVGPanZoom>
                     {loading === true && (
                 <Box sx={{
                     display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgb(0 0 0 / 39%)', zIndex: 99999999, position: 'fixed', left: 0,

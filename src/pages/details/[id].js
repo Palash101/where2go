@@ -150,7 +150,6 @@ function Details(navigation) {
 
 
                     <>
-                        {console.log(item)}
                         <Grid container spacing={4} justifyContent="center" sx={{
                             marginTop: '60px',
                             maxWidth: 900,
