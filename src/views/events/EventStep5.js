@@ -15,6 +15,7 @@ import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox';
 import {toast } from 'react-toastify';
+import Switch from '@mui/material/Switch';
 
 //Loader
 import CircularProgress from '@mui/material/CircularProgress'
@@ -28,28 +29,57 @@ const EventStep5 = ({data,eventId,refreshData}) => {
   const [status,setStatus] = useState(data.status)
   const [loading,setLoading] = useState(false)
 
+  const [checked, setChecked] = useState(data.status === 'published');
+  const [checked1, setChecked1] = useState(data.featured === 'true');
+  
 
-  const updateData = async() =>{
-    // if(data.description && data.event_date && data.images && data.tickets){
+
+  const updateData = async(event) =>{
+   
+
+    if(data.description && data.event_date && data.images && data.tickets){
       setLoading(true)
-      await updateEventDetails(eventId,'published','status').then((res)=>toast("Status updated successfully"))
-      setLoading(false)
-      refreshData()
-    // }
-    // else{
-    //   toast("Please add description,events,images and tockets.")
-    // }
+      setChecked(event.target.checked);
+      if(event.target.checked === false){
+        setStatus('draft')
+        await updateEventDetails(eventId,'draft','status').then((res)=>toast("Status updated successfully"))
+        setLoading(false)
+        refreshData()
+      }
+      else{
+        setStatus('published')
+        await updateEventDetails(eventId,'published','status').then((res)=>toast("Status updated successfully"))
+        setLoading(false)
+        refreshData()
+      }
+    }
+    else{
+      toast("Please add description,events,images and tockets.")
+    }
   }
-  const updateFeature = async() =>{
-    // if(data.images){
+  const updateFeature = async(event) =>{
+    
+    if(data.images){
       setLoading(true)
-      await updateEventDetails(eventId,'true','featured').then((res)=>toast("fetured updated successfully"))
-      setLoading(false)
-      refreshData()
-    // }
-    // else{
-    //   toast("Please add event images.")
-    // }
+      setChecked1(event.target.checked);
+      if(event.target.checked === false){
+        setFeature('false')
+        await updateEventDetails(eventId,'false','featured').then((res)=>toast("fetured updated successfully"))
+        setLoading(false)
+        refreshData()
+      }
+      else{
+        setFeature('true')
+        await updateEventDetails(eventId,'true','featured').then((res)=>toast("fetured updated successfully"))
+        setLoading(false)
+        refreshData()
+     }
+
+     
+    }
+    else{
+      toast("Please add event images.")
+    }
   }
 
   useEffect(()=>{
@@ -59,19 +89,29 @@ const EventStep5 = ({data,eventId,refreshData}) => {
   return (
     <CardContent>
       <form>
-
-        <Box sx={{display:'flex'}}>
-          <Box sx={{minWidth:300,backgroundColor:'rgba(255,255,255,0.1)',m:5,borderRadius:'12px',overflow:'hidden'}}>
-            <Typography style={{margin:0,padding:5,fontSize:18,borderBottomWidth:1,backgroundColor:'rgba(255,255,255,0.1)',textAlign:'center'}}>Publish Status </Typography>
-            <Typography sx={{p:5,textAlign:'center'}}>{data.status && data.status === 'published' ? 'Pubished' : 'Not Published'} </Typography>
-            <Button fullWidth={true} variant="contained" onClick={updateData}>Publish Event</Button>
+        <Box sx={{padding:'10px 20px',backgroundColor:'rgba(255,255,255,0.1)',m:5,borderRadius:'12px',overflow:'hidden',display:'flex',justifyContent:'space-between'}}>
+        <Box>
+            <Typography style={{margin:0,fontSize:18}}>Published </Typography>
+            <Typography style={{fontSize:12,}}>Event description, events dates, events tickets and images are required for publish event.</Typography>
           </Box>
-          <Box sx={{minWidth:300,backgroundColor:'rgba(255,255,255,0.1)',m:5,borderRadius:'12px',overflow:'hidden'}}>
-            <Typography style={{margin:0,padding:5,fontSize:18,borderBottomWidth:1,backgroundColor:'rgba(255,255,255,0.1)',textAlign:'center'}}>Featured Status </Typography>
-            <Typography sx={{p:5,textAlign:'center'}}>{data.featured && data.featured === 'true' ? 'Featured' : 'Not Featured'} </Typography>
-            <Button fullWidth={true} variant="contained" onClick={updateFeature}>Fetured Event</Button>
-          </Box>
+          <Switch
+            checked={checked}
+            onChange={updateData}
+            inputProps={{ 'aria-label': 'controlled' }}
+          />
         </Box>
+        <Box sx={{padding:'10px 20px',backgroundColor:'rgba(255,255,255,0.1)',m:5,borderRadius:'12px',overflow:'hidden',display:'flex',justifyContent:'space-between'}}>
+          <Box>
+            <Typography style={{margin:0,fontSize:18}}>Featured </Typography>
+            <Typography style={{fontSize:12,}}>All images are required for allow fetured</Typography>
+          </Box>
+          <Switch
+            checked={checked1}
+            onChange={updateFeature}
+            inputProps={{ 'aria-label': 'controlled' }}
+          />
+        </Box>
+       
 
 
       

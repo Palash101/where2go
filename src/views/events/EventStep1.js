@@ -93,8 +93,8 @@ const EventStep1 = ({data,eventId,refreshData,allCategory,allLocation}) => {
               <InputLabel>Country</InputLabel>
               <Select  onChange={(e)=>setCountry(e.target.value)} label='Country' defaultValue={country} >
               {
-                allLocation.map((item)=>(
-                      <MenuItem value={item.name}>{item.name}</MenuItem>
+                allLocation.map((item,key)=>(
+                      <MenuItem key={key} value={item.name}>{item.name}</MenuItem>
                 ))
 
               }

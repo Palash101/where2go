@@ -485,3 +485,10 @@ span.catRemove {
   outlineOffset: 5px;
 
 }
+.uploadbtn {
+  background: #9155fd;
+  padding: 5px 20px;
+  font-size: 14px;
+  border-radius: 6px;
+  font-weight: 600;
+}

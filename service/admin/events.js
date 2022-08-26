@@ -97,6 +97,16 @@ export const updateEventDate = async (eventId,data)=>{
         event_date:arrayUnion(...data)
       })
 }
+
+
+
+export const updateOrganizer = async (eventId,data)=>{
+    const docRef = doc(db, "events", eventId);
+    return await updateDoc(docRef, {
+        organizer:data
+      })
+}
+
 export const deleteEventDate = async (eventId,data)=>{
     const docRef = doc(db, "events", eventId);
     return await updateDoc(docRef, {

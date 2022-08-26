@@ -115,7 +115,12 @@ const EventStep2 = ({data,eventId,refreshData}) => {
     refreshData()
     handleClose('location')
   }
+
+
+  
+
   useEffect(()=>{
+  
   },[dateTimeArray])
 
 
@@ -191,7 +196,7 @@ const EventStep2 = ({data,eventId,refreshData}) => {
                       onChange={(e)=>{setLocation(e.target.value)}}
                       placeholder="ex: Near football stadium Queens mall Banglore"
                     />
-                  <Button variant="outlined">Use Map</Button>
+                  
               </Box>
             </DialogContent>
             <DialogActions>
@@ -251,8 +256,8 @@ const EventStep2 = ({data,eventId,refreshData}) => {
         </Grid>
       </CardContent>
 
-      <Divider sx={{ margin: 0 }} />
-      <ContactComponent />
+      {/* <Divider sx={{ margin: 0 }} />
+      <ContactComponent /> */}
       
 
       <Divider sx={{ margin: 0 }} />

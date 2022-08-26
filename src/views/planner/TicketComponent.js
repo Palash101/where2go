@@ -55,10 +55,18 @@ const TicketComponent = (props) => {
 		return data
 	}
 
+	useEffect(() => {
+		console.log(props.tickets,'tt')
+	},[])
+
+	
+
 	const ticketForm = () => {
 		return (
 
 			<Box className='ticketform'>
+
+
 				<TextField
 					required
 					onChange={(e) => setName(e.target.value)}
@@ -68,6 +76,15 @@ const TicketComponent = (props) => {
 					defaultValue={color}
 					onChange={color => setColor(color)}
 				/> */}
+
+				{/* {props.tickets.tickets && (
+					<Select fullWidth onChange={(e)=>setName(e.target.value)} label='name' placeholder='Ticket Name' defaultValue={name} >
+						<MenuItem value='yellow'>Yellow</MenuItem>
+						
+					</Select>
+				)} */}
+
+
 				  <Select fullWidth onChange={(e)=>setColor(e.target.value)} label='color' placeholder='color' defaultValue={color} >
 						<MenuItem value='yellow'>Yellow</MenuItem>
 						<MenuItem value='blue'>Blue</MenuItem>

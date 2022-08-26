@@ -18,19 +18,17 @@ import SideMenu from 'src/views/planner/SideMenu'
 import FooterMenu from 'src/views/planner/FooterMenu'
 
 
-
-
-
-
 //Layout Imports
 
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 import SeatComponent from 'src/@core/components/seating/SeatComponent';
 import { UncontrolledReactSVGPanZoom } from 'react-svg-pan-zoom';
 
+import { useRouter } from 'next/router'
+
 
 function Seat() {
-
+    const router = useRouter();
     //Hooks
     const rectSvgRef = useRef(null);
 

@@ -18,6 +18,7 @@ import nookies from "nookies";
 import {createFloorPlan} from 'service/admin/floorPlan'
 import SideMenu from 'src/views/planner/SideMenu'
 import FooterMenu from 'src/views/planner/FooterMenu'
+import ShowTickets from 'src/views/planner/ShowTickets'
 import TicketComponent from 'src/views/planner/TicketComponent'
 
 import { getEventById,updateFloorPlan,updateEventTicket } from 'service/admin/events'
@@ -52,7 +53,7 @@ function Seat() {
     const [routerParams, setRouterParams] = useState('');
     const [showticketComponent,setShowTicketComponent] = useState(false);
 
-
+    const [data, setData] = useState({})
     const [ticketModal,setTicketModal]=useState(false)
 
     const [reactArray,setRectArray] = useState([])
@@ -73,8 +74,10 @@ function Seat() {
       setRouterParams(router.query.eventId)
       getEventById(router.query.eventId)
         .then(data=>{
+            setData(data)
+            console.log(data)
           if(data.plan){
-            console.log(data.plan)
+            
             const parsedData = JSON.parse(data.plan)
           	setRectArray(parsedData)
             // setEventData(data)
@@ -406,6 +409,9 @@ console.log('rendering')
                 
                 />
         }
+
+
+        {data.tickets && <ShowTickets currency={data.currency} data={data.tickets}/>}
         <Grid container >
             <Grid item xs={12} md={2}>
             <SideMenu 
@@ -423,6 +429,7 @@ console.log('rendering')
              open={showticketComponent}
              onClose={setShowTicketComponent}
              saveData ={updateTicketData}
+             tickets={data}
 
              
 

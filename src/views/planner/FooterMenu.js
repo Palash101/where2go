@@ -34,10 +34,13 @@ import Translations from 'utils/trans'
 
 
 const FooterMenu = (props) => {
+
+
+	
 	return (
 
 		<Box
-			sx={{ position: 'absolute', backgroundColor: "#000920", bottom: '53%', left: 'calc(57.67% - 200px)', zIndex: '9999', height: '110px', width: '400px', borderRadius: '5px', boxShadow: '0px 0px 2px 0px #aa5656' }}>
+			sx={{ position: 'absolute', backgroundColor: "#000920", top: '10px', right: '10px', zIndex: '9999', height: '110px', width: '320px', borderRadius: '5px', boxShadow: '0px 0px 2px 0px #aa5656' }}>
 
 			<Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-around', marginTop: '5px' }}>
 				<Box sx={{ display: 'grid', height: '95px', alignContent: 'space-between' }}>
@@ -61,7 +64,7 @@ const FooterMenu = (props) => {
 
 				</Box>
 				<Box
-					sx={{ height: '100px', width: '100px', borderRadius: '50%', backgroundColor: '#ff3d00', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0px 0px 4px 2px white' }}>
+					sx={{ height: '80px', width: '80px', borderRadius: '50%', backgroundColor: '#ff3d00', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0px 0px 4px 2px white' }}>
 					<Box className='updown' sx={{ position: 'absolute', display: 'flex', flexDirection: 'column', top: '-5px' }}>
 						<ArrowDropUpIcon sx={{ fontSize: '60px', cursor: 'pointer' }}
 							onClick={() => props.decrementRectXY('y', 10)} />

@@ -22,6 +22,7 @@ import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 import InformationOutline from 'mdi-material-ui/InformationOutline'
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import SettingsIcon from '@mui/icons-material/Settings';
+import Event from '@mui/icons-material/Event';
 
 // ** Events Tabs Imports
 import EventStep1 from 'src/views/events/EventStep1'
@@ -29,6 +30,7 @@ import EventStep2 from 'src/views/events/EventStep2'
 import EventStep3 from 'src/views/events/EventStep3'
 import EventStep4 from 'src/views/events/EventStep4'
 import EventStep5 from 'src/views/events/EventStep5'
+import EventStep6 from 'src/views/events/EventStep6'
 
 import { getEventById } from 'service/admin/events'
 import {verifyToken} from '../../../../service/auth'
@@ -153,8 +155,17 @@ const EventEdit = () => {
             value='account'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <AccountOutline />
+                <Event />
                 <TabName>Event Details</TabName>
+              </Box>
+            }
+          />
+         <Tab
+            value='organizer'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <AccountOutline />
+                <TabName>Organizer Details</TabName>
               </Box>
             }
           />
@@ -209,6 +220,15 @@ const EventEdit = () => {
         <TabPanel sx={{ p: 0 }} value='security'>
           <EventStep2  
           data={eventData}
+          eventId = {routerParams}
+          refreshData = {refreshData}
+          />
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value='organizer'>
+          <EventStep6  
+          data={eventData}
+          allCategory = {categories}
+          allLocation = {locations}
           eventId = {routerParams}
           refreshData = {refreshData}
           />
