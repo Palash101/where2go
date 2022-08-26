@@ -18,7 +18,7 @@ const rows = [
     name: 'Sally Quinn',
     salary: '$19586.23',
     email: 'eebsworth2m@sbwire.com',
-    designation: 'Human Resources Assistant'
+    designation: 'Human Resources Assistant',
   },
   {
     age: 61,
@@ -27,7 +27,7 @@ const rows = [
     status: 'professional',
     name: 'Margaret Bowers',
     email: 'kocrevy0@thetimes.co.uk',
-    designation: 'Nuclear Power Engineer'
+    designation: 'Nuclear Power Engineer',
   },
   {
     age: 59,
@@ -36,7 +36,7 @@ const rows = [
     status: 'rejected',
     salary: '$18991.67',
     email: 'ediehn6@163.com',
-    designation: 'Environmental Specialist'
+    designation: 'Environmental Specialist',
   },
   {
     age: 30,
@@ -45,7 +45,7 @@ const rows = [
     salary: '$19252.12',
     name: 'Ralph Leonard',
     email: 'dfalloona@ifeng.com',
-    designation: 'Sales Representative'
+    designation: 'Sales Representative',
   },
   {
     age: 66,
@@ -54,7 +54,7 @@ const rows = [
     salary: '$13076.28',
     name: 'Annie Martin',
     designation: 'Operator',
-    email: 'sganderton2@tuttocitta.it'
+    email: 'sganderton2@tuttocitta.it',
   },
   {
     age: 33,
@@ -63,7 +63,7 @@ const rows = [
     name: 'Adeline Day',
     status: 'professional',
     email: 'hnisius4@gnu.org',
-    designation: 'Senior Cost Accountant'
+    designation: 'Senior Cost Accountant',
   },
   {
     age: 61,
@@ -72,7 +72,7 @@ const rows = [
     salary: '$17803.80',
     name: 'Lora Jackson',
     designation: 'Geologist',
-    email: 'ghoneywood5@narod.ru'
+    email: 'ghoneywood5@narod.ru',
   },
   {
     age: 22,
@@ -81,8 +81,8 @@ const rows = [
     name: 'Rodney Sharp',
     status: 'professional',
     designation: 'Cost Accountant',
-    email: 'dcrossman3@google.co.jp'
-  }
+    email: 'dcrossman3@google.co.jp',
+  },
 ]
 
 const statusObj = {
@@ -90,14 +90,14 @@ const statusObj = {
   rejected: { color: 'error' },
   current: { color: 'primary' },
   resigned: { color: 'warning' },
-  professional: { color: 'success' }
+  professional: { color: 'success' },
 }
 
 const DashboardTable = () => {
   return (
     <Card>
       <TableContainer>
-        <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
+        <Table sx={{ minWidth: 800 }} aria-label="table in dashboard">
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
@@ -109,12 +109,22 @@ const DashboardTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => (
-              <TableRow hover key={row.name} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
+            {rows.map((row) => (
+              <TableRow
+                hover
+                key={row.name}
+                sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}
+              >
+                <TableCell
+                  sx={{ py: (theme) => `${theme.spacing(0.5)} !important` }}
+                >
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.name}</Typography>
-                    <Typography variant='caption'>{row.designation}</Typography>
+                    <Typography
+                      sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}
+                    >
+                      {row.name}
+                    </Typography>
+                    <Typography variant="caption">{row.designation}</Typography>
                   </Box>
                 </TableCell>
                 <TableCell>{row.email}</TableCell>
@@ -129,7 +139,7 @@ const DashboardTable = () => {
                       height: 24,
                       fontSize: '0.75rem',
                       textTransform: 'capitalize',
-                      '& .MuiChip-label': { fontWeight: 500 }
+                      '& .MuiChip-label': { fontWeight: 500 },
                     }}
                   />
                 </TableCell>

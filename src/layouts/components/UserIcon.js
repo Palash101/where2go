@@ -1,4 +1,4 @@
-const UserIcon = props => {
+const UserIcon = (props) => {
   // ** Props
   const { icon, iconProps } = props
   const IconTag = icon

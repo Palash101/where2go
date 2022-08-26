@@ -16,7 +16,10 @@ import UserLayout from 'src/layouts/UserLayout'
 import ThemeComponent from 'src/@core/theme/ThemeComponent'
 
 // ** Contexts
-import { SettingsConsumer, SettingsProvider } from 'src/@core/context/settingsContext'
+import {
+  SettingsConsumer,
+  SettingsProvider,
+} from 'src/@core/context/settingsContext'
 
 // ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
@@ -26,11 +29,9 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 
 // ** Global css styles
 import '../../styles/globals.css'
-import { AuthUserProvider } from '../../context/userContext';
-import 'react-toastify/dist/ReactToastify.css';
-import {ToastContainer } from 'react-toastify';
-
-
+import { AuthUserProvider } from '../../context/userContext'
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from 'react-toastify'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -48,38 +49,41 @@ if (themeConfig.routingLoader) {
 }
 
 // ** Configure JSS & ClassName
-const App = props => {
+const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
   //console.log(Component.getLayout,'app js')
 
   // Variables
-  const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
-
+  const getLayout =
+    Component.getLayout ?? ((page) => <UserLayout>{page}</UserLayout>)
 
   return (
-    
     <AuthUserProvider>
-       <ToastContainer />
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>{`${themeConfig.templateName} `}</title>
-        <meta
-          name='description'
-          content={`${themeConfig.templateName}`}
-        />
-        <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
-        <meta name='viewport' content='initial-scale=1, width=device-width' />
-      </Head>
+      <ToastContainer />
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>{`${themeConfig.templateName} `}</title>
+          <meta name="description" content={`${themeConfig.templateName}`} />
+          <meta
+            name="keywords"
+            content="Material Design, MUI, Admin Template, React Admin Template"
+          />
+          <meta name="viewport" content="initial-scale=1, width=device-width" />
+        </Head>
 
-      <SettingsProvider>
-        <SettingsConsumer>
-          {({ settings }) => {
-            return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
-          }}
-        </SettingsConsumer>
-      </SettingsProvider>
-    </CacheProvider>
+        <SettingsProvider>
+          <SettingsConsumer>
+            {({ settings }) => {
+              return (
+                <ThemeComponent settings={settings}>
+                  {getLayout(<Component {...pageProps} />)}
+                </ThemeComponent>
+              )
+            }}
+          </SettingsConsumer>
+        </SettingsProvider>
+      </CacheProvider>
     </AuthUserProvider>
   )
 }

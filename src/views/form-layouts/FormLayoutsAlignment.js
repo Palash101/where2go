@@ -27,18 +27,18 @@ const Form = styled('form')(({ theme }) => ({
   maxWidth: 400,
   padding: theme.spacing(12),
   borderRadius: theme.shape.borderRadius,
-  border: `1px solid ${theme.palette.divider}`
+  border: `1px solid ${theme.palette.divider}`,
 }))
 
 const FormLayoutsAlignment = () => {
   // ** State
   const [values, setValues] = useState({
     password: '',
-    showPassword: false
+    showPassword: false,
   })
 
   // Handle Password
-  const handleChange = prop => event => {
+  const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value })
   }
 
@@ -46,40 +46,60 @@ const FormLayoutsAlignment = () => {
     setValues({ ...values, showPassword: !values.showPassword })
   }
 
-  const handleMouseDownPassword = event => {
+  const handleMouseDownPassword = (event) => {
     event.preventDefault()
   }
 
   return (
     <Card>
-      <CardHeader title='Form Alignment' titleTypographyProps={{ variant: 'h6' }} />
-      <CardContent sx={{ minHeight: 500, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Form onSubmit={e => e.preventDefault()}>
+      <CardHeader
+        title="Form Alignment"
+        titleTypographyProps={{ variant: 'h6' }}
+      />
+      <CardContent
+        sx={{
+          minHeight: 500,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Form onSubmit={(e) => e.preventDefault()}>
           <Grid container spacing={5}>
             <Grid item xs={12}>
-              <Typography variant='h5'>Sign In</Typography>
+              <Typography variant="h5">Sign In</Typography>
             </Grid>
             <Grid item xs={12}>
-              <TextField fullWidth label='Username' placeholder='carterLeonard' />
+              <TextField
+                fullWidth
+                label="Username"
+                placeholder="carterLeonard"
+              />
             </Grid>
             <Grid item xs={12}>
               <FormControl fullWidth>
-                <InputLabel htmlFor='form-layouts-alignment-password'>Password</InputLabel>
+                <InputLabel htmlFor="form-layouts-alignment-password">
+                  Password
+                </InputLabel>
                 <OutlinedInput
-                  label='Password'
+                  label="Password"
                   value={values.password}
                   onChange={handleChange('password')}
-                  id='form-layouts-alignment-password'
+                  id="form-layouts-alignment-password"
                   type={values.showPassword ? 'text' : 'password'}
                   endAdornment={
-                    <InputAdornment position='end'>
+                    <InputAdornment position="end">
                       <IconButton
-                        edge='end'
+                        edge="end"
                         onClick={handleClickShowPassword}
                         onMouseDown={handleMouseDownPassword}
-                        aria-label='toggle password visibility'
+                        aria-label="toggle password visibility"
                       >
-                        {values.showPassword ? <EyeOutline /> : <EyeOffOutline />}
+                        {values.showPassword ? (
+                          <EyeOutline />
+                        ) : (
+                          <EyeOffOutline />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   }
@@ -88,13 +108,20 @@ const FormLayoutsAlignment = () => {
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
-                label='Remember me'
-                control={<Checkbox name='form-layouts-alignment-checkbox' />}
-                sx={{ '& .MuiButtonBase-root': { paddingTop: 0, paddingBottom: 0 } }}
+                label="Remember me"
+                control={<Checkbox name="form-layouts-alignment-checkbox" />}
+                sx={{
+                  '& .MuiButtonBase-root': { paddingTop: 0, paddingBottom: 0 },
+                }}
               />
             </Grid>
             <Grid item xs={12}>
-              <Button size='large' type='submit' variant='contained' sx={{ width: '100%' }}>
+              <Button
+                size="large"
+                type="submit"
+                variant="contained"
+                sx={{ width: '100%' }}
+              >
                 Login
               </Button>
             </Grid>

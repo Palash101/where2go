@@ -28,8 +28,7 @@ const UserLayout = ({ children }) => {
    *  to know more about what values can be passed to this hook.
    *  ! Do not change this value unless you know what you are doing. It can break the template.
    */
-  const hidden = useMediaQuery(theme => theme.breakpoints.down('lg'))
-
+  const hidden = useMediaQuery((theme) => theme.breakpoints.down('lg'))
 
   return (
     <VerticalLayout
@@ -38,7 +37,7 @@ const UserLayout = ({ children }) => {
       saveSettings={saveSettings}
       verticalNavItems={VerticalNavItems()} // Navigation Items
       verticalAppBarContent={(
-        props // AppBar Content
+        props, // AppBar Content
       ) => (
         <VerticalAppBarContent
           hidden={hidden}

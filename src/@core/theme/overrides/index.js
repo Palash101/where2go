@@ -27,7 +27,7 @@ import MuiTypography from './typography'
 import MuiToggleButton from './toggleButton'
 import MuiDateTimePicker from './dateTimePicker'
 
-const Overrides = theme => {
+const Overrides = (theme) => {
   const chip = MuiChip(theme)
   const list = MuiList(theme)
   const menu = MuiMenu(theme)
@@ -78,7 +78,7 @@ const Overrides = theme => {
     pagination,
     MuiTypography,
     dateTimePicker,
-    MuiToggleButton
+    MuiToggleButton,
   )
 }
 

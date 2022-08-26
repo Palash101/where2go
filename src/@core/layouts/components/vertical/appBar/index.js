@@ -13,8 +13,8 @@ const AppBar = styled(MuiAppBar)(({ theme }) => ({
   minHeight: theme.mixins.toolbar.minHeight,
   [theme.breakpoints.down('sm')]: {
     paddingLeft: theme.spacing(4),
-    paddingRight: theme.spacing(4)
-  }
+    paddingRight: theme.spacing(4),
+  },
 }))
 
 const Toolbar = styled(MuiToolbar)(({ theme }) => ({
@@ -24,10 +24,10 @@ const Toolbar = styled(MuiToolbar)(({ theme }) => ({
   padding: `${theme.spacing(0)} !important`,
   minHeight: `${theme.mixins.toolbar.minHeight}px !important`,
   transition:
-    'padding .25s ease-in-out, box-shadow .25s ease-in-out, backdrop-filter .25s ease-in-out, background-color .25s ease-in-out'
+    'padding .25s ease-in-out, box-shadow .25s ease-in-out, backdrop-filter .25s ease-in-out, background-color .25s ease-in-out',
 }))
 
-const LayoutAppBar = props => {
+const LayoutAppBar = (props) => {
   // ** Props
   const { settings, verticalAppBarContent: userVerticalAppBarContent } = props
 
@@ -38,16 +38,24 @@ const LayoutAppBar = props => {
   const { contentWidth } = settings
 
   return (
-    <AppBar elevation={0} color='default' className='layout-navbar' position='static'>
+    <AppBar
+      elevation={0}
+      color="default"
+      className="layout-navbar"
+      position="static"
+    >
       <Toolbar
-        className='navbar-content-container'
+        className="navbar-content-container"
         sx={{
           ...(contentWidth === 'boxed' && {
-            '@media (min-width:1440px)': { maxWidth: `calc(1440px - ${theme.spacing(6)} * 2)` }
-          })
+            '@media (min-width:1440px)': {
+              maxWidth: `calc(1440px - ${theme.spacing(6)} * 2)`,
+            },
+          }),
         }}
       >
-        {(userVerticalAppBarContent && userVerticalAppBarContent(props)) || null}
+        {(userVerticalAppBarContent && userVerticalAppBarContent(props)) ||
+          null}
       </Toolbar>
     </AppBar>
   )

@@ -7,24 +7,23 @@ import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField';
+import TextField from '@mui/material/TextField'
 
-function LocationComponent(){
-	return(
-		<Box>
-			<TextField
-		        autoFocus
-		        id="name"
-		        label="Location"
-		        type="text"
-		        fullWidth
-		        variant="standard"
-		        sx={{marginBottom:'5px'}}
-		    	/>
-		    <Button variant="outlined">Use Map</Button>
-		</Box>
-
-		)
+function LocationComponent() {
+  return (
+    <Box>
+      <TextField
+        autoFocus
+        id="name"
+        label="Location"
+        type="text"
+        fullWidth
+        variant="standard"
+        sx={{ marginBottom: '5px' }}
+      />
+      <Button variant="outlined">Use Map</Button>
+    </Box>
+  )
 }
 
-export default LocationComponent;
+export default LocationComponent

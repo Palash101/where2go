@@ -10,89 +10,86 @@ import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 import Account from 'mdi-material-ui/Account'
-import CategoryIcon from '@mui/icons-material/Category';
-import AddIcon from '@mui/icons-material/Add';
-import EventIcon from '@mui/icons-material/Event';
-import {userAuth} from 'context/userContext'
+import CategoryIcon from '@mui/icons-material/Category'
+import AddIcon from '@mui/icons-material/Add'
+import EventIcon from '@mui/icons-material/Event'
+import { userAuth } from 'context/userContext'
 import Translations from 'utils/trans'
 
-
-
 const navigation = () => {
-
   const userContext = userAuth()
-  const t =  userContext.getTrans()
+  const t = userContext.getTrans()
 
   return [
     {
       title: t.dashboard,
       icon: HomeOutline,
-      path: '/admin'
+      path: '/admin',
     },
     {
-      sectionTitle: 'Sitting Plan'
+      sectionTitle: 'Sitting Plan',
     },
     {
       title: 'Create Sitting Plan',
       icon: HomeOutline,
-      path: '/admin/planner/create'
+      path: '/admin/planner/create',
     },
     {
-      sectionTitle: 'User Managment'
+      sectionTitle: 'User Managment',
     },
     {
       title: t.users,
       icon: Account,
-      path: '/admin/users'
+      path: '/admin/users',
     },
     {
-      sectionTitle: 'Location'
+      sectionTitle: 'Location',
     },
     {
       title: t.location,
-      icon: CategoryIcon  ,
-      path: '/admin/location'
+      icon: CategoryIcon,
+      path: '/admin/location',
     },
     {
       title: `${t.addnew} ${t.location}`,
-      icon: AddIcon  ,
-      path: '/admin/location/add'
+      icon: AddIcon,
+      path: '/admin/location/add',
     },
     {
-      sectionTitle: 'Category'
+      sectionTitle: 'Category',
     },
 
     {
       title: t.categories,
-      icon: CategoryIcon  ,
-      path: '/admin/category'
+      icon: CategoryIcon,
+      path: '/admin/category',
     },
-   
+
     {
       title: `${t.addnew} ${t.categories}`,
       icon: AddIcon,
-      path: '/admin/category/add'
+      path: '/admin/category/add',
     },
     {
-      sectionTitle: 'Events'
+      sectionTitle: 'Events',
     },
     {
       title: t.event,
       icon: EventIcon,
-      path: '/admin/events/list'
+      path: '/admin/events/list',
     },
     {
-      title: `${t.addnew} ${t.event}` ,
-      icon: AddIcon ,
-      path: '/admin/events/'
+      title: `${t.addnew} ${t.event}`,
+      icon: AddIcon,
+      path: '/admin/events/',
     },
     {
-      sectionTitle: t.setting
+      sectionTitle: t.setting,
     },
     {
       title: `${t.admin}  ${t.setting}`,
       icon: AccountCogOutline,
-      path: '/account-settings'
+      path: '/account-settings',
     },
     // {
     //   sectionTitle: 'Pages'

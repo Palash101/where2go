@@ -22,12 +22,12 @@ import ScrollToTop from 'src/@core/components/scroll-to-top'
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 
-import {verifyToken} from '../../../service/auth'
-import nookies from "nookies";
+import { verifyToken } from '../../../service/auth'
+import nookies from 'nookies'
 
 const VerticalLayoutWrapper = styled('div')({
   height: '100%',
-  display: 'flex'
+  display: 'flex',
 })
 
 const MainContentWrapper = styled(Box)({
@@ -35,7 +35,7 @@ const MainContentWrapper = styled(Box)({
   minWidth: 0,
   display: 'flex',
   minHeight: '100vh',
-  flexDirection: 'column'
+  flexDirection: 'column',
 })
 
 const ContentWrapper = styled('main')(({ theme }) => ({
@@ -45,16 +45,15 @@ const ContentWrapper = styled('main')(({ theme }) => ({
   transition: 'padding .25s ease-in-out',
   [theme.breakpoints.down('sm')]: {
     paddingLeft: theme.spacing(4),
-    paddingRight: theme.spacing(4)
-  }
+    paddingRight: theme.spacing(4),
+  },
 }))
 
-const VerticalLayout = props => {
+const VerticalLayout = (props) => {
   // ** Props
   const { settings, children, scrollToTop } = props
 
-
-  console.log('user in vertical layour',children.props)
+  console.log('user in vertical layour', children.props)
 
   // ** Vars
   const { contentWidth } = settings
@@ -68,7 +67,7 @@ const VerticalLayout = props => {
 
   return (
     <>
-      <VerticalLayoutWrapper className='layout-wrapper'>
+      <VerticalLayoutWrapper className="layout-wrapper">
         <Navigation
           navWidth={navWidth}
           navVisible={navVisible}
@@ -76,17 +75,17 @@ const VerticalLayout = props => {
           toggleNavVisibility={toggleNavVisibility}
           {...props}
         />
-        <MainContentWrapper className='layout-content-wrapper'>
+        <MainContentWrapper className="layout-content-wrapper">
           <AppBar toggleNavVisibility={toggleNavVisibility} {...props} />
 
           <ContentWrapper
-            className='layout-page-content'
+            className="layout-page-content"
             sx={{
               ...(contentWidth === 'boxed' && {
                 mx: 'auto',
                 '@media (min-width:1440px)': { maxWidth: 1440 },
-                '@media (min-width:1200px)': { maxWidth: '100%' }
-              })
+                '@media (min-width:1200px)': { maxWidth: '100%' },
+              }),
             }}
           >
             {children}
@@ -95,7 +94,7 @@ const VerticalLayout = props => {
           <Footer {...props} />
 
           <DatePickerWrapper sx={{ zIndex: 11 }}>
-            <Box id='react-datepicker-portal'></Box>
+            <Box id="react-datepicker-portal"></Box>
           </DatePickerWrapper>
         </MainContentWrapper>
       </VerticalLayoutWrapper>
@@ -103,8 +102,8 @@ const VerticalLayout = props => {
       {scrollToTop ? (
         scrollToTop(props)
       ) : (
-        <ScrollToTop className='mui-fixed'>
-          <Fab color='primary' size='small' aria-label='scroll back to top'>
+        <ScrollToTop className="mui-fixed">
+          <Fab color="primary" size="small" aria-label="scroll back to top">
             <ArrowUp />
           </Fab>
         </ScrollToTop>

@@ -30,11 +30,11 @@ const MenuNavLink = styled(ListItemButton)(({ theme }) => ({
   transition: 'opacity .25s ease-in-out',
   '&.active, &.active:hover': {
     boxShadow: theme.shadows[3],
-    backgroundImage: `linear-gradient(98deg, ${theme.palette.customColors.primaryGradient}, ${theme.palette.primary.main} 94%)`
+    backgroundImage: `linear-gradient(98deg, ${theme.palette.customColors.primaryGradient}, ${theme.palette.primary.main} 94%)`,
   },
   '&.active .MuiTypography-root, &.active .MuiSvgIcon-root': {
-    color: `${theme.palette.common.white} !important`
-  }
+    color: `${theme.palette.common.white} !important`,
+  },
 }))
 
 const MenuItemTextMetaWrapper = styled(Box)({
@@ -43,7 +43,7 @@ const MenuItemTextMetaWrapper = styled(Box)({
   alignItems: 'center',
   justifyContent: 'space-between',
   transition: 'opacity .25s ease-in-out',
-  ...(themeConfig.menuTextTruncate && { overflow: 'hidden' })
+  ...(themeConfig.menuTextTruncate && { overflow: 'hidden' }),
 })
 
 const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }) => {
@@ -62,7 +62,7 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }) => {
   return (
     <ListItem
       disablePadding
-      className='nav-link'
+      className="nav-link"
       disabled={item.disabled || false}
       sx={{ mt: 1.5, px: '0 !important' }}
     >
@@ -71,7 +71,7 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }) => {
           component={'a'}
           className={isNavLinkActive() ? 'active' : ''}
           {...(item.openInNewTab ? { target: '_blank' } : null)}
-          onClick={e => {
+          onClick={(e) => {
             if (item.path === undefined) {
               e.preventDefault()
               e.stopPropagation()
@@ -82,21 +82,25 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }) => {
           }}
           sx={{
             pl: 5.5,
-            ...(item.disabled ? { pointerEvents: 'none' } : { cursor: 'pointer' })
+            ...(item.disabled
+              ? { pointerEvents: 'none' }
+              : { cursor: 'pointer' }),
           }}
         >
           <ListItemIcon
             sx={{
               mr: 2.5,
               color: 'text.primary',
-              transition: 'margin .25s ease-in-out'
+              transition: 'margin .25s ease-in-out',
             }}
           >
             <UserIcon icon={IconTag} />
           </ListItemIcon>
 
           <MenuItemTextMetaWrapper>
-            <Typography {...(themeConfig.menuTextTruncate && { noWrap: true })}>{item.title}</Typography>
+            <Typography {...(themeConfig.menuTextTruncate && { noWrap: true })}>
+              {item.title}
+            </Typography>
             {item.badgeContent ? (
               <Chip
                 label={item.badgeContent}
@@ -105,7 +109,7 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }) => {
                   height: 20,
                   fontWeight: 500,
                   marginLeft: 1.25,
-                  '& .MuiChip-label': { px: 1.5, textTransform: 'capitalize' }
+                  '& .MuiChip-label': { px: 1.5, textTransform: 'capitalize' },
                 }}
               />
             ) : null}

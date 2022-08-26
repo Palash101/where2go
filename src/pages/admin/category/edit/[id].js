@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 //Mui Import
 import FormLayoutsBasic from 'src/views/form-layouts/FormLayoutsBasic'
@@ -14,181 +14,173 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import CardContent from '@mui/material/CardContent'
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress'
 import Box from '@mui/material/Box'
-import Switch from '@mui/material/Switch';
-import Input from '@mui/material/Input';
-import FormControlLabel from '@mui/material/FormControlLabel';
-
-
+import Switch from '@mui/material/Switch'
+import Input from '@mui/material/Input'
+import FormControlLabel from '@mui/material/FormControlLabel'
 
 import { useRouter } from 'next/router'
 
-
-import {getCategoryById,updateCategoryData} from '../../../../../service/admin/category'
-
-
-
-
+import {
+  getCategoryById,
+  updateCategoryData,
+} from '../../../../../service/admin/category'
 
 function CategoryEdit() {
-    const router  = useRouter()
-    const [show,setShow]=useState(true)
+  const router = useRouter()
+  const [show, setShow] = useState(true)
 
-    const [categoryData, setCategoryData] = useState({});
+  const [categoryData, setCategoryData] = useState({})
 
-    const [categoryName,setCategoryName] = useState('')
-    const [status,setStatus] = useState(1)
-    const [loading,setLoading] = useState(false)
-    const [currentLanguage,setCurrentLanguage] = useState('')
+  const [categoryName, setCategoryName] = useState('')
+  const [status, setStatus] = useState(1)
+  const [loading, setLoading] = useState(false)
+  const [currentLanguage, setCurrentLanguage] = useState('')
 
-
-
-
-    useEffect(()=>{
-    	const storageLocale =  localStorage.getItem('locale')
-    	setCurrentLanguage(storageLocale);
-    	if(router.isReady){
-    		(async()=>{
-    		setLoading(true)
-    		await getCategoryById(router.query.id)
-    		.then((data)=>{
-    			 if(!data.err){
-    			 	setCategoryData(data);
-    			 	setCategoryName(data.name[currentLanguage])
-    			 	setStatus(data.status)
-    			 	setLoading(false)
-    			 }
-    			 else{
-    			 	console.log(data.message)
-    			 }
-    		})    	   
-
-    		})()
-}
-    	
-    	
-    },[router.isReady])
-
-
-
-
-  
-
-    //Firebase Uodate Category
-    const storeCategory = async ()=>{
-        if(categoryName === ''|| status === ''){
-          alert('Please enter Valid data')
-          return;
-        }
-        const data = {
-        	[currentLanguage]:categoryName,
-        	status:status,
-        	lang:currentLanguage
-        }
-        await updateCategoryData(router.query.id,data).then((data)=>{
-        	console.log(data)
+  useEffect(() => {
+    const storageLocale = localStorage.getItem('locale')
+    setCurrentLanguage(storageLocale)
+    if (router.isReady) {
+      ;(async () => {
+        setLoading(true)
+        await getCategoryById(router.query.id).then((data) => {
+          if (!data.err) {
+            setCategoryData(data)
+            setCategoryName(data.name[currentLanguage])
+            setStatus(data.status)
+            setLoading(false)
+          } else {
+            console.log(data.message)
+          }
         })
-       
-        // setLoading(true)
-
-       // alert(englishName)
-        // await addCategory(categoryName,currentLanguage,status).then((res)=>{
-        //   console.log(res,'ress')
-        //  // alert(res);
-        //   handleMessage()
-        //  setLoading(false)
-        //  router.push('/admin/category')
-        // })
-        
-
+      })()
     }
+  }, [router.isReady])
 
-    const changLanguage =()=>{
-      setCurrentLanguage(currentLanguage == 'en' ? 'ar' : 'en')
-
+  //Firebase Uodate Category
+  const storeCategory = async () => {
+    if (categoryName === '' || status === '') {
+      alert('Please enter Valid data')
+      return
     }
+    const data = {
+      [currentLanguage]: categoryName,
+      status: status,
+      lang: currentLanguage,
+    }
+    await updateCategoryData(router.query.id, data).then((data) => {
+      console.log(data)
+    })
 
-    console.log('rendering')
+    // setLoading(true)
 
-    // if(Object.keys(categoryData).length === 0){
-    // 	console.log('checking render.....',categoryData)
-    // 	return (<>
-    // 		loading
+    // alert(englishName)
+    // await addCategory(categoryName,currentLanguage,status).then((res)=>{
+    //   console.log(res,'ress')
+    //  // alert(res);
+    //   handleMessage()
+    //  setLoading(false)
+    //  router.push('/admin/category')
+    // })
+  }
 
-    // 		</>)
-    // }
+  const changLanguage = () => {
+    setCurrentLanguage(currentLanguage == 'en' ? 'ar' : 'en')
+  }
 
+  console.log('rendering')
 
+  // if(Object.keys(categoryData).length === 0){
+  // 	console.log('checking render.....',categoryData)
+  // 	return (<>
+  // 		loading
 
-    // else{
+  // 		</>)
+  // }
 
-    console.log('main render')
+  // else{
 
+  console.log('main render')
 
-    return ( 
-    	<div>
-    	{Object.keys(categoryData).length ? (
-    		 <DatePickerWrapper dir = {currentLanguage == 'ar'?'rtl':'ltr'}>
-      <Grid container spacing={6}>
-        <Grid item xs={12} md={12}>
-            <Card>
-                <CardHeader title='Add Category' titleTypographyProps={{ variant: 'h6' }} />
-                    <CardContent>
-                        <form >
-                            <Grid container spacing={5}>
-                                <Grid item xs={12}>
-                                <TextField required onChange={(e)=>setCategoryName(e.target.value)} value={categoryName} fullWidth label='Category Name' placeholder='Ex: Drama, Game, Movie' />
-                                <FormControl sx={{marginTop:'20px'}} fullWidth>
-                <InputLabel  id='form-layouts-separator-multiple-select-label'>Status</InputLabel>
-                <Select
-                  onChange={(e)=>setStatus(e.target.value)}
-                  id='form-layouts-separator-multiple-select'
-                  labelId='form-layouts-separator-multiple-select-label'
-                  defaultValue = {status}
-                  input={<OutlinedInput label='Language' id='select-multiple-language' />}
-                  required
-                >
-                  <MenuItem value='1'>Active</MenuItem>
-                  <MenuItem value='0'>Block</MenuItem>
-                </Select>
-                
-              
-
-              </FormControl>
-                                </Grid>
-                                <Grid item xs={12}>
-                                <Button 
-                                disabled={loading}
-                                  type='button' onClick={storeCategory} variant='contained' size='large'>
-                                    Submit
-                                </Button>
-                                </Grid>
-                            </Grid>
-                        </form>
-                    </CardContent>
-            </Card>
-        </Grid>
-        {loading &&(
-          <CircularProgress 
-          sx={{
-            position:'absolute',
-            right:'40%',
-            top:'50%',
-
-          }}/>
-              )}
-      </Grid>
-    </DatePickerWrapper>
-    		)
-    	:
-    	(
-    		<div>Loading</div>
-    		)}
-   
+  return (
+    <div>
+      {Object.keys(categoryData).length ? (
+        <DatePickerWrapper dir={currentLanguage == 'ar' ? 'rtl' : 'ltr'}>
+          <Grid container spacing={6}>
+            <Grid item xs={12} md={12}>
+              <Card>
+                <CardHeader
+                  title="Add Category"
+                  titleTypographyProps={{ variant: 'h6' }}
+                />
+                <CardContent>
+                  <form>
+                    <Grid container spacing={5}>
+                      <Grid item xs={12}>
+                        <TextField
+                          required
+                          onChange={(e) => setCategoryName(e.target.value)}
+                          value={categoryName}
+                          fullWidth
+                          label="Category Name"
+                          placeholder="Ex: Drama, Game, Movie"
+                        />
+                        <FormControl sx={{ marginTop: '20px' }} fullWidth>
+                          <InputLabel id="form-layouts-separator-multiple-select-label">
+                            Status
+                          </InputLabel>
+                          <Select
+                            onChange={(e) => setStatus(e.target.value)}
+                            id="form-layouts-separator-multiple-select"
+                            labelId="form-layouts-separator-multiple-select-label"
+                            defaultValue={status}
+                            input={
+                              <OutlinedInput
+                                label="Language"
+                                id="select-multiple-language"
+                              />
+                            }
+                            required
+                          >
+                            <MenuItem value="1">Active</MenuItem>
+                            <MenuItem value="0">Block</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Button
+                          disabled={loading}
+                          type="button"
+                          onClick={storeCategory}
+                          variant="contained"
+                          size="large"
+                        >
+                          Submit
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </form>
+                </CardContent>
+              </Card>
+            </Grid>
+            {loading && (
+              <CircularProgress
+                sx={{
+                  position: 'absolute',
+                  right: '40%',
+                  top: '50%',
+                }}
+              />
+            )}
+          </Grid>
+        </DatePickerWrapper>
+      ) : (
+        <div>Loading</div>
+      )}
     </div>
-     );
- // }
+  )
+  // }
 }
 
-export default CategoryEdit;
+export default CategoryEdit

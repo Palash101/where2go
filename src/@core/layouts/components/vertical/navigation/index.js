@@ -27,17 +27,17 @@ const StyledBoxForShadow = styled(Box)({
   pointerEvents: 'none',
   width: 'calc(100% + 15px)',
   '&.d-block': {
-    display: 'block'
-  }
+    display: 'block',
+  },
 })
 
-const Navigation = props => {
+const Navigation = (props) => {
   // ** Props
   const {
     hidden,
     afterVerticalNavMenuContent,
     beforeVerticalNavMenuContent,
-    verticalNavMenuContent: userVerticalNavMenuContent
+    verticalNavMenuContent: userVerticalNavMenuContent,
   } = props
 
   // ** States
@@ -51,7 +51,7 @@ const Navigation = props => {
   const theme = useTheme()
 
   // ** Fixes Navigation InfiniteScroll
-  const handleInfiniteScroll = ref => {
+  const handleInfiniteScroll = (ref) => {
     if (ref) {
       // @ts-ignore
       ref._getBoundingClientRect = ref.getBoundingClientRect
@@ -65,7 +65,7 @@ const Navigation = props => {
   }
 
   // ** Scroll Menu
-  const scrollMenu = container => {
+  const scrollMenu = (container) => {
     container = hidden ? container.target : container
     if (shadowRef && container.scrollTop > 0) {
       // @ts-ignore
@@ -86,31 +86,45 @@ const Navigation = props => {
       <StyledBoxForShadow
         ref={shadowRef}
         sx={{
-          background: `linear-gradient(${theme.palette.background.default} 40%,${hexToRGBA(
+          background: `linear-gradient(${
+            theme.palette.background.default
+          } 40%,${hexToRGBA(
             theme.palette.background.default,
-            0.1
-          )} 95%,${hexToRGBA(theme.palette.background.default, 0.05)})`
+            0.1,
+          )} 95%,${hexToRGBA(theme.palette.background.default, 0.05)})`,
         }}
       />
       <Box sx={{ height: '100%', position: 'relative', overflow: 'hidden' }}>
         <ScrollWrapper
-          containerRef={ref => handleInfiniteScroll(ref)}
+          containerRef={(ref) => handleInfiniteScroll(ref)}
           {...(hidden
             ? {
-                onScroll: container => scrollMenu(container),
-                sx: { height: '100%', overflowY: 'auto', overflowX: 'hidden' }
+                onScroll: (container) => scrollMenu(container),
+                sx: { height: '100%', overflowY: 'auto', overflowX: 'hidden' },
               }
             : {
                 options: { wheelPropagation: false },
-                onScrollY: container => scrollMenu(container)
+                onScrollY: (container) => scrollMenu(container),
               })}
         >
-          {beforeVerticalNavMenuContent ? beforeVerticalNavMenuContent(props) : null}
-          <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          {beforeVerticalNavMenuContent
+            ? beforeVerticalNavMenuContent(props)
+            : null}
+          <Box
+            sx={{
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}
+          >
             {userVerticalNavMenuContent ? (
               userVerticalNavMenuContent(props)
             ) : (
-              <List className='nav-items' sx={{ transition: 'padding .25s ease', pr: 4.5 }}>
+              <List
+                className="nav-items"
+                sx={{ transition: 'padding .25s ease', pr: 4.5 }}
+              >
                 <VerticalNavItems
                   groupActive={groupActive}
                   setGroupActive={setGroupActive}

@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -8,162 +8,169 @@ import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogTitle from '@mui/material/DialogTitle'
+import TextField from '@mui/material/TextField'
 import CircularProgress from '@mui/material/CircularProgress'
-import Chip from '@mui/material/Chip';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
+import Chip from '@mui/material/Chip'
+import DeleteIcon from '@mui/icons-material/Delete'
+import AddIcon from '@mui/icons-material/Add'
+import EditIcon from '@mui/icons-material/Edit'
 
 import DateTimeComponent from './components/DateTimeComponent'
 import LocationComponent from './components/LocationComponent'
 import ContactComponent from './components/ContactComponent'
 
-import { updateEventDetails ,updateEventDate,deleteEventDate } from 'service/admin/events'
+import {
+  updateEventDetails,
+  updateEventDate,
+  deleteEventDate,
+} from 'service/admin/events'
 import { async } from '@firebase/util'
-import {toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 
-import {userAuth} from 'context/userContext'
+import { userAuth } from 'context/userContext'
 import Translations from 'utils/trans'
 
-
-
-
-const EventStep2 = ({data,eventId,refreshData}) => {
-
+const EventStep2 = ({ data, eventId, refreshData }) => {
   const [openState, setOpenState] = useState({
-    description:false,
-    dateTime:false,
-    location:false,
-    contact:false
+    description: false,
+    dateTime: false,
+    location: false,
+    contact: false,
   })
 
+  const [description, setDescription] = useState('')
+  const [location, setLocation] = useState('')
 
-  const [description,setDescription]=useState('')
-  const [location ,setLocation] = useState('')
-
-
-  const [loading,setLoading]=useState(false)
-  const [dateTimeArray,setDateTimeArray] =useState([])
+  const [loading, setLoading] = useState(false)
+  const [dateTimeArray, setDateTimeArray] = useState([])
 
   const userContext = userAuth()
   const locale = userContext.locale
-  const t =  Translations(locale)
-
-
+  const t = Translations(locale)
 
   const handleClickOpen = (type) => {
-    setOpenState({...openState,[type]:true})
- 
-  };
+    setOpenState({ ...openState, [type]: true })
+  }
 
   const handleClose = (type) => {
-    setOpenState({...openState,[type]:false})
-};
+    setOpenState({ ...openState, [type]: false })
+  }
 
-
-  const handleDateTimeModal = (dateTime) =>{
+  const handleDateTimeModal = (dateTime) => {
     setDateTimeArray(dateTime)
   }
-  
-  const updateDateTime = async ()=>{
+
+  const updateDateTime = async () => {
     setLoading(true)
-   await updateEventDate(eventId,dateTimeArray).then((res)=>console.log(res))
-   handleClose('dateTime')
-   refreshData()
+    await updateEventDate(eventId, dateTimeArray).then((res) =>
+      console.log(res),
+    )
+    handleClose('dateTime')
+    refreshData()
     setLoading(false)
   }
 
-  const handleChipDelete = async(event_date)=>{
-    console.log(event_date,'delete Chip')
+  const handleChipDelete = async (event_date) => {
+    console.log(event_date, 'delete Chip')
     setLoading(true)
-    await deleteEventDate(eventId,event_date).then((res)=>console.log(res))
+    await deleteEventDate(eventId, event_date).then((res) => console.log(res))
     refreshData()
-     setLoading(false)
-
+    setLoading(false)
   }
-  const handleChipClick = ()=>{
+  const handleChipClick = () => {}
 
-  }
-
-  const updateDesceiption = async()=>{
-    if(description == ''){
+  const updateDesceiption = async () => {
+    if (description == '') {
       alert('Description Can not be empty')
       return
     }
     setLoading(true)
-     await updateEventDetails(eventId,description,'description',locale)
-          .then((data)=>console.log(data))
+    await updateEventDetails(eventId, description, 'description', locale).then(
+      (data) => console.log(data),
+    )
     handleClose('description')
     refreshData()
     setLoading(false)
   }
 
-  const updateLocation = async()=>{
-    if(location == ''){
+  const updateLocation = async () => {
+    if (location == '') {
       alert('Please enter location')
       return
     }
     setLoading(true)
-    await updateEventDetails(eventId,location,'event_location')
-          .then((data)=>console.log(data))
+    await updateEventDetails(eventId, location, 'event_location').then((data) =>
+      console.log(data),
+    )
     setLoading(false)
     refreshData()
     handleClose('location')
   }
 
+  useEffect(() => {}, [dateTimeArray])
 
-  
-
-  useEffect(()=>{
-  
-  },[dateTimeArray])
-
-
-  const dateTimeChip =(data)=>{
-    return(
+  const dateTimeChip = (data) => {
+    return (
       <p>
         {data.date} / From {data.from} To {data.to}
       </p>
     )
-
   }
 
   return (
     <form>
       <CardContent sx={{ paddingBottom: 0 }}>
         <Grid container spacing={5}>
-          <Grid item sx={{paddingBottom:'1.25rem',display:'flex',justifyContent:'center',flexDirection:'column'}} xs={12} sm={12}>
-            <Box sx={{marginBottom:'10px'}}>
-              {Array.isArray(data.event_date) && data.event_date.map((item,key)=>(
-                <Chip
-                key={key}
-                onClick={handleChipClick}
-                onDelete={() => handleChipDelete(item)}
-                label={dateTimeChip(item) }
-                deleteIcon={<DeleteIcon/>}
-                variant="outlined"
-                sx={{marginRight:'15px'}}
-              />
-
-              ))}
-             <Button onClick={()=>handleClickOpen('dateTime') } variant="contained">Date & Time</Button>
-         
+          <Grid
+            item
+            sx={{
+              paddingBottom: '1.25rem',
+              display: 'flex',
+              justifyContent: 'center',
+              flexDirection: 'column',
+            }}
+            xs={12}
+            sm={12}
+          >
+            <Box sx={{ marginBottom: '10px' }}>
+              {Array.isArray(data.event_date) &&
+                data.event_date.map((item, key) => (
+                  <Chip
+                    key={key}
+                    onClick={handleChipClick}
+                    onDelete={() => handleChipDelete(item)}
+                    label={dateTimeChip(item)}
+                    deleteIcon={<DeleteIcon />}
+                    variant="outlined"
+                    sx={{ marginRight: '15px' }}
+                  />
+                ))}
+              <Button
+                onClick={() => handleClickOpen('dateTime')}
+                variant="contained"
+              >
+                Date & Time
+              </Button>
             </Box>
-          <Dialog open={openState.dateTime} onClose={ ()=>handleClose('dateTime')} maxWidth="md" fullWidth>
-            <DialogTitle>Add Event Date Time</DialogTitle>
-            <DialogContent >
-              <DateTimeComponent handleDateTimeModal={handleDateTimeModal} />
-            </DialogContent>
-            <DialogActions>
-            <Button onClick={()=>updateDateTime()}>Add</Button>
-            <Button onClick={()=>handleClose('dateTime')}>Cancel</Button>
-            </DialogActions>
-        </Dialog>
+            <Dialog
+              open={openState.dateTime}
+              onClose={() => handleClose('dateTime')}
+              maxWidth="md"
+              fullWidth
+            >
+              <DialogTitle>Add Event Date Time</DialogTitle>
+              <DialogContent>
+                <DateTimeComponent handleDateTimeModal={handleDateTimeModal} />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => updateDateTime()}>Add</Button>
+                <Button onClick={() => handleClose('dateTime')}>Cancel</Button>
+              </DialogActions>
+            </Dialog>
           </Grid>
         </Grid>
       </CardContent>
@@ -171,86 +178,122 @@ const EventStep2 = ({data,eventId,refreshData}) => {
       <Divider sx={{ margin: 0 }} />
       <CardContent sx={{ paddingBottom: 0 }}>
         <Grid container spacing={5}>
-          <Grid item sx={{paddingBottom:'1.25rem'}} xs={12} sm={6}>
-          <Box sx={{marginBottom:'10px'}}>
-              {data.event_location == undefined ?
-              <Typography>Location Not Defined</Typography>:data.event_location == '' ? 
-              <Typography>No Location Added. Please Add</Typography>
-              :<Typography>{data.event_location}</Typography>
-              }
-              
+          <Grid item sx={{ paddingBottom: '1.25rem' }} xs={12} sm={6}>
+            <Box sx={{ marginBottom: '10px' }}>
+              {data.event_location == undefined ? (
+                <Typography>Location Not Defined</Typography>
+              ) : data.event_location == '' ? (
+                <Typography>No Location Added. Please Add</Typography>
+              ) : (
+                <Typography>{data.event_location}</Typography>
+              )}
             </Box>
-          <Button variant="contained" onClick={()=>handleClickOpen('location')}>Address/Map co-ordinates</Button>
-          <Dialog open={openState.location} onClose={ ()=>handleClose('location')}>
-            <DialogTitle>Enter Event Location</DialogTitle>
-            <DialogContent>
-              <Box>
-                <TextField
-                      autoFocus
-                      id="name"
-                      label="Location"
-                      type="text"
-                      fullWidth
-                      variant="standard"
-                      sx={{marginBottom:'5px'}}
-                      onChange={(e)=>{setLocation(e.target.value)}}
-                      placeholder="ex: Near football stadium Queens mall Banglore"
-                    />
-                  
-              </Box>
-            </DialogContent>
-            <DialogActions>
-            <Button onClick={updateLocation}>Add</Button>
-            <Button onClick={()=>handleClose('location')}>Cancel</Button>
-            </DialogActions>
-        </Dialog>
-          </Grid>
-        </Grid>
-      </CardContent>
-
-      <Divider sx={{ margin: 0 }} />
-      <CardContent sx={{ paddingBottom: 0 }}>
-        <Grid container spacing={5}>
-          <Grid item sx={{paddingBottom:'1.25rem', display:'flex',justifyContent:'center',flexDirection:'column'}} xs={12} sm={12}>
-            <Box sx={{marginBottom:'10px'}}>
-            {
-              data.hasOwnProperty('description') ? 
-              data.description.hasOwnProperty(locale) ?<Typography> {data.description[locale]}</Typography> : 
-              <Typography>{data.description[Object.keys(data.description)[0]]}</Typography> :
-              <Typography>Description Not Defined</Typography>
-
-            }
-               <Button 
-          endIcon={data.description != ''?<EditIcon/>:<AddIcon />}
-          variant="contained" 
-          sx={{marginTop:'10px'}}
-          onClick={()=>handleClickOpen('description')}>Event Descrption</Button>
-            </Box>
-         
-          <Dialog fullWidth open={openState.description} onClose={ ()=>handleClose('description')}>
-                <DialogTitle>Enter Event Description</DialogTitle>
-                <DialogContent>
-                <TextField
-                  onChange={(e)=>setDescription(e.target.value)}
+            <Button
+              variant="contained"
+              onClick={() => handleClickOpen('location')}
+            >
+              Address/Map co-ordinates
+            </Button>
+            <Dialog
+              open={openState.location}
+              onClose={() => handleClose('location')}
+            >
+              <DialogTitle>Enter Event Location</DialogTitle>
+              <DialogContent>
+                <Box>
+                  <TextField
                     autoFocus
-                    required
                     id="name"
-                    label="Description"
+                    label="Location"
                     type="text"
                     fullWidth
-                    defaultValue={data.description?.hasOwnProperty(locale) ? data.description[locale]:''}
                     variant="standard"
-                    multiline
-                    rows={5}
-                    value={data.descrption}
+                    sx={{ marginBottom: '5px' }}
+                    onChange={(e) => {
+                      setLocation(e.target.value)
+                    }}
+                    placeholder="ex: Near football stadium Queens mall Banglore"
+                  />
+                </Box>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={updateLocation}>Add</Button>
+                <Button onClick={() => handleClose('location')}>Cancel</Button>
+              </DialogActions>
+            </Dialog>
+          </Grid>
+        </Grid>
+      </CardContent>
+
+      <Divider sx={{ margin: 0 }} />
+      <CardContent sx={{ paddingBottom: 0 }}>
+        <Grid container spacing={5}>
+          <Grid
+            item
+            sx={{
+              paddingBottom: '1.25rem',
+              display: 'flex',
+              justifyContent: 'center',
+              flexDirection: 'column',
+            }}
+            xs={12}
+            sm={12}
+          >
+            <Box sx={{ marginBottom: '10px' }}>
+              {data.hasOwnProperty('description') ? (
+                data.description.hasOwnProperty(locale) ? (
+                  <Typography> {data.description[locale]}</Typography>
+                ) : (
+                  <Typography>
+                    {data.description[Object.keys(data.description)[0]]}
+                  </Typography>
+                )
+              ) : (
+                <Typography>Description Not Defined</Typography>
+              )}
+              <Button
+                endIcon={data.description != '' ? <EditIcon /> : <AddIcon />}
+                variant="contained"
+                sx={{ marginTop: '10px' }}
+                onClick={() => handleClickOpen('description')}
+              >
+                Event Descrption
+              </Button>
+            </Box>
+
+            <Dialog
+              fullWidth
+              open={openState.description}
+              onClose={() => handleClose('description')}
+            >
+              <DialogTitle>Enter Event Description</DialogTitle>
+              <DialogContent>
+                <TextField
+                  onChange={(e) => setDescription(e.target.value)}
+                  autoFocus
+                  required
+                  id="name"
+                  label="Description"
+                  type="text"
+                  fullWidth
+                  defaultValue={
+                    data.description?.hasOwnProperty(locale)
+                      ? data.description[locale]
+                      : ''
+                  }
+                  variant="standard"
+                  multiline
+                  rows={5}
+                  value={data.descrption}
                 />
-                </DialogContent>
-                    
-                <DialogActions>
-                    <Button 
-                    onClick={updateDesceiption }>Save</Button>
-                    <Button onClick={()=>handleClose('description')}>Cancel</Button>
-                </DialogActions>
+              </DialogContent>
+
+              <DialogActions>
+                <Button onClick={updateDesceiption}>Save</Button>
+                <Button onClick={() => handleClose('description')}>
+                  Cancel
+                </Button>
+              </DialogActions>
             </Dialog>
           </Grid>
         </Grid>
@@ -258,19 +301,26 @@ const EventStep2 = ({data,eventId,refreshData}) => {
 
       {/* <Divider sx={{ margin: 0 }} />
       <ContactComponent /> */}
-      
 
       <Divider sx={{ margin: 0 }} />
       {loading === true && (
-
-      
-      <Box sx={{ display: 'flex',justifyContent:'center',alignItems:'center',backgroundColor: 'rgb(0 0 0 / 39%)',zIndex: 99999999,position: 'fixed',left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0, }}>
-            <CircularProgress />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgb(0 0 0 / 39%)',
+            zIndex: 99999999,
+            position: 'fixed',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+          }}
+        >
+          <CircularProgress />
         </Box>
-        )}
+      )}
     </form>
   )
 }

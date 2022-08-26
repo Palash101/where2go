@@ -14,17 +14,16 @@ import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
 import CircularProgress from '@mui/material/CircularProgress'
-import { toast } from 'react-toastify';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import Slider from '@mui/material/Slider';
-import RemoveIcon from '@mui/icons-material/Remove';
-
+import { toast } from 'react-toastify'
+import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
+import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber'
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft'
+import ArrowRightIcon from '@mui/icons-material/ArrowRight'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
+import Slider from '@mui/material/Slider'
+import RemoveIcon from '@mui/icons-material/Remove'
 
 //Service Imports
 import { updateEventData } from '../../../service/admin/events'
@@ -32,80 +31,296 @@ import { updateEventData } from '../../../service/admin/events'
 import { userAuth } from 'context/userContext'
 import Translations from 'utils/trans'
 
-
 const FooterMenu = (props) => {
+  return (
+    <Box
+      sx={{
+        position: 'absolute',
+        backgroundColor: '#000920',
+        top: '10px',
+        right: '10px',
+        zIndex: '9999',
+        height: '110px',
+        width: '320px',
+        borderRadius: '5px',
+        boxShadow: '0px 0px 2px 0px #aa5656',
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          marginTop: '5px',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'grid',
+            height: '95px',
+            alignContent: 'space-between',
+          }}
+        >
+          <Box
+            sx={{
+              flexDirection: 'row',
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%',
+              justifyContent: 'space-between',
+            }}
+          >
+            <AddIcon
+              onClick={() => props.increaseRowColAttribute('row', 1)}
+              sx={{
+                fontSize: '20px',
+                cursor: 'pointer',
+                marginInline: '15px',
+                backgroundColor: '#ffffff12',
+                borderRadius: '50%',
+              }}
+            />
+            <Typography sx={{ fontSize: '12px' }}>
+              <img
+                src="/images/ico/insertr.png"
+                style={{ width: '20px', height: '20px' }}
+              />
+            </Typography>
+            <RemoveIcon
+              onClick={() => props.decrementRowColAttribute('row', 1)}
+              sx={{
+                fontSize: '20px',
+                cursor: 'pointer',
+                marginInline: '15px',
+                backgroundColor: '#ffffff12',
+                borderRadius: '50%',
+              }}
+            />
+          </Box>
 
+          <Box
+            sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}
+          >
+            <AddIcon
+              onClick={() =>
+                props.increaseRowColAttribute('rowIncrementPoistionBy', 10)
+              }
+              sx={{
+                fontSize: '20px',
+                cursor: 'pointer',
+                marginInline: '15px',
+                backgroundColor: '#ffffff12',
+                borderRadius: '50%',
+              }}
+            />
+            <Typography sx={{ fontSize: '12px' }}>
+              <img
+                src="/images/ico/spaceh.png"
+                style={{ width: '20px', height: '20px' }}
+              />
+            </Typography>
+            <RemoveIcon
+              onClick={() =>
+                props.decrementRowColAttribute('rowIncrementPoistionBy', 10)
+              }
+              sx={{
+                fontSize: '20px',
+                cursor: 'pointer',
+                marginInline: '15px',
+                backgroundColor: '#ffffff12',
+                borderRadius: '50%',
+              }}
+            />
+          </Box>
+          <Box
+            sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}
+          >
+            <AddIcon
+              onClick={() => props.rotatel('row', 1)}
+              sx={{
+                fontSize: '20px',
+                cursor: 'pointer',
+                marginInline: '15px',
+                backgroundColor: '#ffffff12',
+                borderRadius: '50%',
+              }}
+            />
+            <Typography sx={{ fontSize: '12px' }}>
+              <img
+                src="/images/ico/rotatel.png"
+                style={{ width: '20px', height: '20px' }}
+              />
+            </Typography>
+            <RemoveIcon
+              onClick={() => props.rotatel('row', 1)}
+              sx={{
+                fontSize: '20px',
+                cursor: 'pointer',
+                marginInline: '15px',
+                backgroundColor: '#ffffff12',
+                borderRadius: '50%',
+              }}
+            />
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            height: '80px',
+            width: '80px',
+            borderRadius: '50%',
+            backgroundColor: '#ff3d00',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            boxShadow: '0px 0px 4px 2px white',
+          }}
+        >
+          <Box
+            className="updown"
+            sx={{
+              position: 'absolute',
+              display: 'flex',
+              flexDirection: 'column',
+              top: '-5px',
+            }}
+          >
+            <ArrowDropUpIcon
+              sx={{ fontSize: '60px', cursor: 'pointer' }}
+              onClick={() => props.decrementRectXY('y', 10)}
+            />
+            <ArrowDropDownIcon
+              sx={{ fontSize: '60px', cursor: 'pointer' }}
+              onClick={() => props.moveReactXY('y', 10)}
+            />
+          </Box>
 
-	
-	return (
-
-		<Box
-			sx={{ position: 'absolute', backgroundColor: "#000920", top: '10px', right: '10px', zIndex: '9999', height: '110px', width: '320px', borderRadius: '5px', boxShadow: '0px 0px 2px 0px #aa5656' }}>
-
-			<Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-around', marginTop: '5px' }}>
-				<Box sx={{ display: 'grid', height: '95px', alignContent: 'space-between' }}>
-					<Box sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
-						<AddIcon onClick={() => props.increaseRowColAttribute('row', 1)} sx={{ fontSize: '20px', cursor: 'pointer', marginInline: '15px', backgroundColor: '#ffffff12', borderRadius: '50%' }} />
-						<Typography sx={{ fontSize: '12px' }}><img src="/images/ico/insertr.png" style={{ width: '20px', height: '20px' }} />
-						</Typography>
-						<RemoveIcon onClick={() => props.decrementRowColAttribute('row', 1)} sx={{ fontSize: '20px', cursor: 'pointer', marginInline: '15px', backgroundColor: '#ffffff12', borderRadius: '50%' }} />
-					</Box>
-
-					<Box sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}>
-						<AddIcon onClick={() => props.increaseRowColAttribute('rowIncrementPoistionBy', 10)} sx={{ fontSize: '20px', cursor: 'pointer', marginInline: '15px', backgroundColor: '#ffffff12', borderRadius: '50%' }} />
-						<Typography sx={{ fontSize: '12px' }}><img src="/images/ico/spaceh.png" style={{ width: '20px', height: '20px' }} /></Typography>
-						<RemoveIcon onClick={() => props.decrementRowColAttribute('rowIncrementPoistionBy', 10)} sx={{ fontSize: '20px', cursor: 'pointer', marginInline: '15px', backgroundColor: '#ffffff12', borderRadius: '50%' }} />
-					</Box>
-					<Box sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}>
-						<AddIcon onClick={() => props.rotatel('row', 1)} sx={{ fontSize: '20px', cursor: 'pointer', marginInline: '15px', backgroundColor: '#ffffff12', borderRadius: '50%' }} />
-						<Typography sx={{ fontSize: '12px' }}><img src="/images/ico/rotatel.png" style={{ width: '20px', height: '20px' }} /></Typography>
-						<RemoveIcon onClick={() => props.rotatel('row', 1)} sx={{ fontSize: '20px', cursor: 'pointer', marginInline: '15px', backgroundColor: '#ffffff12', borderRadius: '50%' }} />
-					</Box>
-
-				</Box>
-				<Box
-					sx={{ height: '80px', width: '80px', borderRadius: '50%', backgroundColor: '#ff3d00', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0px 0px 4px 2px white' }}>
-					<Box className='updown' sx={{ position: 'absolute', display: 'flex', flexDirection: 'column', top: '-5px' }}>
-						<ArrowDropUpIcon sx={{ fontSize: '60px', cursor: 'pointer' }}
-							onClick={() => props.decrementRectXY('y', 10)} />
-						<ArrowDropDownIcon sx={{ fontSize: '60px', cursor: 'pointer' }}
-							onClick={() => props.moveReactXY('y', 10)} />
-					</Box>
-
-					<Box className='leftright' sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', position: 'absolute', top: '23%' }}>
-						<ArrowLeftIcon sx={{ fontSize: '60px', cursor: 'pointer' }}
-							onClick={() => props.decrementRectXY('x', 10)} />
-						<ArrowRightIcon sx={{ fontSize: '60px', cursor: 'pointer' }}
-							onClick={() => props.moveReactXY('x', 10)} />
-					</Box>
-				</Box>
-				<Box sx={{ display: 'grid', height: '95px', alignContent: 'space-between' }}>
-					<Box sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}>
-						<AddIcon onClick={() => props.increaseRowColAttribute('col', 1)} sx={{ fontSize: '20px', cursor: 'pointer', marginInline: '15px', backgroundColor: '#ffffff12', borderRadius: '50%' }} />
-						<Typography sx={{ fontSize: '12px' }}><img src="/images/ico/insertc.png" style={{ width: '20px', height: '20px' }} /></Typography>
-						<RemoveIcon onClick={() => props.decrementRowColAttribute('col', 1)} sx={{ fontSize: '20px', cursor: 'pointer', marginInline: '15px', backgroundColor: '#ffffff12', borderRadius: '50%' }} />
-					</Box>
-					<Box sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}>
-						<AddIcon onClick={() => props.increaseRowColAttribute('colIncrementPoistionBy', 10)} sx={{ fontSize: '20px', cursor: 'pointer', marginInline: '15px', backgroundColor: '#ffffff12', borderRadius: '50%' }} />
-						<Typography sx={{ fontSize: '12px' }}><img src="/images/ico/spacev.png" style={{ width: '20px', height: '20px' }} /></Typography>
-						<RemoveIcon onClick={() => props.decrementRowColAttribute('colIncrementPoistionBy', 10)} sx={{ fontSize: '20px', cursor: 'pointer', marginInline: '15px', backgroundColor: '#ffffff12', borderRadius: '50%' }} />
-					</Box>
-					<Box sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}>
-
-						<AddIcon onClick={() => props.increaseRow('row', 1)} sx={{ fontSize: '20px', cursor: 'pointer', marginInline: '15px', backgroundColor: '#ffffff12', borderRadius: '50%' }} />
-						<Typography sx={{ fontSize: '12px' }}><img src="/images/ico/rotater.png" style={{ width: '20px', height: '20px' }} /></Typography>
-						<RemoveIcon onClick={() => props.decreaseRow('row', 1)} sx={{ fontSize: '20px', cursor: 'pointer', marginInline: '15px', backgroundColor: '#ffffff12', borderRadius: '50%' }} />
-
-					</Box>
-				</Box>
-			</Box>
-
-
-
-		</Box>
-
-
-	)
+          <Box
+            className="leftright"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              position: 'absolute',
+              top: '23%',
+            }}
+          >
+            <ArrowLeftIcon
+              sx={{ fontSize: '60px', cursor: 'pointer' }}
+              onClick={() => props.decrementRectXY('x', 10)}
+            />
+            <ArrowRightIcon
+              sx={{ fontSize: '60px', cursor: 'pointer' }}
+              onClick={() => props.moveReactXY('x', 10)}
+            />
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            display: 'grid',
+            height: '95px',
+            alignContent: 'space-between',
+          }}
+        >
+          <Box
+            sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}
+          >
+            <AddIcon
+              onClick={() => props.increaseRowColAttribute('col', 1)}
+              sx={{
+                fontSize: '20px',
+                cursor: 'pointer',
+                marginInline: '15px',
+                backgroundColor: '#ffffff12',
+                borderRadius: '50%',
+              }}
+            />
+            <Typography sx={{ fontSize: '12px' }}>
+              <img
+                src="/images/ico/insertc.png"
+                style={{ width: '20px', height: '20px' }}
+              />
+            </Typography>
+            <RemoveIcon
+              onClick={() => props.decrementRowColAttribute('col', 1)}
+              sx={{
+                fontSize: '20px',
+                cursor: 'pointer',
+                marginInline: '15px',
+                backgroundColor: '#ffffff12',
+                borderRadius: '50%',
+              }}
+            />
+          </Box>
+          <Box
+            sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}
+          >
+            <AddIcon
+              onClick={() =>
+                props.increaseRowColAttribute('colIncrementPoistionBy', 10)
+              }
+              sx={{
+                fontSize: '20px',
+                cursor: 'pointer',
+                marginInline: '15px',
+                backgroundColor: '#ffffff12',
+                borderRadius: '50%',
+              }}
+            />
+            <Typography sx={{ fontSize: '12px' }}>
+              <img
+                src="/images/ico/spacev.png"
+                style={{ width: '20px', height: '20px' }}
+              />
+            </Typography>
+            <RemoveIcon
+              onClick={() =>
+                props.decrementRowColAttribute('colIncrementPoistionBy', 10)
+              }
+              sx={{
+                fontSize: '20px',
+                cursor: 'pointer',
+                marginInline: '15px',
+                backgroundColor: '#ffffff12',
+                borderRadius: '50%',
+              }}
+            />
+          </Box>
+          <Box
+            sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}
+          >
+            <AddIcon
+              onClick={() => props.increaseRow('row', 1)}
+              sx={{
+                fontSize: '20px',
+                cursor: 'pointer',
+                marginInline: '15px',
+                backgroundColor: '#ffffff12',
+                borderRadius: '50%',
+              }}
+            />
+            <Typography sx={{ fontSize: '12px' }}>
+              <img
+                src="/images/ico/rotater.png"
+                style={{ width: '20px', height: '20px' }}
+              />
+            </Typography>
+            <RemoveIcon
+              onClick={() => props.decreaseRow('row', 1)}
+              sx={{
+                fontSize: '20px',
+                cursor: 'pointer',
+                marginInline: '15px',
+                backgroundColor: '#ffffff12',
+                borderRadius: '50%',
+              }}
+            />
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  )
 }
 
-export default FooterMenu;
+export default FooterMenu

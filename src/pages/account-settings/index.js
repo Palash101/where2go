@@ -25,11 +25,11 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 const Tab = styled(MuiTab)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
-    minWidth: 100
+    minWidth: 100,
   },
   [theme.breakpoints.down('sm')]: {
-    minWidth: 67
-  }
+    minWidth: 67,
+  },
 }))
 
 const TabName = styled('span')(({ theme }) => ({
@@ -37,8 +37,8 @@ const TabName = styled('span')(({ theme }) => ({
   fontSize: '0.875rem',
   marginLeft: theme.spacing(2.4),
   [theme.breakpoints.down('md')]: {
-    display: 'none'
-  }
+    display: 'none',
+  },
 }))
 
 const AccountSettings = () => {
@@ -54,11 +54,11 @@ const AccountSettings = () => {
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
-          aria-label='account-settings tabs'
-          sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
+          aria-label="account-settings tabs"
+          sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value='account'
+            value="account"
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <AccountOutline />
@@ -67,7 +67,7 @@ const AccountSettings = () => {
             }
           />
           <Tab
-            value='security'
+            value="security"
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <LockOpenOutline />
@@ -76,7 +76,7 @@ const AccountSettings = () => {
             }
           />
           <Tab
-            value='info'
+            value="info"
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <InformationOutline />
@@ -86,13 +86,13 @@ const AccountSettings = () => {
           />
         </TabList>
 
-        <TabPanel sx={{ p: 0 }} value='account'>
+        <TabPanel sx={{ p: 0 }} value="account">
           <TabAccount />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='security'>
+        <TabPanel sx={{ p: 0 }} value="security">
           <TabSecurity />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='info'>
+        <TabPanel sx={{ p: 0 }} value="info">
           <TabInfo />
         </TabPanel>
       </TabContext>

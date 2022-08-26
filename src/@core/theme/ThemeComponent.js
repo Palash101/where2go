@@ -1,7 +1,11 @@
 // ** MUI Imports
 import CssBaseline from '@mui/material/CssBaseline'
 import GlobalStyles from '@mui/material/GlobalStyles'
-import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles'
+import {
+  ThemeProvider,
+  createTheme,
+  responsiveFontSizes,
+} from '@mui/material/styles'
 
 // ** Theme Config
 import themeConfig from 'src/configs/themeConfig'
@@ -16,7 +20,7 @@ import themeOptions from './ThemeOptions'
 // ** Global Styles
 import GlobalStyling from './globalStyles'
 
-const ThemeComponent = props => {
+const ThemeComponent = (props) => {
   // ** Props
   const { settings, children } = props
 
@@ -29,7 +33,7 @@ const ThemeComponent = props => {
   // ** Continue theme creation and pass merged component overrides to CreateTheme function
   theme = createTheme(theme, {
     components: { ...overrides(theme) },
-    typography: { ...typography(theme) }
+    typography: { ...typography(theme) },
   })
 
   // ** Set responsive font sizes to true

@@ -1,14 +1,14 @@
-const Popover = theme => {
+const Popover = (theme) => {
   return {
     MuiPopover: {
       styleOverrides: {
         root: {
           '& .MuiPopover-paper': {
-            boxShadow: theme.shadows[6]
-          }
-        }
-      }
-    }
+            boxShadow: theme.shadows[6],
+          },
+        },
+      },
+    },
   }
 }
 

@@ -2,13 +2,13 @@
 import VerticalNavLink from './VerticalNavLink'
 import VerticalNavSectionTitle from './VerticalNavSectionTitle'
 
-const resolveNavItemComponent = item => {
+const resolveNavItemComponent = (item) => {
   if (item.sectionTitle) return VerticalNavSectionTitle
 
   return VerticalNavLink
 }
 
-const VerticalNavItems = props => {
+const VerticalNavItems = (props) => {
   // ** Props
   const { verticalNavItems } = props
 

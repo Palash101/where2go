@@ -4,8 +4,8 @@ import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import InputAdornment from '@mui/material/InputAdornment'
-import  FormControlLabel  from '@mui/material/FormControlLabel'
-import  Switch  from '@mui/material/Switch'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Switch from '@mui/material/Switch'
 
 // ** Icons Imports
 import Menu from 'mdi-material-ui/Menu'
@@ -17,36 +17,42 @@ import UserDropdown from 'src/@core/layouts/components/shared-components/UserDro
 import NotificationDropdown from 'src/@core/layouts/components/shared-components/NotificationDropdown'
 
 //** other imports */
-import Translations from 'utils/trans';
-import { userAuth } from 'context/userContext';
+import Translations from 'utils/trans'
+import { userAuth } from 'context/userContext'
 import { useEffect } from 'react'
 
-
-const AppBarContent = props => {
+const AppBarContent = (props) => {
   // ** Props
   const { hidden, settings, saveSettings, toggleNavVisibility } = props
   const userContext = userAuth()
   const locale = userContext.locale
-  const t =  Translations(locale)
+  const t = Translations(locale)
 
-
-  const changLanguage = ()=>{
-    userContext.switchLang();
+  const changLanguage = () => {
+    userContext.switchLang()
   }
 
-  useEffect(()=>{
-
-  },[])
+  useEffect(() => {}, [])
 
   // ** Hook
-  const hiddenSm = useMediaQuery(theme => theme.breakpoints.down('sm'))
+  const hiddenSm = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
   return (
-    <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <Box className='actions-left' sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
+    <Box
+      sx={{
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Box
+        className="actions-left"
+        sx={{ mr: 2, display: 'flex', alignItems: 'center' }}
+      >
         {hidden ? (
           <IconButton
-            color='inherit'
+            color="inherit"
             onClick={toggleNavVisibility}
             sx={{ ml: -2.75, ...(hiddenSm ? {} : { mr: 3.5 }) }}
           >
@@ -54,22 +60,25 @@ const AppBarContent = props => {
           </IconButton>
         ) : null}
         <TextField
-          size='small'
+          size="small"
           sx={{ '& .MuiOutlinedInput-root': { borderRadius: 4 } }}
           InputProps={{
             startAdornment: (
-              <InputAdornment position='start'>
-                <Magnify fontSize='small' />
+              <InputAdornment position="start">
+                <Magnify fontSize="small" />
               </InputAdornment>
-            )
+            ),
           }}
         />
       </Box>
-      <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
-      <FormControlLabel 
-        control={<Switch 
-          onChange={changLanguage}
-        />} label={locale} />
+      <Box
+        className="actions-right"
+        sx={{ display: 'flex', alignItems: 'center' }}
+      >
+        <FormControlLabel
+          control={<Switch onChange={changLanguage} />}
+          label={locale}
+        />
         <ModeToggler settings={settings} saveSettings={saveSettings} />
         <NotificationDropdown />
         <UserDropdown />
@@ -79,4 +88,3 @@ const AppBarContent = props => {
 }
 
 export default AppBarContent
- 

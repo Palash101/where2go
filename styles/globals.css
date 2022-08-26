@@ -492,3 +492,7 @@ span.catRemove {
   border-radius: 6px;
   font-weight: 600;
 }
+.user-seat-selected{
+  fill:rgb(1, 105, 36)
+
+}

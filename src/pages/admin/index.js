@@ -1,11 +1,11 @@
 // ** MUI Imports
-import nookies from "nookies";
+import nookies from 'nookies'
 
 import Grid from '@mui/material/Grid'
 
-import { useEffect,useContext } from 'react'
+import { useEffect, useContext } from 'react'
 import { userAuth } from '../../../context/userContext'
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 // ** Icons Imports
 import Poll from 'mdi-material-ui/Poll'
 import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
@@ -27,18 +27,13 @@ import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
 import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
 import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 
-import {emailPasswordSigin,verifyToken} from '../../../service/auth'
+import { emailPasswordSigin, verifyToken } from '../../../service/auth'
 
-
-
-
-const Dashboard = ({user}) => {
+const Dashboard = ({ user }) => {
   const router = useRouter()
-  const userContext =  userAuth()
+  const userContext = userAuth()
 
-  useEffect(()=>{
-
-  },[])
+  useEffect(() => {}, [])
 
   return (
     <ApexChartWrapper>
@@ -59,43 +54,43 @@ const Dashboard = ({user}) => {
           <Grid container spacing={6}>
             <Grid item xs={6}>
               <CardStatisticsVerticalComponent
-                stats='$25.6k'
+                stats="$25.6k"
                 icon={<Poll />}
-                color='success'
-                trendNumber='+42%'
-                title='Total Profit'
-                subtitle='Weekly Profit'
+                color="success"
+                trendNumber="+42%"
+                title="Total Profit"
+                subtitle="Weekly Profit"
               />
             </Grid>
             <Grid item xs={6}>
               <CardStatisticsVerticalComponent
-                stats='$78'
-                title='Refunds'
-                trend='negative'
-                color='secondary'
-                trendNumber='-15%'
-                subtitle='Past Month'
+                stats="$78"
+                title="Refunds"
+                trend="negative"
+                color="secondary"
+                trendNumber="-15%"
+                subtitle="Past Month"
                 icon={<CurrencyUsd />}
               />
             </Grid>
             <Grid item xs={6}>
               <CardStatisticsVerticalComponent
-                stats='862'
-                trend='negative'
-                trendNumber='-18%'
-                title='New Project'
-                subtitle='Yearly Project'
+                stats="862"
+                trend="negative"
+                trendNumber="-18%"
+                title="New Project"
+                subtitle="Yearly Project"
                 icon={<BriefcaseVariantOutline />}
               />
             </Grid>
             <Grid item xs={6}>
               <CardStatisticsVerticalComponent
-                stats='15'
-                color='warning'
-                trend='negative'
-                trendNumber='-18%'
-                subtitle='Last Week'
-                title='Sales Queries'
+                stats="15"
+                color="warning"
+                trend="negative"
+                trendNumber="-18%"
+                subtitle="Last Week"
+                title="Sales Queries"
                 icon={<HelpCircleOutline />}
               />
             </Grid>
@@ -118,47 +113,40 @@ const Dashboard = ({user}) => {
 export default Dashboard
 
 export async function getServerSideProps(context) {
-  try{
-    const cookies = nookies.get(context);
-    if(!cookies.user){
-      return{
-        redirect:{
-          permanent:false,
-          destination:'/admin/login',
+  try {
+    const cookies = nookies.get(context)
+    if (!cookies.user) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/admin/login',
         },
-        props:{}
+        props: {},
       }
+    }
+    const userData = await verifyToken(cookies.user)
+    console.log(userData, 'in index page')
 
-    }
-    const userData = await verifyToken(cookies.user);
-    console.log(userData,'in index page')
- 
-   if(userData.userType === 'admin'){
-      return{
-        props:{user:userData}
+    if (userData.userType === 'admin') {
+      return {
+        props: { user: userData },
+      }
+    } else {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/admin/login',
+        },
+        props: {},
       }
     }
-    else{
-      return{
-        redirect:{
-          permanent:false,
-          destination:'/admin/login',
-        },
-        props:{}
-      }
-    }
-    
-
-  }
-  catch(err){
-    return{
-      redirect:{
-          permanent:false,
-          destination:'/admin/login'
-        },
-      props:{}
+  } catch (err) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/admin/login',
+      },
+      props: {},
     }
   }
-
-
 }
