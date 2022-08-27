@@ -50,7 +50,7 @@ export  const emailPasswordSigin = async (email,password)=>{
         if(adminUser.role == 3){
           await createUserSession(idToken,userId,'admin');  
         }
-        return {uId:userId,email:userEmail,token:idToken}
+        return {uId:userId,email:userEmail,token:idToken,userType:'admin'}
       })
       .catch((err)=>{
         return{error:'error',message:'something went wrong',deverr:err}

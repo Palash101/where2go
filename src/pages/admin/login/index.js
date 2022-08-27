@@ -102,6 +102,8 @@ const LoginPage = () => {
           userContext.setUserAuthState({
             accesstoken: data.token,
             isAuthenticated: true,
+            userInfo:'Admin',
+            userType:data.userType
           })
           console.log(data, 'sign process login in admin login page')
 

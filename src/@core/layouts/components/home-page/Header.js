@@ -174,9 +174,10 @@ function HomeAppBar(props) {
 
             userContext.setUserAuthState({
               accesstoken: res.accessToken,
-              uId: res.uId,
-              userInfo: res.phoneNumber,
               isAuthenticated: true,
+              userInfo: res.phoneNumber,
+              userType:'customer'
+              
             })
 
             const userData = {
@@ -243,13 +244,10 @@ function HomeAppBar(props) {
   }
 
   const logout = () => {
-    userLogout().then((res) => {
-      console.log(res)
-    })
-    localStorage.clear()
-    setReloadPage(!reloadPage)
-    setUser({})
+    userContext.logout();
     handleMenuClose()
+    router.push('/')
+    
   }
 
   const list = (bgclr) => (

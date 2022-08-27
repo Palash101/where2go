@@ -1,6 +1,8 @@
 import { createContext, useContext, Context } from 'react'
 import { useState, useEffect } from 'react';
 import Translations from 'utils/trans'
+import { userLogout } from 'service/auth'
+
 
  const authUserContext = createContext();
 
@@ -28,15 +30,18 @@ import Translations from 'utils/trans'
     },[locale])
 
     const setUserAuthInfo = (data) => {
-        const {accesstoken,isAuthenticated,userInfo} = data;
+        const {accesstoken,isAuthenticated,userInfo,userType} = data;
         localStorage.setItem("accesstoken", accesstoken);
         localStorage.setItem("isAuthenticated", isAuthenticated);
         localStorage.setItem("userInfo", userInfo);
+        localStorage.setItem("userType", userType);
         setAuthState({
             ...authState,
         accesstoken:accesstoken,
          isAuthenticated,
-         userInfo:userInfo
+         userInfo:userInfo,
+         userType:userType
+
         });
       };
     const isUserAuthenticated = () => {
@@ -61,8 +66,10 @@ import Translations from 'utils/trans'
 
     }
 
-    const logoutUser = () =>{
-
+    const logoutUser = async () =>{
+        localStorage.clear()
+        await userLogout();
+        location.reload();
     }
 
     const getTrans = () =>{
@@ -75,7 +82,8 @@ import Translations from 'utils/trans'
         setUserAuthState: (userAuthInfo) => setUserAuthInfo(userAuthInfo),
         locale:locale,
         switchLang:()=>switchLang(),
-        getTrans:()=>getTrans()
+        getTrans:()=>getTrans(),
+        logout:()=>logoutUser(),
     }}
 
     >

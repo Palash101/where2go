@@ -16,6 +16,7 @@ import {
     where,
     limit,
     orderBy,
+    serverTimestamp
   } from "firebase/firestore";
 import { async } from "@firebase/util";
 import { CellphoneSound } from "mdi-material-ui";
@@ -41,7 +42,8 @@ export const addEevent = async (
         event_type:event_type,
         category:category,
         status:'draft',
-        floor_type:floor_type
+        floor_type:floor_type,
+        created_at:serverTimestamp()
     })
     .then((data)=>{
         //console.log(data.id,'docid  ')

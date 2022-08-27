@@ -25,6 +25,7 @@ import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
 
 import { userLogout } from '../../../../../service/auth'
+import { userAuth } from 'context/userContext'
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -36,6 +37,10 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
 }))
 
 const UserDropdown = () => {
+  // ** User Context 
+  const userContext = userAuth()
+
+
   // ** States
   const [anchorEl, setAnchorEl] = useState(null)
 
@@ -53,8 +58,7 @@ const UserDropdown = () => {
     setAnchorEl(null)
   }
   const handleLogout = async () => {
-    console.log('logging out user')
-    await userLogout()
+    userContext.logout();
     router.push('/admin/login')
   }
 

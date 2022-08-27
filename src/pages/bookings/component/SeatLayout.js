@@ -82,17 +82,17 @@ const SeatLayout = (props) => {
                   			  	<g>
                   			  		{
                   			  			item1.seatDots?.map((item2, key1) => (
-                                              item2.map((item3, key2) => (
+                                  item2.map((item3, key2) => (
                   								<SeatComponent
                   									color={item3.fill}
                   									id={`${item3.x}${item3.y}`}
                   									startingXPosition={item3.x}
                   									startingYPosition={item3.y}
-                                                    className={item3.className}
+                                    className={item3.className}
                   									key={key2}
                   									name={item3.name}
                   									price={item3.price}
-                                                    border={item3.border}
+                                    border={item3.border}
                   									ticketName={item3.ticketName}
                   									handleClick={() => props.onCircleClick(key1, key2,key)} />
                   							))
