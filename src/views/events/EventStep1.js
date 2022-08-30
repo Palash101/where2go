@@ -34,6 +34,7 @@ const EventStep1 = ({
   const t = Translations(locale)
 
   const [name, setName] = useState('')
+  const [terms, setTerms] = useState(data.terms)
   const [type, setType] = useState(data.event_type)
   const [country, setCountry] = useState(data.country)
   const [currency, setCurrency] = useState(data.currency)
@@ -50,6 +51,7 @@ const EventStep1 = ({
       currency: currency,
       cat_id: category,
       floor_type: floorType,
+      terms:terms
     }
     console.log(eventData, 'eventData')
     await updateEventData(eventId, eventData, locale).then((res) =>
@@ -179,6 +181,19 @@ const EventStep1 = ({
                 <MenuItem value="1">Includes floor plan</MenuItem>
               </Select>
             </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={12}>
+            <TextField
+             multiline
+             maxRows={4}
+              onChange={(e) => setTerms(e.target.value)}
+              fullWidth
+              label="Terms & Conditions"
+              defaultValue={terms}
+              placeholder="Terms & Conditions"
+              inputProps={{ maxLength: 1000 }}
+             
+            />
           </Grid>
           {/* <Grid item xs={12} sm={12}>
             <TextField fullWidth label='Description' placeholder='Event Description' defaultValue='Event Description' multiline rows={4}/>

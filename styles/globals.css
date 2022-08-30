@@ -496,3 +496,6 @@ span.catRemove {
   fill:rgb(1, 105, 36)
 
 }
+textarea#mui-5 {
+  height: auto !important;
+}

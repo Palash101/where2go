@@ -88,13 +88,25 @@ function Bookings(navigation) {
   }
 
   const onCircleClick = (colKey, rowKey, rectangleKey) => {
-    console.log('clicked')
+
     const selecteCircle = floorData[rectangleKey].seatDots[colKey][rowKey];
-    const setSelectedClass = {...selecteCircle, className:'user-seat-selected',border:'white'}
-    const arrayCopy = [...floorData];
-    arrayCopy[rectangleKey].seatDots[colKey][rowKey] = setSelectedClass
-    setFloorData(arrayCopy)
-    setSelectedTickets([...slectedTickets,setSelectedClass])
+    if(selecteCircle.className && selecteCircle.className === 'user-seat-selected'){
+      const setSelectedClass = {...selecteCircle, className:'',border:'none'}
+      const arrayCopy = [...floorData];
+      arrayCopy[rectangleKey].seatDots[colKey][rowKey] = setSelectedClass
+      setFloorData(arrayCopy)
+      const slectedTickets1 = slectedTickets.filter(item => item.name !== setSelectedClass.name)
+      setSelectedTickets(slectedTickets1)
+    }
+    else{
+      const setSelectedClass = {...selecteCircle, className:'user-seat-selected',border:'white'}
+      const arrayCopy = [...floorData];
+      arrayCopy[rectangleKey].seatDots[colKey][rowKey] = setSelectedClass
+      setFloorData(arrayCopy)
+      setSelectedTickets([...slectedTickets,setSelectedClass])
+    }
+
+    
   };
 
 
@@ -180,6 +192,7 @@ function Bookings(navigation) {
     })
   }
 
+
   return (
     <>
       <Box
@@ -226,7 +239,7 @@ function Bookings(navigation) {
       )}
 
       {floorType === '1' && (
-        <SeatLayout slectedTickets={slectedTickets} data={floorData} onCircleClick={onCircleClick} />
+        <SeatLayout slectedTickets={slectedTickets} data={floorData} onCircleClick={onCircleClick} click={puchaseClick} />
       )}
 
       {floorType === '0' && (

@@ -268,10 +268,53 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
     }
   }
 
+  const renderTicketList2 = (ticketData) => {
+    console.log(ticketData, 'tdata')
+    if (ticketData.tickets && ticketData.tickets.length) {
+      return (
+        <>
+        
+
+<ul className="prlist">
+      <li style={{padding:'15px 0px',borderBottom:'1px solid #333'}}>
+            <Box>
+              Color /
+              Name
+            </Box>
+            <Box>
+              Price
+            </Box>
+        </li>
+        {ticketData.tickets?.map((item1, key) => (
+          <li key={key} style={{padding:'15px 0px',borderBottom:'1px solid #333' }}>
+            <Box>
+              <span
+                className="circleList"
+                style={{ backgroundColor: item1.color }}
+              ></span>{' '}
+              {item1.name}
+            </Box>
+            <Box>
+              {item1.price} {data.currency}
+            </Box>
+          </li>
+        ))}
+      </ul>
+
+        </>
+      )
+    } else {
+      return <Typography>No data found start adding new ticket</Typography>
+    }
+  }
+
   const renderFloorPlanList = (planData) => {
     console.log(planData, 'renderFloorPlanList')
     return (
       <>
+
+      {data.tickets && renderTicketList2(data)}
+
         <Box
           sx={{
             display: 'flex',

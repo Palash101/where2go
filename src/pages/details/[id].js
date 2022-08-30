@@ -184,17 +184,22 @@ function Details(navigation) {
               </h3>
               <Box>
                 <div className="catdet">
-                  <div className="subDetail">
-                    <span>
-                      <Image
-                        src="/images/slide1.jpeg"
-                        width={50}
-                        height={50}
-                        style={{ borderRadius: '50%' }}
-                      />
-                    </span>
-                    <h5>Escape Hunt Kuwait Escape Games</h5>
-                  </div>
+                  {item.organizer && (
+                    <div className="subDetail">
+                      <span>
+                        <img
+                          src={item.organizer.image}
+                          width={50}
+                          height={50}
+                          style={{ borderRadius: '50%' }}
+                        />
+                      </span>
+                      <div>
+                      <h5>{item.organizer.name}</h5>
+                      <h5>{item.organizer.email}</h5>
+                      </div>
+                    </div>
+                  )}
                   <h6 className="contactLine">
                     Have a queston? Tap to contact us
                   </h6>
@@ -291,7 +296,11 @@ function Details(navigation) {
               <p className="descPara">
                 <b> Terms & Conditions</b>
               </p>
-              <ul>
+
+              <p>
+                {item.terms}
+              </p>
+              {/* <ul>
                 <li>
                   <p className="descPara">
                     Bookings are made for groups of 2 to 7 players only
@@ -308,7 +317,7 @@ function Details(navigation) {
                     Working hours from 10:00 AM - 01:00 AM
                   </p>
                 </li>
-              </ul>
+              </ul> */}
             </Grid>
           </Grid>
 
