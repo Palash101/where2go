@@ -244,7 +244,7 @@ function Bookings(navigation) {
 
       {floorType === '0' && (
         <div>
-          {exist === true && (
+        
             <Box
               sx={{
                 maxWidth: '764px',
@@ -285,7 +285,7 @@ function Bookings(navigation) {
                   </Paper>
                 ))}
             </Box>
-          )}
+        
         </div>
       )}
 
@@ -315,16 +315,9 @@ function Bookings(navigation) {
               />
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography sx={{ marginTop: '5px' }} variant="subtitle1">
-                  Time
+                  Time Slot
                 </Typography>
-                {/* <TimePicker
-                                    label="Time"
-                                    value={fromTimeValue}
-                                    onChange={(newValue) => {
-                                        setFromTimeValue(newValue);
-                                    }}
-                                    renderInput={(params) => <TextField {...params} />}
-                                /> */}
+               
                 <Select
                   required
                   sx={{ width: '250px' }}
@@ -332,7 +325,7 @@ function Bookings(navigation) {
                   label="Time"
                   defaultValue={fromTimeValue}
                 >
-                  {times.map((item) => (
+                  {Array.isArray(itemNew.slots) && itemNew.slots.map((item) => (
                     <MenuItem value={item}>{item}</MenuItem>
                   ))}
                 </Select>

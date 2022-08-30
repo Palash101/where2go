@@ -499,3 +499,19 @@ span.catRemove {
 textarea#mui-5 {
   height: auto !important;
 }
+.checkout-box h3 {
+  font-size: 18px;
+  margin: 0px;
+  font-weight: 600;
+}
+
+.checkout-box p {
+  font-size: 12px;
+  margin: 0px;
+}
+
+.checkout-box label {
+  font-size: 14px;
+  margin-bottom: 15px !important;
+  display: block;
+}

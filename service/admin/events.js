@@ -166,6 +166,21 @@ export const updateEventData = async (eventId,data,lang)=>{
 
 }
 
+
+export const updateEventSlot = async (eventId,data)=>{
+    const docRef = doc(db, "events", eventId);
+    return await updateDoc(docRef, {
+        slots:arrayUnion(...data)
+      })
+}
+export const deleteEventSlot = async (eventId,data)=>{
+    const docRef = doc(db, "events", eventId);
+    return await updateDoc(docRef, {
+        slots:arrayRemove(data)
+      })
+}
+
+
 export const getFilterEvent = async(cat) =>{
     console.log(cat)
     try{

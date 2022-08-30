@@ -20,6 +20,7 @@ import AddIcon from '@mui/icons-material/Add'
 import EditIcon from '@mui/icons-material/Edit'
 
 import DateTimeComponent from './components/DateTimeComponent'
+import SlotComponent from './components/SlotComponent'
 import LocationComponent from './components/LocationComponent'
 import ContactComponent from './components/ContactComponent'
 
@@ -27,6 +28,8 @@ import {
   updateEventDetails,
   updateEventDate,
   deleteEventDate,
+  updateEventSlot,
+  deleteEventSlot
 } from 'service/admin/events'
 import { async } from '@firebase/util'
 import { toast } from 'react-toastify'
@@ -40,6 +43,7 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
     dateTime: false,
     location: false,
     contact: false,
+    slot:false,
   })
 
   const [description, setDescription] = useState('')
@@ -47,6 +51,7 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
 
   const [loading, setLoading] = useState(false)
   const [dateTimeArray, setDateTimeArray] = useState([])
+  const [slotArray, setSlotArray] = useState([])
 
   const userContext = userAuth()
   const locale = userContext.locale
@@ -63,6 +68,9 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
   const handleDateTimeModal = (dateTime) => {
     setDateTimeArray(dateTime)
   }
+  const handleSloteModal = (slot) => {
+    setSlotArray(slot)
+  }
 
   const updateDateTime = async () => {
     setLoading(true)
@@ -74,10 +82,26 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
     setLoading(false)
   }
 
+  const updateSlot = async () => {
+    setLoading(true);
+    await updateEventSlot(eventId, slotArray).then((res) =>
+    console.log(res),
+  )
+  handleClose('dateTime')
+  refreshData()
+  setLoading(false)
+
+  }
+
   const handleChipDelete = async (event_date) => {
     console.log(event_date, 'delete Chip')
     setLoading(true)
+    if(data.floor_type === '1'){
     await deleteEventDate(eventId, event_date).then((res) => console.log(res))
+    }
+    else{
+      await deleteEventSlot(eventId, event_date).then((res) => console.log(res))
+    }
     refreshData()
     setLoading(false)
   }
@@ -111,7 +135,9 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
     handleClose('location')
   }
 
-  useEffect(() => {}, [dateTimeArray])
+  useEffect(() => {
+    
+  }, [dateTimeArray])
 
   const dateTimeChip = (data) => {
     return (
@@ -123,6 +149,7 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
 
   return (
     <form>
+      {data.floor_type === '1' ? (
       <CardContent sx={{ paddingBottom: 0 }}>
         <Grid container spacing={5}>
           <Grid
@@ -174,6 +201,60 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
           </Grid>
         </Grid>
       </CardContent>
+      ):
+      (
+      <CardContent sx={{ paddingBottom: 0 }}>
+        <Grid container spacing={5}>
+          <Grid
+            item
+            sx={{
+              paddingBottom: '1.25rem',
+              display: 'flex',
+              justifyContent: 'center',
+              flexDirection: 'column',
+            }}
+            xs={12}
+            sm={12}
+          >
+            <Box sx={{ marginBottom: '10px' }}>
+              {Array.isArray(data.slots) &&
+                data.slots.map((item, key) => (
+                  <Chip
+                    key={key}
+                    onClick={handleChipClick}
+                    onDelete={() => handleChipDelete(item)}
+                    label={item}
+                    deleteIcon={<DeleteIcon />}
+                    variant="outlined"
+                    sx={{ marginRight: '15px' }}
+                  />
+                ))}
+              <Button
+                onClick={() => handleClickOpen('slot')}
+                variant="contained"
+              >
+                Add Time Slots
+              </Button>
+            </Box>
+            <Dialog
+              open={openState.slot}
+              onClose={() => handleClose('slot')}
+              maxWidth="md"
+              fullWidth
+            >
+              <DialogTitle>Add Event Slots</DialogTitle>
+              <DialogContent>
+                  <SlotComponent handleSloteModal={handleSloteModal} />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => updateSlot()}>Add</Button>
+                <Button onClick={() => handleClose('slot')}>Cancel</Button>
+              </DialogActions>
+            </Dialog>
+          </Grid>
+        </Grid>
+      </CardContent>
+      )}
 
       <Divider sx={{ margin: 0 }} />
       <CardContent sx={{ paddingBottom: 0 }}>

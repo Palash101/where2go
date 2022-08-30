@@ -348,14 +348,7 @@ function Details(navigation) {
                     <Typography sx={{ marginTop: '5px' }} variant="subtitle1">
                       Time
                     </Typography>
-                    {/* <TimePicker
-                                                label="Time"
-                                                value={fromTimeValue}
-                                                onChange={(newValue) => {
-                                                    setFromTimeValue(newValue);
-                                                }}
-                                                renderInput={(params) => <TextField {...params} />}
-                                            /> */}
+                    
 
                     <Select
                       required
@@ -364,7 +357,7 @@ function Details(navigation) {
                       label="Time"
                       defaultValue={fromTimeValue}
                     >
-                      {times.map((item) => (
+                      {Array.isArray(item.slots) && item.slots.map((item) => (
                         <MenuItem value={item}>{item}</MenuItem>
                       ))}
                     </Select>

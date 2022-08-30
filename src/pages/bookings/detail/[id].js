@@ -8,12 +8,19 @@ import { getEventById } from 'service/admin/events'
 import { useTheme } from '@mui/material'
 import { userAuth } from 'context/userContext';
 import Translations from '/utils/trans';
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
+import TextField from '@mui/material/TextField'
+import Divider from '@mui/material/Divider';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Button from '@mui/material/Button';
 
 function BookingsDetails(navigation) {
   const router = useRouter()
   const [item, setItem] = useState()
   const theme = useTheme()
-
+  const [phone, setPhone] = useState('')
   const userContext = userAuth();
   const locale = userContext.locale;
   const t = Translations(locale);
@@ -36,26 +43,87 @@ console.log(item,'sss')
           marginTop: '65px',
           left: 0,
           right: 0,
-          background: `${theme.palette.background.default1}`,
           zIndex: 9,
-          textAlign: 'center',
         }}
-      >
-        <Grid container spacing={4} justifyContent="center" sx={{}}>
-        {item && (
-          <Grid item xs={12} md={6} sx={{}}>
-            
-            <h3 className="detailHeading">
+      >  
+      {item && (
+        <form>
+
+        
+          <Box className="checkout-box" sx={{background: `${theme.palette.background.default1}`,maxWidth:'769px',margin:'auto',padding:'15px'}}>
+            <h3>
             {item.event_name.hasOwnProperty(locale)
                   ? item.event_name[locale]
                   : item.event_name[Object.keys(item.event_name)[0]]}
             </h3>
             <p>Sunday, 11 Sep, 6:30 PM</p>
             <p>3 tickets (60 KWD)</p>
-           
-          </Grid>
-           )}
-        </Grid>
+          </Box>
+       
+
+          <Box className="checkout-box" sx={{background: `${theme.palette.background.default1}`,maxWidth:'769px',margin:'auto',padding:'15px',marginTop:5,}}>
+            <Box>
+                <label>Complete your booking details to continue</label>
+                <PhoneInput
+                      international
+                      placeholder="Enter phone number"
+                      value={phone}
+                      className=""
+                      defaultCountry="QA"
+                      onChange={setPhone}
+                      style={{width: '215px',
+                        padding: '18px'}}
+                    />
+            </Box>
+            
+            <Box sx={{}}>
+                <TextField
+                  onChange={(e) => setName(e.target.value)}
+                  label="Event Your Name"
+                  defaultValue={''}
+                  placeholder="Enter your name"
+                />
+            </Box>
+            <Box sx={{marginTop:5}}>
+                <TextField
+                  onChange={(e) => setName(e.target.value)}
+                  label="Event Your Email"
+                  defaultValue={''}
+                  placeholder="Enter your email"
+                />
+            </Box>
+            <Divider sx={{marginTop:5,marginBottom:5}}/>
+            <Box >
+              <h3>Terms & Conditions</h3>
+              <label>Please read and agree to the organizers terms and conditions</label>
+          
+              <p>
+                {item.terms}
+              </p>
+            <FormGroup sx={{marginTop:5}}>
+              <FormControlLabel control={<Checkbox />} label=" I agree to the terms conditions" />
+            </FormGroup>
+            </Box>
+             
+          </Box>
+          <Box sx={{backgroundColor:'#22262b',maxWidth:'769px',margin:'auto',padding:'15px'}}>
+                <Button
+                verient="default"
+                sx={{
+                  background: '#eb9d05',
+                  color: '#000',
+                  marginTop: '10px',
+                  padding: '10px 30px',
+                }}
+                onClick={() => console.log("")}
+              >
+                Checkout
+              </Button>
+            </Box>
+         
+
+        </form>
+        )}
       </Box>
 
     
