@@ -37,7 +37,7 @@ const FooterMenu = (props) => {
       sx={{
         position: 'absolute',
         backgroundColor: '#000920',
-        top: '10px',
+        top: '200px',
         right: '10px',
         zIndex: '9999',
         height: '110px',
