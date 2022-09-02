@@ -21,21 +21,48 @@ function BookingsDetails(navigation) {
   const [item, setItem] = useState()
   const theme = useTheme()
   const [phone, setPhone] = useState('')
+  const [date, setDate] = useState('');
+  const [ticket, setTickets] = useState();
+  const [total, setTotal] = useState(0);
   const userContext = userAuth();
   const locale = userContext.locale;
   const t = Translations(locale);
 
   useEffect(async () => {
     if (router.isReady) {
-      getEventById(router.query.id).then((data) => {
-        console.log(data)
-        setItem(data)
-        console.log(item)
-      })
-    }
-  }, [router.isReady, navigation])
+      console.log(userContext,'kkk')
 
-console.log(item,'sss')
+      if(userContext.authState.event){
+        setItem(userContext.authState.event)
+        var dt =  userContext.authState.carts.date;
+        var dt1 =  moment(dt1).format("LL")
+        console.log(dt1)
+        setDate(dt1+' '+userContext.authState.carts.from);
+      }
+      else{
+          getEventById(router.query.id).then((data) => {
+            setItem(data)
+          })
+      }
+
+      if(userContext.authState.carts){
+        setTickets(userContext.authState.carts.data)
+        setTotal(getTotal(userContext.authState.carts.data))
+      }
+      
+    }
+  }, [router.isReady,navigation])
+
+
+  const getTotal = (data) => {
+    var count = 0;
+    data.map((item) => {
+      count = count + JSON.parse(item.price);
+    })
+    return count
+  }
+
+console.log(item)
   return (
     <>
       <Box
@@ -56,8 +83,11 @@ console.log(item,'sss')
                   ? item.event_name[locale]
                   : item.event_name[Object.keys(item.event_name)[0]]}
             </h3>
-            <p>Sunday, 11 Sep, 6:30 PM</p>
-            <p>3 tickets (60 KWD)</p>
+            <p>{date}</p>
+              {ticket && (
+                 <p style={{marginTop:10}}>{ticket.length} tickets ({total} KWD)</p>
+
+              )}
           </Box>
        
 

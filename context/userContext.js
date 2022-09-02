@@ -44,6 +44,20 @@ import { userLogout } from 'service/auth'
 
         });
       };
+
+      const setCartInfo = (data) => {
+        const {carts,event} = data;
+        localStorage.setItem("carts", carts);
+        localStorage.setItem("event", event);
+        setAuthState({
+            ...authState,
+            carts:carts,
+            event:event,
+        });
+      };
+
+
+
     const isUserAuthenticated = () => {
      const token = localStorage.getItem('accesstoken')
     if (token) {
@@ -72,6 +86,12 @@ import { userLogout } from 'service/auth'
         location.reload();
     }
 
+    const clearCart = async() => {
+        localStorage.removeItem('carts');
+        localStorage.removeItem('event');
+        location.reload();
+    }
+
     const getTrans = () =>{
       const t = Translations(locale)
       return t
@@ -84,6 +104,8 @@ import { userLogout } from 'service/auth'
         switchLang:()=>switchLang(),
         getTrans:()=>getTrans(),
         logout:()=>logoutUser(),
+        setCartData:(data) => setCartInfo(data),
+        clearCartData:()=>clearCart()
     }}
 
     >

@@ -94,16 +94,25 @@ function Details(navigation) {
   };
 
   const clickEvent = (item1, item) => {
+    userContext.setCartData({
+      carts:{
+        data:[],
+        date:item1.date,
+        from:item1.from,
+        to:item1.to
+      },
+      event:item
+    })
+
     router.push(
       {
         pathname: '/bookings/[id]',
         query: {
           id: router.query.id,
-          date: item1.date,
           floor_type: item.floor_type,
         },
-      },
-      `/bookings/${[id]}`
+      }
+      
     );
     handleClose();
   };
