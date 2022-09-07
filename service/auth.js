@@ -74,6 +74,7 @@ const setUser = async(user) =>{
 
 export const signinUser = async(user) =>{
   const newUser = await getUsersByProvider(user.uId,'uId');
+  console.log(user,'userrr')
   if(newUser.role === 1){
     await createUserSession(user.accessToken,user.uId,'customer');  
   }
@@ -126,6 +127,7 @@ export const  createUserSession = async (token,uId,userType) =>{
   var path = "/api/auth";
   var url = getApiUrl()+path;
   var data = { token: token,uId:uId,userType:userType}
+  console.log(data.token,url,'data')
 
   const response = await fetch(url, {
     method: 'POST',
@@ -154,7 +156,7 @@ export const  verifyToken = async (cookie) =>{
 }
 
 
-const getApiUrl = ()=>{
+const getApiUrl = () => {
   console.log(process.env.DEBUG == true)
   if(process.env.DEBUG === true ){
     return process.env.DEV_API

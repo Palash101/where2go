@@ -47,8 +47,8 @@ import { userLogout } from 'service/auth'
 
       const setCartInfo = (data) => {
         const {carts,event} = data;
-        localStorage.setItem("carts", carts);
-        localStorage.setItem("event", event);
+        localStorage.setItem("carts", JSON.stringify(carts));
+        localStorage.setItem("event", JSON.stringify(event));
         setAuthState({
             ...authState,
             carts:carts,
@@ -96,6 +96,18 @@ import { userLogout } from 'service/auth'
       const t = Translations(locale)
       return t
     }
+    const getCartData = () => {
+        const carts = JSON.parse(localStorage.getItem("carts"));
+        const event = JSON.parse(localStorage.getItem("event"));
+        const authData = {
+            ...authState,
+            carts:carts,
+            event:event,
+        }
+        setAuthState(authData);
+        return authData;
+    }
+
     return <authUserContext.Provider 
     value={{
         authState,
@@ -105,7 +117,8 @@ import { userLogout } from 'service/auth'
         getTrans:()=>getTrans(),
         logout:()=>logoutUser(),
         setCartData:(data) => setCartInfo(data),
-        clearCartData:()=>clearCart()
+        clearCartData:()=>clearCart(),
+        getCarts:() => getCartData(),
     }}
 
     >

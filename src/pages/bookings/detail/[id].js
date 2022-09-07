@@ -15,12 +15,17 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
+import { toast } from 'react-toastify'
 
 function BookingsDetails(navigation) {
   const router = useRouter()
   const [item, setItem] = useState()
   const theme = useTheme()
   const [phone, setPhone] = useState('')
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [agree, setAgree] = useState(false)
+  const [carts, setCarts] = useState();
   const [date, setDate] = useState('');
   const [ticket, setTickets] = useState();
   const [total, setTotal] = useState(0);
@@ -30,14 +35,16 @@ function BookingsDetails(navigation) {
 
   useEffect(async () => {
     if (router.isReady) {
-      console.log(userContext,'kkk')
+      const cartData = userContext.getCarts();
+      setCarts(cartData)
 
-      if(userContext.authState.event){
-        setItem(userContext.authState.event)
-        var dt =  userContext.authState.carts.date;
+
+      if(cartData.event){
+        setItem(cartData.event)
+        var dt =  cartData.carts.date;
         var dt1 =  moment(dt1).format("LL")
         console.log(dt1)
-        setDate(dt1+' '+userContext.authState.carts.from);
+        setDate(dt1+' '+cartData.carts.from);
       }
       else{
           getEventById(router.query.id).then((data) => {
@@ -45,9 +52,9 @@ function BookingsDetails(navigation) {
           })
       }
 
-      if(userContext.authState.carts){
-        setTickets(userContext.authState.carts.data)
-        setTotal(getTotal(userContext.authState.carts.data))
+      if(cartData.carts){
+        setTickets(cartData.carts.data)
+        setTotal(getTotal(cartData.carts.data))
       }
       
     }
@@ -60,6 +67,55 @@ function BookingsDetails(navigation) {
       count = count + JSON.parse(item.price);
     })
     return count
+  }
+  const handleCheck = (e) => {
+    setAgree(e.target.checked);
+  };
+
+  const EmailValidation = (mail) => {
+    var regexEmail = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
+    if(mail.match(regexEmail)) {
+      return true;
+    }
+    return false;
+  }
+
+  const checkout = () => {
+    if(EmailValidation(email) && isValidPhoneNumber(phone) && name !== ''){
+      if(agree === true){
+
+        var userDetail = {
+          email:email,
+          phone:phone,
+          name:name
+        }
+
+        userContext.setCartData({
+          ...carts,
+          carts:{
+            ...carts.carts,
+            userDetail:userDetail,
+          }
+        })
+        router.push(
+            {
+              pathname: '/bookings/checkout/[id]',
+              query: {
+                id: router.query.id,
+              },
+            },
+          );
+
+      }
+      else{
+        toast('Please agree our terms & conditions.')
+      }
+    }
+    else{
+      toast('Please enter valid details');
+    }
+
+     
   }
 
 console.log(item)
@@ -85,7 +141,7 @@ console.log(item)
             </h3>
             <p>{date}</p>
               {ticket && (
-                 <p style={{marginTop:10}}>{ticket.length} tickets ({total} KWD)</p>
+                 <p style={{marginTop:10}}>{ticket.length} tickets ({total} {item.currency})</p>
 
               )}
           </Box>
@@ -108,17 +164,19 @@ console.log(item)
             
             <Box sx={{}}>
                 <TextField
+                  value={name}
                   onChange={(e) => setName(e.target.value)}
-                  label="Event Your Name"
-                  defaultValue={''}
+                  label="Enter Your Name"
+                  defaultValue={name}
                   placeholder="Enter your name"
                 />
             </Box>
             <Box sx={{marginTop:5}}>
                 <TextField
-                  onChange={(e) => setName(e.target.value)}
-                  label="Event Your Email"
-                  defaultValue={''}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  label="Enter Your Email"
+                  defaultValue={email}
                   placeholder="Enter your email"
                 />
             </Box>
@@ -131,7 +189,9 @@ console.log(item)
                 {item.terms}
               </p>
             <FormGroup sx={{marginTop:5}}>
-              <FormControlLabel control={<Checkbox />} label=" I agree to the terms conditions" />
+              <FormControlLabel control={<Checkbox checked={agree}
+                                                    onChange={handleCheck}
+                                                    inputProps={{ 'aria-label': 'controlled' }} />} label=" I agree to the terms conditions" />
             </FormGroup>
             </Box>
              
@@ -145,7 +205,7 @@ console.log(item)
                   marginTop: '10px',
                   padding: '10px 30px',
                 }}
-                onClick={() => console.log("")}
+                onClick={() => checkout()}
               >
                 Checkout
               </Button>

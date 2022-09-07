@@ -8,9 +8,9 @@ module.exports = {
     defaultLocale:'en',
   },
   env:{
-    PROD_API:'https://www.where2go.qa/',
+    PROD_API:'https://www.where2go.qa',
     DEV_API:'http://localhost:3000',
-    DEBUG:false,
+    DEBUG:true,
     
   },
   images: {

@@ -143,7 +143,7 @@ function Bookings(navigation) {
 
   useEffect(async () => {
     if (router.isReady) {
-
+      userContext.getCarts();
 
       getEventById(router.query.id).then((data) => {
         setFloorType(data.floor_type)
