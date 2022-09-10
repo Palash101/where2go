@@ -137,7 +137,7 @@ function Browse() {
         <Grid container spacing={5} sx={{}}>
           <Grid item xs={12} md={3} sx={{}}>
             <div className={dlist === true ? 'dideList active' : 'dideList'}>
-              <h3>Category</h3>
+              <h3>{t.category}</h3>
               <span className="catRemove" onClick={() => setDlist(!dlist)}>
                 X
               </span>
@@ -148,7 +148,7 @@ function Browse() {
                     color={category.name === 'all' ? 'warning' : 'inherit'}
                     onClick={() => selectCategory({ name: 'all', status: 1 })}
                   >
-                    All
+                    {t.all}
                   </Button>
                 </li>
               </ul>

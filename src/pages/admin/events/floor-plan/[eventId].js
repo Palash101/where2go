@@ -388,10 +388,10 @@ function Seat() {
     }
   }
 
-  const updateTicketData = (data,toggle) => {
-     setLoading(true)
-     if(data.rowAlphabets && data.numeric && data.color && data.price && data.name){
-    if(toggle === true){
+  const updateTicketData = (data, toggle) => {
+    setLoading(true)
+    if (data.rowAlphabets && data.numeric && data.color && data.price && data.name) {
+      if (toggle === true) {
         addDataInSeatDots('red', data.price)
         addSeatname(
           data.rowAlphabets,
@@ -402,32 +402,32 @@ function Seat() {
         )
         setShowTicketComponent(false)
         updateData()
-       setLoading(false)
+        setLoading(false)
+      }
+      else {
+        addDataInSeatDots('red', data.price)
+        addSeatname(
+          data.rowAlphabets,
+          data.numeric,
+          data.color,
+          data.price,
+          data.name,
+        )
+        setShowTicketComponent(false)
+        updateData()
+        updateTicket(data)
+        setLoading(false)
+      }
     }
-    else{
-      addDataInSeatDots('red', data.price)
-      addSeatname(
-        data.rowAlphabets,
-        data.numeric,
-        data.color,
-        data.price,
-        data.name,
-      )
-      setShowTicketComponent(false)
-      updateData()
-      updateTicket(data)
+    else {
+      toast('All fields are required to fill.');
       setLoading(false)
     }
-  }
-  else{
-    toast('All fields are required to fill.');
-    setLoading(false)
-  }
 
-    
 
-    
-    
+
+
+
   }
 
   console.log('rendering')

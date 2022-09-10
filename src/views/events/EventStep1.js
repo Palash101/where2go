@@ -86,14 +86,14 @@ const EventStep1 = ({
             <TextField
               onChange={(e) => setName(e.target.value)}
               fullWidth
-              label="Event Name"
+              label={`${t.event} ${t.name}`}
               defaultValue={eventName()}
               placeholder="Enter event name"
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
-              <InputLabel>Country</InputLabel>
+              <InputLabel>{t.country}</InputLabel>
               <Select
                 onChange={(e) => setCountry(e.target.value)}
                 label="Country"
@@ -109,22 +109,22 @@ const EventStep1 = ({
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
-              <InputLabel>Event Type</InputLabel>
+              <InputLabel>{`${t.event} ${t.type}`}</InputLabel>
               <Select
                 onChange={(e) => setType(e.target.value)}
                 label="Event Type"
                 defaultValue={type}
               >
-                <MenuItem value="Show">Show</MenuItem>
-                <MenuItem value="Music">Music</MenuItem>
-                <MenuItem value="Game">Game</MenuItem>
+                <MenuItem value="Show">{t.show}</MenuItem>
+                <MenuItem value="Music">{t.music}</MenuItem>
+                <MenuItem value="Game">{t.game}</MenuItem>
               </Select>
             </FormControl>
           </Grid>
 
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
-              <InputLabel>Currency</InputLabel>
+              <InputLabel>{t.currency}</InputLabel>
               <Select
                 onChange={(e) => setCurrency(e.target.value)}
                 label="Currency"
@@ -139,7 +139,7 @@ const EventStep1 = ({
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel id="form-layouts-separator-select-label">
-                Event Category
+                {`${t.event} ${t.category}`}
               </InputLabel>
               <Select
                 label="Category"
@@ -164,7 +164,7 @@ const EventStep1 = ({
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel id="form-layouts-separator-select-label">
-                Event Ticket Type
+                {`${t.event} ${t.ticket} ${t.type}`}
               </InputLabel>
 
               <Select
@@ -175,10 +175,10 @@ const EventStep1 = ({
                 defaultValue={data.floor_type}
               >
                 <MenuItem value="" selected>
-                  Select Type
+                {`${t.select} ${t.type}`}
                 </MenuItem>
-                <MenuItem value="0">Dont have floor plan</MenuItem>
-                <MenuItem value="1">Includes floor plan</MenuItem>
+                <MenuItem value="0">{t.Donthavefloorplan}</MenuItem>
+                <MenuItem value="1">{t.Includesfloorplan}</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -188,9 +188,9 @@ const EventStep1 = ({
              maxRows={4}
               onChange={(e) => setTerms(e.target.value)}
               fullWidth
-              label="Terms & Conditions"
+              label={`${t.terms} & ${t.conditions}`}
               defaultValue={terms}
-              placeholder="Terms & Conditions"
+              placeholder={`${t.terms} & ${t.conditions}`}
               inputProps={{ maxLength: 1000 }}
              
             />
@@ -205,7 +205,7 @@ const EventStep1 = ({
               variant="contained"
               sx={{ marginRight: 3.5 }}
             >
-              Update
+              {t.update}
             </Button>
           </Grid>
         </Grid>

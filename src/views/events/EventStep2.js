@@ -189,13 +189,13 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
               maxWidth="md"
               fullWidth
             >
-              <DialogTitle>Add Event Date Time</DialogTitle>
+              <DialogTitle>{t.addeventdatetime}</DialogTitle>
               <DialogContent>
                 <DateTimeComponent handleDateTimeModal={handleDateTimeModal} />
               </DialogContent>
               <DialogActions>
-                <Button onClick={() => updateDateTime()}>Add</Button>
-                <Button onClick={() => handleClose('dateTime')}>Cancel</Button>
+                <Button onClick={() => updateDateTime()}>{t.add}</Button>
+                <Button onClick={() => handleClose('dateTime')}>{t.cancel}</Button>
               </DialogActions>
             </Dialog>
           </Grid>
@@ -262,7 +262,7 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
           <Grid item sx={{ paddingBottom: '1.25rem' }} xs={12} sm={6}>
             <Box sx={{ marginBottom: '10px' }}>
               {data.event_location == undefined ? (
-                <Typography>Location Not Defined</Typography>
+                <Typography>{t.locationnotdefined}</Typography>
               ) : data.event_location == '' ? (
                 <Typography>No Location Added. Please Add</Typography>
               ) : (
@@ -273,13 +273,13 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
               variant="contained"
               onClick={() => handleClickOpen('location')}
             >
-              Address/Map co-ordinates
+              {t.addressmapcoordinates}
             </Button>
             <Dialog
               open={openState.location}
               onClose={() => handleClose('location')}
             >
-              <DialogTitle>Enter Event Location</DialogTitle>
+              <DialogTitle>{t.entereventlocation}</DialogTitle>
               <DialogContent>
                 <Box>
                   <TextField
@@ -298,8 +298,8 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
                 </Box>
               </DialogContent>
               <DialogActions>
-                <Button onClick={updateLocation}>Add</Button>
-                <Button onClick={() => handleClose('location')}>Cancel</Button>
+                <Button onClick={updateLocation}>{t.add}</Button>
+                <Button onClick={() => handleClose('location')}>{t.cancel}</Button>
               </DialogActions>
             </Dialog>
           </Grid>
@@ -330,7 +330,7 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
                   </Typography>
                 )
               ) : (
-                <Typography>Description Not Defined</Typography>
+                <Typography>{t.descriptionnotdefined}</Typography>
               )}
               <Button
                 endIcon={data.description != '' ? <EditIcon /> : <AddIcon />}
@@ -338,7 +338,7 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
                 sx={{ marginTop: '10px' }}
                 onClick={() => handleClickOpen('description')}
               >
-                Event Descrption
+                {`${t.event} ${t.descrption}`}
               </Button>
             </Box>
 
@@ -347,14 +347,14 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
               open={openState.description}
               onClose={() => handleClose('description')}
             >
-              <DialogTitle>Enter Event Description</DialogTitle>
+              <DialogTitle>{`${t.enter} ${t.event} ${t.descrption}`}</DialogTitle>
               <DialogContent>
                 <TextField
                   onChange={(e) => setDescription(e.target.value)}
                   autoFocus
                   required
                   id="name"
-                  label="Description"
+                  label={t.descrption}
                   type="text"
                   fullWidth
                   defaultValue={
@@ -370,9 +370,9 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
               </DialogContent>
 
               <DialogActions>
-                <Button onClick={updateDesceiption}>Save</Button>
+                <Button onClick={updateDesceiption}>{t.save}</Button>
                 <Button onClick={() => handleClose('description')}>
-                  Cancel
+                  {t.cancel}
                 </Button>
               </DialogActions>
             </Dialog>

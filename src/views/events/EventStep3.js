@@ -14,6 +14,9 @@ import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import CircularProgress from '@mui/material/CircularProgress'
 
+import { userAuth } from 'context/userContext'
+import Translations from 'utils/trans'
+
 import { styled } from '@mui/material/styles'
 
 import ImageList from '@mui/material/ImageList'
@@ -57,13 +60,15 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
 function srcset(image, size, rows = 1, cols = 1) {
   return {
     src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
-    srcSet: `${image}?w=${size * cols}&h=${
-      size * rows
-    }&fit=crop&auto=format&dpr=2 2x`,
+    srcSet: `${image}?w=${size * cols}&h=${size * rows
+      }&fit=crop&auto=format&dpr=2 2x`,
   }
 }
 
 const EventStep3 = ({ data, eventId, refreshData }) => {
+  const userContext = userAuth()
+  const locale = userContext.locale
+  const t = Translations(locale)
   const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
   const [imageFile, setImageFile] = useState(null)
@@ -149,16 +154,16 @@ const EventStep3 = ({ data, eventId, refreshData }) => {
               }}
             >
               <Box>
-                <InputLabel>Banner Type</InputLabel>
+                <InputLabel>{`${t.banner} ${t.type}`}</InputLabel>
                 <Select
                   required
                   onChange={(e) => setType(e.target.value)}
                   label="Event Type"
                   defaultValue={type}
                 >
-                  <MenuItem value="main">Main</MenuItem>
-                  <MenuItem value="banner1">Square Image 1</MenuItem>
-                  <MenuItem value="banner2">Square Image 2</MenuItem>
+                  <MenuItem value="main">{t.main}</MenuItem>
+                  <MenuItem value="banner1">{`${t.square} ${t.image} 1`}</MenuItem>
+                  <MenuItem value="banner2">{`${t.square} ${t.image} 2`}</MenuItem>
                 </Select>
               </Box>
               <Box>
@@ -167,7 +172,7 @@ const EventStep3 = ({ data, eventId, refreshData }) => {
                   variant="contained"
                   htmlFor="account-settings-upload-image"
                 >
-                  Upload Event Images
+                  {`${t.upload} ${t.event} ${t.images}`}
                   <input
                     type="file"
                     onChange={onChange}
@@ -176,7 +181,7 @@ const EventStep3 = ({ data, eventId, refreshData }) => {
                   />
                 </ButtonStyled>
                 <Typography variant="body2" sx={{ marginTop: 5 }}>
-                  Allowed PNG or JPEG. Max size of 800K.
+                  {`${t.allowed} PNG ${t.or} JPEG. ${t.max} ${t.size} 800K.`}
                 </Typography>
               </Box>
               <Box>
@@ -185,7 +190,7 @@ const EventStep3 = ({ data, eventId, refreshData }) => {
                   variant="outlined"
                   onClick={uploadImage}
                 >
-                  Upload
+                  {t.upload}
                 </ResetButtonStyled>
               </Box>
             </Box>
@@ -204,13 +209,13 @@ const EventStep3 = ({ data, eventId, refreshData }) => {
             >
               <Typography sx={{ marginBottom: '20px', textAlign: 'center' }}>
                 {' '}
-                Main Banner Image
+                {`${t.main} ${t.banner} ${t.image}`}
               </Typography>
               <p
                 style={{ textAlign: 'center', fontSize: '12px', color: 'red' }}
               >
                 {' '}
-                This Image will appear when you mark this event as featured
+                {t.features}
               </p>
 
               <Box
@@ -266,7 +271,7 @@ const EventStep3 = ({ data, eventId, refreshData }) => {
                       variant="contained"
                       sx={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
                     >
-                      Square Image 1
+                      {`${t.square} ${t.image} 1`}
                     </Button>
                   </Box>
                 </Box>
@@ -291,7 +296,7 @@ const EventStep3 = ({ data, eventId, refreshData }) => {
                       variant="contained"
                       sx={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
                     >
-                      Square Image 2
+                      {`${t.square} ${t.image} 2`}
                     </Button>
                   </Box>
                 </Box>

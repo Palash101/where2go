@@ -42,7 +42,7 @@ function CategoryEdit() {
     const storageLocale = localStorage.getItem('locale')
     setCurrentLanguage(storageLocale)
     if (router.isReady) {
-      ;(async () => {
+      ; (async () => {
         setLoading(true)
         await getCategoryById(router.query.id).then((data) => {
           if (!data.err) {

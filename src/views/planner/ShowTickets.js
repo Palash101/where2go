@@ -13,9 +13,9 @@ const ShowTickets = (props) => {
   return (
     <Box
       sx={{
-        position: 'absolute',
+        position: 'fixed',
         right: 0,
-        top: '130px',
+        top: '70px',
         maxWidth: '323px',
         width: '100%',
       }}

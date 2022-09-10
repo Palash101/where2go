@@ -65,7 +65,7 @@ const EventEdit = () => {
   const router = useRouter()
   const [value, setValue] = useState('account')
   const [eventData, setEventData] = useState({})
-
+ 
   const [loading, setLoading] = useState(false)
 
   const [routerParams, setRouterParams] = useState('')
@@ -76,7 +76,7 @@ const EventEdit = () => {
 
   const userContext = userAuth()
   const locale = userContext.locale
-  const t = Translations(locale)
+  const t = userContext.getTrans()
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -145,7 +145,7 @@ const EventEdit = () => {
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Event />
-                  <TabName>Event Details</TabName>
+                  <TabName>{`${t.event} ${t.details}`}</TabName>
                 </Box>
               }
             />
@@ -154,7 +154,7 @@ const EventEdit = () => {
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <AccountOutline />
-                  <TabName>Organizer Details</TabName>
+                  <TabName>{`${t.organizer} ${t.details}`}</TabName>
                 </Box>
               }
             />
@@ -172,7 +172,7 @@ const EventEdit = () => {
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <ImageSearchIcon />
-                  <TabName>Images</TabName>
+                  <TabName>{t.images}</TabName>
                 </Box>
               }
             />
@@ -181,7 +181,7 @@ const EventEdit = () => {
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <LocalActivityIcon />
-                  <TabName>Tickets</TabName>
+                  <TabName>{t.tickets}</TabName>
                 </Box>
               }
             />
@@ -190,7 +190,7 @@ const EventEdit = () => {
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <SettingsIcon />
-                  <TabName>Setting</TabName>
+                  <TabName>{t.setting}</TabName>
                 </Box>
               }
             />

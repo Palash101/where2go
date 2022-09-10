@@ -137,16 +137,16 @@ const EventStep6 = ({
               id="event-upload-image2"
               style={{ position: 'absolute', opacity: 0, padding: '3px' }}
             />
-            <span className="uploadbtn">Upload Profile Image</span>
+            <span className="uploadbtn">{`${t.upload} ${t.profile} ${t.image}`}</span>
           </Box>
 
           <Grid item xs={12} sm={12}>
             <TextField
               onChange={(e) => setName(e.target.value)}
               fullWidth
-              label="Organizer Name"
+              label={`${t.organizer} ${t.name}`}
               defaultValue={name}
-              placeholder="Enter organizer name"
+              placeholder={`${t.enter} ${t.organizer} ${t.name}`}
             />
           </Grid>
 
@@ -154,27 +154,27 @@ const EventStep6 = ({
             <TextField
               onChange={(e) => setEmail(e.target.value)}
               fullWidth
-              label="Organizer email"
+              label={`${t.organizer} ${t.email}`}
               defaultValue={email}
-              placeholder="Enter organizer email"
+              placeholder={`${t.enter} ${t.organizer} ${t.email}`}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               onChange={(e) => setPhone(e.target.value)}
               fullWidth
-              label="Organizer Phone number"
+              label={`${t.organizer} ${t.phone}`}
               defaultValue={phone}
-              placeholder="Enter phone number"
+              placeholder={`${t.enter} ${t.phone}`}
             />
           </Grid>
           <Grid item xs={12} sm={12}>
             <TextField
               onChange={(e) => setDetail(e.target.value)}
               fullWidth
-              label="Organizer contact details"
+              label={`${t.organizer} ${t.contact} ${t.details}`}
               defaultValue={detail}
-              placeholder="Enter organizer detail"
+              placeholder={`${t.enter} ${t.organizer} ${t.details}`}
             />
           </Grid>
 
@@ -184,7 +184,7 @@ const EventStep6 = ({
               variant="contained"
               sx={{ marginRight: 3.5 }}
             >
-              Update
+              {t.update}
             </Button>
           </Grid>
         </Grid>

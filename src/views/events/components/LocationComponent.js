@@ -9,19 +9,26 @@ import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 
+import { userAuth } from 'context/userContext'
+import Translations from 'utils/trans'
+
 function LocationComponent() {
+  const userContext = userAuth()
+  const locale = userContext.locale
+  const t = Translations(locale)
+
   return (
     <Box>
       <TextField
         autoFocus
         id="name"
-        label="Location"
+        label="{t.location}"
         type="text"
         fullWidth
         variant="standard"
         sx={{ marginBottom: '5px' }}
       />
-      <Button variant="outlined">Use Map</Button>
+    <Button variant="outlined">{`${t.use} ${t.map}`}</Button>
     </Box>
   )
 }

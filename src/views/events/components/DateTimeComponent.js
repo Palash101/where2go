@@ -16,7 +16,15 @@ import AddIcon from '@mui/icons-material/Add'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 
+import { userAuth } from 'context/userContext'
+import Translations from 'utils/trans'
+
 function DateTimeComponent({ handleDateTimeModal }) {
+
+  const userContext = userAuth()
+  const locale = userContext.locale
+  const t = Translations(locale)
+
   const [open, setopen] = useState(false)
   const [dateValue, setDateValue] = useState(null)
   const [fromTimeValue, setFromTimeValue] = useState(null)
@@ -57,7 +65,7 @@ function DateTimeComponent({ handleDateTimeModal }) {
   return (
     <Box>
       <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>
-        You can add more than 1 date time slots
+      {t.adddateandtimemorethen1}
       </Typography>
       <Box
         sx={{
@@ -87,7 +95,7 @@ function DateTimeComponent({ handleDateTimeModal }) {
             sx={{ fontSize: '16px', fontWeight: 'bold' }}
             color="#050721"
           >
-            Add Day
+            {`${t.add} ${t.day}`}
           </Typography>
         </Box>
         {dateTimeArray.map((data, key) => (
@@ -123,7 +131,7 @@ function DateTimeComponent({ handleDateTimeModal }) {
       </Box>
 
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Select Date</DialogTitle>
+        <DialogTitle>{`${t.select} ${t.date}`}</DialogTitle>
         <DialogContent>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <Box
@@ -174,8 +182,8 @@ function DateTimeComponent({ handleDateTimeModal }) {
           </LocalizationProvider>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => addDateTimeArray()}>Add</Button>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={() => addDateTimeArray()}>{t.add}</Button>
+          <Button onClick={handleClose}>{t.cancel}</Button>
         </DialogActions>
       </Dialog>
     </Box>

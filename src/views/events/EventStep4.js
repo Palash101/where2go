@@ -32,7 +32,15 @@ import {
 } from '../../../service/admin/events'
 import { getFloorPlanById } from '../../../service/admin/floorPlan'
 
+import { userAuth } from 'context/userContext'
+import Translations from 'utils/trans'
+
 const EventStep4 = ({ data, eventId, refreshData }) => {
+
+  const userContext = userAuth()
+  const locale = userContext.locale
+  const t = Translations(locale)
+
   const [open, setOpen] = useState({
     ticketModal: false,
     PlanModal: false,
@@ -264,7 +272,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
         </>
       )
     } else {
-      return <Typography>No data found start adding new ticket</Typography>
+      return <Typography>{t.addingnewticket}</Typography>
     }
   }
 
@@ -278,11 +286,11 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
 <ul className="prlist">
       <li style={{padding:'15px 0px',borderBottom:'1px solid #333'}}>
             <Box>
-              Color /
-              Name
+              {`${t.color} /
+              ${t.name}`}
             </Box>
             <Box>
-              Price
+              {t.price}
             </Box>
         </li>
         {ticketData.tickets?.map((item1, key) => (
@@ -324,8 +332,8 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
             textAlign: 'center',
           }}
         >
-          <Typography>Untitled</Typography>
-          <Typography onClick={editFloorPlan}>Edit</Typography>
+          <Typography>{t.untitled}</Typography>
+          <Typography onClick={editFloorPlan}>{t.edit}</Typography>
           <DeleteIcon
             sx={{ cursor: 'pointer' }}
             onClick={() => deleteTicket(ticket)}
@@ -353,9 +361,9 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
               }}
             >
               {data.floor_type == '1' ? (
-                <Button onClick={() => goToFloorPlan()}>Add Floor Plan</Button>
+                <Button onClick={() => goToFloorPlan()}>{`${t.add} ${t.floor} ${t.plan}`}</Button>
               ) : (
-                <Button onClick={() => handleDialogOpen()}>Add Tickets</Button>
+                <Button onClick={() => handleDialogOpen()}>{`${t.add} ${t.tickets}`}</Button>
               )}
             </Box>
           </Grid>

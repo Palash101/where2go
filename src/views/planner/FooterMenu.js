@@ -35,10 +35,10 @@ const FooterMenu = (props) => {
   return (
     <Box
       sx={{
-        position: 'absolute',
+        position: 'fixed',
         backgroundColor: '#000920',
-        top: '200px',
-        right: '10px',
+        top: '500px',
+        right: '5px',
         zIndex: '9999',
         height: '110px',
         width: '320px',
@@ -182,17 +182,21 @@ const FooterMenu = (props) => {
               position: 'absolute',
               display: 'flex',
               flexDirection: 'column',
-              top: '-5px',
+              top: '7%',
             }}
           >
-            <ArrowDropUpIcon
-              sx={{ fontSize: '60px', cursor: 'pointer' }}
-              onClick={() => props.decrementRectXY('y', 10)}
-            />
-            <ArrowDropDownIcon
-              sx={{ fontSize: '60px', cursor: 'pointer' }}
-              onClick={() => props.moveReactXY('y', 10)}
-            />
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: '30px', height: '30px', overflow: 'hidden',marginBottom: '14px' }}>
+              <ArrowDropUpIcon
+                sx={{ width: '60px', height: '60px', cursor: 'pointer', marginTop: '-14px' }}
+                onClick={() => props.decrementRectXY('y', 10)}
+              />
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: '30px', height: '30px', overflow: 'hidden',marginTop: '14px' }}>
+              <ArrowDropDownIcon
+                sx={{ width: '60px', height: '60px', cursor: 'pointer', marginTop: '-14px' }}
+                onClick={() => props.moveReactXY('y', 10)}
+              />
+            </Box>
           </Box>
 
           <Box
@@ -203,17 +207,20 @@ const FooterMenu = (props) => {
               flexDirection: 'row',
               justifyContent: 'space-between',
               position: 'absolute',
-              top: '23%',
+              top: '34%',
             }}
-          >
-            <ArrowLeftIcon
-              sx={{ fontSize: '60px', cursor: 'pointer' }}
-              onClick={() => props.decrementRectXY('x', 10)}
-            />
-            <ArrowRightIcon
-              sx={{ fontSize: '60px', cursor: 'pointer' }}
-              onClick={() => props.moveReactXY('x', 10)}
-            />
+          ><Box sx={{ display: 'flex', justifyContent: 'center', width: '30px', height: '30px', overflow: 'hidden' , marginRight: '14px' }}>
+              <ArrowLeftIcon
+                sx={{ width: '60px', height: '60px', cursor: 'pointer', marginTop: '-14px' }}
+                onClick={() => props.decrementRectXY('x', 10)}
+              />
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: '30px', height: '30px', overflow: 'hidden', marginLeft: '14px' }}>
+              <ArrowRightIcon
+                sx={{ width: '60px', height: '60px', cursor: 'pointer', marginTop: '-14px' }}
+                onClick={() => props.moveReactXY('x', 10)}
+              />
+            </Box>
           </Box>
         </Box>
         <Box

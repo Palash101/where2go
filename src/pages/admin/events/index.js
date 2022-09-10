@@ -92,7 +92,7 @@ function EventCreate() {
       <>
         <Card>
           <CardHeader
-            title="Create Event"
+            title={`${t.create} ${t.event}`}
             titleTypographyProps={{ variant: 'h6' }}
           />
           <CardContent>
@@ -101,21 +101,21 @@ function EventCreate() {
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
-                    label="Event Name"
-                    placeholder="enter event name"
+                    label={`${t.event} ${t.name}`}
+                    placeholder={`${t.enter} ${t.event} ${t.name}`}
                     onChange={(e) => seteventName(e.target.value)}
                   />
                   {eventName == '' ? (
-                    <FormHelperText>Please enter event name</FormHelperText>
+                    <FormHelperText>{`${t.please} ${t.enter} ${t.event} ${t.name}`}</FormHelperText>
                   ) : null}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
                     <InputLabel id="form-layouts-separator-select-label">
-                      Country
+                    {t.country}
                     </InputLabel>
                     <Select
-                      label="Country"
+                      label={t.country}
                       defaultValue=""
                       id="form-layouts-separator-select"
                       labelId="form-layouts-separator-select-label"
@@ -134,10 +134,10 @@ function EventCreate() {
                 <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
                     <InputLabel id="form-layouts-separator-select-label">
-                      Currency
+                      {t.currency}
                     </InputLabel>
                     <Select
-                      label="Currency"
+                      label="{t.currency}"
                       defaultValue=""
                       id="form-layouts-separator-select"
                       labelId="form-layouts-separator-select-label"
@@ -152,10 +152,10 @@ function EventCreate() {
                 <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
                     <InputLabel id="form-layouts-separator-select-label">
-                      Event Type
+                      {`${t.event} ${t.type}`}
                     </InputLabel>
                     <Select
-                      label="Event Type"
+                      label={`${t.event} ${t.type}`}
                       defaultValue="Classes"
                       id="form-layouts-separator-select"
                       labelId="form-layouts-separator-select-label"
@@ -170,7 +170,7 @@ function EventCreate() {
                 <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
                     <InputLabel id="form-layouts-separator-select-label">
-                      Event Category
+                      {`${t.event} ${t.category}`}
                     </InputLabel>
                     <Select
                       label="Category"
@@ -195,7 +195,7 @@ function EventCreate() {
                 <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
                     <InputLabel id="form-layouts-separator-select-label">
-                      Event Ticket Type
+                      {`${t.event} ${t.ticket} ${t.type}`}
                     </InputLabel>
 
                     <Select
@@ -206,10 +206,10 @@ function EventCreate() {
                       defaultValue={floorType}
                     >
                       <MenuItem value="" selected>
-                        Select Type
+                        {`${t.select}  ${t.type}`}
                       </MenuItem>
-                      <MenuItem value="0">Dont have floor plan</MenuItem>
-                      <MenuItem value="1">Includes floor plan</MenuItem>
+                      <MenuItem value="0">{t.Donthavefloorplan}</MenuItem>
+                      <MenuItem value="1">{t.Includesfloorplan}</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -225,7 +225,7 @@ function EventCreate() {
                     }}
                   >
                     <Button type="submit" variant="contained" size="large">
-                      Create Event
+                      {`${t.create} ${t.event}`}
                     </Button>
                   </Box>
                 </Grid>

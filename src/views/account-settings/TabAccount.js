@@ -21,6 +21,9 @@ import Button from '@mui/material/Button'
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 
+import { userAuth } from 'context/userContext'
+import Translations from 'utils/trans'
+
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
   height: 120,
@@ -46,6 +49,11 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
 }))
 
 const TabAccount = () => {
+
+  const userContext = userAuth()
+  const locale = userContext.locale
+  const t = Translations(locale)
+
   // ** State
   const [openAlert, setOpenAlert] = useState(true)
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
@@ -72,7 +80,7 @@ const TabAccount = () => {
                   variant="contained"
                   htmlFor="account-settings-upload-image"
                 >
-                  Upload New Photo
+                  {`${t.upload} ${t.new} ${t.photo}`}
                   <input
                     hidden
                     type="file"
@@ -86,10 +94,10 @@ const TabAccount = () => {
                   variant="outlined"
                   onClick={() => setImgSrc('/images/avatars/1.png')}
                 >
-                  Reset
+                  {t.reset}
                 </ResetButtonStyled>
                 <Typography variant="body2" sx={{ marginTop: 5 }}>
-                  Allowed PNG or JPEG. Max size of 800K.
+                  {`${t.allowed} PNG or JPEG. ${t.max} ${t.size} 800K.`}
                 </Typography>
               </Box>
             </Box>
@@ -98,7 +106,7 @@ const TabAccount = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="Username"
+              label={t.username}
               placeholder="johnDoe"
               defaultValue="johnDoe"
             />
@@ -106,7 +114,7 @@ const TabAccount = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="Name"
+              label={t.name}
               placeholder="John Doe"
               defaultValue="John Doe"
             />
@@ -115,37 +123,37 @@ const TabAccount = () => {
             <TextField
               fullWidth
               type="email"
-              label="Email"
+              label={t.email}
               placeholder="johnDoe@example.com"
               defaultValue="johnDoe@example.com"
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
-              <InputLabel>Role</InputLabel>
-              <Select label="Role" defaultValue="admin">
-                <MenuItem value="admin">Admin</MenuItem>
-                <MenuItem value="author">Author</MenuItem>
-                <MenuItem value="editor">Editor</MenuItem>
-                <MenuItem value="maintainer">Maintainer</MenuItem>
-                <MenuItem value="subscriber">Subscriber</MenuItem>
+              <InputLabel>{t.role}</InputLabel>
+              <Select label={t.role} defaultValue="admin">
+                <MenuItem value="admin">{t.admin}</MenuItem>
+                <MenuItem value="author">{t.author}</MenuItem>
+                <MenuItem value="editor">{t.editor}</MenuItem>
+                <MenuItem value="maintainer">{t.maintainer}</MenuItem>
+                <MenuItem value="subscriber">{t.subscriber}</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
-              <InputLabel>Status</InputLabel>
+              <InputLabel>{t.status}</InputLabel>
               <Select label="Status" defaultValue="active">
-                <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="inactive">Inactive</MenuItem>
-                <MenuItem value="pending">Pending</MenuItem>
+                <MenuItem value="active">{t.active}</MenuItem>
+                <MenuItem value="inactive">{t.inactive}</MenuItem>
+                <MenuItem value="pending">{t.pending}</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="Company"
+              label={t.company}
               placeholder="ABC Pvt. Ltd."
               defaultValue="ABC Pvt. Ltd."
             />
@@ -168,10 +176,10 @@ const TabAccount = () => {
                 }
               >
                 <AlertTitle>
-                  Your email is not confirmed. Please check your inbox.
+                  {t.emailnotconfirmedalert}
                 </AlertTitle>
                 <Link href="/" onClick={(e) => e.preventDefault()}>
-                  Resend Confirmation
+                  {`${t.resend} ${t.confirmation}`}
                 </Link>
               </Alert>
             </Grid>
@@ -179,10 +187,10 @@ const TabAccount = () => {
 
           <Grid item xs={12}>
             <Button variant="contained" sx={{ marginRight: 3.5 }}>
-              Save Changes
+              {`${t.save} ${t.changes}`}
             </Button>
             <Button type="reset" variant="outlined" color="secondary">
-              Reset
+              {t.reset}
             </Button>
           </Grid>
         </Grid>

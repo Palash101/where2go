@@ -15,6 +15,9 @@ import FormControl from '@mui/material/FormControl'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import InputAdornment from '@mui/material/InputAdornment'
 
+import { userAuth } from 'context/userContext'
+import Translations from 'utils/trans'
+
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import KeyOutline from 'mdi-material-ui/KeyOutline'
@@ -22,6 +25,11 @@ import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 
 const TabSecurity = () => {
+
+  const userContext = userAuth()
+  const locale = userContext.locale
+  const t = Translations(locale)
+
   // ** States
   const [values, setValues] = useState({
     newPassword: '',
@@ -83,7 +91,7 @@ const TabSecurity = () => {
               <Grid item xs={12} sx={{ marginTop: 4.75 }}>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="account-settings-current-password">
-                    Current Password
+                    {`${t.current} ${t.password}`}
                   </InputLabel>
                   <OutlinedInput
                     label="Current Password"
@@ -114,7 +122,7 @@ const TabSecurity = () => {
               <Grid item xs={12} sx={{ marginTop: 6 }}>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="account-settings-new-password">
-                    New Password
+                    {`${t.new} ${t.password}`}
                   </InputLabel>
                   <OutlinedInput
                     label="New Password"
@@ -145,7 +153,7 @@ const TabSecurity = () => {
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="account-settings-confirm-new-password">
-                    Confirm New Password
+                    {`${t.confirm} ${t.new} ${t.password}`}
                   </InputLabel>
                   <OutlinedInput
                     label="Confirm New Password"
@@ -201,12 +209,12 @@ const TabSecurity = () => {
       <Divider sx={{ margin: 0 }} />
 
       <CardContent>
-        <Box sx={{ mt: 1.75, display: 'flex', alignItems: 'center' }}>
+        {/* <Box sx={{ mt: 1.75, display: 'flex', alignItems: 'center' }}>
           <KeyOutline sx={{ marginRight: 3 }} />
-          <Typography variant="h6">Two-factor authentication</Typography>
-        </Box>
+          <Typography variant="h6">{`${t.twofactor} ${t.authentication}`}</Typography>
+        </Box> */}
 
-        <Box sx={{ mt: 5.75, display: 'flex', justifyContent: 'center' }}>
+        {/* <Box sx={{ mt: 5.75, display: 'flex', justifyContent: 'center' }}>
           <Box
             sx={{
               maxWidth: 368,
@@ -230,19 +238,17 @@ const TabSecurity = () => {
             <Typography
               sx={{ fontWeight: 600, marginTop: 3.5, marginBottom: 3.5 }}
             >
-              Two factor authentication is not enabled yet.
+              {t.authenticationtitle}
             </Typography>
             <Typography variant="body2">
-              Two-factor authentication adds an additional layer of security to
-              your account by requiring more than just a password to log in.
-              Learn more.
+              {t.authenticationbody}
             </Typography>
           </Box>
-        </Box>
+        </Box> */}
 
         <Box sx={{ mt: 11 }}>
           <Button variant="contained" sx={{ marginRight: 3.5 }}>
-            Save Changes
+            {`${t.save} ${t.changes}`}
           </Button>
           <Button
             type="reset"
@@ -257,7 +263,7 @@ const TabSecurity = () => {
               })
             }
           >
-            Reset
+            {t.reset}
           </Button>
         </Box>
       </CardContent>

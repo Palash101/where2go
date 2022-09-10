@@ -23,7 +23,15 @@ import CircularProgress from '@mui/material/CircularProgress'
 //Service
 import { updateEventDetails } from '../../../service/admin/events'
 
+import { userAuth } from 'context/userContext'
+import Translations from 'utils/trans'
+
 const EventStep5 = ({ data, eventId, refreshData }) => {
+
+  const userContext = userAuth()
+  const locale = userContext.locale
+  const t = Translations(locale)
+
   const [featured, setFeature] = useState(data.featured)
   const [status, setStatus] = useState(data.status)
   const [loading, setLoading] = useState(false)
@@ -98,11 +106,10 @@ const EventStep5 = ({ data, eventId, refreshData }) => {
         >
           <Box>
             <Typography style={{ margin: 0, fontSize: 18 }}>
-              Published{' '}
+              {t.published}{' '}
             </Typography>
             <Typography style={{ fontSize: 12 }}>
-              Event description, events dates, events tickets and images are
-              required for publish event.
+            {t.publishedcontent}
             </Typography>
           </Box>
           <Switch
@@ -124,10 +131,10 @@ const EventStep5 = ({ data, eventId, refreshData }) => {
         >
           <Box>
             <Typography style={{ margin: 0, fontSize: 18 }}>
-              Featured{' '}
+            {t.featured}{' '}
             </Typography>
             <Typography style={{ fontSize: 12 }}>
-              All images are required for allow fetured
+            {t.featuredcontent}
             </Typography>
           </Box>
           <Switch

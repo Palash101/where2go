@@ -16,6 +16,9 @@ import FormControl from '@mui/material/FormControl'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import FormControlLabel from '@mui/material/FormControlLabel'
 
+import { userAuth } from 'context/userContext'
+import Translations from 'utils/trans'
+
 // ** Third Party Imports
 import DatePicker from 'react-datepicker'
 
@@ -27,6 +30,11 @@ const CustomInput = forwardRef((props, ref) => {
 })
 
 const TabInfo = () => {
+
+  const userContext = userAuth()
+  const locale = userContext.locale
+  const t = Translations(locale)
+
   // ** State
   const [date, setDate] = useState(null)
 
@@ -38,9 +46,9 @@ const TabInfo = () => {
             <TextField
               fullWidth
               multiline
-              label="Bio"
+              label={t.bio}
               minRows={2}
-              placeholder="Bio"
+              placeholder={t.bio}
               defaultValue="The name’s John Deo. I am a tireless seeker of knowledge, occasional purveyor of wisdom and also, coincidentally, a graphic designer. Algolia helps businesses across industries quickly create relevant 😎, scalable 😀, and lightning 😍 fast search and discovery experiences."
             />
           </Grid>
@@ -61,21 +69,21 @@ const TabInfo = () => {
             <TextField
               fullWidth
               type="number"
-              label="Phone"
+              label={t.phone}
               placeholder="(123) 456-7890"
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="Website"
+              label={t.website}
               placeholder="https://example.com/"
               defaultValue="https://themeselection.com/"
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
-              <InputLabel>Country</InputLabel>
+              <InputLabel>{t.country}</InputLabel>
               <Select label="Country" defaultValue="USA">
                 <MenuItem value="USA">USA</MenuItem>
                 <MenuItem value="UK">UK</MenuItem>
@@ -87,7 +95,7 @@ const TabInfo = () => {
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel id="form-layouts-separator-multiple-select-label">
-                Languages
+                {t.languages}
               </InputLabel>
               <Select
                 multiple
@@ -113,7 +121,7 @@ const TabInfo = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl>
-              <FormLabel sx={{ fontSize: '0.875rem' }}>Gender</FormLabel>
+              <FormLabel sx={{ fontSize: '0.875rem' }}>{t.gender}</FormLabel>
               <RadioGroup
                 row
                 defaultValue="male"
@@ -122,17 +130,17 @@ const TabInfo = () => {
               >
                 <FormControlLabel
                   value="male"
-                  label="Male"
+                  label={t.male}
                   control={<Radio />}
                 />
                 <FormControlLabel
                   value="female"
-                  label="Female"
+                  label={t.female}
                   control={<Radio />}
                 />
                 <FormControlLabel
                   value="other"
-                  label="Other"
+                  label={t.other}
                   control={<Radio />}
                 />
               </RadioGroup>
@@ -140,7 +148,7 @@ const TabInfo = () => {
           </Grid>
           <Grid item xs={12}>
             <Button variant="contained" sx={{ marginRight: 3.5 }}>
-              Save Changes
+              {`${t.save} ${t.changes}`}
             </Button>
             <Button
               type="reset"
@@ -148,7 +156,7 @@ const TabInfo = () => {
               color="secondary"
               onClick={() => setDate(null)}
             >
-              Reset
+              {t.reset}
             </Button>
           </Grid>
         </Grid>
