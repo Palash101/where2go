@@ -44,6 +44,20 @@ import { userLogout } from 'service/auth'
 
         });
       };
+
+      const setCartInfo = (data) => {
+        const {carts,event} = data;
+        localStorage.setItem("carts", JSON.stringify(carts));
+        localStorage.setItem("event", JSON.stringify(event));
+        setAuthState({
+            ...authState,
+            carts:carts,
+            event:event,
+        });
+      };
+
+
+
     const isUserAuthenticated = () => {
      const token = localStorage.getItem('accesstoken')
     if (token) {
@@ -72,10 +86,28 @@ import { userLogout } from 'service/auth'
         location.reload();
     }
 
+    const clearCart = async() => {
+        localStorage.removeItem('carts');
+        localStorage.removeItem('event');
+        location.reload();
+    }
+
     const getTrans = () =>{
       const t = Translations(locale)
       return t
     }
+    const getCartData = () => {
+        const carts = JSON.parse(localStorage.getItem("carts"));
+        const event = JSON.parse(localStorage.getItem("event"));
+        const authData = {
+            ...authState,
+            carts:carts,
+            event:event,
+        }
+        setAuthState(authData);
+        return authData;
+    }
+
     return <authUserContext.Provider 
     value={{
         authState,
@@ -84,6 +116,9 @@ import { userLogout } from 'service/auth'
         switchLang:()=>switchLang(),
         getTrans:()=>getTrans(),
         logout:()=>logoutUser(),
+        setCartData:(data) => setCartInfo(data),
+        clearCartData:()=>clearCart(),
+        getCarts:() => getCartData(),
     }}
 
     >

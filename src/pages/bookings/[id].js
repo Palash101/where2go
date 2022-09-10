@@ -30,6 +30,7 @@ import SeatLayout from '../../views/booking/SeatLayout'
 import { getAllFloorPLan } from 'service/admin/floorPlan'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
+import { userAuth } from 'context/userContext'
 
 function Bookings(navigation) {
   const router = useRouter()
@@ -51,6 +52,8 @@ function Bookings(navigation) {
   const [priceOpen, setPriceOpen] = useState(false)
   const [floorData, setFloorData] = useState([])
   const [slectedTickets,setSelectedTickets] = useState([])
+
+  const userContext = userAuth()
 
   const times = [
     '10:00 AM',
@@ -104,6 +107,7 @@ function Bookings(navigation) {
       arrayCopy[rectangleKey].seatDots[colKey][rowKey] = setSelectedClass
       setFloorData(arrayCopy)
       setSelectedTickets([...slectedTickets,setSelectedClass])
+
     }
 
     
@@ -139,8 +143,9 @@ function Bookings(navigation) {
 
   useEffect(async () => {
     if (router.isReady) {
+      userContext.getCarts();
+
       getEventById(router.query.id).then((data) => {
-        console.log(data, 'item')
         setFloorType(data.floor_type)
         if (data.plan) {
           setFloorData(JSON.parse(data.plan))
@@ -185,11 +190,25 @@ function Bookings(navigation) {
   }
 
   const puchaseClick = (selected) => {
-    console.log(selected, 'ss')
-    router.replace({
-      pathname: '/bookings/detail/[id]',
-      query: { id: router.query.id },
+    console.log(slectedTickets, 'ss')
+    userContext.setCartData({
+      carts:{
+        data:slectedTickets,
+        date:userContext.authState.carts.date,
+        from:userContext.authState.carts.from,
+        to:userContext.authState.carts.to
+      },
+      event:itemNew
     })
+
+    router.push(
+      {
+        pathname: '/bookings/detail/[id]',
+        query: {
+          id: router.query.id,
+        },
+      },
+    );
   }
 
 

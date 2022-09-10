@@ -10,7 +10,6 @@ import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useContext } from 'react'
 import { SettingsContext } from '../../../context/settingsContext'
-import ModeToggler from '../shared-components/ModeToggler'
 import Drawer from '@mui/material/Drawer'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
@@ -21,7 +20,6 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import LocalActivityIcon from '@mui/icons-material/LocalActivity'
-import themeConfig from 'src/configs/themeConfig'
 import router from 'next/router'
 import { Modal } from '@mui/material'
 import MuiCard from '@mui/material/Card'
@@ -246,7 +244,7 @@ function HomeAppBar(props) {
   const logout = () => {
     userContext.logout();
     handleMenuClose()
-    router.push('/')
+    location.reload('/')
     
   }
 
