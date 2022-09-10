@@ -40,3 +40,18 @@ export const addBooking = async (allData)=>{
   })
 
 }
+
+export const getUserBooking = async(uId) =>{
+  try{
+      const q = query(collection(db, "booking"), where("uId", "==", uId));
+      var dt = [];
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+          dt.push(doc.data());
+      });
+      return dt;
+  }
+  catch(error){
+      return{error:'error',message:'Something went wrong',devmsg:error}
+  }
+} 

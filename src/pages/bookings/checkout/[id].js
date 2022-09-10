@@ -93,7 +93,9 @@ const payNow = () => {
     eventId:carts.event.id,
     eventName:carts.event.event_name,
     eventLocation:carts.event.event_location,
-    tickets:tickets
+    tickets:tickets,
+    total:total,
+    currency:carts.event.currency
 
   }
   console.log(bookingData)

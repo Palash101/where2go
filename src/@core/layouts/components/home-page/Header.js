@@ -287,6 +287,8 @@ function HomeAppBar(props) {
           </ListItem>
         )}
 
+
+
         {user && user.isAuthenticated && user.phoneNumber === 'undefined' && (
           <ListItem disablePadding>
             <ListItemButton onClick={() => router.push('/admin')}>
@@ -317,14 +319,19 @@ function HomeAppBar(props) {
             <ListItemText sx={{ fontSize: '14px' }} primary={t.browseEvents} />
           </ListItemButton>
         </ListItem>
+
+        {user && user.isAuthenticated && user.phoneNumber !== 'undefined' && (
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton  onClick={() => router.replace('user/my-booking')}>
             <ListItemIcon>
               <LocalActivityIcon />
             </ListItemIcon>
             <ListItemText sx={{ fontSize: '14px' }} primary={t.myTickets} />
           </ListItemButton>
         </ListItem>
+        )}
+
+
         <Divider />
         <ListItem disablePadding>
           <ListItemButton
