@@ -17,6 +17,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Chip from '@mui/material/Chip';
+import { addBooking } from 'service/admin/users'
 
 function BookingsCheckout(navigation) {
   const router = useRouter()
@@ -34,6 +35,9 @@ function BookingsCheckout(navigation) {
 
   useEffect(async () => {
     if (router.isReady) {
+
+      console.log(userContext,'userContext')
+
       const cartData = userContext.getCarts();
       setCarts(cartData);
      
@@ -54,7 +58,6 @@ function BookingsCheckout(navigation) {
         setTickets(cartData.carts.data)
         setTotal(getTotal(cartData.carts.data))
       }
-      
     }
   }, [router.isReady,navigation])
 
@@ -68,9 +71,45 @@ function BookingsCheckout(navigation) {
   }
 
 const payNow = () => {
-  console.log(carts)
+  
+
+  var tickets = [];
+  carts.carts.data.map((item) => {
+    tickets.push({
+      name:item.name,
+      price:item.price,
+      ticketName:item.ticketName,
+      fill:item.fill
+    })
+  })
+
+  var bookingData = {
+    uId:carts.uId,
+    userType:carts.userType,
+    cartDetail:carts.carts.userDetail,
+    date:carts.carts.date,
+    from:carts.carts.from,
+    to:carts.carts.to,
+    eventId:carts.event.id,
+    eventName:carts.event.event_name,
+    eventLocation:carts.event.event_location,
+    tickets:tickets
+
+  }
+  console.log(bookingData)
   setLoading(true)
-  setLoading(false)
+  addBooking(bookingData).then(res => {
+    console.log(res)
+    alert(res.sucess);
+    userContext.clearCartData();
+    router.replace(
+      {
+        pathname: '/',
+      },
+    );
+    setLoading(false)
+  })
+  
 }
 
   return (

@@ -66,11 +66,29 @@ export const getEventById = async(eventId)=>{
     const docRef = doc(db, "events", eventId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-        return docSnap.data()
+        return {id:docSnap.id,...docSnap.data()}
       } else {
         return{err:'error',message:'Document not found'}
       }
 }
+
+export const getEventBooking = async(eventId) =>{
+    try{
+        const q = query(collection(db, "booking"), where("eventId", "==", eventId));
+        var dt = [];
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            var dt1 = doc.data();
+            dt1.tickets.forEach((item) => {
+                dt.push(item);
+            })
+        });
+        return dt;
+    }
+    catch(error){
+        return{error:'error',message:'Something went wrong',devmsg:error}
+    }
+} 
 
 export const updateEventDetails = async(eventId,data,objKey,lang)=>{
     const docRef = doc(db, "events", eventId);

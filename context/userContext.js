@@ -30,17 +30,19 @@ import { userLogout } from 'service/auth'
     },[locale])
 
     const setUserAuthInfo = (data) => {
-        const {accesstoken,isAuthenticated,userInfo,userType} = data;
+        const {accesstoken,isAuthenticated,userInfo,userType,uId} = data;
         localStorage.setItem("accesstoken", accesstoken);
         localStorage.setItem("isAuthenticated", isAuthenticated);
         localStorage.setItem("userInfo", userInfo);
         localStorage.setItem("userType", userType);
+        localStorage.setItem("uId", uId);
         setAuthState({
             ...authState,
         accesstoken:accesstoken,
          isAuthenticated,
          userInfo:userInfo,
-         userType:userType
+         userType:userType,
+         uId:uId
 
         });
       };
@@ -99,10 +101,17 @@ import { userLogout } from 'service/auth'
     const getCartData = () => {
         const carts = JSON.parse(localStorage.getItem("carts"));
         const event = JSON.parse(localStorage.getItem("event"));
+        const userInfo = localStorage.getItem("userInfo");
+        const userType = localStorage.getItem("userType");
+        const uId = localStorage.getItem("uId");
+
         const authData = {
             ...authState,
             carts:carts,
             event:event,
+            userInfo:userInfo,
+            userType:userType,
+            uId:uId
         }
         setAuthState(authData);
         return authData;

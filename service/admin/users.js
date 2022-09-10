@@ -24,3 +24,19 @@ export const getAllUsers = async()=>{
   
     return getDocs(collection(db, 'users'),  where("role", "===", '1'));
 }
+
+
+
+
+export const addBooking = async (allData)=>{
+  return await addDoc(collection(db,'booking'),allData)
+  .then((data)=>{
+      console.log(data,'doc  ')
+      return {docId:data.id,sucess:'success'}
+  })
+  .catch((err)=>{
+      console.log(err,'Add Category Error Service file')
+
+  })
+
+}

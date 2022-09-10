@@ -19,6 +19,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 import { CosineWave } from 'mdi-material-ui';
+import { getEventBooking } from 'service/admin/events';
 
 const SeatLayout = (props) => {
   //Hooks
@@ -30,12 +31,84 @@ const SeatLayout = (props) => {
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState([]);
   const [rectArray, setRectArray] = useState([]);
+  const [booked,setBooked] = useState([])
 
   //Use Effect Seat Layout from props
 
   useEffect(() => {
     console.log(props,'component props');
+    getEventBooking(router.query.id).then((data) => {
+      console.log(data,'ticket data')
+      setBooked(data);
+
+
+
+    })
   }, []);
+
+
+  const renderSeatComponet = (item,key2,key1,key) => {
+    if(booked.length){
+      var filter =  booked.filter(item4 => item4.name === item.name);
+      if(filter.length){
+        console.log(item,filter[0],'filter')
+        var item3 = item;
+        return(
+          <SeatComponent
+            color={'#fff'}
+            id={`${item3.x}${item3.y}`}
+            startingXPosition={item3.x}
+            startingYPosition={item3.y}
+            className={item3.className}
+            key={key2}
+            name={item3.name}
+            price={item3.price}
+            border={item3.border}
+            ticketName={item3.ticketName}
+            disabled={'disabled'}
+            title='Already Booked'
+            handleClick={() => props.onCircleClick(key1, key2,key)} />
+        )
+      }
+      else{
+          var item3 = item;
+          return(
+            <SeatComponent
+            color={item3.fill}
+            id={`${item3.x}${item3.y}`}
+            startingXPosition={item3.x}
+            startingYPosition={item3.y}
+            className={item3.className}
+            key={key2}
+            name={item3.name}
+            price={item3.price}
+            border={item3.border}
+            ticketName={item3.ticketName}
+            disabled={''}
+            handleClick={() => props.onCircleClick(key1, key2,key)} />
+          
+        )
+      }
+    }
+    else{
+      var item3 = item;
+      return(
+        <SeatComponent
+        color={item3.fill}
+        id={`${item3.x}${item3.y}`}
+        startingXPosition={item3.x}
+        startingYPosition={item3.y}
+        className={item3.className}
+        key={key2}
+        name={item3.name}
+        price={item3.price}
+        border={item3.border}
+        ticketName={item3.ticketName}
+        disabled={''}
+        handleClick={() => props.onCircleClick(key1, key2,key)} />
+      )
+    }
+  }
 
 
   return (
@@ -83,18 +156,7 @@ const SeatLayout = (props) => {
                   			  		{
                   			  			item1.seatDots?.map((item2, key1) => (
                                   item2.map((item3, key2) => (
-                  								<SeatComponent
-                  									color={item3.fill}
-                  									id={`${item3.x}${item3.y}`}
-                  									startingXPosition={item3.x}
-                  									startingYPosition={item3.y}
-                                    className={item3.className}
-                  									key={key2}
-                  									name={item3.name}
-                  									price={item3.price}
-                                    border={item3.border}
-                  									ticketName={item3.ticketName}
-                  									handleClick={() => props.onCircleClick(key1, key2,key)} />
+                  								renderSeatComponet(item3,key2,key1,key)
                   							))
                   						))
                   			  		}

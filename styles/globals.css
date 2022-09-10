@@ -515,3 +515,6 @@ textarea#mui-5 {
   margin-bottom: 15px !important;
   display: block;
 }
+.disabled {
+  pointer-events: none;
+}

@@ -1,7 +1,7 @@
 function SeatComponent(props) {
   return (
     <svg
-      className={props.className}
+      className={props.className+ ' ' +props.disabled}
       fill={props.color ? props.color : 'black'}
       key={props.key}
       onClick={props.handleClick}
@@ -10,6 +10,8 @@ function SeatComponent(props) {
       y={props.startingYPosition}
       price={props.price}
       ticketName={props.ticketName}
+      title={props.title}
+      
     >
       <text x="5" y="25" style={{ fontSize: '8px' }}>
         {props.name}

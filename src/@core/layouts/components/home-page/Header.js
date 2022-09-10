@@ -168,14 +168,14 @@ function HomeAppBar(props) {
             uId: loginResult.user.uid,
           }
           signinUser(user).then((res) => {
-            console.log(res)
+            console.log(res,'res')
 
             userContext.setUserAuthState({
               accesstoken: res.accessToken,
               isAuthenticated: true,
               userInfo: res.phoneNumber,
-              userType:'customer'
-              
+              userType:'customer',
+              uId: res.uId,
             })
 
             const userData = {

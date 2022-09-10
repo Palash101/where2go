@@ -20,7 +20,7 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
-import { getEventById } from 'service/admin/events'
+import { getEventById,getEventBooking } from 'service/admin/events'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { TimePicker } from '@mui/x-date-pickers/TimePicker'
 import { useTheme } from '@mui/material'
@@ -144,6 +144,7 @@ function Bookings(navigation) {
   useEffect(async () => {
     if (router.isReady) {
       userContext.getCarts();
+      
 
       getEventById(router.query.id).then((data) => {
         setFloorType(data.floor_type)
