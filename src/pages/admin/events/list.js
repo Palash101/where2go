@@ -46,6 +46,47 @@ function EventList() {
       },
     },
     {
+      name: 'status',
+      label: 'Status',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender:(value,)=>{
+          if(value  == 'draft'){
+            return(
+              <span
+              style={{
+                padding: '4px 10px',
+                borderRadius: '12px',
+                backgroundColor: "#ff4c51",
+                color: '#fdfdfd',
+                fontSize: '12px',
+              }}
+            >
+              {value}
+           </span>
+            )
+          }
+          else{
+            return(
+              <span
+              style={{
+                padding: '4px 10px',
+                borderRadius: '12px',
+                backgroundColor: "#56ca00",
+                color: '#fdfdfd',
+                fontSize: '12px',
+              }}
+            >
+              {value}
+           </span>
+            )
+
+          }         
+        }
+      },
+    },
+    {
       name: 'docId',
       label: 'Action',
 

@@ -121,7 +121,7 @@ function Details(navigation) {
     if (router.isReady) {
       setLoading(true);
       getEventById(router.query.id).then((data) => {
-        console.log(data);
+        console.log(data,'dd in details');
         setItem(data);
         if (data.tickets && data.tickets.length) {
           var lowest = Number.POSITIVE_INFINITY;
@@ -224,7 +224,7 @@ function Details(navigation) {
                 }}
               >
                 <TodayIcon sx={{ fontSize: 40 }} />
-                {item.event_date && (
+                {item.event_date && item.event_date.length   && (
                   <h6 className="dayLine">
                     {item.event_date[0].date} -{' '}
                     {item.event_date[item.event_date.length - 1].date}

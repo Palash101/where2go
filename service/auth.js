@@ -46,7 +46,7 @@ export  const emailPasswordSigin = async (email,password)=>{
       })
       .then(async()=>{
         const adminUser = await getUsersByProvider(userEmail,'email');
-        console.log(adminUser.role,'admin role')
+        console.log(adminUser ,'admin role')
         if(adminUser.role == 3){
           await createUserSession(idToken,userId,'admin');  
         }
@@ -164,4 +164,26 @@ const getApiUrl = () => {
   else{
     return process.env.PROD_API
   }
+}
+
+
+const updatAdminPasswordSendMail = (email)=>{
+  sendPasswordResetEmail(auth,email).then((re)=>console.log(res))
+
+}
+
+export const updatAdminPassword = async (uid,password)=>{
+  const path = "/api/forgetpassword";
+  const url = getApiUrl()+ path;
+  console.log(url)
+  const data = { uid: uid,pass:password }
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+  });
+  return response.json();
+
 }

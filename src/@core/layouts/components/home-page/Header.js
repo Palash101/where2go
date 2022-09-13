@@ -322,7 +322,7 @@ function HomeAppBar(props) {
 
         {user && user.isAuthenticated && user.phoneNumber !== 'undefined' && (
         <ListItem disablePadding>
-          <ListItemButton  onClick={() => router.replace('user/my-booking')}>
+          <ListItemButton  onClick={() => router.replace('user/my-booking','user/my-booking')}>
             <ListItemIcon>
               <LocalActivityIcon />
             </ListItemIcon>

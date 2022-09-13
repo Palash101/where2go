@@ -24,6 +24,8 @@ import KeyOutline from 'mdi-material-ui/KeyOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 
+import {updatAdminPassword} from 'service/auth'
+
 const TabSecurity = () => {
 
   const userContext = userAuth()
@@ -39,6 +41,20 @@ const TabSecurity = () => {
     showCurrentPassword: false,
     showConfirmNewPassword: false,
   })
+
+
+  const updatePass = () =>{
+    const uId  =  localStorage.getItem('uId')
+    if(uId && values.newPassword == values.confirmNewPassword ){
+      updatAdminPassword(uId,values.confirmNewPassword)
+
+    }
+    else{
+      alert('Password not match')
+    }
+    console.log(uId)
+    // 
+  }
 
   // Handle Current Password
   const handleCurrentPasswordChange = (prop) => (event) => {
@@ -88,7 +104,7 @@ const TabSecurity = () => {
         <Grid container spacing={5}>
           <Grid item xs={12} sm={6}>
             <Grid container spacing={5}>
-              <Grid item xs={12} sx={{ marginTop: 4.75 }}>
+              {/* <Grid item xs={12} sx={{ marginTop: 4.75 }}>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="account-settings-current-password">
                     {`${t.current} ${t.password}`}
@@ -117,7 +133,7 @@ const TabSecurity = () => {
                     }
                   />
                 </FormControl>
-              </Grid>
+              </Grid> */}
 
               <Grid item xs={12} sx={{ marginTop: 6 }}>
                 <FormControl fullWidth>
@@ -247,7 +263,7 @@ const TabSecurity = () => {
         </Box> */}
 
         <Box sx={{ mt: 11 }}>
-          <Button variant="contained" sx={{ marginRight: 3.5 }}>
+          <Button onClick={updatePass} variant="contained" sx={{ marginRight: 3.5 }}>
             {`${t.save} ${t.changes}`}
           </Button>
           <Button
