@@ -31,6 +31,7 @@ import { getAllFloorPLan } from 'service/admin/floorPlan'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import { userAuth } from 'context/userContext'
+import { toast } from 'react-toastify'
 
 function Bookings(navigation) {
   const router = useRouter()
@@ -42,6 +43,7 @@ function Bookings(navigation) {
   const [featured, setFeatured] = useState(false)
   const [date, setDate] = useState('')
   const [open, setopen] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const [dateValue, setDateValue] = useState(null)
   const [fromTimeValue, setFromTimeValue] = useState(null)
   const [dateTimeArray, setDateTimeArray] = useState([])
@@ -83,8 +85,16 @@ function Bookings(navigation) {
   }
 
   const handleClickOpen = () => {
-    setopen(true)
+    if (itemNew.floor_type === '0') {
+      setopen(true);
+    } else {
+      setShowModal(true);
+    }
   }
+
+  const handleCloseShowModal = () => {
+    setShowModal(false);
+  };
 
   const handleClose = () => {
     setopen(false)
@@ -143,7 +153,9 @@ function Bookings(navigation) {
 
   useEffect(async () => {
     if (router.isReady) {
-      userContext.getCarts();
+      const cartData = userContext.getCarts();
+      console.log(cartData.carts.date)
+      setDate(cartData.carts.date+' '+cartData.carts.from)
       
 
       getEventById(router.query.id).then((data) => {
@@ -173,7 +185,7 @@ function Bookings(navigation) {
       })
 
       //  var dt = moment().format('LLLL');
-      setDate(propDate)
+     // setDate(propDate)
     }
   }, [router.isReady, navigation])
 
@@ -192,6 +204,7 @@ function Bookings(navigation) {
 
   const puchaseClick = (selected) => {
     console.log(slectedTickets, 'ss')
+    if(slectedTickets.length > 0){
     userContext.setCartData({
       carts:{
         data:slectedTickets,
@@ -210,8 +223,77 @@ function Bookings(navigation) {
         },
       },
     );
+    }
+    else{
+      toast('Please add tickets.')
+    }
   }
 
+
+  const clickEvent = (item1, item) => {
+    userContext.setCartData({
+      carts:{
+        data:[],
+        date:item1.date,
+        from:item1.from,
+        to:item1.to
+      },
+      event:item
+    })
+
+    router.reload(true)
+    handleClose();
+  };
+
+
+  const renderDates = (item1, itemNew,key) => {
+    var dt = item1.date.split('-')
+    var dt1 = dt[1]+'-'+dt[0]+'-'+dt[2];
+    var disable = false;
+    if(moment(dt1).isBefore(new Date()) === true){
+      disable = true;
+    }
+    return(
+      <Box
+        key={key}
+        sx={{
+          background: (disable === true) ? '#ffe7b4a8' : '#f7a906',
+          padding: '12px',
+          cursor: 'pointer',
+          borderRadius: '12px',
+          marginBottom: '10px',
+          display: 'flex',
+          alignItems: 'center',
+          pointerEvents:(disable === true) ? 'none' : 'initial',
+        }}
+        onClick={() => clickEvent(item1, itemNew)}
+      >
+        <Typography
+          variant="div"
+          sx={{
+            color: '#000',
+            fontSize: '12px',
+            maxWidth: '90px',
+            textAlign: 'center',
+          }}
+        >
+          {item1.date}
+        </Typography>
+
+        <Typography
+          variant="h5"
+          style={{
+            color: '#000',
+            fontSize: '16px',
+            padding: '0px 20px',
+            textAlign: 'center',
+          }}
+        >
+          {item1.from} - {item1.to}
+        </Typography>
+      </Box>
+    )
+  }
 
   return (
     <>
@@ -258,9 +340,9 @@ function Bookings(navigation) {
         </Box>
       )}
 
-      {floorType === '1' && (
-        <SeatLayout slectedTickets={slectedTickets} data={floorData} onCircleClick={onCircleClick} click={puchaseClick} />
-      )}
+      {floorType === '1' && date ? (
+        <SeatLayout date={date} slectedTickets={slectedTickets} data={floorData} onCircleClick={onCircleClick} click={puchaseClick} />
+      ):(<></>)}
 
       {floorType === '0' && (
         <div>
@@ -358,6 +440,16 @@ function Bookings(navigation) {
           <Button onClick={handleClose}>Cancel</Button>
         </DialogActions>
       </Dialog>
+
+      <Dialog open={showModal} onClose={handleCloseShowModal}>
+            <DialogTitle>Select Show</DialogTitle>
+            <DialogContent>
+              <Box>
+                {itemNew.event_date &&
+                  itemNew.event_date.map((item1, key) => renderDates(item1,itemNew,key))}
+              </Box>
+            </DialogContent>
+          </Dialog>
 
       <Dialog open={priceOpen} onClose={handlePriceClose}>
         <DialogContent>

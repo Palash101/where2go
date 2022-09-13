@@ -28,6 +28,7 @@ import { userAuth } from 'context/userContext'
 
 function Home(navigation) {
   const [allData, setAllData] = useState([])
+  const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
   const router = useRouter()
   // const { locale } = router
@@ -42,18 +43,40 @@ function Home(navigation) {
   const getMainData = () => {
     getHomePageEvent().then((data) => {
       setAllData(data)
+      var imgs = [];
+
+
+      data.map((item)=>{
+        item.data.map((item1)=>{
+          console.log(item1)
+          if(item1.featured === "true" && item1.images && item1.images.main){
+            imgs.push({image:item1.images.main,id:item1.id,name:item1.event_name})
+          }
+        })
+      })
+
+
+      setImages(imgs)
+      console.log(imgs,'imgs')
       setLoading(false)
       console.log(data, 'alldt')
     })
   }
 
   function Item(props) {
+    if(props.item.image){
     return (
       <div
+        onClick={() =>
+          router.push({
+            pathname: '/details/[id]',
+            query: { id: props.item.id },
+          })
+        }
         style={{
           borderRadius: '20px',
           overflow: 'hidden',
-          backgroundImage: 'url(' + props.item.href + ')',
+          backgroundImage: 'url(' + props.item.image + ')',
         }}
         className="bannerImage"
       >
@@ -65,6 +88,10 @@ function Home(navigation) {
             /> */}
       </div>
     )
+    }
+    else{
+      return(<></>)
+    }
   }
 
   const arSlide = () => {
@@ -164,13 +191,15 @@ function Home(navigation) {
         }}
       >
         <Carousel>
-          {items.map((item, i) => (
+          {images.map((item, i) => (
             <Item key={i} item={item} />
           ))}
         </Carousel>
 
-        {allData.length > 0 &&
-          allData.map((item, key) => (
+        {allData && allData.length > 0 ? (
+
+        <div>
+          {allData.map((item, key) => (
             <div>
               <Typography
                 sx={{
@@ -212,6 +241,11 @@ function Home(navigation) {
               </Swiper>
             </div>
           ))}
+          </div>
+        ):
+        (
+          <></>
+        )}
       </Box>
       {loading === true && (
         <Box

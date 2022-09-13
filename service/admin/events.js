@@ -56,7 +56,19 @@ export const addEevent = async (
 
 }
 
-
+export const getBrowseEvents = async()=>{
+    const q = query(collection(db, 'events'), where("status","==","published"));
+    var dt = [];
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+            dt.push({
+                ...doc.data(),
+                id:doc.id
+            })
+        
+    });
+    return dt;
+}
 export const getAllEvents = async()=>{
     return getDocs(collection(db, 'events'));
 }
@@ -72,9 +84,9 @@ export const getEventById = async(eventId)=>{
       }
 }
 
-export const getEventBooking = async(eventId) =>{
+export const getEventBooking = async(eventId,date) =>{
     try{
-        const q = query(collection(db, "booking"), where("eventId", "==", eventId));
+        const q = query(collection(db, "booking"), where("eventId", "==", eventId),where("date", "==", date));
         var dt = [];
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
@@ -228,7 +240,7 @@ export const getCategory = async ()=>{
 }
 export const getHomePageEvent = async ()=>{
     const temp = []
-    const q = query(collection(db, "category"), where("status", "==", '1'))
+    const q = query(collection(db, "category"), where("status", "==", "1"))
     const queryDoc =  await getDocs(q);
     if(queryDoc.empty === false){
         await Promise.all(queryDoc.docs.map(async (doc) => {
@@ -236,7 +248,7 @@ export const getHomePageEvent = async ()=>{
 
             console.log(doc.data(),'dttt')
             const catName = doc.data().name;
-            const q = query(collection(db, "events"), where("cat_id", "==", catDocId))
+            const q = query(collection(db, "events"), where("cat_id", "==", catDocId), where("status", "==", "published"))
             const d = await getDocs(q).then((doc)=>{
                 console.log('event doc',doc)
 

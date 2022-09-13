@@ -42,9 +42,7 @@ function BookingsDetails(navigation) {
       if(cartData.event){
         setItem(cartData.event)
         var dt =  cartData.carts.date;
-        var dt1 =  moment(dt1).format("LL")
-        console.log(dt1)
-        setDate(dt1+' '+cartData.carts.from);
+        setDate(dt+' '+cartData.carts.from);
       }
       else{
           getEventById(router.query.id).then((data) => {
@@ -133,7 +131,7 @@ console.log(item)
         <form>
 
         
-          <Box className="checkout-box" sx={{background: `${theme.palette.background.default1}`,maxWidth:'769px',margin:'auto',padding:'15px'}}>
+          <Box className="checkout-box" sx={{background: `${theme.palette.background.default1}`,maxWidth:'690px',margin:'auto',padding:'15px'}}>
             <h3>
             {item.event_name.hasOwnProperty(locale)
                   ? item.event_name[locale]
@@ -147,8 +145,8 @@ console.log(item)
           </Box>
        
 
-          <Box className="checkout-box" sx={{background: `${theme.palette.background.default1}`,maxWidth:'769px',margin:'auto',padding:'15px',marginTop:5,}}>
-            <Box>
+          <Box className="checkout-box" sx={{background: `${theme.palette.background.default1}`,maxWidth:'690px',margin:'auto',padding:'15px',marginTop:5,}}>
+            <Box style={{}}>
                 <label>Complete your booking details to continue</label>
                 <PhoneInput
                       international
@@ -157,29 +155,31 @@ console.log(item)
                       className=""
                       defaultCountry="QA"
                       onChange={setPhone}
-                      style={{width: '215px',
+                      style={{width: '315px',
                         padding: '18px'}}
                     />
             </Box>
-            
-            <Box sx={{}}>
-                <TextField
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  label="Enter Your Name"
-                  defaultValue={name}
-                  placeholder="Enter your name"
-                />
+            <Box style={{display:'flex'}}>
+              <Box sx={{}}>
+                  <TextField
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    label="Enter Your Name"
+                    defaultValue={name}
+                    placeholder="Enter your name"
+                  />
+              </Box>
+              <Box sx={{marginLeft:5}}>
+                  <TextField
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    label="Enter Your Email"
+                    defaultValue={email}
+                    placeholder="Enter your email"
+                  />
+              </Box>
             </Box>
-            <Box sx={{marginTop:5}}>
-                <TextField
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  label="Enter Your Email"
-                  defaultValue={email}
-                  placeholder="Enter your email"
-                />
-            </Box>
+
             <Divider sx={{marginTop:5,marginBottom:5}}/>
             <Box >
               <h3>Terms & Conditions</h3>
@@ -196,7 +196,7 @@ console.log(item)
             </Box>
              
           </Box>
-          <Box sx={{backgroundColor:'#22262b',maxWidth:'769px',margin:'auto',padding:'15px'}}>
+          <Box sx={{backgroundColor:'#22262b',maxWidth:'690px',margin:'auto',padding:'15px'}}>
                 <Button
                 verient="default"
                 sx={{
@@ -204,6 +204,9 @@ console.log(item)
                   color: '#000',
                   marginTop: '10px',
                   padding: '10px 30px',
+                  ':hover':{
+                    background: '#ffa800',
+                  }
                 }}
                 onClick={() => checkout()}
               >

@@ -142,6 +142,56 @@ function Details(navigation) {
     console.log(item);
   }, [router.isReady, navigation]);
 
+
+const renderDateItem = (item1, item,key) => {
+  var dt = item1.date.split('-')
+  var dt1 = dt[1]+'-'+dt[0]+'-'+dt[2];
+  var disable = false;
+  if(moment(dt1).isBefore(new Date()) === true){
+    disable = true;
+  }
+  return(
+    <Box
+      key={key}
+      sx={{
+        background: (disable === true) ? '#ffe7b4a8' : '#f7a906',
+        padding: '12px',
+        cursor: 'pointer',
+        borderRadius: '12px',
+        marginBottom: '10px',
+        display: 'flex',
+        alignItems: 'center',
+        pointerEvents:(disable === true) ? 'none' : 'initial',
+      }}
+      onClick={() => clickEvent(item1, item)}
+    >
+      <Typography
+        variant="div"
+        sx={{
+          color: '#000',
+          fontSize: '12px',
+          maxWidth: '90px',
+          textAlign: 'center',
+        }}
+      >
+        {item1.date}
+      </Typography>
+
+      <Typography
+        variant="h5"
+        style={{
+          color: '#000',
+          fontSize: '16px',
+          padding: '0px 20px',
+          textAlign: 'center',
+        }}
+      >
+        {item1.from} - {item1.to}
+      </Typography>
+    </Box>
+  )
+}
+
   return (
     <>
       {Object.keys(item).length === 0 ? (
@@ -250,10 +300,9 @@ function Details(navigation) {
                   borderRadius: '54px',
                   fontSize: '1.25rem',
                   fontWeight: 'bold',
-                  '&:hover': {
-                    background: '#ffe600',
-                    opacity: 0.8,
-                  },
+                  ':hover':{
+                    background: '#ffa800',
+                  }
                 }}
                 onClick={() => handleClickOpen('dateTime')}
               >
@@ -402,45 +451,7 @@ function Details(navigation) {
             <DialogContent>
               <Box>
                 {item.event_date &&
-                  item.event_date.map((item1, key) => (
-                    <Box
-                      key={key}
-                      sx={{
-                        background: '#f7a906',
-                        padding: '12px',
-                        cursor: 'pointer',
-                        borderRadius: '12px',
-                        marginBottom: '10px',
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                      onClick={() => clickEvent(item1, item)}
-                    >
-                      <Typography
-                        variant="div"
-                        sx={{
-                          color: '#000',
-                          fontSize: '12px',
-                          maxWidth: '90px',
-                          textAlign: 'center',
-                        }}
-                      >
-                        {item1.date}
-                      </Typography>
-
-                      <Typography
-                        variant="h5"
-                        style={{
-                          color: '#000',
-                          fontSize: '16px',
-                          padding: '0px 20px',
-                          textAlign: 'center',
-                        }}
-                      >
-                        {item1.from} - {item1.to}
-                      </Typography>
-                    </Box>
-                  ))}
+                  item.event_date.map((item1, key) => renderDateItem(item1,item,key))}
               </Box>
             </DialogContent>
           </Dialog>

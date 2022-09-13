@@ -37,13 +37,13 @@ const SeatLayout = (props) => {
 
   useEffect(() => {
     console.log(props,'component props');
-    getEventBooking(router.query.id).then((data) => {
+    var dt = props.date.split(' ')[0];
+    getEventBooking(router.query.id,dt).then((data) => {
       console.log(data,'ticket data')
       setBooked(data);
-
-
-
     })
+
+
   }, []);
 
 
@@ -51,7 +51,6 @@ const SeatLayout = (props) => {
     if(booked.length){
       var filter =  booked.filter(item4 => item4.name === item.name);
       if(filter.length){
-        console.log(item,filter[0],'filter')
         var item3 = item;
         return(
           <SeatComponent
@@ -146,12 +145,12 @@ const SeatLayout = (props) => {
                   fill="#fff"
                   font-weight="bold"
                 >
-                  Stage Text
+                  Stage
                 </text>
                 {
                   props.data && props.data.length && props.data.map((item1,key)=>{
                   		return(
-                  			<svg  ref={rectSvgRef} style={{ cursor:'grap', border: '1px solid'}}  width={item1.width} height={item1.height} x={item1.x}  y={item1.y}>
+                  			<svg key={key} ref={rectSvgRef} style={{ cursor:'grap', border: '1px solid'}}  width={item1.width} height={item1.height} x={item1.x}  y={item1.y}>
                   			  	<g>
                   			  		{
                   			  			item1.seatDots?.map((item2, key1) => (
@@ -209,6 +208,9 @@ const SeatLayout = (props) => {
             padding: '10px',
             justifyContent: 'space-between',
             width: '100%',
+            ':hover':{
+              background: '#ffa800',
+            }
           }}
           onClick={() => props.click(selected)}
         >

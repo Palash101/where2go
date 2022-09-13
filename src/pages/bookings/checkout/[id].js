@@ -18,6 +18,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Chip from '@mui/material/Chip';
 import { addBooking } from 'service/admin/users'
+import CircularProgress from '@mui/material/CircularProgress'
 
 function BookingsCheckout(navigation) {
   const router = useRouter()
@@ -58,6 +59,7 @@ function BookingsCheckout(navigation) {
         setTickets(cartData.carts.data)
         setTotal(getTotal(cartData.carts.data))
       }
+      setLoading(false)
     }
   }, [router.isReady,navigation])
 
@@ -101,16 +103,16 @@ const payNow = () => {
   console.log(bookingData)
   setLoading(true)
   addBooking(bookingData).then(res => {
-    console.log(res)
     alert(res.sucess);
+   router.replace('/');
+   setLoading(false)
+   setTimeout(()=> {
     userContext.clearCartData();
-    router.replace(
-      {
-        pathname: '/',
-      },
-    );
-    setLoading(false)
-  })
+   },1000)
+     
+    
+   
+   })
   
 }
 
@@ -124,6 +126,27 @@ const payNow = () => {
           zIndex: 9,
         }}
       >  
+
+    {loading === true && (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgb(0 0 0 / 39%)',
+            zIndex: 99999999,
+            position: 'fixed',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+
+
       {item && (
         <form>
         
@@ -195,6 +218,9 @@ const payNow = () => {
                   color: '#000',
                   marginTop: '10px',
                   padding: '10px 30px',
+                  ':hover':{
+                    background: '#eb9d05',
+                  }
                 }}
                 onClick={() => payNow()}
               >
@@ -208,6 +234,9 @@ const payNow = () => {
                   marginTop: '10px',
                   marginLeft:5,
                   padding: '10px 30px',
+                  ':hover':{
+                    background: '#eb9d05',
+                  }
                 }}
                 onClick={() => payNow()}
               >

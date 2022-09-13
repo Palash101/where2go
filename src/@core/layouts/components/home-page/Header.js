@@ -120,6 +120,12 @@ function HomeAppBar(props) {
     }
     handleMenuClose()
   }
+  const clickLink = (link) => {
+    router.push(link)
+    setNavVisible(false)
+    handleMenuClose()
+  }
+
 
   useEffect(() => {
     console.log(settings, 'calling')
@@ -265,7 +271,12 @@ function HomeAppBar(props) {
           </Typography>
         ) : (
           <Button
-            sx={{ backgroundColor: '#17a2b8', color: 'white' }}
+            sx={{ 
+              backgroundColor: '#17a2b8', 
+              color: 'white',
+              ':hover':{
+                backgroundColor: '#05b4cf',
+              } }}
             onClick={handleOpen}
           >
             Sign up / Log In
@@ -273,9 +284,9 @@ function HomeAppBar(props) {
         )}
       </Box>
       <List>
-        {user && user.isAuthenticated && user.phoneNumber !== 'undefined' && (
+        {user && user.isAuthenticated && user.phoneNumber !== 'undefined' ? (
           <ListItem disablePadding>
-            <ListItemButton onClick={() => router.push('user/dashboard')}>
+            <ListItemButton onClick={() => clickLink('user/dashboard')}>
               <ListItemIcon size={24}>
                 <HomeIcon />
               </ListItemIcon>
@@ -285,13 +296,13 @@ function HomeAppBar(props) {
               />
             </ListItemButton>
           </ListItem>
-        )}
+        ):(<></>)}
 
 
 
-        {user && user.isAuthenticated && user.phoneNumber === 'undefined' && (
+        {user && user.isAuthenticated && user.phoneNumber === 'undefined' ? (
           <ListItem disablePadding>
-            <ListItemButton onClick={() => router.push('/admin')}>
+            <ListItemButton onClick={() => clickLink('/admin')}>
               <ListItemIcon size={24}>
                 <HomeIcon />
               </ListItemIcon>
@@ -301,10 +312,10 @@ function HomeAppBar(props) {
               />
             </ListItemButton>
           </ListItem>
-        )}
+        ):(<></>)}
 
         <ListItem disablePadding>
-          <ListItemButton onClick={() => router.replace('/')}>
+          <ListItemButton onClick={() => clickLink('/')}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -312,7 +323,7 @@ function HomeAppBar(props) {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => router.replace('/browse')}>
+          <ListItemButton onClick={() => clickLink('/browse')}>
             <ListItemIcon>
               <MailIcon />
             </ListItemIcon>
@@ -322,7 +333,7 @@ function HomeAppBar(props) {
 
         {user && user.isAuthenticated && user.phoneNumber !== 'undefined' && (
         <ListItem disablePadding>
-          <ListItemButton  onClick={() => router.replace('user/my-booking')}>
+          <ListItemButton  onClick={() => clickLink('user/my-booking')}>
             <ListItemIcon>
               <LocalActivityIcon />
             </ListItemIcon>
@@ -335,7 +346,7 @@ function HomeAppBar(props) {
         <Divider />
         <ListItem disablePadding>
           <ListItemButton
-            onClick={() => router.replace('/contact-us', '/contact-us')}
+            onClick={() => clickLink('/contact-us')}
           >
             <ListItemIcon>
               <MailIcon />
@@ -347,7 +358,7 @@ function HomeAppBar(props) {
         <ListItem disablePadding>
           <ListItemButton
             sx={{ fontSize: '14px' }}
-            onClick={() => router.replace('/about')}
+            onClick={() => clickLink('/about')}
           >
             {t.about}
           </ListItemButton>
@@ -355,7 +366,7 @@ function HomeAppBar(props) {
         <ListItem disablePadding>
           <ListItemButton
             sx={{ fontSize: '14px' }}
-            onClick={() => router.replace('/privacy-policy', '/privacy-policy')}
+            onClick={() => clickLink('/privacy-policy')}
           >
             {t.privacy}
           </ListItemButton>
@@ -363,7 +374,7 @@ function HomeAppBar(props) {
         <ListItem disablePadding>
           <ListItemButton
             sx={{ fontSize: '14px' }}
-            onClick={() => router.replace('/terms-of-use')}
+            onClick={() => clickLink('/terms-of-use')}
           >
             {t.termsUse}
           </ListItemButton>
@@ -410,7 +421,7 @@ function HomeAppBar(props) {
               <div
                 style={{ cursor: 'pointer', marginLeft: 10, marginRight: 10 }}
                 className="logo-center"
-                onClick={() => router.push('/')}
+                onClick={() => clickLink('/')}
               >
                 <img
                   src="/images/logos/logo.png"

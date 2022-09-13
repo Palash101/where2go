@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import CircularProgress from '@mui/material/CircularProgress'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
-import { getAllEvents, getCategory, getFilterEvent } from 'service/admin/events'
+import { getBrowseEvents, getCategory, getFilterEvent } from 'service/admin/events'
 import { Button } from '@mui/material'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import { userAuth } from 'context/userContext'
@@ -30,17 +30,12 @@ function Browse() {
         var search = router.query.search
       }
 
-      const eventData = await getAllEvents()
-      const eventArray = []
-      eventData.docs.forEach((item) => {
-        const docId = { docId: item.id }
-        const data = Object.assign(docId, item.data())
-        eventArray.push(data)
-      })
-      setAllData(eventArray)
-      setData(eventArray)
+      const eventData = await getBrowseEvents()
+    
+      setAllData(eventData)
+      setData(eventData)
       setLoading(false)
-      console.log(eventArray, 'eventArray')
+      console.log(eventData, 'eventArray')
 
       getCategory().then((data) => {
         setCategories(data)
@@ -105,7 +100,7 @@ function Browse() {
           onClick={() => {
             router.push({
               pathname: '/details/[id]',
-              query: { id: item.docId },
+              query: { id: item.id },
             })
           }}
         >
