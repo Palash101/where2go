@@ -99,9 +99,11 @@ const LoginPage = () => {
       setLoading(true)
       emailPasswordSigin(values.email, values.password)
         .then((data) => {
+          console.log(data,'data in admin sign in')
           userContext.setUserAuthState({
             accesstoken: data.token,
             isAuthenticated: true,
+            uId:data.uId,
             userInfo:'Admin',
             userType:data.userType
           })

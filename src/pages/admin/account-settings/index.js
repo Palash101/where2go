@@ -43,7 +43,7 @@ const TabName = styled('span')(({ theme }) => ({
 
 const AccountSettings = () => {
   // ** State
-  const [value, setValue] = useState('account')
+  const [value, setValue] = useState('security')
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -57,15 +57,6 @@ const AccountSettings = () => {
           aria-label="account-settings tabs"
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
-          <Tab
-            value="account"
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <AccountOutline />
-                <TabName>Account</TabName>
-              </Box>
-            }
-          />
           <Tab
             value="security"
             label={
@@ -86,9 +77,6 @@ const AccountSettings = () => {
           /> */}
         </TabList>
 
-        <TabPanel sx={{ p: 0 }} value="account">
-          <TabAccount />
-        </TabPanel>
         <TabPanel sx={{ p: 0 }} value="security">
           <TabSecurity />
         </TabPanel>

@@ -89,7 +89,7 @@ const navigation = () => {
     {
       title: `${t.admin}  ${t.setting}`,
       icon: AccountCogOutline,
-      path: '/account-settings',
+      path: '/admin/account-settings',
     },
     // {
     //   sectionTitle: 'Pages'

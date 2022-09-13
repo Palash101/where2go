@@ -332,12 +332,12 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
             textAlign: 'center',
           }}
         >
-          <Typography>{t.untitled}</Typography>
-          <Typography onClick={editFloorPlan}>{t.edit}</Typography>
-          <DeleteIcon
+          <Typography>{data.event_name.en} Floor Plan</Typography>
+          <Typography sx={{cursor:'pointer'}} onClick={editFloorPlan}>{t.edit}</Typography>
+          {/* <DeleteIcon
             sx={{ cursor: 'pointer' }}
             onClick={() => deleteTicket(ticket)}
-          />
+          /> */}
         </Box>
       </>
     )

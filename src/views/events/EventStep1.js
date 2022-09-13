@@ -34,7 +34,7 @@ const EventStep1 = ({
   const t = Translations(locale)
 
   const [name, setName] = useState('')
-  const [terms, setTerms] = useState(data.terms)
+  const [terms, setTerms] = useState('')
   const [type, setType] = useState(data.event_type)
   const [country, setCountry] = useState(data.country)
   const [currency, setCurrency] = useState(data.currency)
@@ -75,6 +75,9 @@ const EventStep1 = ({
     setName(eventName())
     if (data.floor_type) {
       setFloorType(data.floor_type)
+    }
+    if(data.terms){
+      setTerms(data.terms)
     }
   }, [locale])
 

@@ -59,7 +59,7 @@ const EventStep5 = ({ data, eventId, refreshData }) => {
         refreshData()
       }
     } else {
-      toast('Please add description,events,images and tockets.')
+      toast('Please add description,events,images and tickets.')
     }
   }
   const updateFeature = async (event) => {
