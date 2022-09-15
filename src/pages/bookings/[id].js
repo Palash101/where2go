@@ -33,6 +33,7 @@ import MenuItem from '@mui/material/MenuItem'
 import { userAuth } from 'context/userContext'
 import { toast } from 'react-toastify'
 
+
 function Bookings(navigation) {
   const router = useRouter()
   const id = router.query.id

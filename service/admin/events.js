@@ -40,7 +40,7 @@ export const addEevent = async (
         country:country,
         currency:currency,
         event_type:event_type,
-        category:category,
+        cat_id:category,
         status:'draft',
         floor_type:floor_type,
         created_at:serverTimestamp()

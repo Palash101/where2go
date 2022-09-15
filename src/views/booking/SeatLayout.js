@@ -20,6 +20,18 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 import { CosineWave } from 'mdi-material-ui';
 import { getEventBooking } from 'service/admin/events';
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+
+
+function getWindowSize() {
+  const {innerWidth, innerHeight} = window;
+  const wi = {
+    innerWidth:innerWidth - 50,
+    innerHeight:innerHeight - 50
+  }
+  return wi;
+}
+
 
 const SeatLayout = (props) => {
   //Hooks
@@ -32,10 +44,16 @@ const SeatLayout = (props) => {
   const [selected, setSelected] = useState([]);
   const [rectArray, setRectArray] = useState([]);
   const [booked,setBooked] = useState([])
-
+  const [layoutWidth,setLayoutWidth] = useState(500);
+  const [layoutHeight, setLayoutHeight] = useState(500);
   //Use Effect Seat Layout from props
 
   useEffect(() => {
+
+    var WH = getWindowSize();
+      setLayoutWidth(WH.innerWidth);
+      setLayoutHeight(WH.innerHeight);
+
     console.log(props,'component props');
     var dt = props.date.split(' ')[0];
     getEventBooking(router.query.id,dt).then((data) => {
@@ -113,60 +131,77 @@ const SeatLayout = (props) => {
   return (
     <>
       <Grid container>
-        <Grid item xs={12} md={12}>
-          <UncontrolledReactSVGPanZoom
-            SVGBackground="#1f2227"
-            ref={Viewer}
-            width={1270}
-            height={600}
-            // onZoom={(e) => console.log('zoom')}
-            // onPan={(e) => console.log('pan')}
-            // onClick={(event) =>
-            //   console.log('click', event.x, event.y, event.originalEvent)
-            // }
+        <Grid item xs={12} md={12} sx={{marginBottom:50}}>
+          <TransformWrapper 
+          initialScale={1}
+          minScale={0.2}
+          maxScale={8}
+          minPositionY={50}
+          maxPositionY={100}
           >
-            {/*Increase width and height of main rectangle*/}
+            <TransformComponent >
+              <Box sx={{
+                //  backgroundColor:'#999',
+                  width:layoutWidth - 50,
+                  height:layoutHeight - 100,
+                  marginLeft:'25px',
+                  marginTop:'25px',
+                  textAlign:'center',
+                  alignItems:'center',
+                }}>
+                  <Box sx={{
+                  backgroundColor:'#888',
+                  width:layoutWidth - 200,
+                  height:'800',
+                  display:'block',
+                  paddingRight:'25px',
+                  margin:'auto',
 
-            <svg width={1500} height={2000}>
-              <g fillOpacity=".5" strokeWidth="4">
-                <rect
-                  fill="#40444d"
-                  width="800"
-                  height="100"
-                  rx="5"
-                  ry="5"
-                  x="400"
-                  y="70"
-                ></rect>
-                <text
-                  x="800"
-                  y="125"
-                  width="100"
-                  fill="#fff"
-                  font-weight="bold"
-                >
-                  Stage
-                </text>
-                {
-                  props.data && props.data.length && props.data.map((item1,key)=>{
-                  		return(
-                  			<svg key={key} ref={rectSvgRef} style={{ cursor:'grap', border: '1px solid'}}  width={item1.width} height={item1.height} x={item1.x}  y={item1.y}>
-                  			  	<g>
-                  			  		{
-                  			  			item1.seatDots?.map((item2, key1) => (
-                                  item2.map((item3, key2) => (
-                  								renderSeatComponet(item3,key2,key1,key)
-                  							))
-                  						))
-                  			  		}
-                  			  	</g>
-                  			</svg>
-                  		)
-                  		})
-                }
-              </g>
-            </svg>
-          </UncontrolledReactSVGPanZoom>
+                }}>
+                {/* <svg width={layoutWidth > 950 ? 950 : layoutWidth} height={layoutHeight}> */}
+                 <svg width={1100} height={800}> 
+                  <g fillOpacity=".5" strokeWidth="4">
+                      <rect
+                          fill="#40444d"
+                          width={750}
+                          height="100"
+                          rx="5"
+                          ry="5"
+                          x="100"
+                          y="70"
+                        ></rect>
+                        <text
+                          x={450}
+                          y="125"
+                          width="60"
+                          fill="#fff"
+                          font-weight="bold"
+                        >
+                          Stage
+                        </text>
+                    {
+                      props.data && props.data.length && props.data.map((item1,key)=>{
+                          return(
+                            <svg key={key} ref={rectSvgRef} style={{ cursor:'grap', border: '1px solid'}}  width={item1.width} height={item1.height} x={item1.x}  y={item1.y}>
+                                <g>
+                                  {
+                                    item1.seatDots?.map((item2, key1) => (
+                                      item2.map((item3, key2) => (
+                                      renderSeatComponet(item3,key2,key1,key)
+                                    ))
+                                  ))
+                                  }
+                                </g>
+                            </svg>
+                          )
+                          })
+                    }
+                  </g>
+                </svg>
+                </Box>
+              </Box>
+            </TransformComponent>
+          </TransformWrapper>
         </Grid>
       </Grid>
 

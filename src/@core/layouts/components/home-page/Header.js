@@ -203,10 +203,11 @@ function HomeAppBar(props) {
           setPhone('')
 
 
-          setTimeout(()=> {
-            router.reload();
-            setLoading(false)
-          },200)
+            // setTimeout(()=> {
+            //  window.location.reload();
+            //  setLoading(false)
+            // },1000)
+
         })
         .catch((error) => {
           setLoading(false)

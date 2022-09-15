@@ -58,7 +58,7 @@ export const en = {
     conditions: "Conditions",
     update: "Update",
     banner: "Banner",
-    Main: "Main",
+    main: "Main",
     square: "Square",
     upload: "Upload",
     allowed: "Allowed",

@@ -30,7 +30,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 import SeatComponent from 'src/@core/components/seating/SeatComponent'
-import { UncontrolledReactSVGPanZoom } from 'react-svg-pan-zoom'
+// import { UncontrolledReactSVGPanZoom } from 'react-svg-pan-zoom'
 
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
