@@ -27,6 +27,7 @@ import { userAuth } from 'context/userContext';
 import Translations from '/utils/trans';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import { toast } from 'react-toastify';
 
 function Details(navigation) {
   const router = useRouter();
@@ -94,6 +95,8 @@ function Details(navigation) {
   };
 
   const clickEvent = (item1, item) => {
+   
+  
     userContext.setCartData({
       carts:{
         data:[],
@@ -115,6 +118,7 @@ function Details(navigation) {
       
     );
     handleClose();
+    
   };
 
   useEffect(() => {

@@ -1,6 +1,7 @@
 //React Imports
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
+import React from 'react'
 
 //MUI imports
 import Grid from '@mui/material/Grid'
@@ -31,7 +32,19 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 import SeatComponent from 'src/@core/components/seating/SeatComponent'
 import { UncontrolledReactSVGPanZoom } from 'react-svg-pan-zoom'
 
-function Seat() {
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+
+
+function getWindowSize() {
+  const {innerWidth, innerHeight} = window;
+  const wi = {
+    innerWidth:innerWidth - (innerWidth/4),
+    innerHeight:innerHeight - 50
+  }
+  return wi;
+}
+
+const Seat = () => {
   //Hooks
   const rectSvgRef = useRef(null)
   const Viewer = useRef(null)
@@ -52,6 +65,9 @@ function Seat() {
   const [ticketModal, setTicketModal] = useState(false)
 
   const [reactArray, setRectArray] = useState([])
+  const [layoutWidth,setLayoutWidth] = useState(500);
+  const [layoutHeight, setLayoutHeight] = useState(500);
+  //const [windowSize, setWindowSize] = useState(getWindowSize());
 
   const [stage, setStageValue] = useState({
     height: 100,
@@ -64,6 +80,13 @@ function Seat() {
   // Setting Main Data from Firebase if exist
   useEffect(() => {
     if (router.isReady) {
+
+      var WH = getWindowSize();
+      setLayoutWidth(WH.innerWidth);
+      setLayoutHeight(WH.innerHeight);
+      
+    console.log(WH,'layoutHeight')
+
       setLoading(true)
       setRouterParams(router.query.eventId)
       getEventById(router.query.eventId).then((data) => {
@@ -434,26 +457,33 @@ function Seat() {
 
   return (
     <>
-      {showFooter && (
-        <FooterMenu
-          decrementRectXY={decrementRectXY}
-          moveReactXY={moveReactXY}
-          increaseRowColAttribute={increaseRowColAttribute}
-          decrementRowColAttribute={decrementRowColAttribute}
-        />
-      )}
+     
 
-      {data.tickets && (
-        <ShowTickets currency={data.currency} data={data.tickets} />
-      )}
-      <Grid container>
-        <Grid item xs={12} md={2}>
+     
+      <Grid container sx={{paddingTop:'24px',}}>
+        <Grid item xs={12} md={3} sx={{
+          backgroundColor:'#000',
+          marginTop: '-25px',
+        }}>
           <SideMenu
             addTicketData={addTicketsInSelectedElement}
             addNewElement={addReactangle}
             deleteSelectedElement={deleteSelectedElement}
             saveData={updateData}
+            tickets={data}
+            currency={data.currency}
           />
+           {/* {data.tickets && (
+            <ShowTickets currency={data.currency} data={data.tickets} />
+          )} */}
+           {showFooter && (
+            <FooterMenu
+              decrementRectXY={decrementRectXY}
+              moveReactXY={moveReactXY}
+              increaseRowColAttribute={increaseRowColAttribute}
+              decrementRowColAttribute={decrementRowColAttribute}
+            />
+          )}
         </Grid>
         {showticketComponent ? (
           <TicketComponent
@@ -465,8 +495,8 @@ function Seat() {
           />
         ) : null}
 
-        <Grid item xs={12} md={10}>
-          <UncontrolledReactSVGPanZoom
+        <Grid item xs={12} md={9}>
+          {/* <UncontrolledReactSVGPanZoom
             SVGBackground="#1f2227"
             ref={Viewer}
             width={800}
@@ -476,65 +506,80 @@ function Seat() {
             onClick={(event) =>
               console.log('click', event.x, event.y, event.originalEvent)
             }
-          >
+          > */}
             {/*Increase width and height of main rectangle*/}
-
-            <svg width={1500} height={2000}>
-              <g fillOpacity=".5" strokeWidth="4">
-                <rect
-                  fill="#40444d"
-                  width="800"
-                  height="100"
-                  rx="5"
-                  ry="5"
-                  x="400"
-                  y="70"
-                ></rect>
-                <text
-                  x="800"
-                  y="125"
-                  width="100"
-                  fill="#fff"
-                  font-weight="bold"
-                >
-                  Stage Text
-                </text>
-                {reactArray.map((item1, key) => {
-                  return (
-                    <svg
-                      ref={rectSvgRef}
-                      style={{ cursor: 'grap', border: '1px solid' }}
-                      width={item1.width}
-                      height={item1.height}
-                      x={item1.x}
-                      y={item1.y}
-                    >
-                      <g
-                        className={selectedRect == key ? 'selectedRect' : ''}
-                        onClick={() => SelectRectangle(key)}
-                      >
-                        {item1.seatDots?.map((item2, key1) =>
-                          item2.map((item3, key2) => (
-                            <SeatComponent
-                              color={item3.fill}
-                              id={`${item3.x}${item3.y}`}
-                              startingXPosition={item3.x}
-                              startingYPosition={item3.y}
-                              key={key2}
-                              name={item3.name}
-                              price={item3.price}
-                              ticketName={item3.ticketName}
-                              handleClick={() => handleClick(key1, key2)}
-                            />
-                          )),
-                        )}
+            <TransformWrapper >
+          
+                <TransformComponent  >
+                    {/* <svg width={layoutWidth} height={layoutHeight}> */}
+                    <Box sx={{
+                      backgroundColor:'#888',
+                      width:layoutWidth - 50,
+                      height:layoutHeight,
+                      marginLeft:'25px',
+                      marginTop:'25px',
+                    }}>
+                    <svg width={layoutWidth} height={layoutHeight}>
+                      <g fillOpacity=".5" strokeWidth="4">
+                        <rect
+                          fill="#40444d"
+                          width={layoutWidth - 400}
+                          height="100"
+                          rx="5"
+                          ry="5"
+                          x="200"
+                          y="70"
+                        ></rect>
+                        <text
+                          x={layoutWidth/2 - 30}
+                          y="125"
+                          width="60"
+                          fill="#fff"
+                          font-weight="bold"
+                        >
+                          Stage
+                        </text>
+                        {reactArray.map((item1, key) => {
+                          return (
+                            <svg
+                              ref={rectSvgRef}
+                              style={{ cursor: 'grap', border: '1px solid' }}
+                              width={item1.width}
+                              height={item1.height}
+                              x={item1.x}
+                              y={item1.y}
+                            >
+                              <g
+                                className={selectedRect == key ? 'selectedRect' : ''}
+                                onClick={() => SelectRectangle(key)}
+                              >
+                                {item1.seatDots?.map((item2, key1) =>
+                                  item2.map((item3, key2) => (
+                                    <SeatComponent
+                                      color={item3.fill}
+                                      id={`${item3.x}${item3.y}`}
+                                      startingXPosition={item3.x}
+                                      startingYPosition={item3.y}
+                                      key={key2}
+                                      name={item3.name}
+                                      price={item3.price}
+                                      ticketName={item3.ticketName}
+                                      handleClick={() => handleClick(key1, key2)}
+                                    />
+                                  )),
+                                )}
+                              </g>
+                            </svg>
+                          )
+                        })}
                       </g>
                     </svg>
-                  )
-                })}
-              </g>
-            </svg>
-          </UncontrolledReactSVGPanZoom>
+                  </Box>
+              </TransformComponent>
+             
+            </TransformWrapper>
+
+          {/* </UncontrolledReactSVGPanZoom> */}
           {loading === true && (
             <Box
               sx={{
@@ -560,4 +605,4 @@ function Seat() {
 }
 Seat.getLayout = (page) => <BlankLayout>{page}</BlankLayout>
 
-export default Seat
+export default Seat;

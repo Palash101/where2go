@@ -19,6 +19,7 @@ import Paper from '@mui/material/Paper';
 import Chip from '@mui/material/Chip';
 import { addBooking } from 'service/admin/users'
 import CircularProgress from '@mui/material/CircularProgress'
+import { toast } from 'react-toastify'
 
 function BookingsCheckout(navigation) {
   const router = useRouter()
@@ -74,6 +75,10 @@ function BookingsCheckout(navigation) {
 
 const payNow = () => {
   
+  if(carts.uId === null){
+    toast("Please login before proceeding")
+  }
+  else{
 
   var tickets = [];
   carts.carts.data.map((item) => {
@@ -113,7 +118,7 @@ const payNow = () => {
     
    
    })
-  
+  }
 }
 
   return (

@@ -13,10 +13,10 @@ const ShowTickets = (props) => {
   return (
     <Box
       sx={{
-        position: 'fixed',
-        right: 0,
-        top: '70px',
-        maxWidth: '323px',
+       // position: 'fixed',
+       // right: 0,
+       // top: '70px',
+        //maxWidth: '323px',
         width: '100%',
       }}
     >

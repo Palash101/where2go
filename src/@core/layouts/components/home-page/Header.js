@@ -128,7 +128,6 @@ function HomeAppBar(props) {
 
 
   useEffect(() => {
-    console.log(settings, 'calling')
     if (localStorage.getItem('isAuthenticated')) {
       const userData = {
         phoneNumber: localStorage.getItem('userInfo'),
@@ -203,7 +202,11 @@ function HomeAppBar(props) {
           setOtp('')
           setPhone('')
 
-          router.push('user/dashboard')
+
+          setTimeout(()=> {
+            router.reload();
+            setLoading(false)
+          },200)
         })
         .catch((error) => {
           setLoading(false)

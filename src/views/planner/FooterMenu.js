@@ -35,15 +35,17 @@ const FooterMenu = (props) => {
   return (
     <Box
       sx={{
-        position: 'fixed',
-        backgroundColor: '#000920',
-        top: '500px',
-        right: '5px',
-        zIndex: '9999',
-        height: '110px',
-        width: '320px',
+        // position: 'fixed',
+        backgroundColor: '#000',
+        // top: '500px',
+        // right: '5px',
+        // zIndex: '9999',
+        height: '112px',
+        width: 'calc(100% - 35px)',
         borderRadius: '5px',
         boxShadow: '0px 0px 2px 0px #aa5656',
+        margin:5,
+        paddingTop:1,
       }}
     >
       <Box
@@ -76,7 +78,7 @@ const FooterMenu = (props) => {
               sx={{
                 fontSize: '20px',
                 cursor: 'pointer',
-                marginInline: '15px',
+                marginInline: '10px',
                 backgroundColor: '#ffffff12',
                 borderRadius: '50%',
               }}
@@ -92,7 +94,7 @@ const FooterMenu = (props) => {
               sx={{
                 fontSize: '20px',
                 cursor: 'pointer',
-                marginInline: '15px',
+                marginInline: '10px',
                 backgroundColor: '#ffffff12',
                 borderRadius: '50%',
               }}
@@ -109,7 +111,7 @@ const FooterMenu = (props) => {
               sx={{
                 fontSize: '20px',
                 cursor: 'pointer',
-                marginInline: '15px',
+                marginInline: '10px',
                 backgroundColor: '#ffffff12',
                 borderRadius: '50%',
               }}
@@ -127,7 +129,7 @@ const FooterMenu = (props) => {
               sx={{
                 fontSize: '20px',
                 cursor: 'pointer',
-                marginInline: '15px',
+                marginInline: '10px',
                 backgroundColor: '#ffffff12',
                 borderRadius: '50%',
               }}
@@ -141,7 +143,7 @@ const FooterMenu = (props) => {
               sx={{
                 fontSize: '20px',
                 cursor: 'pointer',
-                marginInline: '15px',
+                marginInline: '10px',
                 backgroundColor: '#ffffff12',
                 borderRadius: '50%',
               }}
@@ -157,7 +159,7 @@ const FooterMenu = (props) => {
               sx={{
                 fontSize: '20px',
                 cursor: 'pointer',
-                marginInline: '15px',
+                marginInline: '10px',
                 backgroundColor: '#ffffff12',
                 borderRadius: '50%',
               }}
@@ -166,6 +168,7 @@ const FooterMenu = (props) => {
         </Box>
         <Box
           sx={{
+            position:'relative',
             height: '80px',
             width: '80px',
             borderRadius: '50%',
@@ -182,7 +185,7 @@ const FooterMenu = (props) => {
               position: 'absolute',
               display: 'flex',
               flexDirection: 'column',
-              top: '7%',
+              top: '-5px',
             }}
           >
             <Box sx={{ display: 'flex', justifyContent: 'center', width: '30px', height: '30px', overflow: 'hidden',marginBottom: '14px' }}>
@@ -207,7 +210,7 @@ const FooterMenu = (props) => {
               flexDirection: 'row',
               justifyContent: 'space-between',
               position: 'absolute',
-              top: '34%',
+              top: '22px',
             }}
           ><Box sx={{ display: 'flex', justifyContent: 'center', width: '30px', height: '30px', overflow: 'hidden' , marginRight: '14px' }}>
               <ArrowLeftIcon
@@ -238,7 +241,7 @@ const FooterMenu = (props) => {
               sx={{
                 fontSize: '20px',
                 cursor: 'pointer',
-                marginInline: '15px',
+                marginInline: '10px',
                 backgroundColor: '#ffffff12',
                 borderRadius: '50%',
               }}
@@ -254,7 +257,7 @@ const FooterMenu = (props) => {
               sx={{
                 fontSize: '20px',
                 cursor: 'pointer',
-                marginInline: '15px',
+                marginInline: '10px',
                 backgroundColor: '#ffffff12',
                 borderRadius: '50%',
               }}
@@ -270,7 +273,7 @@ const FooterMenu = (props) => {
               sx={{
                 fontSize: '20px',
                 cursor: 'pointer',
-                marginInline: '15px',
+                marginInline: '10px',
                 backgroundColor: '#ffffff12',
                 borderRadius: '50%',
               }}
@@ -288,7 +291,7 @@ const FooterMenu = (props) => {
               sx={{
                 fontSize: '20px',
                 cursor: 'pointer',
-                marginInline: '15px',
+                marginInline: '10px',
                 backgroundColor: '#ffffff12',
                 borderRadius: '50%',
               }}
@@ -302,7 +305,7 @@ const FooterMenu = (props) => {
               sx={{
                 fontSize: '20px',
                 cursor: 'pointer',
-                marginInline: '15px',
+                marginInline: '10px',
                 backgroundColor: '#ffffff12',
                 borderRadius: '50%',
               }}
@@ -318,7 +321,7 @@ const FooterMenu = (props) => {
               sx={{
                 fontSize: '20px',
                 cursor: 'pointer',
-                marginInline: '15px',
+                marginInline: '10px',
                 backgroundColor: '#ffffff12',
                 borderRadius: '50%',
               }}
