@@ -138,6 +138,8 @@ const SeatLayout = (props) => {
           maxScale={8}
           minPositionY={50}
           maxPositionY={100}
+          centerZoomedOut ={false}
+          limitToBounds	={false}
           >
             <TransformComponent >
               <Box sx={{

@@ -508,9 +508,16 @@ const Seat = () => {
             }
           > */}
             {/*Increase width and height of main rectangle*/}
-            <TransformWrapper >
+            <TransformWrapper 
+            minScale ={.1}
+            centerZoomedOut={true}
+             
+            >
           
-                <TransformComponent  >
+                <TransformComponent  
+                
+                
+                >
                     {/* <svg width={layoutWidth} height={layoutHeight}> */}
                     <Box sx={{
                       backgroundColor:'#888',
