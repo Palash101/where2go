@@ -75,6 +75,11 @@ const EventStep3 = ({ data, eventId, refreshData }) => {
   const [eventAllImages, setEventAllImage] = useState([])
   const [loading, setLoading] = useState(false)
   const [type, setType] = useState(null)
+  const [bannerImageFile, setBannerImage] = useState(null)
+
+  const [bannerImgSrc, setBannerImgSrc] = useState('/images/banner-no-image.jpg')
+  const [squareImgSrc, setSquareImgSrc] = useState('/images/square-no-image.jpg')
+  
 
   //Firebase Storgae
   const storage = getStorage()
@@ -85,10 +90,49 @@ const EventStep3 = ({ data, eventId, refreshData }) => {
     const reader = new FileReader()
     const { files } = file.target
     if (files && files.length !== 0) {
-      setImageFile(files[0])
+      setBannerImage(files[0])
       reader.onload = () => setImgSrc(reader.result)
       reader.readAsDataURL(files[0])
     }
+  }
+
+  const onChangeBanner = (file) => {
+    const reader = new FileReader()
+    const { files } = file.target
+    if (files && files.length !== 0) {
+      uploadImageNow('main',files[0])
+      reader.onload = () => setBannerImgSrc(reader.result)
+      reader.readAsDataURL(files[0])
+    }
+  }
+
+  const onChangeSquare = (file) => {
+    const reader = new FileReader()
+    const { files } = file.target
+    if (files && files.length !== 0) {
+      uploadImageNow('banner1',files[0])
+      reader.onload = () => setSquareImgSrc(reader.result)
+      reader.readAsDataURL(files[0])
+    }
+  }
+  
+
+  const uploadImageNow = async (imageType,file) => {
+    if (!file || !imageType) {
+      alert('Image cannnot be blank')
+      return
+    }
+    setLoading(true)
+    const storageRef = ref(storage, imagePath + `/${file.name}`)
+    const task = await uploadBytes(storageRef, file).then((res) =>
+      console.log(res.ref),
+    )
+    const url = await getDownloadURL(storageRef)
+    console.log(url, 'Retured URL')
+    await uploadEventImage(eventId, url, imageType)
+    toast('image uploaded successfully')
+    setLoading(false)
+    refreshData(true)
   }
 
   const uploadImage = async () => {
@@ -134,7 +178,68 @@ const EventStep3 = ({ data, eventId, refreshData }) => {
 
   return (
     <form>
-      <Grid container spacing={7}>
+      <Grid container spacing={7} sx={{padding:'0px 30px'}}>
+        <Grid item xs={9} sx={{margin: '10px 0px',position:'relative'}}>
+         <Box>
+          <InputLabel>{`${t.main} ${t.banner} ${t.image}`}</InputLabel>
+          {data.images?.main ? (
+            <img src={data.images.main} style={{width: '100%',
+              margin: '10px 0px',
+              borderRadius: '10px'}} />
+          ) : (
+            <img src={bannerImgSrc} style={{width: '100%',
+            margin: '10px 0px',
+            borderRadius: '10px'}} />
+          )}
+          <ButtonStyled
+              className='uploadBtn'
+              component="label"
+              variant="contained"
+              htmlFor="account-settings-upload-image"
+            >
+              {t.upload}
+              <input
+                type="file"
+                onChange={onChangeBanner}
+                accept="image/png, image/jpeg"
+                id="event-upload-image2"
+              />
+          </ButtonStyled>
+          </Box>
+        </Grid>
+        <Grid item xs={3} sx={{margin: '10px 0px',position:'relative'}}>
+        <Box sx={{    height: '272px',
+    position: 'relative'}}>
+          <InputLabel>{`${t.square} ${t.image}`}</InputLabel>
+          {data.images?.banner1 ? (
+            <img src={data.images.banner1} style={{width: '100%',
+              margin: '10px 0px',
+              borderRadius: '10px'}} />
+          ) : (
+            <img src={squareImgSrc} style={{width: '100%',
+            margin: '10px 0px',
+            borderRadius: '10px'}} />
+          )}
+          <ButtonStyled
+              className='uploadBtn'
+              component="label"
+              variant="contained"
+              htmlFor="account-settings-upload-image"
+            >
+              {t.upload}
+              <input
+                type="file"
+                onChange={onChangeSquare}
+                accept="image/png, image/jpeg"
+                id="event-upload-image2"
+              />
+          </ButtonStyled>
+          </Box>
+        </Grid>
+      </Grid>
+
+
+      {/* <Grid container spacing={7}>
         <Grid item xs={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
           <Box
             sx={{
@@ -143,7 +248,6 @@ const EventStep3 = ({ data, eventId, refreshData }) => {
               justifyContent: 'space-between ',
             }}
           >
-            {/* <ImgStyled src={imgSrc} alt='Profile Pic' /> */}
             <Box
               sx={{
                 paddingLeft: '20px',
@@ -302,21 +406,10 @@ const EventStep3 = ({ data, eventId, refreshData }) => {
                 </Box>
               </Box>
 
-              {/* <ImageList sx={{ width: '100%', height: 450 }} cols={2} rowHeight={164}>
-                    {!loadding && data.images.map((item,key) => (
-                      <ImageListItem key={key}>
-                      <img
-                        src={`${item}?w=164&h=164&fit=crop&auto=format`}
-                        srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                        loading="lazy"
-                      />
-                    </ImageListItem>
-                    ))}
-                  </ImageList> */}
             </Box>
           </Box>
         </Grid>
-      </Grid>
+      </Grid> */}
 
       {loading === true && (
         <Box

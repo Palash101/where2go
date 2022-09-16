@@ -79,40 +79,47 @@ function BookingsDetails(navigation) {
   }
 
   const checkout = () => {
-    if(EmailValidation(email) && isValidPhoneNumber(phone) && name !== ''){
-      if(agree === true){
 
-        var userDetail = {
-          email:email,
-          phone:phone,
-          name:name
-        }
 
-        userContext.setCartData({
-          ...carts,
-          carts:{
-            ...carts.carts,
-            userDetail:userDetail,
-          }
-        })
-        router.push(
-            {
-              pathname: '/bookings/checkout/[id]',
-              query: {
-                id: router.query.id,
-              },
-            },
-          );
-
-      }
-      else{
-        toast('Please agree our terms & conditions.')
-      }
+    if(carts.uId === null){
+      toast("Please login before proceeding")
     }
     else{
-      toast('Please enter valid details');
-    }
 
+      if(EmailValidation(email) && isValidPhoneNumber(phone) && name !== ''){
+        if(agree === true){
+
+          var userDetail = {
+            email:email,
+            phone:phone,
+            name:name
+          }
+
+          userContext.setCartData({
+            ...carts,
+            carts:{
+              ...carts.carts,
+              userDetail:userDetail,
+            }
+          })
+          router.push(
+              {
+                pathname: '/bookings/checkout/[id]',
+                query: {
+                  id: router.query.id,
+                },
+              },
+            );
+
+        }
+        else{
+          toast('Please agree our terms & conditions.')
+        }
+      }
+      else{
+        toast('Please enter valid details');
+      }
+    }
      
   }
 

@@ -150,7 +150,7 @@ const SeatLayout = (props) => {
                   alignItems:'center',
                 }}>
                   <Box sx={{
-                  backgroundColor:'#888',
+                  backgroundColor:'#000',
                   width:layoutWidth - 200,
                   height:'800',
                   display:'block',

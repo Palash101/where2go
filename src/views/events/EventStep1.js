@@ -21,6 +21,7 @@ import { updateEventData } from '../../../service/admin/events'
 
 import { userAuth } from 'context/userContext'
 import Translations from 'utils/trans'
+import Editor from 'src/@core/components/editor/Editor'
 
 const EventStep1 = ({
   data,
@@ -41,6 +42,8 @@ const EventStep1 = ({
   const [category, setCategory] = useState(data.cat_id)
   const [loading, setLoading] = useState(false)
   const [floorType, setFloorType] = useState('')
+  const [editorLoaded, setEditorLoaded] = useState(false);
+
 
   const updateData = async () => {
     setLoading(true)
@@ -72,6 +75,7 @@ const EventStep1 = ({
   }
 
   useEffect(() => {
+    setEditorLoaded(true);
     setName(eventName())
     if (data.floor_type) {
       setFloorType(data.floor_type)
@@ -186,7 +190,7 @@ const EventStep1 = ({
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={12}>
-            <TextField
+            {/* <TextField
              multiline
              maxRows={4}
               onChange={(e) => setTerms(e.target.value)}
@@ -196,7 +200,21 @@ const EventStep1 = ({
               placeholder={`${t.terms} & ${t.conditions}`}
               inputProps={{ maxLength: 1000 }}
              
+            /> */}
+              <InputLabel id="form-layouts-separator-select-label">
+              {`${t.terms} & ${t.conditions}`}
+              </InputLabel>
+            <Editor
+            value={terms}
+              name={'terms'}
+              placeholder={`${t.terms} & ${t.conditions}`}
+              onChange={(data) => {
+                setTerms(data);
+              }}
+              editorLoaded={editorLoaded}
             />
+
+
           </Grid>
           {/* <Grid item xs={12} sm={12}>
             <TextField fullWidth label='Description' placeholder='Event Description' defaultValue='Event Description' multiline rows={4}/>

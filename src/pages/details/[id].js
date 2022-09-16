@@ -291,19 +291,10 @@ const renderDateItem = (item1, item,key) => {
                   </div>
                 )}
               </Box>
-              <Button
+              <button
                 variant="contained"
+                className='detailTicketBtn'
                 sx={{
-                  background: '#ffe600',
-                  color: '#1f2227',
-                  padding: '10px 0px',
-                  textAlign: 'center',
-                  display: 'block',
-                  width: '100%',
-                  margin: '50px 0px',
-                  borderRadius: '54px',
-                  fontSize: '1.25rem',
-                  fontWeight: 'bold',
                   ':hover':{
                     background: '#ffa800',
                   }
@@ -319,7 +310,7 @@ const renderDateItem = (item1, item,key) => {
                 >
                   from {lowest} {item.currency}
                 </span>
-              </Button>
+              </button>
             </Grid>
             <Grid
               item
@@ -347,6 +338,7 @@ const renderDateItem = (item1, item,key) => {
               sx={{ paddingLeft: '1rem', paddingRight: '1rem' }}
             >
               <Box
+              
                 sx={{
                   marginBottom: '25px',
                   background: '#c6cbd1',
@@ -359,9 +351,9 @@ const renderDateItem = (item1, item,key) => {
                 <b> Terms & Conditions</b>
               </p>
 
-              <p>
-                {item.terms}
-              </p>
+              <div className='mb-100' dangerouslySetInnerHTML={{ __html: item.terms }}>
+                
+              </div>
               {/* <ul>
                 <li>
                   <p className="descPara">

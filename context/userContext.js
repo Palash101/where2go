@@ -83,7 +83,11 @@ import { userLogout } from 'service/auth'
     }
 
     const logoutUser = async () =>{
-        localStorage.clear()
+        localStorage.removeItem("userInfo");
+        localStorage.removeItem("userType");
+        localStorage.removeItem("uId");
+        localStorage.removeItem("accesstoken");
+        localStorage.removeItem("isAuthenticated");
         await userLogout();
         location.reload();
     }

@@ -193,8 +193,9 @@ function HomeAppBar(props) {
             console.log(userData, 'user Data')
             setUser(userData)
             setShowOtp(false)
-
+          
             toast('You have logged in successfully')
+            window.location.reload()
           })
           setOpen(false)
           setReloadPage(!reloadPage)

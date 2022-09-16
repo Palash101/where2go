@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect } from 'react'
+import { useState, useEffect,useRef } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -36,6 +36,8 @@ import { toast } from 'react-toastify'
 
 import { userAuth } from 'context/userContext'
 import Translations from 'utils/trans'
+import Editor from 'src/@core/components/editor/Editor'
+import Autocomplete from "react-google-autocomplete";
 
 const EventStep2 = ({ data, eventId, refreshData }) => {
   const [openState, setOpenState] = useState({
@@ -52,12 +54,15 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
   const [loading, setLoading] = useState(false)
   const [dateTimeArray, setDateTimeArray] = useState([])
   const [slotArray, setSlotArray] = useState([])
+  const [editorLoaded, setEditorLoaded] = useState(false);
 
   const userContext = userAuth()
   const locale = userContext.locale
   const t = Translations(locale)
 
+
   const handleClickOpen = (type) => {
+    setEditorLoaded(true);
     setOpenState({ ...openState, [type]: true })
   }
 
@@ -135,8 +140,10 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
     handleClose('location')
   }
 
+
+
   useEffect(() => {
-    
+   
   }, [dateTimeArray])
 
   const dateTimeChip = (data) => {
@@ -282,7 +289,7 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
               <DialogTitle>{t.entereventlocation}</DialogTitle>
               <DialogContent>
                 <Box>
-                  <TextField
+                  {/* <TextField
                     autoFocus
                     id="name"
                     label="Location"
@@ -294,7 +301,24 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
                       setLocation(e.target.value)
                     }}
                     placeholder="ex: Near football stadium Queens mall Banglore"
-                  />
+                  /> */}
+                 <Autocomplete
+                      apiKey={'AIzaSyCR-smvY-yJvsx0pBWFo45b839omjzKRoM'}
+                      onPlaceSelected={(place) => {
+                        console.log(place);
+                        setLocation(place)
+                      }}
+                      style={{
+                        padding: '13px',
+                        display: 'block',
+                        width: '250px',
+                        background: 'transparent',
+                        border: '1px solid #fff',
+                        borderRadius: '4px',
+                        outline: 0,
+                        color: '#fff'
+                      }}
+                    />
                 </Box>
               </DialogContent>
               <DialogActions>
@@ -367,6 +391,18 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
                   rows={5}
                   value={data.descrption}
                 />
+
+                {/* <Editor
+                  value={data.description?.hasOwnProperty(locale)
+                    ? data.description[locale]
+                    : ''}
+                  name={'descrption'}
+                  placeholder={t.descrption}
+                  onChange={(data) => {
+                    setDescription(data);
+                  }}
+                  editorLoaded={editorLoaded}
+                /> */}
               </DialogContent>
 
               <DialogActions>
