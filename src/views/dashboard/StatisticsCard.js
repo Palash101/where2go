@@ -35,7 +35,7 @@ const salesData = [
     icon: <CellphoneLink sx={{ fontSize: '1.75rem' }} />,
   },
   {
-    stats: '$88k',
+    stats: '88kر.ق',
     color: 'info',
     title: 'Revenue',
     icon: <CurrencyUsd sx={{ fontSize: '1.75rem' }} />,

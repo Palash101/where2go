@@ -26,14 +26,7 @@ const navigation = () => {
       icon: HomeOutline,
       path: '/admin',
     },
-    {
-      sectionTitle: 'Sitting Plan',
-    },
-    {
-      title: 'Create Sitting Plan',
-      icon: HomeOutline,
-      path: '/admin/planner/create',
-    },
+
     {
       sectionTitle: 'User Managment',
     },

@@ -1,77 +1,77 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 
 //Mui Import
-import FormLayoutsBasic from 'src/views/form-layouts/FormLayoutsBasic'
-import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
-import Card from '@mui/material/Card'
-import Grid from '@mui/material/Grid'
-import Button from '@mui/material/Button'
-import TextField from '@mui/material/TextField'
-import CardHeader from '@mui/material/CardHeader'
-import InputLabel from '@mui/material/InputLabel'
-import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import MenuItem from '@mui/material/MenuItem'
-import Select from '@mui/material/Select'
-import CardContent from '@mui/material/CardContent'
-import CircularProgress from '@mui/material/CircularProgress'
-import Box from '@mui/material/Box'
-import Switch from '@mui/material/Switch'
-import Input from '@mui/material/Input'
-import FormControlLabel from '@mui/material/FormControlLabel'
+import FormLayoutsBasic from 'src/views/form-layouts/FormLayoutsBasic';
+import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import CardHeader from '@mui/material/CardHeader';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import CardContent from '@mui/material/CardContent';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import Switch from '@mui/material/Switch';
+import Input from '@mui/material/Input';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
 import {
   getCategoryById,
   updateCategoryData,
-} from '../../../../../service/admin/category'
+} from '../../../../../service/admin/category';
 
 function CategoryEdit() {
-  const router = useRouter()
-  const [show, setShow] = useState(true)
+  const router = useRouter();
+  const [show, setShow] = useState(true);
 
-  const [categoryData, setCategoryData] = useState({})
+  const [categoryData, setCategoryData] = useState({});
 
-  const [categoryName, setCategoryName] = useState('')
-  const [status, setStatus] = useState(1)
-  const [loading, setLoading] = useState(false)
-  const [currentLanguage, setCurrentLanguage] = useState('')
+  const [categoryName, setCategoryName] = useState('');
+  const [status, setStatus] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState('');
 
   useEffect(() => {
-    const storageLocale = localStorage.getItem('locale')
-    setCurrentLanguage(storageLocale)
+    const storageLocale = localStorage.getItem('locale');
+    setCurrentLanguage(storageLocale);
     if (router.isReady) {
-      ; (async () => {
-        setLoading(true)
+      (async () => {
+        setLoading(true);
         await getCategoryById(router.query.id).then((data) => {
           if (!data.err) {
-            setCategoryData(data)
-            setCategoryName(data.name[currentLanguage])
-            setStatus(data.status)
-            setLoading(false)
+            setCategoryData(data);
+            setCategoryName(data.name[currentLanguage]);
+            setStatus(data.status);
+            setLoading(false);
           } else {
-            console.log(data.message)
+            console.log(data.message);
           }
-        })
-      })()
+        });
+      })();
     }
-  }, [router.isReady])
+  }, [router.isReady]);
 
   //Firebase Uodate Category
   const storeCategory = async () => {
     if (categoryName === '' || status === '') {
-      alert('Please enter Valid data')
-      return
+      alert('Please enter Valid data');
+      return;
     }
     const data = {
       [currentLanguage]: categoryName,
       status: status,
       lang: currentLanguage,
-    }
+    };
     await updateCategoryData(router.query.id, data).then((data) => {
-      console.log(data)
-    })
+      console.log(data);
+    });
 
     // setLoading(true)
 
@@ -83,13 +83,13 @@ function CategoryEdit() {
     //  setLoading(false)
     //  router.push('/admin/category')
     // })
-  }
+  };
 
   const changLanguage = () => {
-    setCurrentLanguage(currentLanguage == 'en' ? 'ar' : 'en')
-  }
+    setCurrentLanguage(currentLanguage == 'en' ? 'ar' : 'en');
+  };
 
-  console.log('rendering')
+  console.log('rendering');
 
   // if(Object.keys(categoryData).length === 0){
   // 	console.log('checking render.....',categoryData)
@@ -101,7 +101,7 @@ function CategoryEdit() {
 
   // else{
 
-  console.log('main render')
+  console.log('main render');
 
   return (
     <div>
@@ -179,8 +179,8 @@ function CategoryEdit() {
         <div>Loading</div>
       )}
     </div>
-  )
+  );
   // }
 }
 
-export default CategoryEdit
+export default CategoryEdit;

@@ -11,7 +11,7 @@ const depositData = [
   {
     logoWidth: 28,
     logoHeight: 29,
-    amount: '+$4,650',
+    amount: '+ر.ق4,650',
     subtitle: 'Sell UI Kit',
     title: 'Gumroad Account',
     logo: '/images/logos/gumroad.png',
@@ -19,7 +19,7 @@ const depositData = [
   {
     logoWidth: 38,
     logoHeight: 38,
-    amount: '+$92,705',
+    amount: '+ر.ق92,705',
     title: 'Mastercard',
     subtitle: 'Wallet deposit',
     logo: '/images/logos/mastercard-label.png',
@@ -27,7 +27,7 @@ const depositData = [
   {
     logoWidth: 20,
     logoHeight: 28,
-    amount: '+$957',
+    amount: '+ر.ق957',
     title: 'Stripe Account',
     subtitle: 'iOS Application',
     logo: '/images/logos/stripe.png',
@@ -35,7 +35,7 @@ const depositData = [
   {
     logoWidth: 34,
     logoHeight: 32,
-    amount: '+$6,837',
+    amount: '+ر.ق6,837',
     title: 'American Bank',
     subtitle: 'Bank Transfer',
     logo: '/images/logos/american-bank.png',
@@ -43,7 +43,7 @@ const depositData = [
   {
     logoWidth: 33,
     logoHeight: 22,
-    amount: '+$446',
+    amount: '+ر.ق446',
     title: 'Bank Account',
     subtitle: 'Wallet deposit',
     logo: '/images/logos/citi-bank.png',
@@ -54,7 +54,7 @@ const withdrawData = [
   {
     logoWidth: 29,
     logoHeight: 30,
-    amount: '-$145',
+    amount: '-ر.ق145',
     title: 'Google Adsense',
     subtitle: 'Paypal deposit',
     logo: '/images/logos/google.png',
@@ -62,7 +62,7 @@ const withdrawData = [
   {
     logoWidth: 34,
     logoHeight: 34,
-    amount: '-$1870',
+    amount: '-ر.ق1870',
     title: 'Github Enterprise',
     logo: '/images/logos/github.png',
     subtitle: 'Security & compliance',
@@ -70,7 +70,7 @@ const withdrawData = [
   {
     logoWidth: 30,
     logoHeight: 30,
-    amount: '-$450',
+    amount: '-ر.ق450',
     title: 'Upgrade Slack Plan',
     subtitle: 'Debit card deposit',
     logo: '/images/logos/slack.png',
@@ -78,7 +78,7 @@ const withdrawData = [
   {
     logoWidth: 30,
     logoHeight: 30,
-    amount: '-$540',
+    amount: '-ر.ق540',
     title: 'Digital Ocean',
     subtitle: 'Cloud Hosting',
     logo: '/images/logos/digital-ocean.png',
@@ -86,7 +86,7 @@ const withdrawData = [
   {
     logoWidth: 36,
     logoHeight: 21,
-    amount: '-$21',
+    amount: '-ر.ق21',
     title: 'AWS Account',
     logo: '/images/logos/aws.png',
     subtitle: 'Choosing a Cloud Platform',

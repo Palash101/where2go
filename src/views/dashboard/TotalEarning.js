@@ -18,7 +18,7 @@ const data = [
     imgHeight: 20,
     title: 'Zipcar',
     color: 'primary',
-    amount: '$24,895.65',
+    amount: 'ر.ق24,895.65',
     subtitle: 'Vuejs, React & HTML',
     imgSrc: '/images/cards/logo-zipcar.png',
   },
@@ -27,7 +27,7 @@ const data = [
     color: 'info',
     imgHeight: 27,
     title: 'Bitbank',
-    amount: '$8,650.20',
+    amount: 'ر.ق8,650.20',
     subtitle: 'Sketch, Figma & XD',
     imgSrc: '/images/cards/logo-bitbank.png',
   },
@@ -36,7 +36,7 @@ const data = [
     imgHeight: 20,
     title: 'Aviato',
     color: 'secondary',
-    amount: '$1,245.80',
+    amount: 'ر.ق1,245.80',
     subtitle: 'HTML & Angular',
     imgSrc: '/images/cards/logo-aviato.png',
   },
@@ -70,7 +70,7 @@ const TotalEarning = () => {
             variant="h4"
             sx={{ fontWeight: 600, fontSize: '2.125rem !important' }}
           >
-            $24,895
+            ر.ق24,895    
           </Typography>
           <Box
             sx={{
@@ -90,7 +90,7 @@ const TotalEarning = () => {
         </Box>
 
         <Typography component="p" variant="caption" sx={{ mb: 10 }}>
-          Compared to $84,325 last year
+          Compared to ر.ق84,325 last year
         </Typography>
 
         {data.map((item, index) => {
