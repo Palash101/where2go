@@ -573,7 +573,11 @@ function HomeAppBar(props) {
       </Drawer>
 
       <Modal
-        keepMounted
+        //keepMounted
+        style={{position:'absolute',
+        overflow:'auto',
+        height:'auto'
+      }}
         open={open}
         onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
