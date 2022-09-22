@@ -40,7 +40,7 @@ const EventStep5 = ({ data, eventId, refreshData }) => {
   const [checked1, setChecked1] = useState(data.featured === 'true')
 
   const updateData = async (event) => {
-    if (data.description && data.event_date && data.images && data.tickets) {
+    if (data.description && (data.event_date || data.slots) && data.images && data.tickets) {
       setLoading(true)
       setChecked(event.target.checked)
       if (event.target.checked === false) {

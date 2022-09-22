@@ -60,7 +60,7 @@ function EventCreate() {
       floorType,
     ).then((data) => {
       console.log(data, 'Returned Data')
-      router.push('events/' + data.docId)
+      router.push('/events/' + data.docId)
     })
     setLoading(false)
   }

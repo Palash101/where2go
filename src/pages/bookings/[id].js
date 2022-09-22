@@ -143,11 +143,11 @@ function Bookings(navigation) {
     //     query: { id: router.query.id ,date:date,from:formTime,to:toTime,floor_type:itemNew.floor_type},
     // })
 
-    itemNew.event_date.map((item1) => {
-      if (date === item1.date) {
-        setExist(true)
-      }
-    })
+    // itemNew.event_date.map((item1) => {
+    //   if (date === item1.date) {
+    //     setExist(true)
+    //   }
+    // })
 
     handleClose()
   }
@@ -178,11 +178,13 @@ function Bookings(navigation) {
         data.tickets = arr
         console.log(data, 'booking')
         setItemNew(data)
-        data.event_date.map((item1) => {
-          if (propDate === item1.date) {
-            setExist(true)
-          }
-        })
+
+        // data.event_date.map((item1) => {
+        //   if (propDate === item1.date) {
+        //     setExist(true)
+        //   }
+        // })
+
       })
 
       //  var dt = moment().format('LLLL');
@@ -376,11 +378,11 @@ function Bookings(navigation) {
                       <p>{item1.description}</p>
                     </div>
                     <div className="cartRight">
-                      {/* <ButtonGroup size="small" variant="text" aria-label="small button group" >
-                                    <Button onClick={() => handleIncrement(item1)}>+</Button>
-                                    <Button variant="outlined" disabled>{item1.qty}</Button>
-                                    <Button onClick={() => handleDecrement(item1)}>-</Button>
-                                </ButtonGroup> */}
+                      <ButtonGroup size="small" variant="text" aria-label="small button group" >
+                          <Button onClick={() => handleIncrement(item1)}>+</Button>
+                          <Button variant="outlined" disabled>{item1.qty}</Button>
+                          <Button onClick={() => handleDecrement(item1)}>-</Button>
+                      </ButtonGroup>
                       <h4>
                         {item1.price} {itemNew.currency}
                       </h4>

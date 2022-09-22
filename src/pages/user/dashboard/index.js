@@ -71,9 +71,10 @@ function Dashboard({ user }) {
         <div
           className="slideItem"
           onClick={() =>
+          
             router.push({
               pathname: '/details/[id]',
-              query: { id: item.id },
+              query: { id: item.docId },
             })
           }
         >

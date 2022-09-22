@@ -163,6 +163,7 @@ console.log(item)
                       defaultCountry="QA"
                       onChange={setPhone}
                       style={{width: '315px',
+                      direction:'ltr',
                         padding: '18px'}}
                     />
             </Box>
@@ -192,9 +193,9 @@ console.log(item)
               <h3>Terms & Conditions</h3>
               <label>Please read and agree to the organizers terms and conditions</label>
           
-              <p>
-                {item.terms}
-              </p>
+              <div className='mb-100' dangerouslySetInnerHTML={{ __html: item.terms }}>
+                
+              </div>
             <FormGroup sx={{marginTop:5}}>
               <FormControlLabel control={<Checkbox checked={agree}
                                                     onChange={handleCheck}

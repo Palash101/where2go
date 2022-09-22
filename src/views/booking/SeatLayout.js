@@ -46,6 +46,7 @@ const SeatLayout = (props) => {
   const [booked,setBooked] = useState([])
   const [layoutWidth,setLayoutWidth] = useState(500);
   const [layoutHeight, setLayoutHeight] = useState(500);
+  const [scale,setScale] = useState(0.1);
   //Use Effect Seat Layout from props
 
   useEffect(() => {
@@ -53,6 +54,8 @@ const SeatLayout = (props) => {
     var WH = getWindowSize();
       setLayoutWidth(WH.innerWidth);
       setLayoutHeight(WH.innerHeight);
+      console.log(WH.innerWidth,'ww')
+    setScale(WH.innerWidth > 460 ? 1 : 0.4);
 
     console.log(props,'component props');
     var dt = props.date.split(' ')[0];
@@ -131,9 +134,10 @@ const SeatLayout = (props) => {
   return (
     <>
       <Grid container>
+        {scale > 0.2 && (
         <Grid item xs={12} md={12} sx={{marginBottom:50}}>
           <TransformWrapper 
-          initialScale={1}
+          initialScale={scale}
           minScale={0.2}
           maxScale={8}
           minPositionY={50}
@@ -144,7 +148,7 @@ const SeatLayout = (props) => {
             <TransformComponent >
               <Box sx={{
                 //  backgroundColor:'#999',
-                  width:layoutWidth - 50,
+                  width:(layoutWidth > 360) ? layoutWidth - 50 : layoutWidth,
                   height:layoutHeight - 100,
                   marginLeft:'25px',
                   marginTop:'25px',
@@ -152,8 +156,8 @@ const SeatLayout = (props) => {
                   alignItems:'center',
                 }}>
                   <Box sx={{
-                  backgroundColor:'#000',
-                  width:layoutWidth - 200,
+                  backgroundColor:(layoutWidth > 360) ? '#000' : 'transparent',
+                  width:(layoutWidth > 360) ? layoutWidth - 200 : layoutWidth,
                   height:'800',
                   display:'block',
                   paddingRight:'25px',
@@ -205,6 +209,7 @@ const SeatLayout = (props) => {
             </TransformComponent>
           </TransformWrapper>
         </Grid>
+        )}
       </Grid>
 
       <Box className="bottomBlock">

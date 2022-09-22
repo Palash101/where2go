@@ -16,6 +16,7 @@ import ListItem from '@mui/material/ListItem'
 import Divider from '@mui/material/Divider'
 import MailIcon from '@mui/icons-material/Mail'
 import HomeIcon from '@mui/icons-material/Home'
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
@@ -48,6 +49,7 @@ import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import LoginIcon from '@mui/icons-material/Login'
+import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' },
@@ -121,9 +123,11 @@ function HomeAppBar(props) {
     handleMenuClose()
   }
   const clickLink = (link) => {
+    //console.log(window.location.origin)
+    // window.location.href = window.location.origin + '/'+link;
     router.push(link)
-    setNavVisible(false)
-    handleMenuClose()
+     setNavVisible(false)
+     handleMenuClose()
   }
 
 
@@ -135,6 +139,7 @@ function HomeAppBar(props) {
         role: localStorage.getItem('role'),
         isAuthenticated: localStorage.getItem('isAuthenticated'),
         accesstoken: localStorage.getItem('accesstoken'),
+        type:localStorage.getItem('userType')
       }
       console.log(userData, 'user Data')
       setUser(userData)
@@ -289,11 +294,11 @@ function HomeAppBar(props) {
         )}
       </Box>
       <List>
-        {user && user.isAuthenticated && user.phoneNumber !== 'undefined' ? (
+        {user && user.isAuthenticated && user.type !== 'admin' ? (
           <ListItem disablePadding>
-            <ListItemButton onClick={() => clickLink('user/dashboard')}>
+            <ListItemButton onClick={() => clickLink('/user/dashboard')}>
               <ListItemIcon size={24}>
-                <HomeIcon />
+                <DashboardIcon />
               </ListItemIcon>
               <ListItemText
                 sx={{ fontSize: '0.75rem' }}
@@ -305,11 +310,11 @@ function HomeAppBar(props) {
 
 
 
-        {user && user.isAuthenticated && user.phoneNumber === 'undefined' ? (
+        {user && user.isAuthenticated && user.type === 'admin' ? (
           <ListItem disablePadding>
             <ListItemButton onClick={() => clickLink('/admin')}>
               <ListItemIcon size={24}>
-                <HomeIcon />
+                <DashboardIcon />
               </ListItemIcon>
               <ListItemText
                 sx={{ fontSize: '0.75rem' }}
@@ -330,7 +335,7 @@ function HomeAppBar(props) {
         <ListItem disablePadding>
           <ListItemButton onClick={() => clickLink('/browse')}>
             <ListItemIcon>
-              <MailIcon />
+              <ContentPasteSearchIcon />
             </ListItemIcon>
             <ListItemText sx={{ fontSize: '14px' }} primary={t.browseEvents} />
           </ListItemButton>
@@ -338,7 +343,7 @@ function HomeAppBar(props) {
 
         {user && user.isAuthenticated && user.phoneNumber !== 'undefined' && (
         <ListItem disablePadding>
-          <ListItemButton  onClick={() => router.replace('user/my-booking','user/my-booking')}>
+          <ListItemButton  onClick={() => clickLink('/user/my-booking')}>
             <ListItemIcon>
               <LocalActivityIcon />
             </ListItemIcon>
@@ -621,6 +626,7 @@ function HomeAppBar(props) {
                     onChange={setOtp}
                     numInputs={6}
                     separator={<span> </span>}
+                    isInputNum={true}
                     containerStyle={{
                       alignItems: 'center',
                       justifyContent: 'space-between',
