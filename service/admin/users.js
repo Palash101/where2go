@@ -38,10 +38,21 @@ export const addBooking = async (allData)=>{
       console.log(err,'Add Category Error Service file')
 
   })
-
 }
 
+export const getUserById =  async(docId)=>{
+    const docRef = doc(db, "users", docId);
+     const docSnap = await getDoc(docRef);
+     if (docSnap.exists()) {
+         return docSnap.data()
+       } else {
+         return{err:'error',message:'Document not found'}
+       }
+ }
+
+
 export const getUserBooking = async(uId) =>{
+    
   try{
       const q = query(collection(db, "booking"), where("uId", "==", uId));
       var dt = [];
@@ -49,9 +60,10 @@ export const getUserBooking = async(uId) =>{
       querySnapshot.forEach((doc) => {
           dt.push(doc.data());
       });
+      
       return dt;
   }
   catch(error){
       return{error:'error',message:'Something went wrong',devmsg:error}
   }
-} 
+}

@@ -99,33 +99,7 @@ function CategoryAdd() {
                       label={`${t.categories} ${t.name} `}
                       placeholder="Ex: Drama, Game, Movie"
                     />
-                    <FormControl sx={{ marginTop: '20px' }} fullWidth>
-                      <InputLabel id="form-layouts-separator-multiple-select-label">
-                        {t.status}
-                      </InputLabel>
-                      <Select
-                        onChange={(e) => setStatus(e.target.value)}
-                        id="form-layouts-separator-multiple-select"
-                        labelId="form-layouts-separator-multiple-select-label"
-                        input={
-                          <OutlinedInput
-                            label="Language"
-                            id="select-multiple-language"
-                          />
-                        }
-                        required
-                      >
-                        <MenuItem value="1">{t.active}</MenuItem>
-                        <MenuItem value="0">{t.block}</MenuItem>
-                      </Select>
-
-                      <div>
-                        <FormControlLabel
-                          control={<Switch onChange={changLanguage} />}
-                          label={currentLanguage}
-                        />
-                      </div>
-                    </FormControl>
+                    
                   </Grid>
                   <Grid item xs={12}>
                     <Button

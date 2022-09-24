@@ -89,13 +89,16 @@ export const addCategory = async (name,currentLanguage,status)=>{
 
   export const updateCategoryData = async (catId,data)=>{
     const {status, lang} = data;
-
+    console.log(catId,data);
     try{
         const docRef = doc(db, "category", catId);
         return await updateDoc(docRef, {
-          [`name_tr.${lang}`]:data[lang],
+          [`name.${lang}`]:data[lang],
+          
           status:status
-          })
+          }).then((data)=>{
+            return {success:data,message:'Category Added successfully'}
+        })
 
     }
     catch(error){

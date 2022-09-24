@@ -19,7 +19,7 @@ import Box from '@mui/material/Box';
 import Switch from '@mui/material/Switch';
 import Input from '@mui/material/Input';
 import FormControlLabel from '@mui/material/FormControlLabel';
-
+import { toast } from 'react-toastify'
 import { useRouter } from 'next/router';
 
 import {
@@ -47,7 +47,13 @@ function CategoryEdit() {
         await getCategoryById(router.query.id).then((data) => {
           if (!data.err) {
             setCategoryData(data);
-            setCategoryName(data.name[currentLanguage]);
+            if(data.name[storageLocale]){
+              setCategoryName(data.name[storageLocale]);
+            }else{
+              var objectKey = Object.keys(data.name)[0];
+              setCategoryName(data.name[objectKey]);
+            }
+          
             setStatus(data.status);
             setLoading(false);
           } else {
@@ -71,6 +77,11 @@ function CategoryEdit() {
     };
     await updateCategoryData(router.query.id, data).then((data) => {
       console.log(data);
+      toast('Category updated successfully')
+     // alert(res);
+      //handleMessage()
+     setLoading(false)
+     router.push('/admin/category')
     });
 
     // setLoading(true)

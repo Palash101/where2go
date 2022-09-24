@@ -12,17 +12,23 @@ import { useRouter } from 'next/router'
 import { verifyToken } from '../../../../service/auth'
 import nookies from 'nookies'
 import { userAuth } from 'context/userContext'
-
 import { getAllUsers } from '../../../../service/admin/users'
 
 function UserList() {
   const router = useRouter()
   const userContext = userAuth()
   const t = userContext.getTrans()
+  
 
   const [allUsers, setAllUsers] = useState([])
+
   const options = {
     filterType: 'checkbox',
+  }
+  const showUser = (id) =>{
+    
+      router.push(`/admin/users/detail/${id}`)
+    
   }
 
   const columns = [
@@ -64,14 +70,25 @@ function UserList() {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <>
+          
               <DeleteIcon
                 onClick={() => DeleteClick(value)}
+                color={'error'}
                 sx={{
-                  color: '#9155fb',
+                  // color: '#9155fb',
                   cursor: 'pointer',
                   marginRight: '10px',
                 }}
               ></DeleteIcon>
+              <RemoveRedEyeIcon
+                onClick={() => showUser(value)}
+                color={'info'}
+                sx={{
+                  // color: '#9155fb',
+                  cursor: 'pointer',
+                  marginRight: '10px',
+                }}
+              ></RemoveRedEyeIcon>
             </>
           )
         },

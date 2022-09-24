@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState , useEffect } from 'react'
 
 // MUI Imports
 import Box from '@mui/material/Box'
@@ -17,13 +17,53 @@ import Divider from '@mui/material/Divider'
 import Tab from '@mui/material/Tab'
 import Button from '@mui/material/Button'
 import MUIDataTable from 'mui-datatables'
-
+import { getUserById , getUserBooking } from 'service/admin/users'
+import { useRouter } from 'next/router'
 function UserDetail() {
+
   const [value, setValue] = useState('')
+  const [userData, setUserData] = useState({})
+  const [userBooking, setUserBooking] = useState([])
+  const router = useRouter()
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+
+  useEffect(() => {
+   
+    if (router.isReady) {
+      ;(async () => {
+        // setLoading(true)
+        await getUserById(router.query.id).then((data) => {
+          if (!data.err) {
+            console.log(data)
+            setUserData(data)
+            // setlocationName(data.name)
+            // setStatus(data.status)
+            // setLoading(false)
+          } else {
+            // setLoading(false)
+            console.log(data.message)
+          }
+        })
+        await getUserBooking(router.query.id).then((data) => {
+          if (!data.err) {
+            console.log(data)
+            setUserBooking(data)
+            // setlocationName(data.name)
+            // setStatus(data.status)
+            // setLoading(false)
+          } else {
+            // setLoading(false)
+            console.log(data.message)
+          }
+        })
+      })()
+    }
+  }, [router.isReady])
+
+  console.log('userBooking',userBooking)
 
   const TransactionsData = [
     {
@@ -94,24 +134,31 @@ function UserDetail() {
 
   const columns = [
     {
-      name: 'transId',
-      label: 'Transaction Id',
+      name: 'date',
+      label: 'Date',
       options: {
         filter: false,
         sort: true,
       },
     },
     {
-      name: 'paymentMethod',
-      label: 'Payment Method',
-
+      name: 'eventLocation',
+      label: 'Location',
       options: {
         filter: false,
-        sort: false,
+        sort: true,
       },
     },
     {
-      name: 'amount',
+      name: 'eventName.en',
+      label: 'Event',
+      options: {
+        filter: false,
+        sort: true,
+      },
+    },
+    {
+      name: 'total',
       label: 'Amount',
 
       options: {
@@ -119,7 +166,11 @@ function UserDetail() {
         sort: false,
       },
     },
+    
   ]
+
+   console.log('userData',userData)
+
 
   return (
     <>
@@ -148,12 +199,12 @@ function UserDetail() {
                       Customer Name: Abhilash Sharma
                     </Typography>
                     <Typography display="inline-block" variant="p">
-                      SignUp Date/Time: 1July 2022{' '}
+                      SignUp Date/Time: {new Date(userData.created_at * 1000).toString() }
                     </Typography>
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <Typography variant="p">
-                      Mobile Number: +917224901787
+                      Mobile Number: {userData.phoneNumber}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -166,14 +217,14 @@ function UserDetail() {
       <Card>
         <TabContext value={value}>
           <TabList onChange={handleChange} aria-label="card navigation example">
-            <Tab value="1" label="Order List" />
+            <Tab value="1" label="Booking List" />
             <Tab value="2" label="Transactions/Invoice" />
           </TabList>
           <CardContent>
             <TabPanel value="1" sx={{ p: 0 }}>
               <MUIDataTable
                 title={'Order List'}
-                data={TransactionsData}
+                data={userBooking}
                 columns={columns}
                 options={options}
               />
@@ -181,7 +232,7 @@ function UserDetail() {
             <TabPanel value="2" sx={{ p: 0 }}>
               <MUIDataTable
                 title={'Transactions List'}
-                data={TransactionsData}
+                data={userBooking}
                 columns={columns}
                 options={options}
               />
@@ -193,3 +244,5 @@ function UserDetail() {
   )
 }
 export default UserDetail
+
+

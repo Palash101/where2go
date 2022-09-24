@@ -75,7 +75,7 @@ function CategoryList() {
   }
   const DeleteClick = async (docId) => {
     if (window.confirm('Are you sure? you want to delete this category.')) {
-      console.log(row)
+      // console.log(row)
       setLoading(true)
       deleteCategory(docId).then((res) => {
         toast('Category deleted successfully')
