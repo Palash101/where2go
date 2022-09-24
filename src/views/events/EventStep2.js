@@ -132,7 +132,10 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
       return
     }
     setLoading(true)
-    await updateEventDetails(eventId, location, 'event_location').then((data) =>
+    await updateEventDetails(eventId, location.formatted_address, 'event_location').then((data) =>
+      console.log(data),
+    )
+    await updateEventDetails(eventId, location.place_id, 'place_id').then((data) =>
       console.log(data),
     )
     setLoading(false)
@@ -303,7 +306,7 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
                     placeholder="ex: Near football stadium Queens mall Banglore"
                   /> */}
                  <Autocomplete
-                      apiKey={'AIzaSyCR-smvY-yJvsx0pBWFo45b839omjzKRoM'}
+                      apiKey={'AIzaSyBHL3C8OAZx0ifZFUGOr6pJSKTQBgDcUFk'}
                       onPlaceSelected={(place) => {
                         console.log(place);
                         setLocation(place)
