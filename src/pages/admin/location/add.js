@@ -24,7 +24,7 @@ import { userAuth } from 'context/userContext'
 
 import { addLocation } from '../../../../service/admin/location'
 import { useState } from 'react'
-
+import { toast } from 'react-toastify'
 function LocationAdd() {
   const router = useRouter()
   const [locationName, setlocationName] = useState('')
@@ -58,6 +58,7 @@ function LocationAdd() {
     console.log(locationName, 'submitting')
     await addLocation(locationName, currentLanguage, status).then((res) => {
       console.log(res, 'ress')
+      toast('Location added successfully')
       handleMessage()
       setLoading(false)
       router.push('/admin/location')
@@ -88,30 +89,7 @@ function LocationAdd() {
                       label={t.location}
                       placeholder="Ex: Qatar,Dubai,Jordan"
                     />
-                    <FormControl sx={{ marginTop: '20px' }} fullWidth>
-                      <InputLabel id="form-layouts-separator-multiple-select-label">
-                        {t.status}
-                      </InputLabel>
-                      <Select
-                        onChange={(e) => setStatus(e.target.value)}
-                        id="form-layouts-separator-multiple-select"
-                        labelId="form-layouts-separator-multiple-select-label"
-                        input={
-                          <OutlinedInput
-                            label="Language"
-                            id="select-multiple-language"
-                          />
-                        }
-                        required
-                      >
-                        <MenuItem value="1">{t.active}</MenuItem>
-                        <MenuItem value="0">{t.block}</MenuItem>
-                      </Select>
-                      <FormControlLabel
-                        control={<Switch onChange={changLanguage} />}
-                        label={currentLanguage}
-                      />
-                    </FormControl>
+                   
                   </Grid>
                   <Grid item xs={12}>
                     <Button

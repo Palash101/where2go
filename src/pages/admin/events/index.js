@@ -21,7 +21,7 @@ import { getAllLocations } from '../../../../service/admin/location'
 import { verifyToken } from '../../../../service/auth'
 import { userAuth } from 'context/userContext'
 import Translations from 'utils/trans'
-
+import { toast } from 'react-toastify'
 import nookies from 'nookies'
 
 function EventCreate() {
@@ -59,7 +59,8 @@ function EventCreate() {
       locale,
       floorType,
     ).then((data) => {
-      console.log(data, 'Returned Data')
+      // console.log(data, 'Returned Data')
+      toast('Event added successfully')
       router.push('/admin/events/' + data.docId)
     })
     setLoading(false)

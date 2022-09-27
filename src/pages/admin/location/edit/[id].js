@@ -19,7 +19,7 @@ import { useRouter } from 'next/router'
 import nookies from 'nookies'
 import Switch from '@mui/material/Switch'
 import FormControlLabel from '@mui/material/FormControlLabel'
-
+import { toast } from 'react-toastify'
 import {
   updateLocation,
   getLocationById,
@@ -74,6 +74,7 @@ function LocationEdit() {
     setLoading(true)
     await updateLocation(router.query.id, data).then((res) => {
       console.log(res, 'ress')
+      toast('Location updated successfully')
       setLoading(false)
       router.push('/admin/location')
     })

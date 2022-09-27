@@ -17,6 +17,8 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Box from '@mui/material/Box'
 import Switch from '@mui/material/Switch'
 import Input from '@mui/material/Input'
+import { toast } from 'react-toastify'
+
 import FormControlLabel from '@mui/material/FormControlLabel'
 
 import { userAuth } from 'context/userContext'
@@ -65,6 +67,7 @@ function CategoryAdd() {
     // alert(englishName)
     await addCategory(categoryName, currentLanguage, status).then((res) => {
       console.log(res, 'ress')
+      toast('Category added successfully')
       // alert(res);
       handleMessage()
       setLoading(false)

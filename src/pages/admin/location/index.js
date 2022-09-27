@@ -125,16 +125,21 @@ function LocationList() {
                   <TableCell align="right">
                     <EditIcon
                       onClick={() => editLocation(row.docId)}
-                      sx={{ color: '#d7c602', cursor: 'pointer' }}
+                      color={'info'}
+                      sx={{ 
+                        // color: '#d7c602',
+                         cursor: 'pointer' }}
                     />
                     <DeleteIcon
                       onClick={() => DeleteClick(row.docId)}
+                      color={'error'}
                       sx={{
-                        color: '#d7c602',
+                        // color: '#d7c602',
                         cursor: 'pointer',
                         marginLeft: '10px',
                       }}
                     ></DeleteIcon>
+                    
                   </TableCell>
                 </TableRow>
               ))}

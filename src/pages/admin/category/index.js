@@ -139,12 +139,16 @@ function CategoryList() {
                     <TableCell align="right">
                       <EditIcon
                         onClick={() => editCategory(docId)}
-                        sx={{ color: '#d7c602', cursor: 'pointer' }}
+                        color={'info'}
+                        sx={{
+                          //  color: '#d7c602',
+                         cursor: 'pointer' }}
                       />
                       <DeleteIcon
                         onClick={() => DeleteClick(docId)}
+                        color={'error'}
                         sx={{
-                          color: '#d7c602',
+                          // color: '#d7c602',
                           cursor: 'pointer',
                           marginLeft: '10px',
                         }}
@@ -210,3 +214,5 @@ export async function getServerSideProps(context) {
     }
   }
 }
+
+

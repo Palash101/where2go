@@ -15,11 +15,16 @@ import { userAuth } from 'context/userContext'
 import Translations from 'utils/trans'
 
 import { getAllEvents } from '../../../../service/admin/events'
-
+import {
+  getEventById,
+  updateFloorPlan,
+  updateEventTicket,
+} from 'service/admin/events';
 function EventList() {
   const router = useRouter()
   const [allEvents, setAllEventData] = useState([])
-
+  const [item, setItem] = useState({});
+  
   const userContext = userAuth()
   const locale = userContext.locale
   const t = Translations(locale)
@@ -105,7 +110,7 @@ function EventList() {
                 }}
               ></EditIcon>
               <RemoveRedEyeIcon
-                onClick={handleClickRowEdit}
+               onClick={() => handleClickRowEdit(value)}
                 sx={{ color: '#3100f5', cursor: 'pointer' }}
               />
             </>
@@ -116,9 +121,17 @@ function EventList() {
   ]
 
   const handleClickRowEdit = (value, tableMeta) => {
-    console.log({ value, tableMeta })
+    // router.push('/details/' + value)
+    getEventById(value).then((data) => {
+      if(data.status == 'published'){
+        router.push('/details/' + value)
+      }
+      
+     // setItem(data);
+    });
+    
   }
-  const handleEditEvent = (value) => {
+  const handleEditEvent = (value) => {  
     router.push('/admin/events/' + value)
   }
 
