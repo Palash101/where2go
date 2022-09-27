@@ -79,7 +79,7 @@ export const signinUser = async(user) =>{
     await createUserSession(user.accessToken,user.uId,'customer');  
   }
   else{
-    await setUser({authId:user.uId,phoneNumber:user.phoneNumber,role:1})
+    await setUser({authId:user.uId,phoneNumber:user.phoneNumber,role:1,status:1})
     await createUserSession(user.accessToken,user.uId,'customer');  
   }
   return {uId:user.uId,phoneNumber:user.phoneNumber,accessToken:user.accessToken}

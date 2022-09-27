@@ -1,37 +1,37 @@
-import Grid from '@mui/material/Grid'
 
-import { useEffect, useState } from 'react'
-import Chip from '@mui/material/Chip'
-import MUIDataTable from 'mui-datatables'
-import Button from '@mui/material/Button'
-import Link from '@mui/material/Link'
-import AddBoxIcon from '@mui/icons-material/AddBox'
-import EditIcon from '@mui/icons-material/Edit'
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
-import { useRouter } from 'next/router'
-import { verifyToken } from '../../../../service/auth'
-import nookies from 'nookies'
-import { userAuth } from 'context/userContext'
-import Translations from 'utils/trans'
+import { useEffect, useState } from 'react';
 
-import { getAllEvents } from '../../../../service/admin/events'
-import {
-  getEventById,
-  updateFloorPlan,
-  updateEventTicket,
-} from 'service/admin/events';
+import MUIDataTable from 'mui-datatables';
+import Button from '@mui/material/Button';
+import EditIcon from '@mui/icons-material/Edit';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Grid from '@mui/material/Grid';
+
+import { useRouter } from 'next/router';
+import { verifyToken } from '../../../../service/auth';
+import nookies from 'nookies';
+import { userAuth } from 'context/userContext';
+import Translations from 'utils/trans';
+import { getAllEvents,deleteEvent } from '../../../../service/admin/events';
+import { toast } from 'react-toastify'
 function EventList() {
-  const router = useRouter()
-  const [allEvents, setAllEventData] = useState([])
-  const [item, setItem] = useState({});
-  
-  const userContext = userAuth()
-  const locale = userContext.locale
-  const t = Translations(locale)
+  const router = useRouter();
+  const [allEvents, setAllEventData] = useState([]);
+  const [loading, setLoading] = useState(false)
+
+  const userContext = userAuth();
+  const locale = userContext.locale;
+  const t = Translations(locale);
 
   const options = {
     filterType: 'checkbox',
-  }
+  };
 
   const columns = [
     {
@@ -56,39 +56,37 @@ function EventList() {
       options: {
         filter: true,
         sort: true,
-        customBodyRender:(value,)=>{
-          if(value  == 'draft'){
-            return(
+        customBodyRender: (value) => {
+          if (value == 'draft') {
+            return (
               <span
-              style={{
-                padding: '4px 10px',
-                borderRadius: '12px',
-                backgroundColor: "#ff4c51",
-                color: '#fdfdfd',
-                fontSize: '12px',
-              }}
-            >
-              {value}
-           </span>
-            )
+                style={{
+                  padding: '4px 10px',
+                  borderRadius: '12px',
+                  backgroundColor: '#ff4c51',
+                  color: '#fdfdfd',
+                  fontSize: '12px',
+                }}
+              >
+                {value.toUpperCase()}
+              </span>
+            );
+          } else {
+            return (
+              <span
+                style={{
+                  padding: '4px 10px',
+                  borderRadius: '12px',
+                  backgroundColor: '#56ca00',
+                  color: '#fdfdfd',
+                  fontSize: '12px',
+                }}
+              >
+                {value.toUpperCase()}
+              </span>
+            );
           }
-          else{
-            return(
-              <span
-              style={{
-                padding: '4px 10px',
-                borderRadius: '12px',
-                backgroundColor: "#56ca00",
-                color: '#fdfdfd',
-                fontSize: '12px',
-              }}
-            >
-              {value}
-           </span>
-            )
-
-          }         
-        }
+        },
       },
     },
     {
@@ -98,9 +96,19 @@ function EventList() {
       options: {
         filter: false,
         sort: false,
+        targe:"_blank",
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <>
+              <DeleteIcon
+                sx={{
+                  cursor: 'pointer',
+                  marginRight: '10px',
+                }}
+                onClick={() => DeleteClick(value)}
+
+                color={'error'}
+              />
               <EditIcon
                 onClick={() => handleEditEvent(value)}
                 sx={{
@@ -109,62 +117,66 @@ function EventList() {
                   marginRight: '10px',
                 }}
               ></EditIcon>
-              <RemoveRedEyeIcon
-               onClick={() => handleClickRowEdit(value)}
-                sx={{ color: '#3100f5', cursor: 'pointer' }}
-              />
+              {showViewButton(tableMeta.rowIndex) ? (
+                <RemoveRedEyeIcon target="_blank"
+                  onClick={() => handleRowView(value)}
+                  sx={{ color: '#3100f5', cursor: 'pointer' }}
+                />
+              ) : (
+                <></>
+              )}
             </>
-          )
+          );
         },
       },
     },
-  ]
+  ];
 
-  const handleClickRowEdit = (value, tableMeta) => {
-    // router.push('/details/' + value)
-    getEventById(value).then((data) => {
-      if(data.status == 'published'){
-        router.push('/details/' + value)
-      }
-      
-     // setItem(data);
-    });
-    
-  }
-  const handleEditEvent = (value) => {  
-    router.push('/admin/events/' + value)
+  
+
+  const showViewButton = (index) => {
+    const d = allEvents[index];
+    if (d.status == 'published') {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const handleRowView = (value) => {
+    window.open('/details/' + value);
+  };
+  const handleEditEvent = (value) => {
+    router.push('/admin/events/' + value);
+  };
+
+  const DeleteClick = async (docId) => {
+    if (window.confirm('Are you sure? you want to delete this event.')) {
+      // console.log(row)
+      setLoading(true)
+      deleteEvent(docId).then((res) => {
+        toast('Event deleted successfully')
+        setLoading(false)
+        getData()
+      })
+    }
   }
 
-  useEffect(async () => {
-    const eventData = await getAllEvents()
-    const eventArray = []
+  useEffect(() => {
+    getData()
+  }, [getAllEvents])
+
+  const getData = async () => {
+    const eventData = await getAllEvents();
+    const eventArray = [];
     eventData.docs.forEach((item) => {
-      const docId = { docId: item.id }
-      const { event_name } = item.data()
-      console.log(event_name[locale])
-      const event_data = { ...item.data(), event_name: event_name[locale] }
-      const data = Object.assign(docId, event_data)
-      eventArray.push(data)
-    })
-    setAllEventData(eventArray)
-  }, [])
-
-  const renderStatusChip = (status, color) => {
-    return (
-      <div>
-        <span
-          style={{
-            padding: '4px 10px',
-            borderRadius: '12px',
-            backgroundColor: color,
-            color: '#fdfdfd',
-            fontSize: '12px',
-          }}
-        >
-          {status}
-        </span>
-      </div>
-    )
+      const docId = { docId: item.id };
+      const { event_name } = item.data();
+      const event_data = { ...item.data(), event_name: event_name[locale] };
+      const data = Object.assign(docId, event_data);
+      eventArray.push(data);
+    });
+    setAllEventData(eventArray);
   }
 
   return (
@@ -176,14 +188,14 @@ function EventList() {
         options={options}
       />
     </Grid>
-  )
+  );
 }
 
-export default EventList
+export default EventList;
 
 export async function getServerSideProps(context) {
   try {
-    const cookies = nookies.get(context)
+    const cookies = nookies.get(context);
     if (!cookies.user) {
       return {
         redirect: {
@@ -191,15 +203,15 @@ export async function getServerSideProps(context) {
           destination: '/admin/login',
         },
         props: {},
-      }
+      };
     }
-    const userData = await verifyToken(cookies.user)
-    console.log(userData, 'in index page')
+    const userData = await verifyToken(cookies.user);
+    console.log(userData, 'in index page');
 
     if (userData.userType === 'admin') {
       return {
         props: { user: userData },
-      }
+      };
     } else {
       return {
         redirect: {
@@ -207,7 +219,7 @@ export async function getServerSideProps(context) {
           destination: '/admin/login',
         },
         props: {},
-      }
+      };
     }
   } catch (err) {
     return {
@@ -216,6 +228,6 @@ export async function getServerSideProps(context) {
         destination: '/admin/login',
       },
       props: {},
-    }
+    };
   }
 }

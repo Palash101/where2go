@@ -19,13 +19,17 @@ import Button from '@mui/material/Button'
 import MUIDataTable from 'mui-datatables'
 import { getUserById , getUserBooking } from 'service/admin/users'
 import { useRouter } from 'next/router'
+import Switch from '@mui/material/Switch'
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { userUpdate } from  'service/admin/users'
+import { toast } from 'react-toastify'
 function UserDetail() {
 
   const [value, setValue] = useState('')
   const [userData, setUserData] = useState({})
   const [userBooking, setUserBooking] = useState([])
   const router = useRouter()
-
+  const [status, setStatus] = useState('')
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
@@ -40,7 +44,7 @@ function UserDetail() {
             console.log(data)
             setUserData(data)
             // setlocationName(data.name)
-            // setStatus(data.status)
+            setStatus(data.status)
             // setLoading(false)
           } else {
             // setLoading(false)
@@ -52,7 +56,7 @@ function UserDetail() {
             console.log(data)
             setUserBooking(data)
             // setlocationName(data.name)
-            // setStatus(data.status)
+           //  setStatus(data.status)
             // setLoading(false)
           } else {
             // setLoading(false)
@@ -169,8 +173,29 @@ function UserDetail() {
     
   ]
 
-   console.log('userData',userData)
-
+   console.log('userData',status)
+   const toggleChange = async (e) => {
+    var id = router.query.id;
+    
+      // setChecked(e.target.checked)
+      if (e.target.checked === false) {
+         setStatus(0)
+        
+        await userUpdate(id, 0).then((res) =>
+          toast('Status updated successfully'),
+        )
+        // setLoading(false)
+        // refreshData()
+      } else {
+         setStatus(1)
+        await userUpdate(id, 1).then((res) =>
+          toast('Status updated successfully'),
+        )
+        // setLoading(false)
+        // refreshData()
+      }
+   
+  };
 
   return (
     <>
@@ -184,13 +209,41 @@ function UserDetail() {
               }}
             >
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+             
                 <Typography variant="h6" sx={{ marginBottom: 3.5 }}>
                   User Details
                 </Typography>
-                <Typography variant="h6" sx={{ marginBottom: 3.5 }}>
-                  Active
+                {status ? (
+         <Typography color={'aqua'} variant="h6" sx={{ marginBottom: 3.5 }}>
+         Active
+       </Typography>
+      ) : (
+        <Typography color={'error'} variant="h6" sx={{ marginBottom: 3.5 }}>
+                  Block
                 </Typography>
+      )}
+               
+
+                
               </Box>
+
+              
+
+<FormControlLabel
+          control={
+            <Switch
+            onChange={(e) => {
+                toggleChange(e);
+             }}
+             checked={status == 1 ? true : ''}
+             id={userData.id}
+             value={userData.status} 
+            />
+          }
+          label={status == 1 ? 'Active' : 'Block'}
+        />
+
+
               <Divider sx={{ marginTop: 0.5, marginBottom: 6.75 }} />
               <Box>
                 <Grid container spacing={6}>

@@ -137,6 +137,7 @@ const TicketComponent = (props) => {
           sx={{ marginBottom: '10px' }}
           type="text"
           fullWidth
+		  label="Row Alphabet"
           placeholder="Row Alphabet"
         />
         <TextField
@@ -145,6 +146,7 @@ const TicketComponent = (props) => {
           sx={{ marginBottom: '10px' }}
           type="number"
           fullWidth
+		  label="Column number"
           placeholder="Column number"
         />
       </Box>

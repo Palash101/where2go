@@ -311,15 +311,20 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
                         console.log(place);
                         setLocation(place)
                       }}
+                      options={{types:["establishment"],
+                      }}
+                      defaultValue="Qatar"
                       style={{
                         padding: '13px',
                         display: 'block',
-                        width: '250px',
+                        width: '541px',
                         background: 'transparent',
                         border: '1px solid #fff',
                         borderRadius: '4px',
                         outline: 0,
-                        color: '#fff'
+                        color: '#fff',
+                        height: '67px',
+
                       }}
                     />
                 </Box>

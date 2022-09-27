@@ -67,3 +67,27 @@ export const getUserBooking = async(uId) =>{
       return{error:'error',message:'Something went wrong',devmsg:error}
   }
 }
+
+export const deleteUser = async(docId)=>{
+  await deleteDoc(doc(db, "users", docId));
+}
+
+export const userUpdate = async (id,status)=>{
+  console.log(id,status);
+  
+  
+  try{
+      const docRef = doc(db, "users", id);
+      return await updateDoc(docRef, {        
+        status:status
+        }).then((data)=>{
+          return {success:data,message:'Users status updated successfully'}
+      })
+
+  }
+  catch(error){
+      return{error:'error',message:'Something went wrong',devmsg:error}
+  }
+  
+}
+

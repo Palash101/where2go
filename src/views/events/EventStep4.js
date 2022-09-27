@@ -22,7 +22,7 @@ import FormControl from '@mui/material/FormControl'
 import { getAllFloorPLan } from 'service/admin/floorPlan'
 import InputLabel from '@mui/material/InputLabel'
 import { useRouter } from 'next/router'
-
+import EditIcon from '@mui/icons-material/Edit'
 import { toast } from 'react-toastify'
 
 import {
@@ -81,6 +81,19 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
     } else {
       setOpen({ ...open, ticketModal: true })
     }
+  }
+
+  const handleOpenTicketModal = (item1) => {
+    console.log('Ticket Modal' , item1)
+       setName(item1.name);
+       setColor(item1.color);
+       setPrice(item1.price);
+       setTicketCount(item1.ticketCount);
+       setMinBooking(item1.minBooking);
+       setMaxBooking(item1.maxBooking);
+       setDescription(item1.description);
+      setOpen({ ...open, ticketModal: true })
+    
   }
 
   const handleDialogClose = (type) => {
@@ -152,6 +165,14 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
     refreshData()
   }
 
+  const editTicket = (ticket) => {
+    console.log('deleting Ticket', ticket)
+    // setLoading(true)
+    // deleteEventTicket(eventId, ticket)
+    // setLoading(false)
+    // refreshData()
+  }
+
   const ticketForm = (eventId) => {
     return (
       <Box>
@@ -160,6 +181,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
           onChange={(e) => setName(e.target.value)}
           sx={{ marginBottom: '10px' }}
           fullWidth
+          value={name}
           label="Ticket Name"
           placeholder="Enter event name"
         />
@@ -167,6 +189,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
           required
           onChange={(e) => setColor(e.target.value)}
           sx={{ marginBottom: '10px' }}
+          value={color}
           fullWidth
           label="Color Code"
         />
@@ -175,6 +198,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
           onChange={(e) => setPrice(e.target.value)}
           fullWidth
           label="Price"
+          value={price}
           type="number"
           placeholder="Price"
         />
@@ -185,6 +209,8 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
           sx={{ marginBottom: '10px' }}
           type="number"
           fullWidth
+          value={ticketCount}
+          label="Quantity Available"
           placeholder="Quantity Available"
         />
         <TextField
@@ -192,6 +218,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
           onChange={(e) => setMinBooking(e.target.value)}
           sx={{ marginBottom: '10px' }}
           type="number"
+          value={minBooking}
           fullWidth
           placeholder="Minimum allowed quantity in a single booking"
         />
@@ -200,6 +227,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
           onChange={(e) => setMaxBooking(e.target.value)}
           sx={{ marginBottom: '10px' }}
           type="number"
+          value={maxBooking}
           fullWidth
           placeholder="Maximum allowed quantity in a single booking"
         />
@@ -209,6 +237,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
           onChange={(e) => setDescription(e.target.value)}
           sx={{ marginBottom: '10px' }}
           fullWidth
+          value={description}
           label="Description"
           placeholder="Ticket Description"
         />
@@ -305,6 +334,10 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
             <Box>
               {item1.price} {data.currency}
             </Box>
+            <EditIcon
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => handleOpenTicketModal(item1)}
+                />
           </li>
         ))}
       </ul>
@@ -317,7 +350,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
   }
 
   const renderFloorPlanList = (planData) => {
-    console.log(planData, 'renderFloorPlanList')
+    
     return (
       <>
 

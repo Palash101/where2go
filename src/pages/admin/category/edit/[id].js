@@ -1,31 +1,31 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 //Mui Import
-import FormLayoutsBasic from 'src/views/form-layouts/FormLayoutsBasic';
-import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker';
-import Card from '@mui/material/Card';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import CardHeader from '@mui/material/CardHeader';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import CardContent from '@mui/material/CardContent';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
-import Switch from '@mui/material/Switch';
-import Input from '@mui/material/Input';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import { toast } from 'react-toastify'
-import { useRouter } from 'next/router';
+import FormLayoutsBasic from "src/views/form-layouts/FormLayoutsBasic";
+import DatePickerWrapper from "src/@core/styles/libs/react-datepicker";
+import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import CardHeader from "@mui/material/CardHeader";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import CardContent from "@mui/material/CardContent";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+import Switch from "@mui/material/Switch";
+import Input from "@mui/material/Input";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 import {
   getCategoryById,
   updateCategoryData,
-} from '../../../../../service/admin/category';
+} from "../../../../../service/admin/category";
 
 function CategoryEdit() {
   const router = useRouter();
@@ -33,13 +33,13 @@ function CategoryEdit() {
 
   const [categoryData, setCategoryData] = useState({});
 
-  const [categoryName, setCategoryName] = useState('');
+  const [categoryName, setCategoryName] = useState("");
   const [status, setStatus] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState('');
+  const [currentLanguage, setCurrentLanguage] = useState("");
 
   useEffect(() => {
-    const storageLocale = localStorage.getItem('locale');
+    const storageLocale = localStorage.getItem("locale");
     setCurrentLanguage(storageLocale);
     if (router.isReady) {
       (async () => {
@@ -47,13 +47,13 @@ function CategoryEdit() {
         await getCategoryById(router.query.id).then((data) => {
           if (!data.err) {
             setCategoryData(data);
-            if(data.name[storageLocale]){
+            if (data.name[storageLocale]) {
               setCategoryName(data.name[storageLocale]);
-            }else{
+            } else {
               var objectKey = Object.keys(data.name)[0];
               setCategoryName(data.name[objectKey]);
             }
-          
+
             setStatus(data.status);
             setLoading(false);
           } else {
@@ -66,8 +66,8 @@ function CategoryEdit() {
 
   //Firebase Uodate Category
   const storeCategory = async () => {
-    if (categoryName === '' || status === '') {
-      alert('Please enter Valid data');
+    if (categoryName === "" || status === "") {
+      alert("Please enter Valid data");
       return;
     }
     const data = {
@@ -77,11 +77,11 @@ function CategoryEdit() {
     };
     await updateCategoryData(router.query.id, data).then((data) => {
       console.log(data);
-      toast('Category updated successfully')
-     // alert(res);
+      toast("Category updated successfully");
+      // alert(res);
       //handleMessage()
-     setLoading(false)
-     router.push('/admin/category')
+      setLoading(false);
+      router.push("/admin/category");
     });
 
     // setLoading(true)
@@ -97,10 +97,10 @@ function CategoryEdit() {
   };
 
   const changLanguage = () => {
-    setCurrentLanguage(currentLanguage == 'en' ? 'ar' : 'en');
+    setCurrentLanguage(currentLanguage == "en" ? "ar" : "en");
   };
 
-  console.log('rendering');
+  console.log("rendering");
 
   // if(Object.keys(categoryData).length === 0){
   // 	console.log('checking render.....',categoryData)
@@ -112,18 +112,18 @@ function CategoryEdit() {
 
   // else{
 
-  console.log('main render');
+  console.log("main render");
 
   return (
     <div>
       {Object.keys(categoryData).length ? (
-        <DatePickerWrapper dir={currentLanguage == 'ar' ? 'rtl' : 'ltr'}>
+        <DatePickerWrapper dir={currentLanguage == "ar" ? "rtl" : "ltr"}>
           <Grid container spacing={6}>
             <Grid item xs={12} md={12}>
               <Card>
                 <CardHeader
                   title="Add Category"
-                  titleTypographyProps={{ variant: 'h6' }}
+                  titleTypographyProps={{ variant: "h6" }}
                 />
                 <CardContent>
                   <form>
@@ -137,7 +137,7 @@ function CategoryEdit() {
                           label="Category Name"
                           placeholder="Ex: Drama, Game, Movie"
                         />
-                        <FormControl sx={{ marginTop: '20px' }} fullWidth>
+                        <FormControl sx={{ marginTop: "20px" }} fullWidth>
                           <InputLabel id="form-layouts-separator-multiple-select-label">
                             Status
                           </InputLabel>
@@ -178,9 +178,9 @@ function CategoryEdit() {
             {loading && (
               <CircularProgress
                 sx={{
-                  position: 'absolute',
-                  right: '40%',
-                  top: '50%',
+                  position: "absolute",
+                  right: "40%",
+                  top: "50%",
                 }}
               />
             )}
@@ -195,4 +195,3 @@ function CategoryEdit() {
 }
 
 export default CategoryEdit;
-

@@ -238,6 +238,13 @@ export const getCategory = async ()=>{
     }
     
 }
+
+
+export const deleteEvent = async(docId)=>{
+    await deleteDoc(doc(db, "events", docId));
+}
+
+
 export const getHomePageEvent = async ()=>{
     const temp = []
     const q = query(collection(db, "category"), where("status", "==", "1"))

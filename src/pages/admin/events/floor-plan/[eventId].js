@@ -18,7 +18,7 @@ import SideMenu from 'src/views/planner/SideMenu';
 import FooterMenu from 'src/views/planner/FooterMenu';
 import ShowTickets from 'src/views/planner/ShowTickets';
 import TicketComponent from 'src/views/planner/TicketComponent';
-
+import { toast } from 'react-toastify'
 import {
   getEventById,
   updateFloorPlan,

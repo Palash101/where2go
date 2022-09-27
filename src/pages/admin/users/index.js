@@ -12,13 +12,13 @@ import { useRouter } from 'next/router'
 import { verifyToken } from '../../../../service/auth'
 import nookies from 'nookies'
 import { userAuth } from 'context/userContext'
-import { getAllUsers } from '../../../../service/admin/users'
-
+import { getAllUsers , deleteUser } from '../../../../service/admin/users'
+import { toast } from 'react-toastify'
 function UserList() {
   const router = useRouter()
   const userContext = userAuth()
   const t = userContext.getTrans()
-  
+  const [loading, setLoading] = useState(false)
 
   const [allUsers, setAllUsers] = useState([])
 
@@ -38,6 +38,45 @@ function UserList() {
       options: {
         filter: false,
         sort: true,
+      },
+    },
+    {
+      name: 'status',
+      label: t.status,
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value) => {
+          if (value == 0) {
+            return (
+              <span
+                style={{
+                  padding: '4px 10px',
+                  borderRadius: '12px',
+                  backgroundColor: '#ff4c51',
+                  color: '#fdfdfd',
+                  fontSize: '12px',
+                }}
+              >
+                Block
+              </span>
+            );
+          } else {
+            return (
+              <span
+                style={{
+                  padding: '4px 10px',
+                  borderRadius: '12px',
+                  backgroundColor: '#56ca00',
+                  color: '#fdfdfd',
+                  fontSize: '12px',
+                }}
+              >
+                Active
+              </span>
+            );
+          }
+        },
       },
     },
     {
@@ -96,23 +135,40 @@ function UserList() {
     },
   ]
 
-  const DeleteClick = (value, tableMeta) => {
-    console.log({ value, tableMeta })
+  // const DeleteClick = (value, tableMeta) => {
+  //   console.log({ value, tableMeta })
+  // }
+
+  const DeleteClick = async (docId) => {
+    if (window.confirm('Are you sure? you want to delete this user.')) {
+      // console.log(row)
+      setLoading(true)
+      deleteUser(docId).then((res) => {
+        toast('User deleted successfully')
+        setLoading(false)
+        getData()
+      })
+    }
   }
 
   useEffect(async () => {
-    const userData = await getAllUsers()
-    const userArray = []
-    userData.docs.forEach((item) => {
-      if (item.data().role == 1) {
-        const docId = { docId: item.id }
-        const data = Object.assign(docId, item.data())
-        userArray.push(data)
-      }
-    })
-    setAllUsers(userArray)
-    console.log(allUsers, 'users Array')
-  }, [])
+    getData()
+  }, [getAllUsers])
+
+  const getData = async () => {
+  const userData = await getAllUsers()
+  const userArray = []
+  userData.docs.forEach((item) => {
+    if (item.data().role == 1) {
+      const docId = { docId: item.id }
+      const data = Object.assign(docId, item.data())
+      userArray.push(data)
+    }
+  })
+  setAllUsers(userArray)
+  console.log(allUsers, 'users Array')
+ }
+
 
   const renderStatusChip = (status, color) => {
     return (
