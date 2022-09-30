@@ -58,10 +58,19 @@ function MyBooking({ user }) {
                     <h3>{item.total} {item.currency}</h3>
                 </div>
             </Box>
+            
+                 
               {item.tickets.map((item1,key1) => (
+                <span>
+                {item1.qty ? (
+                  <Chip sx={{marginTop:3,marginRight:3}} key={key1} label={item1.name+' - '+item1.qty+ ' Qty * ' +item1.price+' '+item.currency} />
+                ):
+                (
                 <Chip sx={{marginTop:3,marginRight:3}} key={key1} label={item1.name+' - ' +item1.price+' '+item.currency} />
+                )}
+                </span>
                 ))}
-
+            
 
           </Box>
 

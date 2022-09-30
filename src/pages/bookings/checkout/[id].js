@@ -31,6 +31,10 @@ function BookingsCheckout(navigation) {
   const [ticket, setTickets] = useState();
   const [total, setTotal] = useState(0);
   const [carts,setCarts] = useState();
+  const [totalPrice,setTotalPrice] = useState(0);
+  const [allQty,setAllQty] = useState(0);
+
+
   const userContext = userAuth();
   const locale = userContext.locale;
   const t = Translations(locale);
@@ -57,12 +61,30 @@ function BookingsCheckout(navigation) {
       }
 
       if(cartData.carts){
+        if(cartData.event.floor_type === '0'){
+          getCartTicket(cartData.carts.data)
+        }
+        else{
         setTickets(cartData.carts.data)
         setTotal(getTotal(cartData.carts.data))
+        }
       }
       setLoading(false)
     }
   }, [router.isReady,navigation])
+
+  const getCartTicket = (data) => {
+    var total = 0;
+    var qty = 0;
+    data.map(t => {
+      if(t.qty > 0){
+        total = total + JSON.parse(t.price * t.qty);
+        qty = qty + t.qty;
+      }
+    })
+    setAllQty(qty)
+    setTotal(total)
+  }
 
 
   const getTotal = (data) => {
@@ -81,6 +103,12 @@ const payNow = () => {
   else{
 
   var tickets = [];
+  if(item.floor_type === '0'){
+    carts.carts.data.map((item) => {
+      tickets.push(item)
+    })
+  }
+  else{
   carts.carts.data.map((item) => {
     tickets.push({
       name:item.name,
@@ -89,7 +117,7 @@ const payNow = () => {
       fill:item.fill
     })
   })
-
+  }
   var bookingData = {
     uId:carts.uId,
     userType:carts.userType,
@@ -102,13 +130,14 @@ const payNow = () => {
     eventLocation:carts.event.event_location,
     tickets:tickets,
     total:total,
-    currency:carts.event.currency
+    currency:carts.event.currency,
+    quantity:allQty,
 
   }
   console.log(bookingData)
   setLoading(true)
   addBooking(bookingData).then(res => {
-    alert(res.sucess);
+    alert(res.msg);
    router.replace('/');
    setLoading(false)
    setTimeout(()=> {
@@ -180,6 +209,9 @@ const payNow = () => {
                 <TableHead>
                   <TableRow>
                     <TableCell>Description</TableCell>
+                    {item.floor_type === '0'&& (
+                    <TableCell>Q.</TableCell>
+                    )}
                     <TableCell align="right">Price</TableCell>
                    </TableRow>
                 </TableHead>
@@ -189,10 +221,27 @@ const payNow = () => {
                       key={row.name}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
+                      {item.floor_type === '0' ? (
+                        <TableCell component="th" scope="row">
+
+                        {row.name}
+
+                        </TableCell>
+                      )
+                      :
+                      (
                       <TableCell component="th" scope="row">
+
                         {row.ticketName}
                         <Chip sx={{marginLeft:5}} label={row.name} />
+
                       </TableCell>
+                      )}
+                      {item.floor_type === '0'&& (
+                      <TableCell component="th" scope="row">
+                        {row.qty}
+                      </TableCell>
+                      )}
                       <TableCell align="right">{row.price} {carts.event.currency}</TableCell>
                       </TableRow>
                   ))}
@@ -201,8 +250,12 @@ const payNow = () => {
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
-                      <b>Total</b>
+                     
+                      <b>{allQty > 0 ? (<span>{allQty} Tickets,</span>):(<></>)} Total</b>
                       </TableCell>
+                      {item.floor_type === '0'&& (
+                        <TableCell component="th" scope="row"></TableCell>
+                      )}
                       <TableCell align="right"><b>{total} {carts.event.currency}</b></TableCell>
                     </TableRow>
                 </TableBody>

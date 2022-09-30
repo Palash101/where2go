@@ -29,6 +29,8 @@ function BookingsDetails(navigation) {
   const [date, setDate] = useState('');
   const [ticket, setTickets] = useState();
   const [total, setTotal] = useState(0);
+  const [totalPrice,setTotalPrice] = useState(0);
+  const [allQty,setAllQty] = useState(0);
   const userContext = userAuth();
   const locale = userContext.locale;
   const t = Translations(locale);
@@ -39,25 +41,44 @@ function BookingsDetails(navigation) {
       setCarts(cartData)
 
 
-      if(cartData.event){
+      if (cartData.event) {
         setItem(cartData.event)
-        var dt =  cartData.carts.date;
-        setDate(dt+' '+cartData.carts.from);
+        var dt = cartData.carts.date;
+        setDate(dt + ' ' + cartData.carts.from);
       }
-      else{
-          getEventById(router.query.id).then((data) => {
-            setItem(data)
-          })
+      else {
+        getEventById(router.query.id).then((data) => {
+          setItem(data)
+        })
       }
 
-      if(cartData.carts){
+      if (cartData.carts) {
+        if(cartData.event.floor_type === '0'){
+          getCartTicket(cartData.carts.data)
+        }
+        else{
         setTickets(cartData.carts.data)
         setTotal(getTotal(cartData.carts.data))
+        }
       }
-      
-    }
-  }, [router.isReady,navigation])
 
+    }
+  }, [router.isReady, navigation])
+
+
+
+  const getCartTicket = (data) => {
+    var total = 0;
+    var qty = 0;
+    data.map(t => {
+      if(t.qty > 0){
+        total = total + JSON.parse(t.price * t.qty);
+        qty = qty + t.qty;
+      }
+    })
+    setAllQty(qty)
+    setTotalPrice(total)
+  }
 
   const getTotal = (data) => {
     var count = 0;
@@ -72,7 +93,7 @@ function BookingsDetails(navigation) {
 
   const EmailValidation = (mail) => {
     var regexEmail = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
-    if(mail.match(regexEmail)) {
+    if (mail.match(regexEmail)) {
       return true;
     }
     return false;
@@ -81,49 +102,49 @@ function BookingsDetails(navigation) {
   const checkout = () => {
 
 
-    if(carts.uId === null){
+    if (carts.uId === null) {
       toast("Please login before proceeding")
     }
-    else{
+    else {
 
-      if(EmailValidation(email) && isValidPhoneNumber(phone) && name !== ''){
-        if(agree === true){
+      if (EmailValidation(email) && isValidPhoneNumber(phone) && name !== '') {
+        if (agree === true) {
 
           var userDetail = {
-            email:email,
-            phone:phone,
-            name:name
+            email: email,
+            phone: phone,
+            name: name
           }
 
           userContext.setCartData({
             ...carts,
-            carts:{
+            carts: {
               ...carts.carts,
-              userDetail:userDetail,
+              userDetail: userDetail,
             }
           })
           router.push(
-              {
-                pathname: '/bookings/checkout/[id]',
-                query: {
-                  id: router.query.id,
-                },
+            {
+              pathname: '/bookings/checkout/[id]',
+              query: {
+                id: router.query.id,
               },
-            );
+            },
+          );
 
         }
-        else{
+        else {
           toast('Please agree our terms & conditions.')
         }
       }
-      else{
+      else {
         toast('Please enter valid details');
       }
     }
-     
+
   }
 
-console.log(item)
+  console.log(item)
   return (
     <>
       <Box
@@ -133,42 +154,46 @@ console.log(item)
           right: 0,
           zIndex: 9,
         }}
-      >  
-      {item && (
-        <form>
+      >
+        {item && (
+          <form>
 
-        
-          <Box className="checkout-box" sx={{background: `${theme.palette.background.default1}`,maxWidth:'690px',margin:'auto',padding:'15px'}}>
-            <h3>
-            {item.event_name.hasOwnProperty(locale)
+
+            <Box className="checkout-box" sx={{ background: `${theme.palette.background.default1}`, maxWidth: '690px', margin: 'auto', padding: '15px' }}>
+              <h3>
+                {item.event_name.hasOwnProperty(locale)
                   ? item.event_name[locale]
                   : item.event_name[Object.keys(item.event_name)[0]]}
-            </h3>
-            <p>{date}</p>
-              {ticket && (
-                 <p style={{marginTop:10}}>{ticket.length} tickets ({total} {item.currency})</p>
+              </h3>
+              <p>{date}</p>
+              {ticket && item.floor_type === '1' ? (
+                <p style={{ marginTop: 10 }}>{ticket.length} tickets ({total} {item.currency})</p>
 
+              ):(
+                <p style={{ marginTop: 10 }}>{allQty} tickets ({totalPrice} {item.currency})</p>
               )}
-          </Box>
-       
+            </Box>
 
-          <Box className="checkout-box" sx={{background: `${theme.palette.background.default1}`,maxWidth:'690px',margin:'auto',padding:'15px',marginTop:5,}}>
-            <Box style={{}}>
+
+            <Box className="checkout-box" sx={{ background: `${theme.palette.background.default1}`, maxWidth: '690px', margin: 'auto', padding: '15px', marginTop: 5, }}>
+              <Box style={{}}>
                 <label>Complete your booking details to continue</label>
                 <PhoneInput
-                      international
-                      placeholder="Enter phone number"
-                      value={phone}
-                      className=""
-                      defaultCountry="QA"
-                      onChange={setPhone}
-                      style={{width: '315px',
-                      direction:'ltr',
-                        padding: '18px'}}
-                    />
-            </Box>
-            <Box style={{display:'flex'}}>
-              <Box sx={{}}>
+                  international
+                  placeholder="Enter phone number"
+                  value={phone}
+                  className=""
+                  defaultCountry="QA"
+                  onChange={setPhone}
+                  style={{
+                    width: '315px',
+                    direction: 'ltr',
+                    padding: '18px'
+                  }}
+                />
+              </Box>
+              <Box style={{ display: 'flex' }}>
+                <Box sx={{}}>
                   <TextField
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -176,8 +201,8 @@ console.log(item)
                     defaultValue={name}
                     placeholder="Enter your name"
                   />
-              </Box>
-              <Box sx={{marginLeft:5}}>
+                </Box>
+                <Box sx={{ marginLeft: 5 }}>
                   <TextField
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -185,34 +210,34 @@ console.log(item)
                     defaultValue={email}
                     placeholder="Enter your email"
                   />
+                </Box>
               </Box>
-            </Box>
 
-            <Divider sx={{marginTop:5,marginBottom:5}}/>
-            <Box >
-              <h3>Terms & Conditions</h3>
-              <label>Please read and agree to the organizers terms and conditions</label>
-          
-              <div className='mb-100' dangerouslySetInnerHTML={{ __html: item.terms }}>
-                
-              </div>
-            <FormGroup sx={{marginTop:5}}>
-              <FormControlLabel control={<Checkbox checked={agree}
-                                                    onChange={handleCheck}
-                                                    inputProps={{ 'aria-label': 'controlled' }} />} label=" I agree to the terms conditions" />
-            </FormGroup>
+              <Divider sx={{ marginTop: 5, marginBottom: 5 }} />
+              <Box >
+                <h3>Terms & Conditions</h3>
+                <label>Please read and agree to the organizers terms and conditions</label>
+
+                <div className='mb-100' dangerouslySetInnerHTML={{ __html: item.terms }}>
+
+                </div>
+                <FormGroup sx={{ marginTop: 5 }}>
+                  <FormControlLabel control={<Checkbox checked={agree}
+                    onChange={handleCheck}
+                    inputProps={{ 'aria-label': 'controlled' }} />} label=" I agree to the terms conditions" />
+                </FormGroup>
+              </Box>
+
             </Box>
-             
-          </Box>
-          <Box sx={{backgroundColor:'#22262b',maxWidth:'690px',margin:'auto',padding:'15px'}}>
-                <Button
+            <Box sx={{ backgroundColor: '#22262b', maxWidth: '690px', margin: 'auto', padding: '15px' }}>
+              <Button
                 verient="default"
                 sx={{
                   background: '#eb9d05',
                   color: '#000',
                   marginTop: '10px',
                   padding: '10px 30px',
-                  ':hover':{
+                  ':hover': {
                     background: '#ffa800',
                   }
                 }}
@@ -221,13 +246,13 @@ console.log(item)
                 Checkout
               </Button>
             </Box>
-         
 
-        </form>
+
+          </form>
         )}
       </Box>
 
-    
+
     </>
   )
 }

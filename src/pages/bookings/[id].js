@@ -7,7 +7,7 @@ import { Paper, Button } from '@mui/material'
 import Image from 'next/image'
 import Grid from '@mui/material/Grid'
 import TodayIcon from '@mui/icons-material/Today'
-import MapIcon from '@mui/icons-material/Map'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import HomeLayout from 'src/@core/layouts/HomeLayout'
 import { borderTop } from '@mui/system'
 import { auto } from '@popperjs/core'
@@ -41,6 +41,7 @@ function Bookings(navigation) {
   const [item, setItem] = useState({})
   const [floorType, setFloorType] = useState(router.query.floor_type)
   const [itemNew, setItemNew] = useState({})
+  const [tickets, setTickets] = useState([])
   const [featured, setFeatured] = useState(false)
   const [date, setDate] = useState('')
   const [open, setopen] = useState(false)
@@ -55,6 +56,9 @@ function Bookings(navigation) {
   const [priceOpen, setPriceOpen] = useState(false)
   const [floorData, setFloorData] = useState([])
   const [slectedTickets,setSelectedTickets] = useState([])
+  const [myTickets,setMyTickets] = useState([]);
+  const [totalPrice,setTotalPrice] = useState(0);
+  const [allQty,setAllQty] = useState(0);
 
   const userContext = userAuth()
 
@@ -70,18 +74,41 @@ function Bookings(navigation) {
     '10:00 PM',
   ]
 
-  function handleIncrement(item) {
+  const addTicket = (newarr) => {
+    var myTicket = [];
+    var total = 0;
+    var qty = 0;
+    newarr.map(t => {
+      if(t.qty > 0){
+        myTicket.push(t);
+        total = total + JSON.parse(t.price * t.qty);
+        qty = qty + t.qty;
+      }
+    })
+    setAllQty(qty)
+    setTotalPrice(total)
+    setMyTickets(myTicket)
+  }
+
+  function handleIncrement(item,key) {
     if (item.qty !== JSON.parse(item.max_booking)) {
-      item.qty = item.qty + 1
-      setDisplayCounter(true)
+      const newData = {...item,qty:item.qty+1}
+      const newarr = [...tickets]
+      newarr[key] = newData
+      setTickets(newarr)
+      addTicket(newarr)
+      
     }
   }
 
-  function handleDecrement(item) {
-    if (item.qty === JSON.parse(item.min_booking)) {
-      setDisplayCounter(false)
-    } else {
-      item.qty = item.qty - 1
+  function handleDecrement(item,key) {
+    if (item.qty !== 0) {
+      const newData = {...item,qty:item.qty-1}
+      const newarr = [...tickets]
+      newarr[key] = newData
+      setTickets(newarr)
+      addTicket(newarr)
+
     }
   }
 
@@ -155,7 +182,6 @@ function Bookings(navigation) {
   useEffect(async () => {
     if (router.isReady) {
       const cartData = userContext.getCarts();
-      console.log(cartData.carts.date)
       setDate(cartData.carts.date+' '+cartData.carts.from)
       
 
@@ -168,13 +194,14 @@ function Bookings(navigation) {
         var arr = []
         data.tickets.map((item2) => {
           if (item2.min_booking) {
-            item2.qty = JSON.parse(item2.min_booking)
+            item2.qty = 0
           } else {
-            item2.qty = 1
+            item2.qty = 0
           }
           arr.push(item2)
         })
 
+        setTickets(arr)
         data.tickets = arr
         console.log(data, 'booking')
         setItemNew(data)
@@ -190,7 +217,7 @@ function Bookings(navigation) {
       //  var dt = moment().format('LLLL');
      // setDate(propDate)
     }
-  }, [router.isReady, navigation])
+  }, [router.isReady, navigation,setItemNew])
 
   console.log(exist)
 
@@ -247,6 +274,32 @@ function Bookings(navigation) {
     router.reload(true)
     handleClose();
   };
+
+  const addToCart = () => {
+    if(myTickets.length > 0){
+    userContext.setCartData({
+      carts:{
+        data:myTickets,
+        date:userContext.authState.carts.date,
+        from:userContext.authState.carts.from,
+        to:userContext.authState.carts.to
+      },
+      event:itemNew
+    })
+
+    router.push(
+      {
+        pathname: '/bookings/detail/[id]',
+        query: {
+          id: router.query.id,
+        },
+      },
+    );
+    }
+    else{
+      toast('Please add tickets.')
+    }
+  }
 
 
   const renderDates = (item1, itemNew,key) => {
@@ -357,8 +410,8 @@ function Bookings(navigation) {
                 marginTop: '24px',
               }}
             >
-              {itemNew.tickets &&
-                itemNew.tickets.map((item1, key) => (
+              {tickets &&
+                tickets.map((item1, key) => (
                   <Paper
                     elevation={3}
                     key={key}
@@ -378,17 +431,42 @@ function Bookings(navigation) {
                       <p>{item1.description}</p>
                     </div>
                     <div className="cartRight">
-                      <ButtonGroup size="small" variant="text" aria-label="small button group" >
-                          <Button onClick={() => handleIncrement(item1)}>+</Button>
-                          <Button variant="outlined" disabled>{item1.qty}</Button>
-                          <Button onClick={() => handleDecrement(item1)}>-</Button>
-                      </ButtonGroup>
+                      <div className="d-flex">
+                          <button onClick={() => handleIncrement(item1,key)} className="plusBtn">+</button>
+                          <button  disabled className="qtyBtn">{item1.qty} </button>
+                          <button onClick={() => handleDecrement(item1,key)} className="minusBtn">-</button>
+                      </div>
                       <h4>
-                        {item1.price} {itemNew.currency}
+                        {item1.price} {tickets.currency}
                       </h4>
                     </div>
                   </Paper>
                 ))}
+
+
+               <Box className="bottomBlock1">
+                  <Button
+                    verient="default"
+                    sx={{
+                      background: '#eb9d05',
+                      color: '#000',
+                      marginTop: '10px',
+                      padding: '10px',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                      borderRadius:'24px',
+                      paddingLeft:'20px',
+                      fontSize:12,
+                      ':hover':{
+                        background: '#ffa800',
+                      }
+                    }}
+                    onClick={() => addToCart()}
+                  >
+                    <span>Purchase {myTickets && myTickets.length ? (<span>{allQty} Tickets for {totalPrice} {itemNew.currency}</span>):(<></>)}</span>
+                    <ChevronRightIcon color='#000' size={24}/>
+                  </Button>
+              </Box>
             </Box>
         
         </div>

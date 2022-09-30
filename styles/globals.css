@@ -416,6 +416,21 @@ ul.ticketList li span {
   margin: auto;
   padding: 10px;
 }
+.bottomBlock1{
+  position: fixed;
+  z-index: 99;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  max-width: 400px;
+  background: transparent;
+  border-radius: 8px;
+  margin: auto;
+  padding: 10px;
+}
+.d-flex {
+  display: flex;
+}
 @media (max-width:769px) {
   .bottomBlock{
     position: fixed;
@@ -552,6 +567,44 @@ textarea#mui-5 {
 
 .detailTicketBtn:hover{
   background: #ffa800,
+}
+
+.qtyBtn {
+  color: #fff;
+  font-size: 16px;
+  border: 1px solid #fff;
+  height: 30px;
+  border-radius: 4px !important;
+  background: transparent;
+  width: 36px;
+  margin: 0px 5px;
+}
+.activate .qtyBtn {
+  color: #ffa800 !important;
+  border-color: #ffa800 !important;
+}
+.plusBtn {
+  color: #fff;
+  font-size: 24px;
+  height: 30px;
+  border-radius: 4px !important;
+  border: 0px;
+  background: transparent;
+  width:30px;
+  cursor: pointer;
+}
+.plusBtn:hover,.minusBtn:hover{
+  background: #eb9d0621 !important;
+}
+.minusBtn {
+  color: #fff;
+  font-size: 24px;
+  height: 30px;
+  border-radius: 4px !important;
+  background: transparent;
+  border: 0;
+  width:30px;
+  cursor: pointer;
 }
 @media (max-width:769px){
   .detailTicketBtn {

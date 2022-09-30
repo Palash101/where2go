@@ -27,6 +27,7 @@ import { userAuth } from 'context/userContext';
 import Translations from '/utils/trans';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+
 import { toast } from 'react-toastify';
 
 function Details(navigation) {
@@ -40,6 +41,7 @@ function Details(navigation) {
   const [fromTimeValue, setFromTimeValue] = useState(null);
   const [dateTimeArray, setDateTimeArray] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [locationLink,setLocationLink] = useState('')
   const times = [
     '10:00 AM',
     '11:30 AM',
@@ -75,19 +77,29 @@ function Details(navigation) {
     const date = moment(dateValue).format('DD-MM-YYYY');
     //  const formTime = moment(fromTimeValue).format('HH:mm a');
     // const toTime = moment(fromTimeValue).format('HH:mm a');
+
+
     const data = {
       date: date,
       from: fromTimeValue,
       to: fromTimeValue,
     };
+
+    userContext.setCartData({
+      carts:{
+        data:[],
+        date:date,
+        from:fromTimeValue,
+        to:fromTimeValue
+      },
+      event:item
+    })
+
     console.log(data);
     router.replace({
       pathname: '/bookings/[id]',
       query: {
         id: router.query.id,
-        date: date,
-        from: fromTimeValue,
-        to: fromTimeValue,
         floor_type: item.floor_type,
       },
     });
@@ -121,12 +133,24 @@ function Details(navigation) {
     
   };
 
+  const openLink = () => {
+    window.open(locationLink, '_blank');
+  }
+
   useEffect(() => {
     if (router.isReady) {
       setLoading(true);
       getEventById(router.query.id).then((data) => {
         console.log(data,'dd in details');
         setItem(data);
+
+        if(data.place_id){
+          var loc = encodeURIComponent(data.event_location);
+         setLocationLink('https://www.google.com/maps/search/?api=1&query='+loc+'&query_place_id='+data.place_id)
+        }
+
+
+
         if (data.tickets && data.tickets.length) {
           var lowest = Number.POSITIVE_INFINITY;
           var highest = Number.NEGATIVE_INFINITY;
@@ -285,7 +309,7 @@ const renderDateItem = (item1, item,key) => {
                   </h6>
                 )}
                 {item.event_location && (
-                  <div className="locbox">
+                  <div className="locbox" onClick={() => openLink(locationLink)}>
                     <MapIcon sx={{ fontSize: 40 }} />
                     <h6 className="dayLine2"> {item.event_location}</h6>
                   </div>

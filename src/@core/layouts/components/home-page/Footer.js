@@ -40,8 +40,8 @@ function Footer() {
             <p>Events</p>
           </li>
           <li
-            className={router.pathname === '/my-tickets' ? 'active' : ''}
-            onClick={() => router.push('/my-tickets')}
+            className={router.pathname === '/user/my-booking' ? 'active' : ''}
+            onClick={() => router.push('/user/my-booking')}
           >
             <LocalActivityIcon></LocalActivityIcon>
             <p>My Tickets</p>

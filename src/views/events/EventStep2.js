@@ -31,7 +31,6 @@ import {
   updateEventSlot,
   deleteEventSlot
 } from 'service/admin/events'
-import { async } from '@firebase/util'
 import { toast } from 'react-toastify'
 
 import { userAuth } from 'context/userContext'

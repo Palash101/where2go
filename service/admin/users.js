@@ -32,7 +32,7 @@ export const addBooking = async (allData)=>{
   return await addDoc(collection(db,'booking'),allData)
   .then((data)=>{
       console.log(data,'doc  ')
-      return {docId:data.id,sucess:'success'}
+      return {docId:data.id,success:'success',msg:'Your booking has been successfull.'}
   })
   .catch((err)=>{
       console.log(err,'Add Category Error Service file')

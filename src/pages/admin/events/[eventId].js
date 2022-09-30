@@ -65,18 +65,14 @@ const EventEdit = () => {
   const router = useRouter()
   const [value, setValue] = useState('account')
   const [eventData, setEventData] = useState({})
- 
   const [loading, setLoading] = useState(false)
-
   const [routerParams, setRouterParams] = useState('')
   const [reloadPage, setReloadPage] = useState(false)
-
   const [categories, setAllCategory] = useState([])
   const [locations, setAllLocations] = useState([])
-
   const userContext = userAuth()
   const locale = userContext.locale
-  const t = userContext.getTrans()
+  const [t, setT] = useState(userContext.getTrans())
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -104,7 +100,7 @@ const EventEdit = () => {
         }
       })
     }
-  }, [router.isReady, reloadPage])
+  }, [router.isReady, reloadPage,t,setT])
 
   const getCat = async () => {
     const catData = await getAllCategory()
