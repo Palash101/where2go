@@ -159,7 +159,13 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
        console.log(oldArray,'oldArray',ticketsData,'NewArray')
       // const ticketsDataCopy = [...data.tickets];
       // ticketsDataCopy[key] = ticketsData;
+      if((oldArray.name === ticketsData.name) && (oldArray.color === ticketsData.color) && (oldArray.price === ticketsData.price)){
+
+      }
+      else{
        await updateEventTicket(eventId, ticketsData,oldArray)
+      }
+
         refreshData()
         // window.location.reload();
       setLoading(false)
