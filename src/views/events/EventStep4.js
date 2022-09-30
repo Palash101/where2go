@@ -26,6 +26,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import { toast } from 'react-toastify'
 
 import {
+  addEventTicket,
   updateEventTicket,
   deleteEventTicket,
   updateFloorPlan,
@@ -47,6 +48,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
   })
   const [loading, setLoading] = useState(false)
   const [name, setName] = useState('')
+  const [id, setId] = useState('')
   const [description, setDescription] = useState('')
   const [ticketCount, setTicketCount] = useState('')
   const [minBooking, setMinBooking] = useState('')
@@ -55,7 +57,9 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
   const [color, setColor] = useState('')
   const [floorPlanId, setSelectedFloorPlan] = useState(null)
   const [floorPlanData, setFloorPlanData] = useState([])
+  const [oldArray, setOldArray] = useState([])
   const router = useRouter()
+
 
   useEffect(() => {
     getFloorPlanData()
@@ -83,27 +87,44 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
     }
   }
 
-  const handleOpenTicketModal = (item1) => {
-    console.log('Ticket Modal' , item1)
+  const handleOpenTicketModal = (item1,key) => {
+   
+   
+       setId(key);
        setName(item1.name);
        setColor(item1.color);
        setPrice(item1.price);
-       setTicketCount(item1.ticketCount);
-       setMinBooking(item1.minBooking);
-       setMaxBooking(item1.maxBooking);
+       setTicketCount(item1.ticket_count);
+       setMinBooking(item1.min_booking);
+       setMaxBooking(item1.max_booking);
        setDescription(item1.description);
+       setDescription(item1.description);
+       setOldArray(item1);
+
+      // console.log(minBooking,maxBooking,description,ticketCount,price)
+
       setOpen({ ...open, ticketModal: true })
     
   }
 
   const handleDialogClose = (type) => {
+    setId('');
+       setName('');
+       setColor('');
+       setPrice('');
+       setTicketCount('');
+       setMinBooking('');
+       setMaxBooking('');
+       setDescription('');
+       setDescription('');
+       setOldArray('');
     setOpen({ ...open, [type]: false })
   }
 
-  const updateTicketdData = () => {
-    setLoading(true)
+  const updateTicketdData = async (key) => {
+    
     if (filedValidation()) {
-      const ticketData = {
+      const ticketsData = {
         name: name,
         description: description,
         ticket_count: ticketCount,
@@ -112,16 +133,22 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
         price: price,
         color: color,
       }
-
-      updateEventTicket(eventId, ticketData)
+      console.log(oldArray,'oldArray',ticketsData,'NewArray')
+      // const ticketsDataCopy = [...data.tickets];
+      // ticketsDataCopy[key] = ticketsData;
+       await updateEventTicket(eventId, ticketsData,oldArray)
+        refreshData()
+        // window.location.reload();
       setLoading(false)
       handleDialogClose()
-      refreshData()
+      
     } else {
       setLoading(false)
       toast('Not a Valid Data or Incomplete Data')
     }
   }
+
+
 
   const addFloorPlan = async () => {
     if (floorPlanId == '') {
@@ -140,10 +167,10 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
   const filedValidation = () => {
     if (
       name.trim() == 0 ||
-      description.trim() == 0 ||
-      ticketCount.trim() == 0 ||
-      minBooking.trim() == 0 ||
-      maxBooking.trim() == 0 ||
+      // description.trim() == 0 ||
+      // ticketCount.trim() == 0 ||
+      // minBooking.trim() == 0 ||
+      // maxBooking.trim() == 0 ||
       price.trim() == 0 ||
       color.trim() == 0
     )
@@ -185,6 +212,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
           label="Ticket Name"
           placeholder="Enter event name"
         />
+          
         <TextField
           required
           onChange={(e) => setColor(e.target.value)}
@@ -206,7 +234,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
         <TextField
           required
           onChange={(e) => setTicketCount(e.target.value)}
-          sx={{ marginBottom: '10px' }}
+          // sx={{ marginBottom: '10px' }}
           type="number"
           fullWidth
           value={ticketCount}
@@ -293,6 +321,10 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
                   sx={{ cursor: 'pointer' }}
                   onClick={() => deleteTicket(ticket)}
                 />
+                <EditIcon
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => handleOpenTicketModal(ticket,key)}
+                />
               </Box>
 
               <Divider />
@@ -337,6 +369,10 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
             <EditIcon
                   sx={{ cursor: 'pointer' }}
                   onClick={() => handleOpenTicketModal(item1)}
+                />
+                <DeleteIcon
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => deleteTicket(item1)}
                 />
           </li>
         ))}
@@ -407,7 +443,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
             <DialogTitle>Ticket</DialogTitle>
             <DialogContent>{ticketForm()}</DialogContent>
             <DialogActions>
-              <Button onClick={updateTicketdData}>Add</Button>
+            <Button  onClick={() => updateTicketdData(id)}>Update</Button>
               <Button onClick={() => handleDialogClose('ticketModal')}>
                 Cancel
               </Button>
