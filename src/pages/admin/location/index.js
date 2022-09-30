@@ -20,7 +20,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 import { userAuth } from 'context/userContext'
-
+import objectTranslation from '../../../../utils/objectTransaltion'
 import {
   getAllLocations,
   deleteLocation,
@@ -33,7 +33,7 @@ function LocationList() {
   const [loading, setLoading] = useState(false)
   const userContext = userAuth()
   const t = userContext.getTrans()
-
+  const locale = userContext.locale
   useEffect(() => {
     getData()
   }, [setAllLocations])
@@ -114,8 +114,8 @@ function LocationList() {
                   }}
                 >
                   <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
+                 {objectTranslation(row.name_tr)}
+                    </TableCell>
                   <TableCell component="th" scope="row">
                     {row.status == 1
                       ? renderStatusChip(t.active, '#56ca00')
