@@ -123,6 +123,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
 
   const updateTicketdData = async (key) => {
     
+    if(data.floor_type === '0'){
     if (filedValidation()) {
       const ticketsData = {
         name: name,
@@ -142,10 +143,36 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
       setLoading(false)
       handleDialogClose()
       
-    } else {
+    }
+    else {
       setLoading(false)
       toast('Not a Valid Data or Incomplete Data')
     }
+  }
+  else{
+    if (filedValidation()) {
+      const ticketsData = {
+        name: name,
+        price: price,
+        color: color,
+      }
+       console.log(oldArray,'oldArray',ticketsData,'NewArray')
+      // const ticketsDataCopy = [...data.tickets];
+      // ticketsDataCopy[key] = ticketsData;
+       await updateEventTicket(eventId, ticketsData,oldArray)
+        refreshData()
+        // window.location.reload();
+      setLoading(false)
+      handleDialogClose()
+
+    }
+    else {
+      setLoading(false)
+      toast('Not a Valid Data or Incomplete Data')
+    }
+  }
+
+
   }
 
 
@@ -165,12 +192,13 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
   }
 
   const filedValidation = () => {
+    if(data.floor_type === '0'){
     if (
       name.trim() == 0 ||
-      // description.trim() == 0 ||
-      // ticketCount.trim() == 0 ||
-      // minBooking.trim() == 0 ||
-      // maxBooking.trim() == 0 ||
+       description.trim() == 0 ||
+      ticketCount.trim() == 0 ||
+      minBooking.trim() == 0 ||
+      maxBooking.trim() == 0 ||
       price.trim() == 0 ||
       color.trim() == 0
     )
@@ -178,6 +206,19 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
     else {
       return true
     }
+  }
+  else{
+    if (
+      name.trim() == 0 ||
+     // description.trim() == 0 ||
+      price.trim() == 0 ||
+      color.trim() == 0
+    )
+      return false
+    else {
+      return true
+    }
+  }
   }
 
   const goToFloorPlan = () => {
@@ -202,7 +243,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
 
   const ticketForm = (eventId) => {
     return (
-      <Box>
+      <Box sx={{marginTop:10}}>
         <TextField
           required
           onChange={(e) => setName(e.target.value)}
@@ -227,10 +268,13 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
           fullWidth
           label="Price"
           value={price}
+          sx={{marginBottom:'10px'}}
           type="number"
           placeholder="Price"
         />
 
+        {data.floor_type != '1' && (
+<Box>
         <TextField
           required
           onChange={(e) => setTicketCount(e.target.value)}
@@ -259,8 +303,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
           fullWidth
           placeholder="Maximum allowed quantity in a single booking"
         />
-
-        <TextField
+          <TextField
           required
           onChange={(e) => setDescription(e.target.value)}
           sx={{ marginBottom: '10px' }}
@@ -269,6 +312,10 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
           label="Description"
           placeholder="Ticket Description"
         />
+</Box>
+)}
+     
+       
       </Box>
     )
   }
