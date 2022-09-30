@@ -30,6 +30,17 @@ import {
     // return getDocs(collection(db, 'category'),orderBy());
 
   }
+  export const getAllCategoryWithStatus =  async()=>{
+    let q = query(
+      collection(db, 'category'),where('status','==','1'),
+      // orderBy('position','asc')
+    );
+    const data = await getDocs(q);
+    console.log(data,'cats')
+    return data
+    // return getDocs(collection(db, 'category'),orderBy());
+
+  }
   export const getCategory = ()=>{
 
   }

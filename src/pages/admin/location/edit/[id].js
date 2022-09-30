@@ -62,6 +62,7 @@ function LocationEdit() {
 
   //Firebase update Location
   const storeLocation = async () => {
+    console.log('locationName',locationName)
     if (locationName === '' || status === '') {
       alert('Please enter Valid data')
       return

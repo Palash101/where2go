@@ -16,7 +16,7 @@ import { useRouter } from 'next/router'
 import { addEevent } from '../../../../service/admin/events'
 
 import { useState } from 'react'
-import { getAllCategory } from '../../../../service/admin/category'
+import { getAllCategoryWithStatus } from '../../../../service/admin/category'
 import { getAllLocations } from '../../../../service/admin/location'
 import { verifyToken } from '../../../../service/auth'
 import { userAuth } from 'context/userContext'
@@ -68,7 +68,7 @@ function EventCreate() {
 
   useEffect(() => {
     const getCat = async () => {
-      const catData = await getAllCategory()
+      const catData = await getAllCategoryWithStatus()
       const catArray = []
       catData.docs.forEach((item) => {
         catArray.push({ ...item.data(), docId: item.id })
