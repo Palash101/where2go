@@ -25,6 +25,7 @@ import {
   getLocationById,
 } from '../../../../../service/admin/location'
 import { useState, useEffect } from 'react'
+import objectTranslation from 'utils/objectTransaltion'
 
 function LocationEdit() {
   const router = useRouter()
@@ -48,7 +49,8 @@ function LocationEdit() {
           if (!data.err) {
             console.log(data)
             setLocationData(data)
-            setlocationName(data.name)
+            const d = objectTranslation(data.name_tr)
+            setlocationName(d)
             setStatus(data.status)
             setLoading(false)
           } else {

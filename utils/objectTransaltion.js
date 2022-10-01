@@ -1,4 +1,5 @@
 const objectTranslation = (obj) =>{
+    console.log(obj,'bb');
     const localeSelected  =  localStorage.getItem('locale')
     console.log(localeSelected,obj);
     
