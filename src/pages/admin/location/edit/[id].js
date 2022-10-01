@@ -32,7 +32,7 @@ function LocationEdit() {
   const [locationData, setLocationData] = useState({})
 
   const [locationName, setlocationName] = useState('')
-  const [status, setStatus] = useState('1')
+  const [status, setStatus] = useState(1)
   const [loading, setLoading] = useState(false)
 
   const [currentLanguage, setCurrentLanguage] = useState('')
@@ -121,8 +121,8 @@ function LocationEdit() {
                         }
                         required
                       >
-                        <MenuItem value="1">Active</MenuItem>
-                        <MenuItem value="0">Block</MenuItem>
+                        <MenuItem value={1}>Active</MenuItem>
+                        <MenuItem value={0}>Block</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>

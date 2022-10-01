@@ -21,6 +21,17 @@ import { async } from "@firebase/util";
 export const getAllLocations = async()=>{
     return getDocs(collection(db, 'locations'));
 }
+export const getAllLocationsWithStatus =  async()=>{
+  let q = query(
+    collection(db, 'locations'),where('status','==',1),
+    // orderBy('position','asc')
+  );
+  const data = await getDocs(q);
+  console.log(data,'cats')
+  return data
+  // return getDocs(collection(db, 'category'),orderBy());
+
+}
 
 export const addLocation = async (name,currentLanguage,status)=>{
     let q = query(
@@ -83,3 +94,4 @@ export const updateLocation =  async (docId,data)=>{
         return{error:'error',message:'Something went wrong',devmsg:error}
     }
 }
+

@@ -32,8 +32,8 @@ import EventStep6 from 'src/views/events/EventStep6'
 import { getEventById } from 'service/admin/events'
 import { verifyToken } from '../../../../service/auth'
 
-import { getAllLocations } from 'service/admin/location'
-import { getAllCategory } from 'service/admin/category'
+import { getAllLocationsWithStatus } from 'service/admin/location'
+import { getAllCategoryWithStatus } from 'service/admin/category'
 
 import { userAuth } from 'context/userContext'
 import Translations from 'utils/trans'
@@ -103,7 +103,7 @@ const EventEdit = () => {
   }, [router.isReady, reloadPage,t,setT])
 
   const getCat = async () => {
-    const catData = await getAllCategory()
+    const catData = await getAllCategoryWithStatus()
     const catArray = []
     catData.docs.forEach((item) => {
       catArray.push({ ...item.data(), docId: item.id })
@@ -112,7 +112,7 @@ const EventEdit = () => {
   }
 
   const getLocation = async () => {
-    const locationData = await getAllLocations()
+    const locationData = await getAllLocationsWithStatus()
     const locationArray = []
     locationData.docs.forEach((item) => {
       locationArray.push(item.data())

@@ -17,7 +17,7 @@ import { addEevent } from '../../../../service/admin/events'
 
 import { useState } from 'react'
 import { getAllCategoryWithStatus } from '../../../../service/admin/category'
-import { getAllLocations } from '../../../../service/admin/location'
+import { getAllLocationsWithStatus } from '../../../../service/admin/location'
 import { verifyToken } from '../../../../service/auth'
 import { userAuth } from 'context/userContext'
 import Translations from 'utils/trans'
@@ -78,10 +78,10 @@ function EventCreate() {
     getCat()
 
     const getLocation = async () => {
-      const locationData = await getAllLocations()
+      const locationData = await getAllLocationsWithStatus()
       const locationArray = []
       locationData.docs.forEach((item) => {
-        locationArray.push(item.data())
+        locationArray.push({ ...item.data(), docId: item.id })
       })
       setAllLocations(locationArray)
     }
@@ -127,8 +127,7 @@ function EventCreate() {
                           {location.name}
                         </MenuItem>
                       ))}
-                      <MenuItem value="Dubai">Dubai</MenuItem>
-                      <MenuItem value="Jordan">Jordan</MenuItem>
+                   
                     </Select>
                   </FormControl>
                 </Grid>
@@ -287,3 +286,5 @@ export async function getServerSideProps(context) {
     }
   }
 }
+
+
