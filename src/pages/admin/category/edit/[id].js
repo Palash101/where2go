@@ -35,6 +35,7 @@ function CategoryEdit() {
 
   const [categoryName, setCategoryName] = useState("");
   const [status, setStatus] = useState(1);
+  const [position, setPosition] = useState(1);
   const [loading, setLoading] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState("");
 
@@ -55,6 +56,7 @@ function CategoryEdit() {
             }
 
             setStatus(data.status);
+            setPosition(data.position)
             setLoading(false);
           } else {
             console.log(data.message);
@@ -74,6 +76,7 @@ function CategoryEdit() {
       [currentLanguage]: categoryName,
       status: status,
       lang: currentLanguage,
+      position: position,
     };
     await updateCategoryData(router.query.id, data).then((data) => {
       console.log(data);
@@ -137,6 +140,15 @@ function CategoryEdit() {
                           label="Category Name"
                           placeholder="Ex: Drama, Game, Movie"
                         />
+                        <TextField
+                          required
+                          onChange={(e) => setPosition(e.target.value)}
+                          value={position}
+                          fullWidth
+                          label="Position"
+                          placeholder="Ex: 0, 1, 2"
+                        />
+                        
                         <FormControl sx={{ marginTop: "20px" }} fullWidth>
                           <InputLabel id="form-layouts-separator-multiple-select-label">
                             Status

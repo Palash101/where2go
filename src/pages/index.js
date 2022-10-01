@@ -44,7 +44,7 @@ function Home(navigation) {
     getHomePageEvent().then((data) => {
       setAllData(data)
       var imgs = [];
-
+console.log(data,'eventsData');
 
       data.map((item)=>{
         item.data.map((item1)=>{

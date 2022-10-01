@@ -35,9 +35,10 @@ function CategoryAdd() {
   const [show, setShow] = useState(true)
 
   const [categoryName, setCategoryName] = useState('')
+  const [position, setPosition] = useState('')
   const [arabicName, setArabicName] = useState('')
   const [englishName, setEnglishName] = useState('')
-  const [status, setStatus] = useState(1)
+  const [status, setStatus] = useState('1')
   const [loading, setLoading] = useState(false)
   const [snackState, setSnackState] = useState({
     open: false,
@@ -58,14 +59,14 @@ function CategoryAdd() {
 
   //Firebase Store Category
   const storeCategory = async () => {
-    if (categoryName === '' || status === '') {
+    if (categoryName === '' || status === '' || position === '') {
       alert('Please enter Valid data')
       return
     }
 
     setLoading(true)
     // alert(englishName)
-    await addCategory(categoryName, currentLanguage, status).then((res) => {
+    await addCategory(categoryName, currentLanguage, status,position).then((res) => {
       console.log(res, 'ress')
       toast('Category added successfully')
       // alert(res);
@@ -101,6 +102,16 @@ function CategoryAdd() {
                       fullWidth
                       label={`${t.categories} ${t.name} `}
                       placeholder="Ex: Drama, Game, Movie"
+                    />
+                    
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      onChange={(e) => setPosition(e.target.value)}
+                      fullWidth
+                      label={`${t.position} `}
+                      placeholder="Ex: 0, 1, 2"
                     />
                     
                   </Grid>

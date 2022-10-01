@@ -1,5 +1,5 @@
 import { initializeApp,getApp,getApps } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore,initializeFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
@@ -15,8 +15,21 @@ const firebaseConfig = {
     measurementId: "G-QW6RSHDEMM"
   };
 
+  const firebaseConfigTesting = {
+    apiKey: "AIzaSyBPux-gjGeKT74-_XB760P07HYhTIIDfQw",
+    authDomain: "where2go-testing.firebaseapp.com",
+    projectId: "where2go-testing",
+    storageBucket: "where2go-testing.appspot.com",
+    messagingSenderId: "517698017414",
+    appId: "1:517698017414:web:60e6d4ccf5d9bc999d9907",
+    measurementId: "G-NNYVLRQBVE"
+  };
 
-  const firebase = getApps.length > 0 ? getApp() : initializeApp(firebaseConfig);
+
+  const firebase = getApps.length > 0 ? getApp() : initializeApp(firebaseConfigTesting);
+  initializeFirestore(firebase, {
+    ignoreUndefinedProperties: true,
+  });
   export const db = getFirestore(firebase);
   
   export const auth =  getAuth(firebase);

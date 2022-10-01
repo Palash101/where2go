@@ -148,25 +148,45 @@ export const deleteEventDate = async (eventId,data)=>{
 
 
 export const updateEventTicket = async (eventId,data,oldArray)=>{
-    console.log(oldArray,'oldArray',data,'newArray')
-    const docRef = doc(db, "events", eventId);
-    if(oldArray && oldArray.length != 0){
-           await updateDoc(docRef, {
-         tickets:arrayUnion(data),
-        });
-        return  await updateDoc(docRef, {
-         tickets:arrayRemove(oldArray)
-          });
+    // console.log(oldArray,'oldArray',data,'newArray')
+    // const docRef = doc(db, "events", eventId);
+    // if(oldArray && oldArray.length != 0){
+    //        await updateDoc(docRef, {
+    //      tickets:arrayUnion(data),
+    //     });
+    //     return  await updateDoc(docRef, {
+    //      tickets:arrayRemove(oldArray)
+    //       });
         
-    }else{
-        return await updateDoc(docRef, {
-        tickets:arrayUnion(data)
-      })
-    }
-   
+    // }else{
+    //     return await updateDoc(docRef, {
+    //     tickets:arrayUnion(data)
+    //   })
+    // }
+    const docRef = doc(db, "events", eventId);
+    const docSubcollectionRef = collection(docRef, 'tickets');
+    await addDoc(docSubcollectionRef, data);
     
 
 }
+
+export const getTicketCollection = async(eventId) =>{
+    try{
+        const docRef = doc(db, "events", eventId);
+        const q = collection(docRef, 'tickets');
+        
+        
+        const querySnapshot = await getDocs(q);
+       
+        return querySnapshot;
+    }
+    catch(error){
+        return{error:'error',message:'Something went wrong',devmsg:error}
+    }
+} 
+
+
+
 
 export const updateFloorPlan = async (eventId,data)=>{
     console.log(eventId,'eventid')
@@ -259,8 +279,10 @@ export const deleteEvent = async(docId)=>{
 
 export const getHomePageEvent = async ()=>{
     const temp = []
-    const q = query(collection(db, "category"), where("status", "==", "1"))
+    const q = query(collection(db, "category"), where("status", "==", '1'),orderBy('position'));
+   
     const queryDoc =  await getDocs(q);
+    console.log(queryDoc,'queru')
     if(queryDoc.empty === false){
         await Promise.all(queryDoc.docs.map(async (doc) => {
             const catDocId =  doc.id;

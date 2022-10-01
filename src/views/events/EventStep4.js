@@ -29,7 +29,7 @@ import {
   addEventTicket,
   updateEventTicket,
   deleteEventTicket,
-  updateFloorPlan,
+  updateFloorPlan,getTicketCollection,
 } from '../../../service/admin/events'
 import { getFloorPlanById } from '../../../service/admin/floorPlan'
 
@@ -57,6 +57,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
   const [color, setColor] = useState('')
   const [floorPlanId, setSelectedFloorPlan] = useState(null)
   const [floorPlanData, setFloorPlanData] = useState([])
+  const [ticketCollectionData, setticketCollectionData] = useState([])
   const [oldArray, setOldArray] = useState([])
   const router = useRouter()
 
@@ -74,9 +75,19 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
       const data = Object.assign(docId, item.data())
       plansArray.push(data)
     })
+ 
 
-    console.log(plansArray, 'plansArray')
-    setFloorPlanData(plansArray)
+    const tickets = await getTicketCollection(eventId)
+    const ticketsArray = []
+    tickets.docs.forEach((item) => {
+      const docId = { docId: item.id }
+      const data = Object.assign(docId, item.data())
+      ticketsArray.push(data)
+    })
+
+    console.log(ticketsArray,'ticketsArray');
+    setticketCollectionData(ticketsArray)
+    
   }
 
   const handleDialogOpen = (type) => {

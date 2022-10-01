@@ -50,7 +50,7 @@ import {
 }
 
 
-export const addCategory = async (name,currentLanguage,status)=>{
+export const addCategory = async (name,currentLanguage,status,position=0)=>{
 
   let q = query(
     collection(db, 'category'),
@@ -65,6 +65,7 @@ export const addCategory = async (name,currentLanguage,status)=>{
           },
 
           status:status,
+          position:position,
           created_at: serverTimestamp()
         })
         .then((data)=>{
@@ -99,14 +100,15 @@ export const addCategory = async (name,currentLanguage,status)=>{
 
 
   export const updateCategoryData = async (catId,data)=>{
-    const {status, lang} = data;
+    const {status, lang,position} = data;
     console.log(catId,data);
     try{
         const docRef = doc(db, "category", catId);
         return await updateDoc(docRef, {
           [`name.${lang}`]:data[lang],
           
-          status:status
+          status:status,
+          position:position
           }).then((data)=>{
             return {success:data,message:'Category Added successfully'}
         })
@@ -117,6 +119,8 @@ export const addCategory = async (name,currentLanguage,status)=>{
     }
     
 }
+
+
 
 
   
