@@ -77,6 +77,7 @@ const EventStep1 = ({
   useEffect(() => {
     setEditorLoaded(true);
     setName(eventName())
+    console.log(allLocation,'data')
     if (data.floor_type) {
       setFloorType(data.floor_type)
     }
@@ -108,7 +109,8 @@ const EventStep1 = ({
               >
                 {allLocation.map((item, key) => (
                   <MenuItem key={key} value={item.name}>
-                    {item.name}
+                    
+                    {item.name_tr[locale] ? item.name_tr[locale] : item.name}
                   </MenuItem>
                 ))}
               </Select>

@@ -43,8 +43,13 @@ function BookingsCheckout(navigation) {
     if (router.isReady) {
 
       console.log(userContext,'userContext')
-
       const cartData = userContext.getCarts();
+      console.log(!cartData.event ,'dddd')
+      if(!cartData.event) {
+        router.push('/')
+      }
+      else{
+     
       setCarts(cartData);
      
       if(cartData.event){
@@ -69,6 +74,7 @@ function BookingsCheckout(navigation) {
         setTotal(getTotal(cartData.carts.data))
         }
       }
+    }
       setLoading(false)
     }
   }, [router.isReady,navigation])
@@ -315,3 +321,5 @@ const payNow = () => {
 BookingsCheckout.getLayout = (page) => <HomeLayout>{page}</HomeLayout>
 
 export default BookingsCheckout
+
+
