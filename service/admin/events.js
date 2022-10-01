@@ -150,6 +150,8 @@ export const deleteEventDate = async (eventId,data)=>{
 export const updateEventTicket = async (eventId,data,oldArray)=>{
     console.log(oldArray,'oldArray',data,'newArray')
     const docRef = doc(db, "events", eventId);
+
+
     if(oldArray && oldArray.length != 0){
            await updateDoc(docRef, {
          tickets:arrayUnion(data),

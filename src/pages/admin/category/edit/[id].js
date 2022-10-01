@@ -45,8 +45,8 @@ function CategoryEdit() {
   const locale = userContext.locale
 
   useEffect(async() => {
-    const storageLocale = localStorage.getItem("locale");
-    setCurrentLanguage(storageLocale);
+    // const storageLocale = localStorage.getItem("locale");
+    // setCurrentLanguage(storageLocale);
     if (router.isReady) {
     
         setLoading(true);
@@ -72,9 +72,9 @@ function CategoryEdit() {
       return;
     }
     const data = {
-      [currentLanguage]: categoryName,
+      [locale]: categoryName,
       status: status,
-      lang: currentLanguage,
+      lang: locale,
     };
     await updateCategoryData(router.query.id, data).then((data) => {
       console.log(data);

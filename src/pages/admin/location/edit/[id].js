@@ -34,7 +34,7 @@ function LocationEdit() {
   const [locationName, setlocationName] = useState('')
   const [status, setStatus] = useState(1)
   const [loading, setLoading] = useState(false)
-  const [currentLanguage, setCurrentLanguage] = useState('')
+  // const [currentLanguage, setCurrentLanguage] = useState('')
 
   const userContext = userAuth()
   const locale = userContext.locale;
@@ -42,8 +42,8 @@ function LocationEdit() {
   //Use Effect Load Data initial Data and Set Data and set langugae
 
   useEffect(async() => {
-    const storageLocale = localStorage.getItem('locale')
-    setCurrentLanguage(storageLocale)
+    // const storageLocale = localStorage.getItem('locale')
+    // setCurrentLanguage(storageLocale)
     if (router.isReady) {
     
         setLoading(true)
@@ -82,9 +82,9 @@ function LocationEdit() {
       return
     }
     const data = {
-      [currentLanguage]: locationName,
+      [locale]: locationName,
       status: status,
-      lang: currentLanguage,
+      lang: locale,
     }
     setLoading(true)
     await updateLocation(router.query.id, data).then((res) => {
