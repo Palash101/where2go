@@ -6,7 +6,7 @@ const objectTranslation = (obj) =>{
         return obj[localeSelected]
     }
     else{
-        return Object.keys(obj)[0]
+        return Object.values(obj)[0]
     }
 
 }
