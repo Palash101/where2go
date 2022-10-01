@@ -145,7 +145,7 @@ function CategoryEdit() {
                             onChange={(e) => setStatus(e.target.value)}
                             id="form-layouts-separator-multiple-select"
                             labelId="form-layouts-separator-multiple-select-label"
-                            defaultValue={status}
+                            value={status}
                             input={
                               <OutlinedInput
                                 label="Language"

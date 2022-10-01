@@ -39,11 +39,11 @@ function LocationEdit() {
 
   //Use Effect Load Data initial Data and Set Data and set langugae
 
-  useEffect(() => {
+  useEffect(async() => {
     const storageLocale = localStorage.getItem('locale')
     setCurrentLanguage(storageLocale)
     if (router.isReady) {
-      ;(async () => {
+    
         setLoading(true)
         await getLocationById(router.query.id).then((data) => {
           if (!data.err) {
@@ -51,6 +51,7 @@ function LocationEdit() {
             setLocationData(data)
             const d = objectTranslation(data.name_tr)
             setlocationName(d)
+            console.log(data.status,'status')
             setStatus(data.status)
             setLoading(false)
           } else {
@@ -58,9 +59,9 @@ function LocationEdit() {
             console.log(data.message)
           }
         })
-      })()
+     
     }
-  }, [router.isReady])
+  }, [router.isReady,setStatus])
 
   //Firebase update Location
   const storeLocation = async () => {
@@ -104,27 +105,21 @@ function LocationEdit() {
                       label="Location"
                       placeholder="Ex: Qatar,Dubai,Jordan"
                     />
-                    <FormControl sx={{ marginTop: '20px' }} fullWidth>
-                      <InputLabel id="form-layouts-separator-multiple-select-label">
-                        Status
-                      </InputLabel>
-                      <Select
-                        onChange={(e) => setStatus(e.target.value)}
-                        id="form-layouts-separator-multiple-select"
-                        labelId="form-layouts-separator-multiple-select-label"
-                        defaultValue={status}
-                        input={
-                          <OutlinedInput
-                            label="Language"
-                            id="select-multiple-language"
-                          />
-                        }
-                        required
-                      >
-                        <MenuItem value={1}>Active</MenuItem>
-                        <MenuItem value={0}>Block</MenuItem>
-                      </Select>
-                    </FormControl>
+               
+                    <FormControl fullWidth sx={{ marginTop: '20px' }}>
+                        <InputLabel>Status</InputLabel>
+                        <Select
+                          onChange={(e) => setStatus(e.target.value)}
+                          label="Status"
+                          value={status}
+                        >
+                          <MenuItem value={1}>Active</MenuItem>
+                          <MenuItem value={0} >Block</MenuItem>
+                        </Select>
+                      </FormControl>
+
+                     
+
                   </Grid>
                   <Grid item xs={12}>
                     <Button
