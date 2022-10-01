@@ -36,7 +36,7 @@ function LocationList() {
   const locale = userContext.locale
   useEffect(() => {
     getData()
-  }, [setAllLocations])
+  }, [])
 
   const getData = async () => {
     const catData = await getAllLocations()

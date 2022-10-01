@@ -249,11 +249,11 @@ function UserDetail() {
                 <Grid container spacing={6}>
                   <Grid item xs={12} sm={6}>
                     <Typography variant="p">
-                      Customer Name: Abhilash Sharma
+                      Customer Name: Not available
                     </Typography>
-                    <Typography display="inline-block" variant="p">
+                    {/* <Typography display="inline-block" variant="p">
                       SignUp Date/Time: {new Date(userData.created_at * 1000).toString() }
-                    </Typography>
+                    </Typography> */}
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <Typography variant="p">
