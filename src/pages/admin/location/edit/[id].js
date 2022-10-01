@@ -26,16 +26,18 @@ import {
 } from '../../../../../service/admin/location'
 import { useState, useEffect } from 'react'
 import objectTranslation from 'utils/objectTransaltion'
+import { userAuth } from 'context/userContext'
 
 function LocationEdit() {
   const router = useRouter()
   const [locationData, setLocationData] = useState({})
-
   const [locationName, setlocationName] = useState('')
   const [status, setStatus] = useState(1)
   const [loading, setLoading] = useState(false)
-
   const [currentLanguage, setCurrentLanguage] = useState('')
+
+  const userContext = userAuth()
+  const locale = userContext.locale;
 
   //Use Effect Load Data initial Data and Set Data and set langugae
 
@@ -62,6 +64,15 @@ function LocationEdit() {
      
     }
   }, [router.isReady,setStatus])
+
+
+  useEffect(async() => {
+    console.log(locationData,'locdata')
+    if(locationData && locationData.name){
+      const d = objectTranslation(locationData.name_tr)
+      setlocationName(d);
+    }
+  },[locale])
 
   //Firebase update Location
   const storeLocation = async () => {
@@ -105,7 +116,6 @@ function LocationEdit() {
                       label="Location"
                       placeholder="Ex: Qatar,Dubai,Jordan"
                     />
-               
                     <FormControl fullWidth sx={{ marginTop: '20px' }}>
                         <InputLabel>Status</InputLabel>
                         <Select
@@ -117,8 +127,6 @@ function LocationEdit() {
                           <MenuItem value={0} >Block</MenuItem>
                         </Select>
                       </FormControl>
-
-                     
 
                   </Grid>
                   <Grid item xs={12}>

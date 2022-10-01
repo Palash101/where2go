@@ -37,7 +37,7 @@ function CategoryAdd() {
   const [categoryName, setCategoryName] = useState('')
   const [arabicName, setArabicName] = useState('')
   const [englishName, setEnglishName] = useState('')
-  const [status, setStatus] = useState(1)
+  const [status, setStatus] = useState('1');
   const [loading, setLoading] = useState(false)
   const [snackState, setSnackState] = useState({
     open: false,

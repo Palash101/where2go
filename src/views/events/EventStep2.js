@@ -388,7 +388,7 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
                   label={t.descrption}
                   type="text"
                   fullWidth
-                  defaultValue={
+                  value={
                     data.description?.hasOwnProperty(locale)
                       ? data.description[locale]
                       : ''

@@ -155,7 +155,7 @@ const TabAccount = () => {
               fullWidth
               label={t.company}
               placeholder="ABC Pvt. Ltd."
-              defaultValue="ABC Pvt. Ltd."
+              value="ABC Pvt. Ltd."
             />
           </Grid>
 

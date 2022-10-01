@@ -1,7 +1,4 @@
 import React, { useEffect, useRef } from "react"
-// import { CKEditor } from "@ckeditor/ckeditor5-react";
-// // import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-// import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 
 function Editor({ onChange, editorLoaded, name, value,placeholder }) {
   const editorRef = useRef();

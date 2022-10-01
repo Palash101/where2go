@@ -84,7 +84,7 @@ const EventStep1 = ({
     if(data.terms){
       setTerms(data.terms)
     }
-  }, [locale])
+  }, [locale,setName])
 
   return (
     <CardContent>
@@ -92,10 +92,10 @@ const EventStep1 = ({
         <Grid container spacing={7}>
           <Grid item xs={12} sm={12}>
             <TextField
-              onChange={(e) => setName(e.target.value)}
+               onChange={(e) => setName(e.target.value)}
               fullWidth
               label={`${t.event} ${t.name}`}
-              defaultValue={eventName()}
+              value={name}
               placeholder="Enter event name"
             />
           </Grid>
@@ -198,7 +198,7 @@ const EventStep1 = ({
               onChange={(e) => setTerms(e.target.value)}
               fullWidth
               label={`${t.terms} & ${t.conditions}`}
-              defaultValue={terms}
+              value={terms}
               placeholder={`${t.terms} & ${t.conditions}`}
               inputProps={{ maxLength: 1000 }}
              

@@ -21,11 +21,13 @@ import Input from "@mui/material/Input";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { userAuth } from "context/userContext";
 
 import {
   getCategoryById,
   updateCategoryData,
 } from "../../../../../service/admin/category";
+import objectTranslation from "utils/objectTransaltion";
 
 function CategoryEdit() {
   const router = useRouter();
@@ -37,30 +39,29 @@ function CategoryEdit() {
   const [status, setStatus] = useState(1);
   const [loading, setLoading] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState("");
+  // const locale = localStorage.getItem("locale");
 
-  useEffect(() => {
+  const userContext = userAuth()
+  const locale = userContext.locale
+
+  useEffect(async() => {
     const storageLocale = localStorage.getItem("locale");
     setCurrentLanguage(storageLocale);
     if (router.isReady) {
-      (async () => {
+    
         setLoading(true);
         await getCategoryById(router.query.id).then((data) => {
           if (!data.err) {
             setCategoryData(data);
-            if (data.name[storageLocale]) {
-              setCategoryName(data.name[storageLocale]);
-            } else {
-              var objectKey = Object.keys(data.name)[0];
-              setCategoryName(data.name[objectKey]);
-            }
-
+            const d = objectTranslation(data.name)
+            setCategoryName(d);
             setStatus(data.status);
             setLoading(false);
           } else {
             console.log(data.message);
           }
         });
-      })();
+     
     }
   }, [router.isReady]);
 
@@ -112,7 +113,13 @@ function CategoryEdit() {
 
   // else{
 
-  console.log("main render");
+  useEffect(() => {
+    if(categoryData && categoryData.name){
+      const d = objectTranslation(categoryData.name)
+      setCategoryName(d);
+    }
+  },[locale])
+
 
   return (
     <div>

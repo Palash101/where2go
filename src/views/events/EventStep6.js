@@ -145,7 +145,7 @@ const EventStep6 = ({
               onChange={(e) => setName(e.target.value)}
               fullWidth
               label={`${t.organizer} ${t.name}`}
-              defaultValue={name}
+              value={name}
               placeholder={`${t.enter} ${t.organizer} ${t.name}`}
             />
           </Grid>
@@ -155,7 +155,7 @@ const EventStep6 = ({
               onChange={(e) => setEmail(e.target.value)}
               fullWidth
               label={`${t.organizer} ${t.email}`}
-              defaultValue={email}
+              value={email}
               placeholder={`${t.enter} ${t.organizer} ${t.email}`}
             />
           </Grid>
@@ -164,7 +164,7 @@ const EventStep6 = ({
               onChange={(e) => setPhone(e.target.value)}
               fullWidth
               label={`${t.organizer} ${t.phone}`}
-              defaultValue={phone}
+              value={phone}
               placeholder={`${t.enter} ${t.phone}`}
             />
           </Grid>
@@ -173,7 +173,7 @@ const EventStep6 = ({
               onChange={(e) => setDetail(e.target.value)}
               fullWidth
               label={`${t.organizer} ${t.contact} ${t.details}`}
-              defaultValue={detail}
+              value={detail}
               placeholder={`${t.enter} ${t.organizer} ${t.details}`}
             />
           </Grid>
