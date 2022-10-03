@@ -310,7 +310,7 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
                         console.log(place);
                         setLocation(place)
                       }}
-                      options={{types:["establishment"],
+                      options={{types:["(regions)"],
                       }}
                       defaultValue="Qatar"
                       style={{
