@@ -22,7 +22,7 @@ import { toast } from 'react-toastify'
 import {
   getEventById,
   updateFloorPlan,
-  updateEventTicket,
+  updateEventTicket,getTicketCollection
 } from 'service/admin/events';
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -67,7 +67,8 @@ const Seat = () => {
   const [layoutWidth, setLayoutWidth] = useState(500);
   const [layoutHeight, setLayoutHeight] = useState(500);
   //const [windowSize, setWindowSize] = useState(getWindowSize());
-
+  const [ticketCollectionData,setticketCollectionData] = useState([])
+  const [eventId, setEventId] = useState('black');
   const [stage, setStageValue] = useState({
     height: 100,
     width: '50%',
@@ -78,7 +79,10 @@ const Seat = () => {
 
   // Setting Main Data from Firebase if exist
   useEffect(() => {
+    
     if (router.isReady) {
+      getTicketsData(router.query.eventId)
+      setEventId(router.query.eventId)
       var WH = getWindowSize();
       setLayoutWidth(WH.innerWidth);
       setLayoutHeight(WH.innerHeight);
@@ -101,6 +105,22 @@ const Seat = () => {
       });
     }
   }, [router.isReady]);
+
+  const getTicketsData = async (eventId) => {
+    const tickets = await getTicketCollection(eventId)
+    const ticketsArray = []
+    tickets.docs.forEach((item) => {
+      const docId = { docId: item.id }
+      const data = Object.assign(docId, item.data())
+      ticketsArray.push(data)
+    })
+
+    console.log(ticketsArray,'ticketsArray')
+    setticketCollectionData(ticketsArray)
+    
+  }
+
+  console.log(ticketCollectionData);
 
   //For Increasing Row, Col and X/Y direction space
 
@@ -304,6 +324,7 @@ const Seat = () => {
     await updateFloorPlan(routerParams, JSON.stringify(reactArray)).then(
       (res) => console.log(res)
     );
+    getTicketsData(eventId)
     setLoading(false);
   };
 
@@ -427,6 +448,7 @@ const Seat = () => {
           data.price,
           data.name
         );
+        getTicketsData(eventId)
         setShowTicketComponent(false);
         updateData();
         setLoading(false);
@@ -439,6 +461,7 @@ const Seat = () => {
           data.price,
           data.name
         );
+        getTicketsData(eventId)
         setShowTicketComponent(false);
         updateData();
         updateTicket(data);
@@ -469,7 +492,7 @@ const Seat = () => {
             addNewElement={addReactangle}
             deleteSelectedElement={deleteSelectedElement}
             saveData={updateData}
-            tickets={data}
+            tickets={ticketCollectionData}
             currency={data.currency}
           />
           {/* {data.tickets && (
@@ -489,7 +512,7 @@ const Seat = () => {
             open={showticketComponent}
             onClose={setShowTicketComponent}
             saveData={updateTicketData}
-            tickets={data}
+            tickets={ticketCollectionData}
             currency={data.currency}
           />
         ) : null}
@@ -607,3 +630,5 @@ const Seat = () => {
 Seat.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
 
 export default Seat;
+
+

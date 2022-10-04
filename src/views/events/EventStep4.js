@@ -85,7 +85,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
       ticketsArray.push(data)
     })
 
-    console.log(ticketsArray,'ticketsArray');
+    console.log(ticketsArray,'ticketsArray')
     setticketCollectionData(ticketsArray)
     
   }
@@ -101,7 +101,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
   const handleOpenTicketModal = (item1,key) => {
    
    
-       setId(key);
+       setId(item1.docId);
        setName(item1.name);
        setColor(item1.color);
        setPrice(item1.price);
@@ -137,6 +137,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
     if(data.floor_type === '0'){
     if (filedValidation()) {
       const ticketsData = {
+        id: id,
         name: name,
         description: description,
         ticket_count: ticketCount,
@@ -145,14 +146,11 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
         price: price,
         color: color,
       }
-      console.log(oldArray,'oldArray',ticketsData,'NewArray')
-      // const ticketsDataCopy = [...data.tickets];
-      // ticketsDataCopy[key] = ticketsData;
-       await updateEventTicket(eventId, ticketsData,oldArray)
-        refreshData()
+      
+       await updateEventTicket(eventId, ticketsData)
         // window.location.reload();
       setLoading(false)
-      handleDialogClose()
+      handleDialogClose('ticketModal')
       
     }
     else {
@@ -163,24 +161,15 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
   else{
     if (filedValidation()) {
       const ticketsData = {
+        id: id,
         name: name,
         price: price,
         color: color,
       }
-       console.log(oldArray,'oldArray',ticketsData,'NewArray')
-      // const ticketsDataCopy = [...data.tickets];
-      // ticketsDataCopy[key] = ticketsData;
-      if((oldArray.name === ticketsData.name) && (oldArray.color === ticketsData.color) && (oldArray.price === ticketsData.price)){
-
-      }
-      else{
-       await updateEventTicket(eventId, ticketsData,oldArray)
-      }
-
+      await updateEventTicket(eventId,ticketsData)
         refreshData()
-        // window.location.reload();
       setLoading(false)
-      handleDialogClose()
+      handleDialogClose('PlanModal')
 
     }
     else {
@@ -270,6 +259,12 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
           label="Ticket Name"
           placeholder="Enter event name"
         />
+        <TextField
+        
+          onChange={(e) => setId(e.target.value)}
+          type="hidden"
+          value={id}
+        />
           
         <TextField
           required
@@ -358,12 +353,11 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
     )
   }
 
-  const renderTicketList = (ticketData) => {
-    console.log(ticketData, 'tdata')
-    if (ticketData.tickets && ticketData.tickets.length) {
+  const renderTicketList = () => {
+    if (ticketCollectionData && ticketCollectionData.length) {
       return (
         <>
-          {ticketData.tickets?.map((ticket, key) => (
+          {ticketCollectionData?.map((ticket, key) => (
             <div key={key}>
               <Box
                 sx={{
@@ -403,7 +397,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
 
   const renderTicketList2 = (ticketData) => {
     console.log(ticketData, 'tdata')
-    if (ticketData.tickets && ticketData.tickets.length) {
+    if (ticketCollectionData && ticketCollectionData.length) {
       return (
         <>
         
@@ -418,7 +412,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
               {t.price}
             </Box>
         </li>
-        {ticketData.tickets?.map((item1, key) => (
+        {ticketCollectionData?.map((item1, key) => (
           <li key={key} style={{padding:'15px 0px',borderBottom:'1px solid #333' }}>
             <Box>
               <span
@@ -454,7 +448,7 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
     return (
       <>
 
-      {data.tickets && renderTicketList2(data)}
+      {ticketCollectionData && renderTicketList2(data)}
 
         <Box
           sx={{

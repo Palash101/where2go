@@ -28,7 +28,8 @@ export const createFloorPlan =  async (name,data) =>{
               plan:data,
             })
             .then((data)=>{
-                return {success:'success',message:'Floor Plan Added successfully'}
+              return data
+                //return {success:'success',message:'Floor Plan Added successfully'}
             })
             .catch((err)=>{
                 console.log(err)

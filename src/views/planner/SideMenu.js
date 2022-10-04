@@ -84,8 +84,8 @@ const SideMenu = (props) => {
           </Box>
         </Box>
 
-        {props.tickets.tickets && (
-          <ShowTickets currency={props.currency} data={props.tickets.tickets} />
+        {props.tickets && (
+          <ShowTickets currency={props.currency} data={props.tickets} />
         )}
 
         {/* <Box className="placer" sx={{ marginBlock: '150%' }}></Box> */}

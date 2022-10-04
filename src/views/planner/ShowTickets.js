@@ -7,7 +7,7 @@ import { Typography } from '@mui/material'
 
 const ShowTickets = (props) => {
   useEffect(() => {
-    console.log(props.data, 'tickets')
+    console.log(props, 'tickets')
   }, [])
 
   return (
@@ -41,3 +41,4 @@ const ShowTickets = (props) => {
 }
 
 export default ShowTickets
+

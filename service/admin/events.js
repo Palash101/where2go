@@ -147,37 +147,32 @@ export const deleteEventDate = async (eventId,data)=>{
 }
 
 
-export const updateEventTicket = async (eventId,data,oldArray)=>{
-    // console.log(oldArray,'oldArray',data,'newArray')
-    // const docRef = doc(db, "events", eventId);
-    // if(oldArray && oldArray.length != 0){
-    //        await updateDoc(docRef, {
-    //      tickets:arrayUnion(data),
-    //     });
-    //     return  await updateDoc(docRef, {
-    //      tickets:arrayRemove(oldArray)
-    //       });
-        
-    // }else{
-    //     return await updateDoc(docRef, {
-    //     tickets:arrayUnion(data)
-    //   })
-    // }
+export const updateEventTicket = async (eventId,data)=>{
+    
+   if(data.id){
+    const docRef = doc(db, "events/"+`${eventId}`+"/tickets/"+`${data.id}`);
+    console.log(docRef,'docSubcollectionRef');
+  return await updateDoc(docRef, {
+        "color": data.color,
+        "description": data.description,
+        "max_booking": data.max_booking,
+        "min_booking": data.min_booking,
+        "name": data.name,
+        "price": data.price,
+        "ticket_count": data.ticket_count,
+    });
+   }else{
     const docRef = doc(db, "events", eventId);
     const docSubcollectionRef = collection(docRef, 'tickets');
-    await addDoc(docSubcollectionRef, data);
-    
-
+    return await addDoc(docSubcollectionRef, data);
+   }
 }
 
 export const getTicketCollection = async(eventId) =>{
     try{
         const docRef = doc(db, "events", eventId);
         const q = collection(docRef, 'tickets');
-        
-        
         const querySnapshot = await getDocs(q);
-       
         return querySnapshot;
     }
     catch(error){
@@ -198,10 +193,8 @@ export const updateFloorPlan = async (eventId,data)=>{
 }
 
 export const deleteEventTicket = async (eventId,data)=>{
-    const docRef = doc(db, "events", eventId);
-    return await updateDoc(docRef, {
-        tickets:arrayRemove(data)
-      })
+    const docRef = doc(db, "events/"+`${eventId}`+"/tickets/"+`${data.docId}`);
+    await deleteDoc(docRef);
 }
 
 

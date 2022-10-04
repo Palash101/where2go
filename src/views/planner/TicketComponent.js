@@ -75,12 +75,12 @@ const TicketComponent = (props) => {
   const ticketForm = () => {
     return (
       <Box className="ticketform">
-		  {props.tickets.tickets && (
+		  {props.tickets && (
 			<FormControl fullWidth>
 			<InputLabel id="ticket">Select Ticket</InputLabel>
 			<Select labelId="ticket" style={{padding:10}} fullWidth onChange={(e)=>itemChange(e)} label='ticket' placeholder='Ticket Name'  >
 			<MenuItem value={{name:'not'}} >None</MenuItem>
-				{props.tickets.tickets.map((item,key) => (
+				{props.tickets.map((item,key) => (
 					<MenuItem value={item}>{item.name} - {item.price} {props.currency}</MenuItem>
 				))}
 				
