@@ -66,6 +66,8 @@ const Seat = () => {
   const [reactArray, setRectArray] = useState([]);
   const [layoutWidth, setLayoutWidth] = useState(500);
   const [layoutHeight, setLayoutHeight] = useState(500);
+  const [boxSelected,setBoxSelected] = useState('true');
+  const [deletedArray,setDeletedArray] = useState([]);
   //const [windowSize, setWindowSize] = useState(getWindowSize());
 
   const [stage, setStageValue] = useState({
@@ -198,13 +200,21 @@ const Seat = () => {
     setRectArray(reactArrayStateCopy);
   };
 
-  const handleClick = (coll, roww) => {
-    console.log(reactArray);
+  const handleClick = (e,item) => {
+    if(boxSelected === 'false'){
+      console.log(item)
+     // e.currentTarget.remove();
+     let newArray = deletedArray;
+     setDeletedArray([...newArray,item])
+     console.log(deletedArray)
+    }
   };
 
   const SelectRectangle = (key) => {
-    setSelectedRect(key);
-    setShowFooter(true);
+    if(boxSelected === 'true'){
+      setSelectedRect(key);
+      setShowFooter(true);
+    }
   };
 
   const deleteSelectedElement = () => {
@@ -470,11 +480,17 @@ const Seat = () => {
             deleteSelectedElement={deleteSelectedElement}
             saveData={updateData}
             tickets={data}
+            setBoxSelected={setBoxSelected}
+            boxSelected={boxSelected}
             currency={data.currency}
           />
           {/* {data.tickets && (
             <ShowTickets currency={data.currency} data={data.tickets} />
           )} */}
+
+
+         
+
           {showFooter && (
             <FooterMenu
               decrementRectXY={decrementRectXY}
@@ -566,7 +582,7 @@ const Seat = () => {
                                   name={item3.name}
                                   price={item3.price}
                                   ticketName={item3.ticketName}
-                                  handleClick={() => handleClick(key1, key2)}
+                                  handleClick={(e) => handleClick(e,item3)}
                                 />
                               ))
                             )}

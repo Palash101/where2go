@@ -26,6 +26,24 @@ const SideMenu = (props) => {
           // paddingLeft: 'calc(8.33% - 51px)',
         }}
       >
+
+
+    <div style={{marginBottom: '20px',
+    display: 'flex',
+    justifyContent: 'space-around',
+    width: '100%'}}>
+          <label style={{display:'block',marginBottom:20,}} >
+           
+          <input type="radio" name="selected" value={'true'} checked={props.boxSelected === 'true'} onChange={(e) => props.setBoxSelected(e.target.value)} style={{width:20,height:20,float:'left'}}/>
+          Box Selection 
+          </label>
+          <label style={{display:'block'}} >
+          <input type="radio" name="selected" value={'false'} checked={props.boxSelected === 'false'} onChange={(e) => props.setBoxSelected(e.target.value)} style={{width:20,height:20,float:'left'}}/>
+          Circle Selection 
+          </label>
+        </div>
+
+
         <Box
           sx={{
             width: '100%',

@@ -32,6 +32,7 @@ import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import { userAuth } from 'context/userContext'
 import { toast } from 'react-toastify'
+import Translations from 'utils/trans'
 
 
 function Bookings(navigation) {
@@ -61,6 +62,8 @@ function Bookings(navigation) {
   const [allQty,setAllQty] = useState(0);
 
   const userContext = userAuth()
+  const locale = userContext.locale
+  const t = Translations(locale)
 
   const times = [
     '10:00 AM',
@@ -392,7 +395,7 @@ function Bookings(navigation) {
           }}
           onClick={handlePriceClick}
         >
-          Ticket Prices
+         {t.ticket_price}
         </Box>
       )}
 
@@ -463,7 +466,7 @@ function Bookings(navigation) {
                     }}
                     onClick={() => addToCart()}
                   >
-                    <span>Purchase {myTickets && myTickets.length ? (<span>{allQty} Tickets for {totalPrice} {itemNew.currency}</span>):(<></>)}</span>
+                    <span>{t.purchase} {myTickets && myTickets.length ? (<span>{allQty} Tickets for {totalPrice} {itemNew.currency}</span>):(<></>)}</span>
                     <ChevronRightIcon color='#000' size={24}/>
                   </Button>
               </Box>

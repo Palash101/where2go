@@ -7,7 +7,6 @@ import moment from 'moment'
 import { getEventById } from 'service/admin/events'
 import { useTheme } from '@mui/material'
 import { userAuth } from 'context/userContext';
-import Translations from '/utils/trans';
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
 import TextField from '@mui/material/TextField'
 import Divider from '@mui/material/Divider';
@@ -16,6 +15,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import { toast } from 'react-toastify'
+import Translations from 'utils/trans'
 
 function BookingsDetails(navigation) {
   const router = useRouter()
@@ -167,17 +167,17 @@ function BookingsDetails(navigation) {
               </h3>
               <p>{date}</p>
               {ticket && item.floor_type === '1' ? (
-                <p style={{ marginTop: 10 }}>{ticket.length} tickets ({total} {item.currency})</p>
+                <p style={{ marginTop: 10 }}>{ticket.length} {t.tickets} ({total} {item.currency})</p>
 
               ):(
-                <p style={{ marginTop: 10 }}>{allQty} tickets ({totalPrice} {item.currency})</p>
+                <p style={{ marginTop: 10 }}>{allQty} {t.tickets} ({totalPrice} {item.currency})</p>
               )}
             </Box>
 
 
             <Box className="checkout-box" sx={{ background: `${theme.palette.background.default1}`, maxWidth: '690px', margin: 'auto', padding: '15px', marginTop: 5, }}>
               <Box style={{}}>
-                <label>Complete your booking details to continue</label>
+                <label>{t.complete_booking_detail}</label>
                 <PhoneInput
                   international
                   placeholder="Enter phone number"
@@ -197,26 +197,26 @@ function BookingsDetails(navigation) {
                   <TextField
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    label="Enter Your Name"
+                    label={t.enter_your_name}
                     defaultValue={name}
-                    placeholder="Enter your name"
+                    placeholder={t.enter_your_name}
                   />
                 </Box>
-                <Box sx={{ marginLeft: 5 }}>
+                <Box sx={{ marginLeft: 5,marginRight:5 }}>
                   <TextField
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    label="Enter Your Email"
+                    label={t.enter_your_email}
                     defaultValue={email}
-                    placeholder="Enter your email"
+                    placeholder={t.enter_your_email}
                   />
                 </Box>
               </Box>
 
               <Divider sx={{ marginTop: 5, marginBottom: 5 }} />
               <Box >
-                <h3>Terms & Conditions</h3>
-                <label>Please read and agree to the organizers terms and conditions</label>
+                <h3>{t.terms_and_conditions}</h3>
+                <label>{t.read_terms}</label>
 
                 <div className='mb-100' dangerouslySetInnerHTML={{ __html: item.terms }}>
 
@@ -224,7 +224,7 @@ function BookingsDetails(navigation) {
                 <FormGroup sx={{ marginTop: 5 }}>
                   <FormControlLabel control={<Checkbox checked={agree}
                     onChange={handleCheck}
-                    inputProps={{ 'aria-label': 'controlled' }} />} label=" I agree to the terms conditions" />
+                    inputProps={{ 'aria-label': 'controlled' }} />} label={t.i_agree_terms} />
                 </FormGroup>
               </Box>
 
@@ -243,7 +243,7 @@ function BookingsDetails(navigation) {
                 }}
                 onClick={() => checkout()}
               >
-                Checkout
+                {t.checkout}
               </Button>
             </Box>
 

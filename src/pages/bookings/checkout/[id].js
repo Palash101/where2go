@@ -192,9 +192,9 @@ const payNow = () => {
         
           <Box className="checkout-box" sx={{background: `${theme.palette.background.default1}`,maxWidth:'769px',margin:'auto',padding:'15px',textAlign:'center'}}>
             <h3>
-              Checkout
+              {t.checkout}
             </h3>
-              <label>Kindly complete your booking and payment.</label>
+              <label>{t.kindly_complete_booking}</label>
           </Box>
        
 
@@ -214,11 +214,11 @@ const payNow = () => {
               <Table aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Description</TableCell>
+                    <TableCell>{t.description}</TableCell>
                     {item.floor_type === '0'&& (
                     <TableCell>Q.</TableCell>
                     )}
-                    <TableCell align="right">Price</TableCell>
+                    <TableCell align="right">{t.price}</TableCell>
                    </TableRow>
                 </TableHead>
                 <TableBody>
@@ -273,7 +273,7 @@ const payNow = () => {
           </Box>
           <Box sx={{backgroundColor:'#22262b',maxWidth:'769px',margin:'auto',padding:'15px'}}>
             <Box>
-             <label>Choose a payment method to proceed.</label>
+             <label>{t.choose_pay_method}</label>
              </Box>
                 <Button
                 verient="default"
@@ -288,7 +288,7 @@ const payNow = () => {
                 }}
                 onClick={() => payNow()}
               >
-                Pay With Credit Card
+                {t.pay_with_credit_card}
               </Button>
               <Button
                 verient="default"
@@ -304,7 +304,7 @@ const payNow = () => {
                 }}
                 onClick={() => payNow()}
               >
-                Pay With Google Pay
+                {t.pay_with_google_pay}
               </Button>
             </Box>
          

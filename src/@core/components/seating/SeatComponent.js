@@ -5,12 +5,14 @@ function SeatComponent(props) {
       fill={props.color ? props.color : 'black'}
       key={props.key}
       onClick={props.handleClick}
-      id={props.key}
+      // id={props.key}
       x={props.startingXPosition}
       y={props.startingYPosition}
       price={props.price}
       ticketName={props.ticketName}
       title={props.title}
+      rowId={props.key}
+      id={'tid-'+props.startingXPosition+'-'+props.startingYPosition}
       
     >
       <text x="5" y="25" style={{ fontSize: '8px' }}>
