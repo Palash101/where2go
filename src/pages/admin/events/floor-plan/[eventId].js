@@ -215,10 +215,13 @@ const Seat = () => {
      item.index1 = index1;
      item.index2 = index2;
      item.index3 = index3;
+     let reactArrCopy = [...reactArray];
 
-      
-     if(e.currentTarget.style.fill === 'red'){
-      e.currentTarget.style.fill = '';
+    if(reactArrCopy[index1].seatDots[index2][index3].delSelected === true){
+    
+    //  if(e.currentTarget.style.fill === 'red'){
+    //  e.currentTarget.style.fill = '';
+    reactArrCopy[index1].seatDots[index2][index3].delSelected = false;
       let filterArray = [];
       newArray.map(item1 => {
         if(item1.x === item.x && item1.y === item.y && item1.name === item.name){
@@ -230,12 +233,15 @@ const Seat = () => {
      });
       console.log(filterArray)
       setDeletedArray(filterArray)
+      setRectArray(reactArrCopy);
      }
      else{
-      e.currentTarget.style.fill = 'red';
+      //e.currentTarget.style.fill = 'red';
+      reactArrCopy[index1].seatDots[index2][index3].delSelected = true;
+      setRectArray(reactArrCopy);
       setDeletedArray([...newArray,item])
      }
-     console.log(deletedArray)
+     console.log([...newArray,item])
     }
   };
 
@@ -264,12 +270,18 @@ const Seat = () => {
         const deletedArrayCopy = [...deletedArray];
         setRectArrayPrev(arrayCopy)
         deletedArrayCopy.map(i => {
-          let id = 'tid-'+i.x+'-'+i.y;
-          document.getElementById(id).style.fill = 'auto';
-          arrayCopy[i.index1].seatDots[i.index2].splice(i.index3,1);
+          console.log(arrayCopy[i.index1].seatDots[i.index2][i.index3],'ii')
+         // let id = 'tid-'+i.x+'-'+i.y;
+         // document.getElementById(id).style.fill = 'auto';
+          // if(arrayCopy[i.index1].seatDots[i.index2][i.index3].delSelected){
+          //   arrayCopy[i.index1].seatDots[i.index2][i.index3].delSelected = false;
+          // } 
+           arrayCopy[i.index1].seatDots[i.index2].splice(i.index3,1);
+           setRectArray(arrayCopy);
         })
+        
         setDeletedArray([]);
-        setRectArray(arrayCopy);
+        
       }
       else{
         alert("Please select cirles for delete.")
@@ -514,7 +526,9 @@ const Seat = () => {
   };
 
   const undo = () => {
-    setRectArray(reactArrayPrev);
+    const newArr = [...reactArrayPrev];
+    console.log(newArr)
+    setRectArray(newArr);
   }
 
   console.log('rendering');
@@ -614,6 +628,7 @@ const Seat = () => {
                       Stage
                     </text>
                     {reactArray.map((item1, key) => {
+                      console.log('svggg')
                       return (
                         <svg
                           ref={rectSvgRef}
@@ -635,7 +650,7 @@ const Seat = () => {
                             {item1.seatDots?.map((item2, key1) =>
                               item2.map((item3, key2) => (
                                 <SeatComponent
-                                  color={item3.fill}
+                                  color={item3.delSelected === true ? 'red' : item3.fill}
                                   id={`${item3.x}${item3.y}`}
                                   startingXPosition={item3.x}
                                   startingYPosition={item3.y}
