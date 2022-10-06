@@ -64,6 +64,8 @@ const Seat = () => {
   const [ticketModal, setTicketModal] = useState(false);
 
   const [reactArray, setRectArray] = useState([]);
+  const [reactArrayPrev, setRectArrayPrev] = useState([]);
+
   const [layoutWidth, setLayoutWidth] = useState(500);
   const [layoutHeight, setLayoutHeight] = useState(500);
   const [boxSelected,setBoxSelected] = useState('true');
@@ -95,6 +97,7 @@ const Seat = () => {
         if (data.plan) {
           const parsedData = JSON.parse(data.plan);
           setRectArray(parsedData);
+          setRectArrayPrev(parsedData);
           // setEventData(data)
           setLoading(false);
         } else {
@@ -132,6 +135,7 @@ const Seat = () => {
       height: lastObjectFromLastArray.y + 50,
     };
     const reactArrayStateCopy = [...reactArray];
+    setRectArrayPrev(reactArrayStateCopy)
     reactArrayStateCopy[selectedRect] = newStateOfSelectedIndex;
     setRectArray(reactArrayStateCopy);
   };
@@ -161,6 +165,7 @@ const Seat = () => {
       seatDots: newSeatDots,
     };
     const reactArrayStateCopy = [...reactArray];
+    setRectArrayPrev(reactArrayStateCopy)
     reactArrayStateCopy[selectedRect] = newStateOfSelectedIndex;
     setRectArray(reactArrayStateCopy);
   };
@@ -179,6 +184,7 @@ const Seat = () => {
     };
 
     const reactArrayStateCopy = [...reactArray];
+    setRectArrayPrev(reactArrayStateCopy)
     reactArrayStateCopy[selectedRect] = newSeatState;
     setRectArray(reactArrayStateCopy);
   };
@@ -196,16 +202,39 @@ const Seat = () => {
     };
 
     const reactArrayStateCopy = [...reactArray];
+    setRectArrayPrev(reactArrayStateCopy)
     reactArrayStateCopy[selectedRect] = newSeatState;
     setRectArray(reactArrayStateCopy);
   };
 
-  const handleClick = (e,item) => {
+  const handleClick = (e,item,index1,index2,index3) => {
     if(boxSelected === 'false'){
       console.log(item)
      // e.currentTarget.remove();
      let newArray = deletedArray;
-     setDeletedArray([...newArray,item])
+     item.index1 = index1;
+     item.index2 = index2;
+     item.index3 = index3;
+
+      
+     if(e.currentTarget.style.fill === 'red'){
+      e.currentTarget.style.fill = '';
+      let filterArray = [];
+      newArray.map(item1 => {
+        if(item1.x === item.x && item1.y === item.y && item1.name === item.name){
+
+        }
+        else{
+          filterArray.push(item1)
+        }
+     });
+      console.log(filterArray)
+      setDeletedArray(filterArray)
+     }
+     else{
+      e.currentTarget.style.fill = 'red';
+      setDeletedArray([...newArray,item])
+     }
      console.log(deletedArray)
     }
   };
@@ -218,13 +247,34 @@ const Seat = () => {
   };
 
   const deleteSelectedElement = () => {
-    if (selectedRect === null) {
-      alert('Please select the rect');
-      return;
+    if(boxSelected === 'true'){
+      if (selectedRect === null) {
+        alert('Please select the rect');
+        return;
+      }
+      console.log(selectedRect)
+      const arrayCopy = [...reactArray];
+      setRectArrayPrev(arrayCopy)
+      arrayCopy.splice(selectedRect, 1);
+      setRectArray(arrayCopy);
     }
-    const arrayCopy = [...reactArray];
-    arrayCopy.splice(selectedRect, 1);
-    setRectArray(arrayCopy);
+    else{
+      if(deletedArray.length){
+        const arrayCopy = [...reactArray];
+        const deletedArrayCopy = [...deletedArray];
+        setRectArrayPrev(arrayCopy)
+        deletedArrayCopy.map(i => {
+          let id = 'tid-'+i.x+'-'+i.y;
+          document.getElementById(id).style.fill = 'auto';
+          arrayCopy[i.index1].seatDots[i.index2].splice(i.index3,1);
+        })
+        setDeletedArray([]);
+        setRectArray(arrayCopy);
+      }
+      else{
+        alert("Please select cirles for delete.")
+      }
+    }
   };
 
   const addReactangle = () => {
@@ -249,6 +299,7 @@ const Seat = () => {
       y: 0,
       seatState: initalSeatValue,
     };
+    setRectArrayPrev(reactArray)
     if (reactArray.length == 0) {
       const seatDots = seatPlanerRender(initalSeatValue);
       const lastArrayFromSeat = seatDots[seatDots.length - 1];
@@ -262,6 +313,7 @@ const Seat = () => {
       };
       setRectArray([...reactArray, newRectState]);
     } else {
+      setRectArrayPrev(reactArray)
       const seatDots = seatPlanerRender(initalSeatValue);
       const lastArrayFromSeat = seatDots[seatDots.length - 1];
       const lastObjectFromLastArray =
@@ -390,6 +442,7 @@ const Seat = () => {
 
     const updtedelement = { ...selectedElement, seatDots: seatDotsArrayCopy };
     const reactArrcy = [...reactArray];
+    setRectArrayPrev(reactArrcy)
     reactArrcy[selectedRect] = updtedelement;
     setRectArray(reactArrcy);
   };
@@ -460,6 +513,10 @@ const Seat = () => {
     }
   };
 
+  const undo = () => {
+    setRectArray(reactArrayPrev);
+  }
+
   console.log('rendering');
 
   return (
@@ -483,6 +540,7 @@ const Seat = () => {
             setBoxSelected={setBoxSelected}
             boxSelected={boxSelected}
             currency={data.currency}
+            undo={undo}
           />
           {/* {data.tickets && (
             <ShowTickets currency={data.currency} data={data.tickets} />
@@ -570,6 +628,9 @@ const Seat = () => {
                               selectedRect == key ? 'selectedRect' : ''
                             }
                             onClick={() => SelectRectangle(key)}
+                            //transform ={key === 0 ? 'translate(10, 10) rotate(45 480 285)' : 'rotate(0)'}
+                           // transform={key === 0 ? 'rotate(45 480 285) rotate(-45)':'rotate(0)'}
+                          //  transform={key === 0 ? 'rotate(45)' : 'rotate(0)'}
                           >
                             {item1.seatDots?.map((item2, key1) =>
                               item2.map((item3, key2) => (
@@ -582,7 +643,7 @@ const Seat = () => {
                                   name={item3.name}
                                   price={item3.price}
                                   ticketName={item3.ticketName}
-                                  handleClick={(e) => handleClick(e,item3)}
+                                  handleClick={(e) => handleClick(e,item3,key,key1,key2)}
                                 />
                               ))
                             )}
