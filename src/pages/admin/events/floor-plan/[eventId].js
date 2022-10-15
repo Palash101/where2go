@@ -19,6 +19,7 @@ import FooterMenu from 'src/views/planner/FooterMenu';
 import ShowTickets from 'src/views/planner/ShowTickets';
 import TicketComponent from 'src/views/planner/TicketComponent';
 import { toast } from 'react-toastify'
+
 import {
   getEventById,
   updateFloorPlan,
@@ -363,9 +364,11 @@ const Seat = () => {
     return xelement;
   };
 
-  const addSeatname = (seatAlpha, seatNumberic, color, price, ticketName) => {
-    console.log(reactArray);
+  const addSeatname = (seatAlpha, seatNumberic, color, price, ticketName,TicketData) => {
+    
     const selectedElement = reactArray[selectedRect];
+    const seatStateCopy = {...selectedElement.seatState,ticketId:TicketData,ticketName:ticketName,color:color,price:price}
+    console.log(seatStateCopy,'seatStateCopy');
     const mainSeatDots = selectedElement.seatDots;
     const columnLength = mainSeatDots.length;
     const rowLength = selectedElement.seatDots[0].length;
@@ -383,6 +386,7 @@ const Seat = () => {
       }
       seatNameArray.push(a);
     }
+    // dd(seatNameArray,'seatNameArray');
     const seatDotsArrayCopy = [...mainSeatDots];
     mainSeatDots.map((arrItem, colkey) => {
       arrItem.map((item, rowKey) => {
@@ -392,14 +396,14 @@ const Seat = () => {
         const updatedData = { ...data, name: name };
 
         seatDotsArrayCopy[colkey][rowKey] = updatedData;
-        seatDotsArrayCopy[colkey][rowKey].fill = color;
-        seatDotsArrayCopy[colkey][rowKey].price = price;
-        seatDotsArrayCopy[colkey][rowKey].ticketName = ticketName;
         console.log(seatDotsArrayCopy[colkey][rowKey], 'updatedData');
       });
     });
 
-    const updtedelement = { ...selectedElement, seatDots: seatDotsArrayCopy };
+
+
+    const updtedelement = { ...selectedElement,seatState:seatStateCopy, seatDots: seatDotsArrayCopy };
+    console.log(updtedelement,'updtedelement');
     const reactArrcy = [...reactArray];
     reactArrcy[selectedRect] = updtedelement;
     setRectArray(reactArrcy);
@@ -414,7 +418,7 @@ const Seat = () => {
     setShowTicketComponent(true);
   };
 
-  const updateTicket = (data) => {
+  const updateTicket = async (data) => {
     setLoading(true);
     if (data.name && data.color && data.price) {
       const ticketData = {
@@ -422,7 +426,10 @@ const Seat = () => {
         color: data.color,
         price: data.price,
       };
-      updateEventTicket(router.query.eventId, ticketData);
+     return updateEventTicket(router.query.eventId, ticketData).then((docId)=>{
+      return docId;
+      });
+ 
       setLoading(false);
     } else {
       setLoading(false);
@@ -430,7 +437,9 @@ const Seat = () => {
     }
   };
 
-  const updateTicketData = (data, toggle) => {
+  const updateTicketData = async (data, toggle) => {
+    
+    console.log(data,toggle,'data');
     setLoading(true);
     if (
       data.rowAlphabets &&
@@ -446,25 +455,28 @@ const Seat = () => {
           data.numeric,
           data.color,
           data.price,
-          data.name
+          data.name,
+          data.id
         );
         getTicketsData(eventId)
         setShowTicketComponent(false);
-        updateData();
+        // updateData();
         setLoading(false);
       } else {
         addDataInSeatDots('red', data.price);
+        const TicketData = await updateTicket(data);
         addSeatname(
           data.rowAlphabets,
           data.numeric,
           data.color,
           data.price,
-          data.name
+          data.name,
+          TicketData
         );
         getTicketsData(eventId)
         setShowTicketComponent(false);
-        updateData();
-        updateTicket(data);
+        // updateData();
+       
         setLoading(false);
       }
     } else {
@@ -581,14 +593,14 @@ const Seat = () => {
                             {item1.seatDots?.map((item2, key1) =>
                               item2.map((item3, key2) => (
                                 <SeatComponent
-                                  color={item3.fill}
+                                  color={item1.seatState.color}
                                   id={`${item3.x}${item3.y}`}
                                   startingXPosition={item3.x}
                                   startingYPosition={item3.y}
                                   key={key2}
                                   name={item3.name}
-                                  price={item3.price}
-                                  ticketName={item3.ticketName}
+                                  price={item1.seatState.price}
+                                  ticketName={item1.seatState.ticketName}
                                   handleClick={() => handleClick(key1, key2)}
                                 />
                               ))
@@ -630,5 +642,10 @@ const Seat = () => {
 Seat.getLayout = (page) => <BlankLayout>{page}</BlankLayout>;
 
 export default Seat;
+
+
+
+
+
 
 

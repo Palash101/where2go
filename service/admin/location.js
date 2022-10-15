@@ -81,7 +81,7 @@ export const getLocationById =  async(docId)=>{
 
 export const updateLocation =  async (docId,data)=>{
   const {status, lang} = data;
-
+console.log(status, lang,'status, lang');
     try{
         const docRef = doc(db, "locations", docId);
         return await updateDoc(docRef, {

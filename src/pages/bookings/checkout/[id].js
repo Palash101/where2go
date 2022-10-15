@@ -41,9 +41,7 @@ function BookingsCheckout(navigation) {
 
   useEffect(async () => {
     if (router.isReady) {
-
       console.log(userContext,'userContext')
-
       const cartData = userContext.getCarts();
       setCarts(cartData);
      
@@ -90,7 +88,7 @@ function BookingsCheckout(navigation) {
   const getTotal = (data) => {
     var count = 0;
     data.map((item) => {
-      count = count + JSON.parse(item.price);
+      count = count + parseInt(item.price);
     })
     return count
   }
@@ -101,7 +99,6 @@ const payNow = () => {
     toast("Please login before proceeding")
   }
   else{
-
   var tickets = [];
   if(item.floor_type === '0'){
     carts.carts.data.map((item) => {
@@ -132,7 +129,6 @@ const payNow = () => {
     total:total,
     currency:carts.event.currency,
     quantity:allQty,
-
   }
   console.log(bookingData)
   setLoading(true)
@@ -143,9 +139,6 @@ const payNow = () => {
    setTimeout(()=> {
     userContext.clearCartData();
    },1000)
-     
-    
-   
    })
   }
 }

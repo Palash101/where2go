@@ -32,7 +32,7 @@ import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import { userAuth } from 'context/userContext'
 import { toast } from 'react-toastify'
-
+import {getTicketCollection} from '../../../service/admin/events'
 
 function Bookings(navigation) {
   const router = useRouter()
@@ -59,6 +59,7 @@ function Bookings(navigation) {
   const [myTickets,setMyTickets] = useState([]);
   const [totalPrice,setTotalPrice] = useState(0);
   const [allQty,setAllQty] = useState(0);
+  const [ticketCollectionData, setticketCollectionData] = useState([])
 
   const userContext = userAuth()
 
@@ -75,6 +76,7 @@ function Bookings(navigation) {
   ]
 
   const addTicket = (newarr) => {
+    console.log(newarr,'newarr');
     var myTicket = [];
     var total = 0;
     var qty = 0;
@@ -129,10 +131,11 @@ function Bookings(navigation) {
   }
 
   const onCircleClick = (colKey, rowKey, rectangleKey) => {
-
-    const selecteCircle = floorData[rectangleKey].seatDots[colKey][rowKey];
+    
+    const selecteCircle = floorData[rectangleKey].seatDots[colKey][rowKey]
+    const price = floorData[rectangleKey].seatState.price;
     if(selecteCircle.className && selecteCircle.className === 'user-seat-selected'){
-      const setSelectedClass = {...selecteCircle, className:'',border:'none'}
+      const setSelectedClass = {...selecteCircle, className:'',border:'none',price:price}
       const arrayCopy = [...floorData];
       arrayCopy[rectangleKey].seatDots[colKey][rowKey] = setSelectedClass
       setFloorData(arrayCopy)
@@ -140,14 +143,14 @@ function Bookings(navigation) {
       setSelectedTickets(slectedTickets1)
     }
     else{
-      const setSelectedClass = {...selecteCircle, className:'user-seat-selected',border:'white'}
+      const setSelectedClass = {...selecteCircle, className:'user-seat-selected',border:'white',price:price}
       const arrayCopy = [...floorData];
       arrayCopy[rectangleKey].seatDots[colKey][rowKey] = setSelectedClass
       setFloorData(arrayCopy)
       setSelectedTickets([...slectedTickets,setSelectedClass])
 
     }
-
+console.log(slectedTickets,'slectedTickets')
     
   };
 
@@ -181,6 +184,7 @@ function Bookings(navigation) {
 
   useEffect(async () => {
     if (router.isReady) {
+      getTicketsData();
       const cartData = userContext.getCarts();
       setDate(cartData.carts.date+' '+cartData.carts.from)
       
@@ -205,21 +209,24 @@ function Bookings(navigation) {
         data.tickets = arr
         console.log(data, 'booking')
         setItemNew(data)
-
-        // data.event_date.map((item1) => {
-        //   if (propDate === item1.date) {
-        //     setExist(true)
-        //   }
-        // })
-
-      })
-
-      //  var dt = moment().format('LLLL');
-     // setDate(propDate)
+  })
     }
   }, [router.isReady, navigation,setItemNew])
 
   console.log(exist)
+
+  const getTicketsData = async () => {
+    const tickets = await getTicketCollection(router.query.id)
+    const ticketsArray = []
+    tickets.docs.forEach((item) => {
+      const docId = { docId: item.id }
+      const data = Object.assign(docId, item.data())
+      ticketsArray.push(data)
+    })
+    setticketCollectionData(ticketsArray)
+    
+  }
+
 
   const handlePriceClick = () => {
     setPriceOpen(true)
@@ -535,8 +542,8 @@ function Bookings(navigation) {
       <Dialog open={priceOpen} onClose={handlePriceClose}>
         <DialogContent>
           <ul className="prlist">
-            {itemNew.tickets &&
-              itemNew.tickets.map((item1, key) => (
+            {ticketCollectionData &&
+              ticketCollectionData.map((item1, key) => (
                 <li>
                   <Box>
                     <span
@@ -560,3 +567,5 @@ function Bookings(navigation) {
 Bookings.getLayout = (page) => <HomeLayout>{page}</HomeLayout>
 
 export default Bookings
+
+

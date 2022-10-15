@@ -27,11 +27,15 @@ import { userAuth } from 'context/userContext';
 import Translations from '/utils/trans';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import {getTicketCollection} from '../../../service/admin/events'
+
+
 
 import { toast } from 'react-toastify';
 
 function Details(navigation) {
   const router = useRouter();
+  const [ticketsData, setTicketData] = useState([])
   const id = router.query.id;
   const [item, setItem] = useState({});
   const [lowest, setLowest] = useState('');
@@ -42,6 +46,9 @@ function Details(navigation) {
   const [dateTimeArray, setDateTimeArray] = useState([]);
   const [loading, setLoading] = useState(false);
   const [locationLink,setLocationLink] = useState('')
+ 
+
+
   const times = [
     '10:00 AM',
     '11:30 AM',
@@ -137,9 +144,14 @@ function Details(navigation) {
     window.open(locationLink, '_blank');
   }
 
+
+
   useEffect(() => {
     if (router.isReady) {
+      getTicketsData();
       setLoading(true);
+    
+        
       getEventById(router.query.id).then((data) => {
         console.log(data,'dd in details');
         setItem(data);
@@ -149,26 +161,49 @@ function Details(navigation) {
          setLocationLink('https://www.google.com/maps/search/?api=1&query='+loc+'&query_place_id='+data.place_id)
         }
 
-
-
-        if (data.tickets && data.tickets.length) {
-          var lowest = Number.POSITIVE_INFINITY;
-          var highest = Number.NEGATIVE_INFINITY;
-          var tmp;
-          for (var i = data.tickets.length - 1; i >= 0; i--) {
-            tmp = JSON.parse(data.tickets[i].price);
-            if (tmp < lowest) lowest = tmp;
-            if (tmp > highest) highest = tmp;
-          }
-          setLowest(lowest);
-        } else {
-          setLowest(0);
-        }
       });
       setLoading(false);
     }
     console.log(item);
   }, [router.isReady, navigation]);
+  useEffect(() =>{
+   
+    if (ticketsData && ticketsData.length) {
+      console.log('hello')
+      console.log(ticketsData,'ticketCollectionData');
+      var lowest = Number.POSITIVE_INFINITY;
+      var highest = Number.NEGATIVE_INFINITY;
+      var tmp;
+      for (var i = ticketsData.length - 1; i >= 0; i--) {
+        console.log(ticketsData[i].price,'lowest');
+        tmp = (ticketsData[i].price);
+        
+        if (tmp < lowest) lowest = tmp;
+        if (tmp > highest) highest = tmp;
+       
+      }
+      console.log(lowest,'lowest');
+      setLowest(lowest);
+      
+    } else {
+      setLowest(0);
+    }
+
+  },[ticketsData])
+
+  const getTicketsData = async () => {
+    const tickets = await getTicketCollection(router.query.id)
+    
+    const ticketsArray = []
+    tickets.docs.forEach((item) => {
+      const docId = { docId: item.id }
+      const data = Object.assign(docId, item.data())
+      ticketsArray.push(data)
+    })
+    console.log(ticketsArray,'Oldtickets');
+    setTicketData(ticketsArray)
+    
+  }
 
 
 const renderDateItem = (item1, item,key) => {
@@ -315,6 +350,7 @@ const renderDateItem = (item1, item,key) => {
                   </div>
                 )}
               </Box>
+              {ticketsData.length !== 0 && (
               <button
                 variant="contained"
                 className='detailTicketBtn'
@@ -335,6 +371,7 @@ const renderDateItem = (item1, item,key) => {
                   from {lowest} {item.currency}
                 </span>
               </button>
+              )}
             </Grid>
             <Grid
               item
@@ -484,3 +521,5 @@ const renderDateItem = (item1, item,key) => {
 Details.getLayout = (page) => <HomeLayout>{page}</HomeLayout>;
 
 export default Details;
+
+

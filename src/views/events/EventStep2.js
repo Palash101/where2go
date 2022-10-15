@@ -450,3 +450,5 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
 }
 
 export default EventStep2
+
+

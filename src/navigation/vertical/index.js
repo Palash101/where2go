@@ -28,7 +28,7 @@ const navigation = () => {
     },
 
     {
-      sectionTitle: 'User Managment',
+      sectionTitle: t.userManagement,
     },
     {
       title: t.users,
@@ -36,7 +36,7 @@ const navigation = () => {
       path: '/admin/users',
     },
     {
-      sectionTitle: 'Location',
+      sectionTitle: t.location,
     },
     {
       title: t.location,
@@ -49,7 +49,7 @@ const navigation = () => {
       path: '/admin/location/add',
     },
     {
-      sectionTitle: 'Category',
+      sectionTitle: t.category,
     },
 
     {
@@ -64,7 +64,7 @@ const navigation = () => {
       path: '/admin/category/add',
     },
     {
-      sectionTitle: 'Events',
+      sectionTitle: t.events,
     },
     {
       title: t.event,
@@ -137,3 +137,5 @@ const navigation = () => {
 }
 
 export default navigation
+
+

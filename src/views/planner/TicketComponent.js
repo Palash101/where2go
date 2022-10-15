@@ -34,6 +34,7 @@ const TicketComponent = (props) => {
   const [color, setColor] = useState('white')
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
+  const [id, setId] = useState('')
   const [rowAlphabets, setRowAlphabet] = useState('')
   const [numeric, setColNumeric] = useState(null)
   const [toggle, setToggle] = useState(false);
@@ -46,6 +47,7 @@ const TicketComponent = (props) => {
       price: price,
       rowAlphabets: rowAlphabets,
       numeric: numeric,
+	  id: id,
     }
 
     return data
@@ -58,7 +60,7 @@ const TicketComponent = (props) => {
   const itemChange = (e) => {
 	console.log(e)
 	let val = e.target.value;
-	console.log(val)
+	console.log(val,'val')
 	if(val.name === 'not'){
 		setToggle(false)
 		setTicketItem(val)
@@ -69,6 +71,7 @@ const TicketComponent = (props) => {
 		setName(val.name);
 		setPrice(val.price);
 		setColor(val.color)
+		 setId(val.docId)
 	}
   }
 
@@ -168,3 +171,5 @@ const TicketComponent = (props) => {
 }
 
 export default TicketComponent
+
+

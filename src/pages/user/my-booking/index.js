@@ -40,6 +40,7 @@ function MyBooking({ user }) {
   
 
   function Item(item, i) {
+    console.log(item);
     return (
       <div key={i}>
         <Box className="checkout-box" sx={{background: `${theme.palette.background.default1}`,maxWidth:'769px',margin:'auto',padding:'15px'}}>
@@ -172,3 +173,5 @@ export async function getServerSideProps(context) {
     }
   }
 }
+
+

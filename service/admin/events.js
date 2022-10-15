@@ -146,13 +146,68 @@ export const deleteEventDate = async (eventId,data)=>{
       })
 }
 
+export const TicketPlanUpdate = async(eventId,data)=>{
+    console.log(eventId,data,'TicketPlanUpdate')
+    getDoc(doc(db, "events", eventId)).then(docSnap => {
+        if (docSnap.exists()) {
+            if (docSnap.data().plan) {
+          const parsedData = JSON.parse(docSnap.data().plan);
+          const copydaya = [...parsedData]
+          parsedData.map((value, index) => {
+            if(value.seatState.ticketId == data.id){
+                const objKey = parsedData[index]
+                objKey.seatState.price = data.price;
+                objKey.seatState.ticketName = data.name;
+                objKey.seatState.color = data.color;
+                copydaya[index] = objKey
+            }
+          })
+          const newPlan = JSON.stringify(copydaya)
+         updateFloorPlan(eventId,newPlan)
+        }
+        } else {
+          console.log("No such document!");
+        }
+      })
+}
+
+
+export const TicketPlanDeleted = async(eventId,data)=>{
+    getDoc(doc(db, "events", eventId)).then(docSnap => {
+        if (docSnap.exists()) {
+            if (docSnap.data().plan) {
+          const parsedData = JSON.parse(docSnap.data().plan);
+          const copydaya = [...parsedData]
+          
+          parsedData.map((value, index) => {
+            // console.log(value.seatState.ticketId,data.docId,'copydaya');
+            if(value.seatState.ticketId == data.docId){
+                const objKey = parsedData[index]
+                objKey.seatState.price = 0;
+                objKey.seatState.ticketName = '';
+                objKey.seatState.color = '';
+                objKey.seatState.ticketId = '';
+                copydaya[index] = objKey
+                
+            }
+          })
+          const newPlan = JSON.stringify(copydaya)
+         console.log(newPlan,'TicketPlanDeleted')
+         updateFloorPlan(eventId,newPlan)
+        }
+        } else {
+          console.log("No such document!");
+        }
+      })
+}
 
 export const updateEventTicket = async (eventId,data)=>{
     
    if(data.id){
     const docRef = doc(db, "events/"+`${eventId}`+"/tickets/"+`${data.id}`);
-    console.log(docRef,'docSubcollectionRef');
-  return await updateDoc(docRef, {
+    TicketPlanUpdate(eventId,data)
+   
+    return await updateDoc(docRef, {
         "color": data.color,
         "description": data.description,
         "max_booking": data.max_booking,
@@ -160,11 +215,18 @@ export const updateEventTicket = async (eventId,data)=>{
         "name": data.name,
         "price": data.price,
         "ticket_count": data.ticket_count,
+    }).then((docId)=>{
+     
+    return data.id;
     });
+
    }else{
     const docRef = doc(db, "events", eventId);
     const docSubcollectionRef = collection(docRef, 'tickets');
-    return await addDoc(docSubcollectionRef, data);
+    return await addDoc(docSubcollectionRef, data).then((docId)=>{
+       
+    return docId.id;
+    });
    }
 }
 
@@ -193,6 +255,8 @@ export const updateFloorPlan = async (eventId,data)=>{
 }
 
 export const deleteEventTicket = async (eventId,data)=>{
+    console.log(eventId,data,'qweqweqwe')
+    TicketPlanDeleted(eventId,data)
     const docRef = doc(db, "events/"+`${eventId}`+"/tickets/"+`${data.docId}`);
     await deleteDoc(docRef);
 }
@@ -308,3 +372,4 @@ export const getHomePageEvent = async ()=>{
         return temp
     }
 }
+

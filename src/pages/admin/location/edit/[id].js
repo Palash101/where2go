@@ -61,6 +61,7 @@ function LocationEdit() {
         })
      
     }
+    
   }, [router.isReady,setStatus])
 
   //Firebase update Location

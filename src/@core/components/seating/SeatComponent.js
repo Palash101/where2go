@@ -1,4 +1,5 @@
 function SeatComponent(props) {
+  console.log(props,'SeatComponent');
   return (
     <svg
       className={props.className+ ' ' +props.disabled}

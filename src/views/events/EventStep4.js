@@ -14,7 +14,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
 import CircularProgress from '@mui/material/CircularProgress'
 import Divider from '@mui/material/Divider'
-import DeleteIcon from '@mui/icons-material/Delete'
+
 import Badge from '@mui/material/Badge'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
@@ -23,6 +23,7 @@ import { getAllFloorPLan } from 'service/admin/floorPlan'
 import InputLabel from '@mui/material/InputLabel'
 import { useRouter } from 'next/router'
 import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 import { toast } from 'react-toastify'
 
 import {
@@ -546,3 +547,4 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
 }
 
 export default EventStep4
+

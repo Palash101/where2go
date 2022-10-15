@@ -8,6 +8,10 @@ export const ar = {
     admin: 'مسؤل',
     phone: 'رقم الهاتف',
 
+    event: 'حدث',
+    events: 'الأحداث',
+    userManagement:'إدارةالمستخدم',
+
     about: 'معلومات عنا',
     add: 'يضيف',
     location: 'موقع',

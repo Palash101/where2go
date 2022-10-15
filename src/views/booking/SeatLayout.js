@@ -68,11 +68,14 @@ const SeatLayout = (props) => {
   }, []);
 
 
-  const renderSeatComponet = (item,key2,key1,key) => {
+  const renderSeatComponet = (item,key2,key1,key,item1) => {
+    
     if(booked.length){
+      
       var filter =  booked.filter(item4 => item4.name === item.name);
       if(filter.length){
         var item3 = item;
+        console.log(item3,'item3');
         return(
           <SeatComponent
             color={'#fff'}
@@ -82,9 +85,9 @@ const SeatLayout = (props) => {
             className={item3.className}
             key={key2}
             name={item3.name}
-            price={item3.price}
+            price={item1.seatState.price}
             border={item3.border}
-            ticketName={item3.ticketName}
+            ticketName={item1.seatState.ticketName}
             disabled={'disabled'}
             title='Already Booked'
             handleClick={() => props.onCircleClick(key1, key2,key)} />
@@ -92,18 +95,19 @@ const SeatLayout = (props) => {
       }
       else{
           var item3 = item;
+          console.log(item1,'item3');
           return(
             <SeatComponent
-            color={item3.fill}
+            color={item1.seatState.color}
             id={`${item3.x}${item3.y}`}
             startingXPosition={item3.x}
             startingYPosition={item3.y}
             className={item3.className}
             key={key2}
             name={item3.name}
-            price={item3.price}
+            price={item1.seatState.price}
             border={item3.border}
-            ticketName={item3.ticketName}
+            ticketName={item1.seatState.ticketName}
             disabled={''}
             handleClick={() => props.onCircleClick(key1, key2,key)} />
           
@@ -111,19 +115,21 @@ const SeatLayout = (props) => {
       }
     }
     else{
+     
       var item3 = item;
+      console.log(item3,'item1')
       return(
         <SeatComponent
-        color={item3.fill}
+        color={item1.seatState.color}
         id={`${item3.x}${item3.y}`}
         startingXPosition={item3.x}
         startingYPosition={item3.y}
         className={item3.className}
         key={key2}
         name={item3.name}
-        price={item3.price}
+        price={item1.seatState.price}
         border={item3.border}
-        ticketName={item3.ticketName}
+        ticketName={item1.seatState.ticketName}
         disabled={''}
         handleClick={() => props.onCircleClick(key1, key2,key)} />
       )
@@ -193,7 +199,7 @@ const SeatLayout = (props) => {
                                   {
                                     item1.seatDots?.map((item2, key1) => (
                                       item2.map((item3, key2) => (
-                                      renderSeatComponet(item3,key2,key1,key)
+                                      renderSeatComponet(item3,key2,key1,key,item1)
                                     ))
                                   ))
                                   }
@@ -264,3 +270,5 @@ const SeatLayout = (props) => {
 };
 
 export default SeatLayout;
+
+

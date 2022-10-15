@@ -68,6 +68,7 @@ function BookingsDetails(navigation) {
 
 
   const getCartTicket = (data) => {
+    
     var total = 0;
     var qty = 0;
     data.map(t => {
@@ -82,8 +83,9 @@ function BookingsDetails(navigation) {
 
   const getTotal = (data) => {
     var count = 0;
+    console.log(data,'sdfsdfsdfsdf')
     data.map((item) => {
-      count = count + JSON.parse(item.price);
+      count = count + parseInt(item.price);
     })
     return count
   }
@@ -260,3 +262,5 @@ function BookingsDetails(navigation) {
 BookingsDetails.getLayout = (page) => <HomeLayout>{page}</HomeLayout>
 
 export default BookingsDetails
+
+
