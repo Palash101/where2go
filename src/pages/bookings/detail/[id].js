@@ -34,7 +34,8 @@ function BookingsDetails(navigation) {
   const userContext = userAuth();
   const locale = userContext.locale;
   const t = Translations(locale);
-
+  const [terms,setTerms] = useState('');
+  const [description,setDesc] = useState('')
   useEffect(async () => {
     if (router.isReady) {
       const cartData = userContext.getCarts();
@@ -43,12 +44,17 @@ function BookingsDetails(navigation) {
 
       if (cartData.event) {
         setItem(cartData.event)
+        setTerms(termsSet(cartData.event,cartData.event.terms,'terms'))
+        setDesc(termsSet(cartData.event,cartData.event.description,'description'))
+
         var dt = cartData.carts.date;
         setDate(dt + ' ' + cartData.carts.from);
       }
       else {
         getEventById(router.query.id).then((data) => {
           setItem(data)
+          setTerms(termsSet(cartData.event,cartData.event.terms,'terms'))
+          setDesc(termsSet(cartData.event,cartData.event.description,'description'))
         })
       }
 
@@ -63,8 +69,16 @@ function BookingsDetails(navigation) {
       }
 
     }
-  }, [router.isReady, navigation])
+  }, [router.isReady, navigation,locale])
 
+  const termsSet = (item,para,val) => {
+    if (item.hasOwnProperty(val)) {
+      const ename = para.hasOwnProperty(locale)
+        ? para[locale]
+        : para[Object.keys(para)[0]]
+      return ename
+    }
+  }
 
 
   const getCartTicket = (data) => {
@@ -218,7 +232,7 @@ function BookingsDetails(navigation) {
                 <h3>{t.terms_and_conditions}</h3>
                 <label>{t.read_terms}</label>
 
-                <div className='mb-100' dangerouslySetInnerHTML={{ __html: item.terms }}>
+                <div className='mb-100' dangerouslySetInnerHTML={{ __html: terms }}>
 
                 </div>
                 <FormGroup sx={{ marginTop: 5 }}>

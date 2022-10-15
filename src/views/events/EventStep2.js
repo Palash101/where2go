@@ -141,12 +141,20 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
     refreshData()
     handleClose('location')
   }
-
-
+  
+  const arValSet = (data,para,val) => {
+    if (data.hasOwnProperty(val)) {
+      const ename = para.hasOwnProperty(locale)
+        ? para[locale]
+        : para[Object.keys(para)[0]]
+      return ename
+    }
+  }
 
   useEffect(() => {
-   
-  }, [dateTimeArray])
+    setDescription(arValSet(data,data.description,'description'))
+    console.log('descc',arValSet(data,data.description,'description'))
+  }, [dateTimeArray,locale,setOpenState])
 
   const dateTimeChip = (data) => {
     return (
@@ -312,7 +320,7 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
                       }}
                       options={{types:["(regions)"],
                       }}
-                      defaultValue="Qatar"
+                      defaultValue={data.event_location}
                       style={{
                         padding: '13px',
                         display: 'block',
@@ -388,15 +396,10 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
                   label={t.descrption}
                   type="text"
                   fullWidth
-                  value={
-                    data.description?.hasOwnProperty(locale)
-                      ? data.description[locale]
-                      : ''
-                  }
+                  value={description}
                   variant="standard"
                   multiline
                   rows={5}
-                  value={data.descrption}
                 />
 
                 {/* <Editor

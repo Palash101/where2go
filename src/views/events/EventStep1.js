@@ -73,7 +73,15 @@ const EventStep1 = ({
       return ename
     }
   }
-
+  const termsSet = () => {
+    console.log('calling event Name')
+    if (data.hasOwnProperty('terms')) {
+      const ename = data.terms.hasOwnProperty(locale)
+        ? data.terms[locale]
+        : data.terms[Object.keys(data.terms)[0]]
+      return ename
+    }
+  }
   useEffect(() => {
     setEditorLoaded(true);
     setName(eventName())
@@ -82,9 +90,9 @@ const EventStep1 = ({
       setFloorType(data.floor_type)
     }
     if(data.terms){
-      setTerms(data.terms)
+      setTerms(termsSet())
     }
-  }, [locale,setName])
+  }, [locale,setName,setTerms])
 
   return (
     <CardContent>
