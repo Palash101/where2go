@@ -9,6 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import ShowTickets from './ShowTickets';
 import { useRouter } from 'next/router';
+import UndoIcon from '@mui/icons-material/Undo';
 import Router from 'next/router'
 
 const SideMenu = (props) => {
@@ -26,6 +27,24 @@ const SideMenu = (props) => {
           // paddingLeft: 'calc(8.33% - 51px)',
         }}
       >
+
+
+    <div style={{marginBottom: '20px',
+    display: 'flex',
+    justifyContent: 'space-around',
+    width: '100%'}}>
+          <label style={{display:'block',marginBottom:20,}} >
+           
+          <input type="radio" name="selected" value={'true'} checked={props.boxSelected === 'true'} onChange={(e) => props.setBoxSelected(e.target.value)} style={{width:20,height:20,float:'left'}}/>
+          Box Selection 
+          </label>
+          <label style={{display:'block'}} >
+          <input type="radio" name="selected" value={'false'} checked={props.boxSelected === 'false'} onChange={(e) => props.setBoxSelected(e.target.value)} style={{width:20,height:20,float:'left'}}/>
+          Circle Selection 
+          </label>
+        </div>
+
+
         <Box
           sx={{
             width: '100%',
@@ -82,6 +101,22 @@ const SideMenu = (props) => {
               onClick={props.addTicketData}
             />
           </Box>
+          <Box
+            sx={{
+              marginBottom: '10px',
+              border: '1px solid #888',
+              borderRadius: '6px',
+              height: '70px',
+              width: '70px',
+              textAlign: 'center',
+              paddingTop: '15px',
+            }}
+          >
+            <UndoIcon
+              sx={{ fontSize: '40px', cursor: 'pointer' }}
+              onClick={props.undo}
+            />
+          </Box>
         </Box>
 
         {props.tickets && (
@@ -90,14 +125,16 @@ const SideMenu = (props) => {
 
         {/* <Box className="placer" sx={{ marginBlock: '150%' }}></Box> */}
         <Box sx={{ marginBottom: '10px', marginTop: '10px' }}>
+         <Button onClick={() => Router.back()} variant="contained" style={{marginRight:'10px'}}>
+            Go Back
+          </Button>
           <Button onClick={props.saveData} variant="contained">
             Save Data
           </Button>
+        
         </Box>
         <Box>
-          <Button onClick={() => Router.back()} variant="contained">
-            Go Back
-          </Button>
+          
         </Box>
       </Box>
     </Box>

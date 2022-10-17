@@ -46,9 +46,8 @@ function Details(navigation) {
   const [dateTimeArray, setDateTimeArray] = useState([]);
   const [loading, setLoading] = useState(false);
   const [locationLink,setLocationLink] = useState('')
- 
-
-
+  const [terms,setTerms] = useState('');
+  const [description,setDesc] = useState('')
   const times = [
     '10:00 AM',
     '11:30 AM',
@@ -64,6 +63,16 @@ function Details(navigation) {
   const userContext = userAuth();
   const locale = userContext.locale;
   const t = Translations(locale);
+
+
+  const termsSet = (item,para,val) => {
+    if (item.hasOwnProperty(val)) {
+      const ename = para.hasOwnProperty(locale)
+        ? para[locale]
+        : para[Object.keys(para)[0]]
+      return ename
+    }
+  }
 
   const handleClickOpen = () => {
     if (item.floor_type === '0') {
@@ -154,8 +163,12 @@ function Details(navigation) {
         
       getEventById(router.query.id).then((data) => {
         console.log(data,'dd in details');
-        setItem(data);
 
+       
+        setItem(data);
+        setTerms(termsSet(data,data.terms,'terms'))
+        setDesc(termsSet(data,data.description,'description'))
+        
         if(data.place_id){
           var loc = encodeURIComponent(data.event_location);
          setLocationLink('https://www.google.com/maps/search/?api=1&query='+loc+'&query_place_id='+data.place_id)
@@ -204,6 +217,12 @@ function Details(navigation) {
     setTicketData(ticketsArray)
     
   }
+
+  useEffect(() => {
+        setItem(item);
+        setTerms(termsSet(item,item.terms,'terms'))
+        setDesc(termsSet(item,item.description,'description'))
+  },[locale])
 
 
 const renderDateItem = (item1, item,key) => {
@@ -382,12 +401,8 @@ const renderDateItem = (item1, item,key) => {
                 <b>Description</b>
               </p>
               <p className="descPara">
-                {item.hasOwnProperty('description') ? (
-                  item.description.hasOwnProperty(locale) ? (
-                    item.description[locale]
-                  ) : (
-                    item.description[Object.keys(item.description)[0]]
-                  )
+                {description ? (
+                    description
                 ) : (
                   <Typography>No Description Found</Typography>
                 )}
@@ -412,7 +427,7 @@ const renderDateItem = (item1, item,key) => {
                 <b> Terms & Conditions</b>
               </p>
 
-              <div className='mb-100' dangerouslySetInnerHTML={{ __html: item.terms }}>
+              <div className='mb-100' dangerouslySetInnerHTML={{ __html: terms }}>
                 
               </div>
               {/* <ul>

@@ -49,6 +49,7 @@ export const en = {
     image: "Image",
     tickets: "Tickets",
     ticket: "Ticket",
+    i_agree_terms:"I agree to the terms conditions",
     setting: "Setting",
     country: "Country",
     type: "Type",
@@ -60,6 +61,8 @@ export const en = {
     select: "Select",
     terms: "Terms",
     conditions: "Conditions",
+    terms_and_conditions:"Terms & Conditions",
+    read_terms:"Please read and agree to the organizers terms and conditions",
     update: "Update",
     banner: "Banner",
     main: "Main",
@@ -85,9 +88,16 @@ export const en = {
     day: "Day",
     from: "From",
     to: "To",
-
+    stage:"Stage",
+    seat:"Seat",
+    ticket_price:" Ticket Prices",
+    all_tickets:"All Tickets",
+    checkout:"Checkout",
+    complete_booking_detail:"Complete your booking details to continue",
+    please_click_seatc:"Please select seat by clicking on circle",
     addingnewticket: "No data found start adding new ticket",
     published: "Published",
+    purchase:"Purchase",
     publishedcontent: "Event description, events dates, events tickets and images are required for publish event.",
     featured: "Featured",
     featuredcontent: "All images are required for allow fetured",
@@ -141,11 +151,15 @@ export const en = {
     all: "All",
     experiences: "Experiences",
     evolved: "Evolved",
-
+    kindly_complete_booking:"Kindly complete your booking and payment",
     aboutpera1:"We believe technology has become an essential element of the modern age. Tech solutions, like mobile apps and online platforms, are now integrated within all fields, and thanks to them, our everyday lives are now less complex and more efficient.",
     aboutpera2:"Kuwait has a unique social aspect; events, shows, and intellectual forums are held all year-round. These events witness tremendous  participation of people from all parts of the country. Throughout the past years, we organized a great number of events and shows, and we noticed something missing. The traditional process of buying tickets and admitting attendees was always unorganized, resulted in long lines, and almost always ended with late admitting. Customers were unhappy.",
     aboutpera3:"This is where the idea behind Where2go was born. Our creative team worked hard to overcome this challenge and utilize modern technology to come up with an easy and fast solution for booking tickets and admitting attendees with the least amount of time and effort. Our web platform and mobile app are filled with innovative features that we specially designed with event organizers in mind, including seat selection, e-tickets generation, safe online payment, easy e-admitting solutions, and much more. Today, Where2go is Qatar leading online platform for e-ticketing and event management solutions.",
     myBookings:'My Bookings',
-    
-
+    enter_your_email:'Enter your email',
+    enter_your_name:"Enter your name",
+    description:'description',
+    choose_pay_method:"Choose a payment method to proceed",
+    pay_with_credit_card:"Pay With Credit Card",
+    pay_with_google_pay:"Pay With Google Pay"
 }

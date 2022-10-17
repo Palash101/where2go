@@ -73,17 +73,26 @@ const EventStep1 = ({
       return ename
     }
   }
-
+  const termsSet = () => {
+    console.log('calling event Name')
+    if (data.hasOwnProperty('terms')) {
+      const ename = data.terms.hasOwnProperty(locale)
+        ? data.terms[locale]
+        : data.terms[Object.keys(data.terms)[0]]
+      return ename
+    }
+  }
   useEffect(() => {
     setEditorLoaded(true);
     setName(eventName())
+    console.log(allLocation,'data')
     if (data.floor_type) {
       setFloorType(data.floor_type)
     }
     if(data.terms){
-      setTerms(data.terms)
+      setTerms(termsSet())
     }
-  }, [locale])
+  }, [locale,setName,setTerms])
 
   return (
     <CardContent>
@@ -91,10 +100,10 @@ const EventStep1 = ({
         <Grid container spacing={7}>
           <Grid item xs={12} sm={12}>
             <TextField
-              onChange={(e) => setName(e.target.value)}
+               onChange={(e) => setName(e.target.value)}
               fullWidth
               label={`${t.event} ${t.name}`}
-              defaultValue={eventName()}
+              value={name}
               placeholder="Enter event name"
             />
           </Grid>
@@ -108,7 +117,8 @@ const EventStep1 = ({
               >
                 {allLocation.map((item, key) => (
                   <MenuItem key={key} value={item.name}>
-                    {item.name}
+                    
+                    {item.name_tr[locale] ? item.name_tr[locale] : item.name}
                   </MenuItem>
                 ))}
               </Select>
@@ -196,7 +206,7 @@ const EventStep1 = ({
               onChange={(e) => setTerms(e.target.value)}
               fullWidth
               label={`${t.terms} & ${t.conditions}`}
-              defaultValue={terms}
+              value={terms}
               placeholder={`${t.terms} & ${t.conditions}`}
               inputProps={{ maxLength: 1000 }}
              

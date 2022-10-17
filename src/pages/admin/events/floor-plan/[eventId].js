@@ -65,8 +65,12 @@ const Seat = () => {
   const [ticketModal, setTicketModal] = useState(false);
 
   const [reactArray, setRectArray] = useState([]);
+  const [reactArrayPrev, setRectArrayPrev] = useState([]);
+
   const [layoutWidth, setLayoutWidth] = useState(500);
   const [layoutHeight, setLayoutHeight] = useState(500);
+  const [boxSelected,setBoxSelected] = useState('true');
+  const [deletedArray,setDeletedArray] = useState([]);
   //const [windowSize, setWindowSize] = useState(getWindowSize());
   const [ticketCollectionData,setticketCollectionData] = useState([])
   const [eventId, setEventId] = useState('black');
@@ -98,6 +102,7 @@ const Seat = () => {
         if (data.plan) {
           const parsedData = JSON.parse(data.plan);
           setRectArray(parsedData);
+          setRectArrayPrev(parsedData);
           // setEventData(data)
           setLoading(false);
         } else {
@@ -151,6 +156,7 @@ const Seat = () => {
       height: lastObjectFromLastArray.y + 50,
     };
     const reactArrayStateCopy = [...reactArray];
+    setRectArrayPrev(reactArrayStateCopy)
     reactArrayStateCopy[selectedRect] = newStateOfSelectedIndex;
     setRectArray(reactArrayStateCopy);
   };
@@ -180,6 +186,7 @@ const Seat = () => {
       seatDots: newSeatDots,
     };
     const reactArrayStateCopy = [...reactArray];
+    setRectArrayPrev(reactArrayStateCopy)
     reactArrayStateCopy[selectedRect] = newStateOfSelectedIndex;
     setRectArray(reactArrayStateCopy);
   };
@@ -198,6 +205,7 @@ const Seat = () => {
     };
 
     const reactArrayStateCopy = [...reactArray];
+    setRectArrayPrev(reactArrayStateCopy)
     reactArrayStateCopy[selectedRect] = newSeatState;
     setRectArray(reactArrayStateCopy);
   };
@@ -215,27 +223,91 @@ const Seat = () => {
     };
 
     const reactArrayStateCopy = [...reactArray];
+    setRectArrayPrev(reactArrayStateCopy)
     reactArrayStateCopy[selectedRect] = newSeatState;
     setRectArray(reactArrayStateCopy);
   };
 
-  const handleClick = (coll, roww) => {
-    console.log(reactArray);
+  const handleClick = (e,item,index1,index2,index3) => {
+    if(boxSelected === 'false'){
+      console.log(item)
+     // e.currentTarget.remove();
+     let newArray = deletedArray;
+     item.index1 = index1;
+     item.index2 = index2;
+     item.index3 = index3;
+     let reactArrCopy = [...reactArray];
+
+    if(reactArrCopy[index1].seatDots[index2][index3].delSelected === true){
+    
+    //  if(e.currentTarget.style.fill === 'red'){
+    //  e.currentTarget.style.fill = '';
+    reactArrCopy[index1].seatDots[index2][index3].delSelected = false;
+      let filterArray = [];
+      newArray.map(item1 => {
+        if(item1.x === item.x && item1.y === item.y && item1.name === item.name){
+
+        }
+        else{
+          filterArray.push(item1)
+        }
+     });
+      console.log(filterArray)
+      setDeletedArray(filterArray)
+      setRectArray(reactArrCopy);
+     }
+     else{
+      //e.currentTarget.style.fill = 'red';
+      reactArrCopy[index1].seatDots[index2][index3].delSelected = true;
+      setRectArray(reactArrCopy);
+      setDeletedArray([...newArray,item])
+     }
+     console.log([...newArray,item])
+    }
   };
 
   const SelectRectangle = (key) => {
-    setSelectedRect(key);
-    setShowFooter(true);
+    if(boxSelected === 'true'){
+      setSelectedRect(key);
+      setShowFooter(true);
+    }
   };
 
   const deleteSelectedElement = () => {
-    if (selectedRect === null) {
-      alert('Please select the rect');
-      return;
+    if(boxSelected === 'true'){
+      if (selectedRect === null) {
+        alert('Please select the rect');
+        return;
+      }
+      console.log(selectedRect)
+      const arrayCopy = [...reactArray];
+      setRectArrayPrev(arrayCopy)
+      arrayCopy.splice(selectedRect, 1);
+      setRectArray(arrayCopy);
     }
-    const arrayCopy = [...reactArray];
-    arrayCopy.splice(selectedRect, 1);
-    setRectArray(arrayCopy);
+    else{
+      if(deletedArray.length){
+        const arrayCopy = [...reactArray];
+        const deletedArrayCopy = [...deletedArray];
+        setRectArrayPrev(arrayCopy)
+        deletedArrayCopy.map(i => {
+          console.log(arrayCopy[i.index1].seatDots[i.index2][i.index3],'ii')
+         // let id = 'tid-'+i.x+'-'+i.y;
+         // document.getElementById(id).style.fill = 'auto';
+          // if(arrayCopy[i.index1].seatDots[i.index2][i.index3].delSelected){
+          //   arrayCopy[i.index1].seatDots[i.index2][i.index3].delSelected = false;
+          // } 
+           arrayCopy[i.index1].seatDots[i.index2].splice(i.index3,1);
+           setRectArray(arrayCopy);
+        })
+        
+        setDeletedArray([]);
+        
+      }
+      else{
+        alert("Please select cirles for delete.")
+      }
+    }
   };
 
   const addReactangle = () => {
@@ -260,6 +332,7 @@ const Seat = () => {
       y: 0,
       seatState: initalSeatValue,
     };
+    setRectArrayPrev(reactArray)
     if (reactArray.length == 0) {
       const seatDots = seatPlanerRender(initalSeatValue);
       const lastArrayFromSeat = seatDots[seatDots.length - 1];
@@ -273,6 +346,7 @@ const Seat = () => {
       };
       setRectArray([...reactArray, newRectState]);
     } else {
+      setRectArrayPrev(reactArray)
       const seatDots = seatPlanerRender(initalSeatValue);
       const lastArrayFromSeat = seatDots[seatDots.length - 1];
       const lastObjectFromLastArray =
@@ -405,6 +479,7 @@ const Seat = () => {
     const updtedelement = { ...selectedElement,seatState:seatStateCopy, seatDots: seatDotsArrayCopy };
     console.log(updtedelement,'updtedelement');
     const reactArrcy = [...reactArray];
+    setRectArrayPrev(reactArrcy)
     reactArrcy[selectedRect] = updtedelement;
     setRectArray(reactArrcy);
   };
@@ -485,6 +560,12 @@ const Seat = () => {
     }
   };
 
+  const undo = () => {
+    const newArr = [...reactArrayPrev];
+    console.log(newArr)
+    setRectArray(newArr);
+  }
+
   console.log('rendering');
 
   return (
@@ -505,11 +586,18 @@ const Seat = () => {
             deleteSelectedElement={deleteSelectedElement}
             saveData={updateData}
             tickets={ticketCollectionData}
+            setBoxSelected={setBoxSelected}
+            boxSelected={boxSelected}
             currency={data.currency}
+            undo={undo}
           />
           {/* {data.tickets && (
             <ShowTickets currency={data.currency} data={data.tickets} />
           )} */}
+
+
+         
+
           {showFooter && (
             <FooterMenu
               decrementRectXY={decrementRectXY}
@@ -575,6 +663,7 @@ const Seat = () => {
                       Stage
                     </text>
                     {reactArray.map((item1, key) => {
+                      console.log('svggg')
                       return (
                         <svg
                           ref={rectSvgRef}
@@ -589,6 +678,9 @@ const Seat = () => {
                               selectedRect == key ? 'selectedRect' : ''
                             }
                             onClick={() => SelectRectangle(key)}
+                            //transform ={key === 0 ? 'translate(10, 10) rotate(45 480 285)' : 'rotate(0)'}
+                           // transform={key === 0 ? 'rotate(45 480 285) rotate(-45)':'rotate(0)'}
+                          //  transform={key === 0 ? 'rotate(45)' : 'rotate(0)'}
                           >
                             {item1.seatDots?.map((item2, key1) =>
                               item2.map((item3, key2) => (

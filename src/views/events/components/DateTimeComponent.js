@@ -43,9 +43,13 @@ function DateTimeComponent({ handleDateTimeModal }) {
   useEffect(() => {}, [fromTimeValue])
 
   const removeFromArray = (key) => {
-    const newArray = dateTimeArray.splice(key, 1)
-    setDateTimeArray([newArray])
-    handleDateTimeModal([newArray])
+    console.log(key)
+    const oldArr = [...dateTimeArray];
+    oldArr.splice(key, 1);
+
+    console.log(oldArr)
+    setDateTimeArray(oldArr)
+    handleDateTimeModal(oldArr)
   }
 
   const addDateTimeArray = () => {
@@ -57,9 +61,15 @@ function DateTimeComponent({ handleDateTimeModal }) {
       from: formTime,
       to: toTime,
     }
+    console.log(data)
+    if(data.date !== 'Invalid date' && data.from !== 'Invalid date' && data.to !== 'Invalid date'){
     setDateTimeArray([...dateTimeArray, data])
     handleDateTimeModal([...dateTimeArray, data])
     handleClose()
+    }
+    else{
+      alert("all fields are required to fill")
+    }
   }
 
   return (
@@ -125,7 +135,7 @@ function DateTimeComponent({ handleDateTimeModal }) {
               <Typography>from:{data.from} </Typography>
               <Typography>to:{data.to} </Typography>
             </Box>
-            <DeleteIcon onClick={(key) => removeFromArray(key)} />
+            <DeleteIcon onClick={() => removeFromArray(key)} />
           </>
         ))}
       </Box>

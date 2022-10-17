@@ -272,7 +272,7 @@ export const updateEventData = async (eventId,data,lang)=>{
             event_type:data.type,
             cat_id:data.cat_id,
             floor_type:data.floor_type,
-            terms:data.terms,
+            [`terms.${lang}`]:data.terms,
             
           }).then((res)=>console.log(res))
 

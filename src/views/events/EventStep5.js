@@ -40,7 +40,7 @@ const EventStep5 = ({ data, eventId, refreshData }) => {
   const [checked1, setChecked1] = useState(data.featured === 'true')
 
   const updateData = async (event) => {
-    if (data.description && (data.event_date || data.slots) && data.images && data.tickets) {
+    if (data.description && data.event_location && (data.event_date || data.slots) && data.images && data.tickets) {
       setLoading(true)
       setChecked(event.target.checked)
       if (event.target.checked === false) {
@@ -59,7 +59,7 @@ const EventStep5 = ({ data, eventId, refreshData }) => {
         refreshData()
       }
     } else {
-      toast('Please add description,events,images and tickets.')
+      toast('Please add description, events, event location, images and tickets.')
     }
   }
   const updateFeature = async (event) => {

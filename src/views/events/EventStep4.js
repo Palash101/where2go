@@ -147,8 +147,27 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
         price: price,
         color: color,
       }
+
+      if((oldArray.name === ticketsData.name) &&
+         (oldArray.color === ticketsData.color) &&
+         (oldArray.price === ticketsData.price) &&
+         (oldArray.description === ticketsData.description) &&
+         (oldArray.ticket_count === ticketsData.ticket_count) &&
+         (oldArray.min_booking === ticketsData.min_booking) &&
+         (oldArray.max_booking === ticketsData.max_booking) 
+         ){
+
+         }
+         else{
+          await updateEventTicket(eventId, ticketsData,oldArray)
+        }
       
-       await updateEventTicket(eventId, ticketsData)
+
+      console.log(oldArray,'oldArray',ticketsData,'NewArray')
+      // const ticketsDataCopy = [...data.tickets];
+      // ticketsDataCopy[key] = ticketsData;
+      //  await updateEventTicket(eventId, ticketsData,oldArray)
+        refreshData()
         // window.location.reload();
       setLoading(false)
       handleDialogClose('ticketModal')
@@ -167,7 +186,17 @@ const EventStep4 = ({ data, eventId, refreshData }) => {
         price: price,
         color: color,
       }
-      await updateEventTicket(eventId,ticketsData)
+       console.log(oldArray,'oldArray',ticketsData,'NewArray')
+      // const ticketsDataCopy = [...data.tickets];
+      // ticketsDataCopy[key] = ticketsData;
+      if((oldArray.name === ticketsData.name) &&
+        (oldArray.color === ticketsData.color) &&
+        (oldArray.price === ticketsData.price)){
+        }
+        else{
+          await updateEventTicket(eventId, ticketsData,oldArray)
+        }
+
         refreshData()
       setLoading(false)
       handleDialogClose('PlanModal')

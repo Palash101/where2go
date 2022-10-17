@@ -32,6 +32,7 @@ import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import { userAuth } from 'context/userContext'
 import { toast } from 'react-toastify'
+import Translations from 'utils/trans'
 import {getTicketCollection} from '../../../service/admin/events'
 
 function Bookings(navigation) {
@@ -62,6 +63,8 @@ function Bookings(navigation) {
   const [ticketCollectionData, setticketCollectionData] = useState([])
 
   const userContext = userAuth()
+  const locale = userContext.locale
+  const t = Translations(locale)
 
   const times = [
     '10:00 AM',
@@ -399,7 +402,7 @@ console.log(slectedTickets,'slectedTickets')
           }}
           onClick={handlePriceClick}
         >
-          Ticket Prices
+         {t.ticket_price}
         </Box>
       )}
 
@@ -470,7 +473,7 @@ console.log(slectedTickets,'slectedTickets')
                     }}
                     onClick={() => addToCart()}
                   >
-                    <span>Purchase {myTickets && myTickets.length ? (<span>{allQty} Tickets for {totalPrice} {itemNew.currency}</span>):(<></>)}</span>
+                    <span>{t.purchase} {myTickets && myTickets.length ? (<span>{allQty} Tickets for {totalPrice} {itemNew.currency}</span>):(<></>)}</span>
                     <ChevronRightIcon color='#000' size={24}/>
                   </Button>
               </Box>

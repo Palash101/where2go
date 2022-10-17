@@ -21,7 +21,8 @@ import Typography from '@mui/material/Typography';
 import { CosineWave } from 'mdi-material-ui';
 import { getEventBooking } from 'service/admin/events';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-
+import Translations from 'utils/trans';
+import { userAuth } from 'context/userContext';
 
 function getWindowSize() {
   const {innerWidth, innerHeight} = window;
@@ -48,6 +49,10 @@ const SeatLayout = (props) => {
   const [layoutHeight, setLayoutHeight] = useState(500);
   const [scale,setScale] = useState(0.1);
   //Use Effect Seat Layout from props
+
+  const userContext = userAuth()
+  const locale = userContext.locale
+  const t = Translations(locale)
 
   useEffect(() => {
 
@@ -171,7 +176,7 @@ const SeatLayout = (props) => {
 
                 }}>
                 {/* <svg width={layoutWidth > 950 ? 950 : layoutWidth} height={layoutHeight}> */}
-                 <svg width={1100} height={800}> 
+                 <svg width={1100} height={800} style={{direction: 'initial'}}> 
                   <g fillOpacity=".5" strokeWidth="4">
                       <rect
                           fill="#40444d"
@@ -189,7 +194,7 @@ const SeatLayout = (props) => {
                           fill="#fff"
                           font-weight="bold"
                         >
-                          Stage
+                          {t.stage}
                         </text>
                     {
                       props.data && props.data.length && props.data.map((item1,key)=>{
@@ -230,18 +235,18 @@ const SeatLayout = (props) => {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography>All Tickets</Typography>
+            <Typography>{t.all_tickets}</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <ul className="ticketList">
               {props.slectedTickets.map((item,key) => (
                 <li key={key}>
-                  Seat {item.name}
+                  {t.seat} {item.name}
                   <span>{item.price}</span>
                 </li>
               ))}
               {!props.slectedTickets.length && (
-                <Box sx={{ textAlign: 'center' }}>Please select seat by clicking on circle</Box>
+                <Box sx={{ textAlign: 'center' }}>{t.please_click_seatc}</Box>
               )}
             </ul>
           </AccordionDetails>
@@ -262,7 +267,7 @@ const SeatLayout = (props) => {
           }}
           onClick={() => props.click(selected)}
         >
-          Purchase
+          {t.purchase}
         </Button>
       </Box>
     </>

@@ -21,11 +21,13 @@ import Input from "@mui/material/Input";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { userAuth } from "context/userContext";
 
 import {
   getCategoryById,
   updateCategoryData,
 } from "../../../../../service/admin/category";
+import objectTranslation from "utils/objectTransaltion";
 
 function CategoryEdit() {
   const router = useRouter();
@@ -38,23 +40,22 @@ function CategoryEdit() {
   const [position, setPosition] = useState(1);
   const [loading, setLoading] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState("");
+  // const locale = localStorage.getItem("locale");
 
-  useEffect(() => {
-    const storageLocale = localStorage.getItem("locale");
-    setCurrentLanguage(storageLocale);
+  const userContext = userAuth()
+  const locale = userContext.locale
+
+  useEffect(async() => {
+    // const storageLocale = localStorage.getItem("locale");
+    // setCurrentLanguage(storageLocale);
     if (router.isReady) {
-      (async () => {
+    
         setLoading(true);
         await getCategoryById(router.query.id).then((data) => {
           if (!data.err) {
             setCategoryData(data);
-            if (data.name[storageLocale]) {
-              setCategoryName(data.name[storageLocale]);
-            } else {
-              var objectKey = Object.keys(data.name)[0];
-              setCategoryName(data.name[objectKey]);
-            }
-
+            const d = objectTranslation(data.name)
+            setCategoryName(d);
             setStatus(data.status);
             setPosition(data.position)
             setLoading(false);
@@ -62,7 +63,7 @@ function CategoryEdit() {
             console.log(data.message);
           }
         });
-      })();
+     
     }
   }, [router.isReady]);
 
@@ -73,10 +74,9 @@ function CategoryEdit() {
       return;
     }
     const data = {
-      [currentLanguage]: categoryName,
+      [locale]: categoryName,
       status: status,
-      lang: currentLanguage,
-      position: position,
+      lang: locale,
     };
     await updateCategoryData(router.query.id, data).then((data) => {
       console.log(data);
@@ -115,7 +115,13 @@ function CategoryEdit() {
 
   // else{
 
-  console.log("main render");
+  useEffect(() => {
+    if(categoryData && categoryData.name){
+      const d = objectTranslation(categoryData.name)
+      setCategoryName(d);
+    }
+  },[locale])
+
 
   return (
     <div>
