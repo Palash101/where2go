@@ -26,7 +26,7 @@ const firebaseConfig = {
   };
 
 
-  const firebase = getApps.length > 0 ? getApp() : initializeApp(firebaseConfigTesting);
+  const firebase = getApps.length > 0 ? getApp() : initializeApp(firebaseConfig);
   initializeFirestore(firebase, {
     ignoreUndefinedProperties: true,
   });

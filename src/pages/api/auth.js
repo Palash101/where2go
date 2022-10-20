@@ -1,10 +1,11 @@
 import { serialize } from 'cookie'
 // import firebaseAdmin from '../../../service/fireAdmin';
-
+ 
 import getFirebaseAdmin from './config'
 
 export default async function auth(req, res) {
   const firebaseAdmin = getFirebaseAdmin()
+  console.log(firebaseAdmin)
   try {
     const expiresIn = 60 * 60 * 24 * 5 * 1000
     if (req.method === 'POST') {

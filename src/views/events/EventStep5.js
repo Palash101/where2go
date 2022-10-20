@@ -21,7 +21,7 @@ import Switch from '@mui/material/Switch'
 import CircularProgress from '@mui/material/CircularProgress'
 
 //Service
-import { updateEventDetails } from '../../../service/admin/events'
+import { updateEventDetails,getTicketCollection } from '../../../service/admin/events'
 
 import { userAuth } from 'context/userContext'
 import Translations from 'utils/trans'
@@ -35,12 +35,19 @@ const EventStep5 = ({ data, eventId, refreshData }) => {
   const [featured, setFeature] = useState(data.featured)
   const [status, setStatus] = useState(data.status)
   const [loading, setLoading] = useState(false)
-
+  const [ticketCollectionData, setticketCollectionData] = useState([])
   const [checked, setChecked] = useState(data.status === 'published')
   const [checked1, setChecked1] = useState(data.featured === 'true')
 
+  useEffect(() => {
+    console.log(data, 'asdasd')
+    getTicketsData()
+  }, [])
+
+
   const updateData = async (event) => {
-    if (data.description && data.event_location && (data.event_date || data.slots) && data.images && data.tickets) {
+    
+    if (data.description && data.event_location && (data.event_date || data.slots) && data.images && ticketCollectionData) {
       setLoading(true)
       setChecked(event.target.checked)
       if (event.target.checked === false) {
@@ -86,9 +93,21 @@ const EventStep5 = ({ data, eventId, refreshData }) => {
     }
   }
 
-  useEffect(() => {
-    console.log(data, 'asdasd')
-  }, [])
+ 
+
+  const getTicketsData = async () => {
+    const tickets = await getTicketCollection(eventId)
+    const ticketsArray = []
+    tickets.docs.forEach((item) => {
+      const docId = { docId: item.id }
+      const data = Object.assign(docId, item.data())
+      ticketsArray.push(data)
+    })
+
+    console.log(ticketsArray,'ticketsArray')
+    setticketCollectionData(ticketsArray)
+    
+  }
 
   return (
     <CardContent>

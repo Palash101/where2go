@@ -125,10 +125,10 @@ export const userLogout = async ()=>{
 
 export const  createUserSession = async (token,uId,userType) =>{
   var path = "/api/auth";
+  console.log(path,'data')
   var url = getApiUrl()+path;
   var data = { token: token,uId:uId,userType:userType}
-  console.log(data.token,url,'data')
-
+  try{
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -137,6 +137,10 @@ export const  createUserSession = async (token,uId,userType) =>{
     body: JSON.stringify(data) 
   });
   return response.json();
+}
+catch(e){
+  console.log(e,'error in auth function')
+}
 }
 
 

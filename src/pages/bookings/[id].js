@@ -199,7 +199,7 @@ console.log(slectedTickets,'slectedTickets')
         }
 
         var arr = []
-        data.tickets.map((item2) => {
+        ticketCollectionData.map((item2) => {
           if (item2.min_booking) {
             item2.qty = 0
           } else {
@@ -210,7 +210,8 @@ console.log(slectedTickets,'slectedTickets')
 
         setTickets(arr)
         data.tickets = arr
-        console.log(data, 'booking')
+        console.log(data.tickets, 'booking')
+        
         setItemNew(data)
   })
     }
@@ -570,5 +571,3 @@ console.log(slectedTickets,'slectedTickets')
 Bookings.getLayout = (page) => <HomeLayout>{page}</HomeLayout>
 
 export default Bookings
-
-
