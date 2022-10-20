@@ -126,8 +126,12 @@ const EventStep2 = ({ data, eventId, refreshData }) => {
   }
 
   const updateLocation = async () => {
-    if (location == '') {
+    if (location == '' && data.event_location === '') {
       alert('Please enter location')
+      return
+    }
+    else if(data.event_location != '' && location == '' ){
+      handleClose('location')
       return
     }
     setLoading(true)
