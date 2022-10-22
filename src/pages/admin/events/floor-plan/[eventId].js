@@ -287,21 +287,47 @@ const Seat = () => {
     }
     else{
       if(deletedArray.length){
-        const arrayCopy = [...reactArray];
-        const deletedArrayCopy = [...deletedArray];
+        console.log(reactArray)
+        const arrayCopy = reactArray;
+       // const deletedArrayCopy = [...deletedArray];
         setRectArrayPrev(arrayCopy)
-        deletedArrayCopy.map(i => {
-          console.log(arrayCopy[i.index1].seatDots[i.index2][i.index3],'ii')
-         // let id = 'tid-'+i.x+'-'+i.y;
-         // document.getElementById(id).style.fill = 'auto';
-          // if(arrayCopy[i.index1].seatDots[i.index2][i.index3].delSelected){
-          //   arrayCopy[i.index1].seatDots[i.index2][i.index3].delSelected = false;
-          // } 
-           arrayCopy[i.index1].seatDots[i.index2].splice(i.index3,1);
-           setRectArray(arrayCopy);
-        })
+        console.log(deletedArray)
+        let newArr = [];
+
+        for(var i = 0;i<deletedArray.length;i++){
+          let el = arrayCopy[deletedArray[i].index1].seatDots[deletedArray[i].index2];
+
+         
+          console.log('deleted element ',el);
+          for(var j = 0 ;j< el.length;j++){
+            console.log((el[j].x , deletedArray[i].x , el[j].y , deletedArray[i].y))
+            if(el[j].x === deletedArray[i].x && el[j].y === deletedArray[i].y){
+              el.splice(j,1)
+            }
+          }
+
+
+          
+
+
+          // el.splice(deletedArray[i],i);
+           newArr = arrayCopy;
+          // console.log(((i+1) === deletedArray.length),'condition')
+          if((i+1) === deletedArray.length){
+            setRectArray(newArr);
+            setDeletedArray([]);
+          }
+        }
         
-        setDeletedArray([]);
+        // deletedArray.forEach((i,index) => {
+        //   const el = arrayCopy[i.index1].seatDots[i.index2];
+        //   console.log('deleted element ',el)
+        //    arrayCopy[i.index1].seatDots[i.index2].splice(i.index3,1);
+        // })
+        
+
+        
+        
         
       }
       else{
@@ -563,7 +589,7 @@ const Seat = () => {
   const undo = () => {
     const newArr = [...reactArrayPrev];
     console.log(newArr)
-    setRectArray(newArr);
+    //setRectArray([...newArr]);
   }
 
   console.log('rendering');

@@ -156,6 +156,7 @@ function DateTimeComponent({ handleDateTimeModal }) {
                 label="Date"
                 value={dateValue}
                 inputFormat="MM/dd/yyyy"
+                minDate={new Date()}
                 closeOnSelect={true}
                 views={['year', 'month', 'day']}
                 onChange={(newValue) => {
