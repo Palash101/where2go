@@ -184,10 +184,15 @@ console.log(slectedTickets,'slectedTickets')
 
     handleClose()
   }
+  useEffect(async()=>{
+    if(router.isReady){
+      await getTicketsData(router.query.id);
+    }
+  },[router.isReady])
 
   useEffect(async () => {
     if (router.isReady) {
-      getTicketsData();
+      // getTicketsData();
       const cartData = userContext.getCarts();
       setDate(cartData.carts.date+' '+cartData.carts.from)
       
@@ -215,7 +220,7 @@ console.log(slectedTickets,'slectedTickets')
         setItemNew(data)
   })
     }
-  }, [router.isReady, navigation,setItemNew])
+  }, [router.isReady, navigation,setItemNew,ticketCollectionData])
 
   console.log(exist)
 
