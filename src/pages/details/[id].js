@@ -91,8 +91,6 @@ function Details(navigation) {
 
   const addDateTimeArray = () => {
     const date = moment(dateValue).format('DD-MM-YYYY');
-    //  const formTime = moment(fromTimeValue).format('HH:mm a');
-    // const toTime = moment(fromTimeValue).format('HH:mm a');
 
 
     const data = {
@@ -111,7 +109,6 @@ function Details(navigation) {
       event:item
     })
 
-    console.log(data);
     router.replace({
       pathname: '/bookings/[id]',
       query: {
@@ -464,7 +461,7 @@ const renderDateItem = (item1, item,key) => {
                   }}
                 >
                   <DatePicker
-                    value={dateValue}
+                    value={new Date()}
                     inputFormat="dd-MM-yyyy"
                     closeOnSelect={true}
                     views={['year', 'month', 'day']}
@@ -487,6 +484,7 @@ const renderDateItem = (item1, item,key) => {
                       label="Time"
                       defaultValue={fromTimeValue}
                     >
+                      <MenuItem value='' disabled >Select</MenuItem>
                       {Array.isArray(item.slots) && item.slots.map((item) => (
                         <MenuItem value={item}>{item}</MenuItem>
                       ))}
@@ -513,7 +511,7 @@ const renderDateItem = (item1, item,key) => {
               </LocalizationProvider>
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => addDateTimeArray()}>Add</Button>
+              <Button onClick={() => addDateTimeArray()}>Book</Button>
               <Button onClick={handleClose}>Cancel</Button>
             </DialogActions>
           </Dialog>

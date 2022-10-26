@@ -419,7 +419,7 @@ ul.ticketList li span {
 .bottomBlock1{
   position: fixed;
   z-index: 99;
-  bottom: 10px;
+  bottom: 70px;
   left: 0;
   right: 0;
   max-width: 400px;
