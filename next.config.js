@@ -11,7 +11,7 @@ module.exports = {
     PROD_API: 'https://where2go-kappa.vercel.app',
     // DEV_API: 'http://where2go-kappa.vercel.app',
     DEV_API:'http://localhost:3000',
-    DEBUG: false,
+    DEBUG: true,
 
   },
   images: {
