@@ -149,13 +149,16 @@ export const  verifyToken = async (cookie) =>{
 
   var url = getApiUrl()+ path;
   var data = { cookie: cookie }
-  const body =  JSON.stringify(data)
+  const jsonData =  JSON.stringify(data)
+  const contentLength = new TextEncoder().encode(jsonData).length;
+
+  console.log(contentLength.toString(),"contentLength.toString()")
 
   const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Content-Length':body.length,
+      'Content-Length':contentLength.toString(),
     },
     body: body // body data type must match "Content-Type" header
   });
