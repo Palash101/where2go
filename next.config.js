@@ -8,7 +8,7 @@ module.exports = {
     defaultLocale: 'en',
   },
   env: {
-    PROD_API: 'http://where2go-kappa.vercel.app',
+    PROD_API: 'https://where2go-kappa.vercel.app',
     // DEV_API: 'http://where2go-kappa.vercel.app',
     DEV_API:'http://localhost:3000',
     DEBUG: false,
