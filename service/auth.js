@@ -24,7 +24,7 @@ import {
   } from "firebase/firestore";
 
 import {auth,db} from './main'
-import {firebaseAdmin} from './fireAdmin';  
+import {firebaseAdmin} from './fireAdmin';
 
 export  const emailPasswordSigin = async (email,password)=>{
   const userId = '';
@@ -41,14 +41,14 @@ export  const emailPasswordSigin = async (email,password)=>{
 
           // await postUserToken(idToken)
           // console.log('created Seesion')
-          
+
           return idToken
       })
       .then(async()=>{
         const adminUser = await getUsersByProvider(userEmail,'email');
         console.log(adminUser ,'admin role')
         if(adminUser.role == 3){
-          await createUserSession(idToken,userId,'admin');  
+          await createUserSession(idToken,userId,'admin');
         }
         return {uId:userId,email:userEmail,token:idToken,userType:'admin'}
       })
@@ -76,14 +76,14 @@ export const signinUser = async(user) =>{
   const newUser = await getUsersByProvider(user.uId,'uId');
   console.log(user,'userrr')
   if(newUser.role === 1){
-    await createUserSession(user.accessToken,user.uId,'customer');  
+    await createUserSession(user.accessToken,user.uId,'customer');
   }
   else{
     await setUser({authId:user.uId,phoneNumber:user.phoneNumber,role:1,status:1})
-    await createUserSession(user.accessToken,user.uId,'customer');  
+    await createUserSession(user.accessToken,user.uId,'customer');
   }
   return {uId:user.uId,phoneNumber:user.phoneNumber,accessToken:user.accessToken}
-} 
+}
 
 
  const getUsersByProvider = async (value,provider) => {
@@ -118,7 +118,7 @@ export const userLogout = async ()=>{
 
 }
 
-// This function create user session on firebase admin 
+// This function create user session on firebase admin
 // by taking getIdToken() returend from client side login method
 // Old function name:  postUserToken
 
@@ -134,7 +134,7 @@ export const  createUserSession = async (token,uId,userType) =>{
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(data) 
+    body: JSON.stringify(data)
   });
   return response.json();
 }
@@ -146,7 +146,7 @@ catch(e){
 
 export const  verifyToken = async (cookie) =>{
   var path = "/api/verifyCookie";
- 
+
   var url = getApiUrl()+ path;
   var data = { cookie: cookie }
   const response = await fetch(url, {
@@ -191,3 +191,5 @@ export const updatAdminPassword = async (uid,password)=>{
   return response.json();
 
 }
+
+

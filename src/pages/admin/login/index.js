@@ -108,7 +108,6 @@ const LoginPage = () => {
             userType: data.userType
           })
           console.log(data, 'sign process login in admin login page')
-
           setLoading(false)
           router.push('/admin')
         })
