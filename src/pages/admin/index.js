@@ -122,6 +122,11 @@ const Dashboard = ({ user }) => {
 export default Dashboard
 
 export async function getServerSideProps(context) {
+  // const cookies = nookies.get(context)
+  //       return {
+  //       props: { user: cookies },
+  //     }
+
   try {
     const cookies = nookies.get(context)
     if (!cookies.user) {
@@ -136,22 +141,23 @@ export async function getServerSideProps(context) {
     const userData = await verifyToken(cookies.user)
     console.log(userData, 'in index page')
 
-    // if (userData.userType === 'admin') {
+    if (userData.userType === 'admin') {
       return {
         props: { user: userData },
       }
-    // }
-    // else {
-    //   console.log("userData.userType2: ", userData.userType);
-    //   return {
-    //     redirect: {
-    //       permanent: false,
-    //       destination: '/admin/login',
-    //     },
-    //     props: {},
-    //   }
-    // }
+    }
+    else {
+      console.log("userData.userType2: ", userData.userType);
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/admin/login',
+        },
+        props: {},
+      }
+    }
   } catch (err) {
+    console.log(err,"err in try catch")
     return {
       redirect: {
         permanent: false,
