@@ -146,13 +146,15 @@ catch(e){
 
 export const  verifyToken = async (cookie) =>{
   var path = "/api/verifyCookie";
+  const body =  JSON.stringify(data)
 
   var url = getApiUrl()+ path;
   var data = { cookie: cookie }
   const response = await fetch(url, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Content-Length':body.length,
     },
     body: JSON.stringify(data) // body data type must match "Content-Type" header
   });
