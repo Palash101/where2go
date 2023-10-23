@@ -602,7 +602,6 @@ const Seat = () => {
           xs={12}
           md={3}
           sx={{
-            backgroundColor: '#000',
             marginTop: '-25px',
           }}
         >
