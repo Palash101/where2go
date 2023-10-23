@@ -160,7 +160,7 @@ export const  verifyToken = async (cookie) =>{
       'Content-Type': 'application/json',
       'Content-Length':contentLength.toString(),
     },
-    body: body // body data type must match "Content-Type" header
+    body: jsonData // body data type must match "Content-Type" header
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
