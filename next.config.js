@@ -5,13 +5,14 @@ module.exports = {
   reactStrictMode: false,
   i18n: {
     locales: ['en', 'ar'],
-    defaultLocale:'en',
+    defaultLocale: 'en',
   },
-  env:{
-    PROD_API:'https://www.where2go.qa',
+  env: {
+    PROD_API: 'http://where2go-kappa.vercel.app',
+    // DEV_API: 'http://where2go-kappa.vercel.app',
     DEV_API:'http://localhost:3000',
-    DEBUG:true,
-    
+    DEBUG: false,
+
   },
   images: {
     domains: ['firebasestorage.googleapis.com'],
@@ -20,7 +21,7 @@ module.exports = {
     esmExternals: false,
     jsconfigPaths: true // enables it for both jsconfig.json and tsconfig.json
   },
-  webpack: (config, { isServer })  => {
+  webpack: (config, { isServer }) => {
     config.resolve.alias = {
       ...config.resolve.alias,
       apexcharts: path.resolve(__dirname, './node_modules/apexcharts-clevision')
