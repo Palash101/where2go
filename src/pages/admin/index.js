@@ -28,20 +28,29 @@ import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
 import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 
 import { emailPasswordSigin, verifyToken } from '../../../service/auth'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import { Typography } from '@mui/material'
+
 
 const Dashboard = ({ user }) => {
   const router = useRouter()
   const userContext = userAuth()
 
-  useEffect(() => {}, [])
+  useEffect(() => { }, [])
 
   return (
     <ApexChartWrapper>
+      <Card sx={{ height: "80vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <CardContent>
+          <Typography variant='h6'>Welcome to Where2go - Your Ultimate entertainment Companion!</Typography>
+        </CardContent>
+      </Card>
       <Grid container spacing={6}>
-        <Grid item xs={12} md={4}>
+        {/* <Grid item xs={12} md={4}>
           <Trophy />
-        </Grid>
-        <Grid item xs={12} md={8}>
+        </Grid> */}
+        {/* <Grid item xs={12} md={8}>
           <StatisticsCard />
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
@@ -104,7 +113,7 @@ const Dashboard = ({ user }) => {
         </Grid>
         <Grid item xs={12}>
           <Table />
-        </Grid>
+        </Grid> */}
       </Grid>
     </ApexChartWrapper>
   )

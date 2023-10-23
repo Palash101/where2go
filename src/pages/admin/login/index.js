@@ -78,7 +78,7 @@ const LoginPage = () => {
   const userContext = userAuth()
   // console.log(userContext)
 
-  useEffect(() => {}, [])
+  useEffect(() => { }, [])
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value })
@@ -99,13 +99,13 @@ const LoginPage = () => {
       setLoading(true)
       emailPasswordSigin(values.email, values.password)
         .then((data) => {
-          console.log(data,'data in admin sign in')
+          console.log(data, 'data in admin sign in')
           userContext.setUserAuthState({
             accesstoken: data.token,
             isAuthenticated: true,
-            uId:data.uId,
-            userInfo:'Admin',
-            userType:data.userType
+            uId: data.uId,
+            userInfo: 'Admin',
+            userType: data.userType
           })
           console.log(data, 'sign process login in admin login page')
 
@@ -175,6 +175,7 @@ const LoginPage = () => {
               <OutlinedInput
                 label="Password"
                 value={values.password}
+                sx={{ marginBottom: 4 }}
                 id="auth-login-password"
                 onChange={handleChange('password')}
                 type={values.showPassword ? 'text' : 'password'}
@@ -192,7 +193,7 @@ const LoginPage = () => {
                 }
               />
             </FormControl>
-            <Box
+            {/* <Box
               sx={{
                 mb: 4,
                 display: 'flex',
@@ -207,7 +208,7 @@ const LoginPage = () => {
                   Forgot Password?
                 </LinkStyled>
               </Link>
-            </Box>
+            </Box> */}
             <Button
               fullWidth
               size="large"

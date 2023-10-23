@@ -84,7 +84,7 @@ const Seat = () => {
 
   // Setting Main Data from Firebase if exist
   useEffect(() => {
-    
+
     if (router.isReady) {
       getTicketsData(router.query.eventId)
       setEventId(router.query.eventId)
@@ -123,7 +123,7 @@ const Seat = () => {
 
     console.log(ticketsArray,'ticketsArray')
     setticketCollectionData(ticketsArray)
-    
+
   }
 
   console.log(ticketCollectionData);
@@ -239,7 +239,7 @@ const Seat = () => {
      let reactArrCopy = [...reactArray];
 
     if(reactArrCopy[index1].seatDots[index2][index3].delSelected === true){
-    
+
     //  if(e.currentTarget.style.fill === 'red'){
     //  e.currentTarget.style.fill = '';
     reactArrCopy[index1].seatDots[index2][index3].delSelected = false;
@@ -297,7 +297,7 @@ const Seat = () => {
         for(var i = 0;i<deletedArray.length;i++){
           let el = arrayCopy[deletedArray[i].index1].seatDots[deletedArray[i].index2];
 
-         
+
           console.log('deleted element ',el);
           for(var j = 0 ;j< el.length;j++){
             console.log((el[j].x , deletedArray[i].x , el[j].y , deletedArray[i].y))
@@ -307,7 +307,7 @@ const Seat = () => {
           }
 
 
-          
+
 
 
           // el.splice(deletedArray[i],i);
@@ -318,17 +318,17 @@ const Seat = () => {
             setDeletedArray([]);
           }
         }
-        
+
         // deletedArray.forEach((i,index) => {
         //   const el = arrayCopy[i.index1].seatDots[i.index2];
         //   console.log('deleted element ',el)
         //    arrayCopy[i.index1].seatDots[i.index2].splice(i.index3,1);
         // })
-        
 
-        
-        
-        
+
+
+
+
       }
       else{
         alert("Please select cirles for delete.")
@@ -465,7 +465,7 @@ const Seat = () => {
   };
 
   const addSeatname = (seatAlpha, seatNumberic, color, price, ticketName,TicketData) => {
-    
+
     const selectedElement = reactArray[selectedRect];
     const seatStateCopy = {...selectedElement.seatState,ticketId:TicketData,ticketName:ticketName,color:color,price:price}
     console.log(seatStateCopy,'seatStateCopy');
@@ -530,7 +530,7 @@ const Seat = () => {
      return updateEventTicket(router.query.eventId, ticketData).then((docId)=>{
       return docId;
       });
- 
+
       setLoading(false);
     } else {
       setLoading(false);
@@ -539,7 +539,7 @@ const Seat = () => {
   };
 
   const updateTicketData = async (data, toggle) => {
-    
+
     console.log(data,toggle,'data');
     setLoading(true);
     if (
@@ -577,7 +577,7 @@ const Seat = () => {
         getTicketsData(eventId)
         setShowTicketComponent(false);
         // updateData();
-       
+
         setLoading(false);
       }
     } else {
@@ -622,7 +622,7 @@ const Seat = () => {
           )} */}
 
 
-         
+
 
           {showFooter && (
             <FooterMenu

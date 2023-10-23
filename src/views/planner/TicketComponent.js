@@ -38,7 +38,7 @@ const TicketComponent = (props) => {
   const [rowAlphabets, setRowAlphabet] = useState('')
   const [numeric, setColNumeric] = useState(null)
   const [toggle, setToggle] = useState(false);
-  const [ticketItem,setTicketItem] = useState({name:'not'})
+  const [ticketItem, setTicketItem] = useState({ name: 'not' })
 
   const formData = () => {
     const data = {
@@ -47,7 +47,7 @@ const TicketComponent = (props) => {
       price: price,
       rowAlphabets: rowAlphabets,
       numeric: numeric,
-	  id: id,
+      id: id,
     }
 
     return data
@@ -58,81 +58,81 @@ const TicketComponent = (props) => {
   }, [])
 
   const itemChange = (e) => {
-	console.log(e)
-	let val = e.target.value;
-	console.log(val,'val')
-	if(val.name === 'not'){
-		setToggle(false)
-		setTicketItem(val)
-	}
-	else{
-		setToggle(true)
-		setTicketItem(val)
-		setName(val.name);
-		setPrice(val.price);
-		setColor(val.color)
-		 setId(val.docId)
-	}
+    console.log(e)
+    let val = e.target.value;
+    console.log(val, 'val')
+    if (val.name === 'not') {
+      setToggle(false)
+      setTicketItem(val)
+    }
+    else {
+      setToggle(true)
+      setTicketItem(val)
+      setName(val.name);
+      setPrice(val.price);
+      setColor(val.color)
+      setId(val.docId)
+    }
   }
 
   const ticketForm = () => {
     return (
       <Box className="ticketform">
-		  {props.tickets && (
-			<FormControl fullWidth>
-			<InputLabel id="ticket">Select Ticket</InputLabel>
-			<Select labelId="ticket" style={{padding:10}} fullWidth onChange={(e)=>itemChange(e)} label='ticket' placeholder='Ticket Name'  >
-			<MenuItem value={{name:'not'}} >None</MenuItem>
-				{props.tickets.map((item,key) => (
-					<MenuItem value={item}>{item.name} - {item.price} {props.currency}</MenuItem>
-				))}
-				
-			</Select>
-			</FormControl>
-		)}
+        {props.tickets && (
+          <FormControl fullWidth>
+            <InputLabel id="ticket">Select Ticket</InputLabel>
+            <Select labelId="ticket" style={{ padding: 10 }} fullWidth onChange={(e) => itemChange(e)} label='ticket' placeholder='Ticket Name'  >
+              <MenuItem value={{ name: 'not' }} >None</MenuItem>
+              {props.tickets.map((item, key) => (
+                <MenuItem value={item}>{item.name} - {item.price} {props.currency}</MenuItem>
+              ))}
 
-		{toggle === false && (
-			<Box>
-				<TextField
-				required
-				onChange={(e) => setName(e.target.value)}
-				sx={{ marginBottom: '10px' }}
-				fullWidth
-				label="Ticket Name"
-				placeholder="Enter event name"
-				/>
-			
-				<FormControl fullWidth>
-					<InputLabel id="color">Select Color</InputLabel>
+            </Select>
+          </FormControl>
+        )}
 
-					<Select
-					labelId="color"
-					style={{padding:10}}
-					fullWidth
-					onChange={(e) => setColor(e.target.value)}
-					label="color"
-					placeholder="color"
-					defaultValue={color}
-					>
-					<MenuItem value="">
-						<em>None</em>
-					</MenuItem>
-					<MenuItem value="yellow">Yellow</MenuItem>
-					<MenuItem value="blue">Blue</MenuItem>
-					<MenuItem value="orange">Orange</MenuItem>
-					<MenuItem value="pink">Pink</MenuItem>
-					</Select>
-				</FormControl>
-				<TextField
-				required
-				onChange={(e) => setPrice(e.target.value)}
-				fullWidth
-				label="Price"
-				type="number"
-				placeholder="Price"
-				/>
-			</Box>
-		)}
+        {toggle === false && (
+          <Box>
+            <TextField
+              required
+              onChange={(e) => setName(e.target.value)}
+              sx={{ marginBottom: '10px' }}
+              fullWidth
+              label="Ticket Name"
+              placeholder="Enter event name"
+            />
+
+            <FormControl fullWidth>
+              <InputLabel id="color">Select Color</InputLabel>
+
+              <Select
+                labelId="color"
+                style={{ padding: 10 }}
+                fullWidth
+                onChange={(e) => setColor(e.target.value)}
+                label="color"
+                placeholder="color"
+                defaultValue={color}
+              >
+                <MenuItem value="">
+                  None
+                </MenuItem>
+                <MenuItem value="yellow">Yellow</MenuItem>
+                <MenuItem value="blue">Blue</MenuItem>
+                <MenuItem value="orange">Orange</MenuItem>
+                <MenuItem value="pink">Pink</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              required
+              onChange={(e) => setPrice(e.target.value)}
+              fullWidth
+              label="Price"
+              type="number"
+              placeholder="Price"
+            />
+          </Box>
+        )}
 
         <TextField
           required
@@ -140,8 +140,8 @@ const TicketComponent = (props) => {
           sx={{ marginBottom: '10px' }}
           type="text"
           fullWidth
-		  label="Row Alphabet"
-          placeholder="Row Alphabet"
+          label="Row Alphabet"
+          placeholder="e.g. A, B, c, d, ....."
         />
         <TextField
           required
@@ -149,8 +149,8 @@ const TicketComponent = (props) => {
           sx={{ marginBottom: '10px' }}
           type="number"
           fullWidth
-		  label="Column number"
-          placeholder="Column number"
+          label="Column number"
+          placeholder="e.g. 1, 2, 3, 4, ....."
         />
       </Box>
     )
@@ -162,7 +162,7 @@ const TicketComponent = (props) => {
         <DialogTitle>Ticket</DialogTitle>
         <DialogContent>{ticketForm()}</DialogContent>
         <DialogActions>
-          <Button onClick={() => props.saveData(formData(),toggle)}>Add</Button>
+          <Button onClick={() => props.saveData(formData(), toggle)}>Add</Button>
           <Button onClick={() => props.onClose(false)}>Cancel</Button>
         </DialogActions>
       </Dialog>

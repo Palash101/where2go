@@ -11,7 +11,7 @@ export const en = {
     events: 'Events',
     userManagement:'User Management',
 
-    
+
     about: 'About Us',
     allRightReserved: 'All Right Reserved.',
     browseEvents: 'Browse Events',
@@ -100,7 +100,7 @@ export const en = {
     purchase:"Purchase",
     publishedcontent: "Event description, events dates, events tickets and images are required for publish event.",
     featured: "Featured",
-    featuredcontent: "All images are required for allow fetured",
+    featuredcontent: "All images are required for allowing featured",
     addeventdatetime: "Add Event Date Time",
     locationnotdefined: "Location Not Defined",
     addressmapcoordinates: "Address/Map co-ordinates",
