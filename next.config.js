@@ -10,7 +10,8 @@ module.exports = {
   env: {
     PROD_API: 'https://where2go-kappa.vercel.app',
     // DEV_API: 'http://where2go-kappa.vercel.app',
-    DEV_API:'http://localhost:3000',
+    DEV_API:'https://where2go-kappa.vercel.app',
+    // DEV_API:'http://localhost:3000',
     DEBUG: true,
 
   },
