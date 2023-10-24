@@ -8,7 +8,7 @@ module.exports = {
     defaultLocale: 'en',
   },
   env: {
-    PROD_API: 'https://admin--flourishing-lokum-9b2f4f.netlify.app',
+    PROD_API: 'https://oyster-app-783pf.ondigitalocean.app',
     // DEV_API: 'http://where2go-kappa.vercel.app',
     // DEV_API:'https://where2go-kappa.vercel.app',
     DEV_API:'http://localhost:3000',
