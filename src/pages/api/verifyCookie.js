@@ -3,7 +3,7 @@ import { parseCookies } from 'nookies'
 
 import getFirebaseAdmin from './config'
 
-export async function verifyCookie(req, res) {
+async function verifyCookie(req, res) {
   const cookies = parseCookies(req)
   console.log(cookies, 'no cookie')
 
